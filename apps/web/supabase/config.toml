@@ -1,0 +1,342 @@
+# A string used to distinguish different Supabase projects on the same host. Defaults to the
+# working directory name when running `supabase init`.
+# Supabaseの異なるプロジェクトを同じホスト上で区別するために使用される文字列。`supabase init`を実行するときの作業ディレクトリ名がデフォルトです。
+# project_id = "sample-site"
+project_id = "my-emm-next"
+
+[api]
+enabled = true
+# Port to use for the API URL.
+# API URLに使用するポート。
+port = 54321
+# Schemas to expose in your API. Tables, views and stored procedures in this schema will get API
+# endpoints. `public` is always included.
+# APIで公開するスキーマ。このスキーマ内のテーブル、ビュー、およびストアドプロシージャはAPIエンドポイントを取得します。`public`は常に含まれます。
+schemas = ["public", "graphql_public"]
+# Extra schemas to add to the search_path of every request. `public` is always included.
+# すべてのリクエストのsearch_pathに追加する追加のスキーマ。`public`は常に含まれます。
+extra_search_path = ["public", "extensions"]
+# The maximum number of rows returns from a view, table, or stored procedure. Limits payload size
+# for accidental or malicious requests.
+# ビュー、テーブル、またはストアドプロシージャから返される最大行数。偶発的または悪意のあるリクエストのペイロードサイズを制限します。
+max_rows = 1000
+
+[api.tls]
+enabled = false
+
+[db]
+# Port to use for the local database URL.
+# ローカルデータベースURLに使用するポート。
+port = 54322
+# Port used by db diff command to initialize the shadow database.
+# シャドウデータベースを初期化するためにdb diffコマンドで使用されるポート。
+shadow_port = 54320
+# The database major version to use. This has to be the same as your remote database's. Run `SHOW
+# server_version;` on the remote database to check.
+# 使用するデータベースのメジャーバージョン。リモートデータベースと同じである必要があります。リモートデータベースで`SHOW server_version;`を実行して確認します。
+major_version = 15
+
+[db.pooler]
+enabled = false
+# Port to use for the local connection pooler.
+# ローカル接続プーラーに使用するポート。
+port = 54329
+# Specifies when a server connection can be reused by other clients.
+# サーバー接続が他のクライアントによって再利用できるタイミングを指定します。
+# Configure one of the supported pooler modes: `transaction`, `session`.
+# サポートされているプーラーモードのいずれかを設定します: `transaction`, `session`。
+pool_mode = "transaction"
+# How many server connections to allow per user/database pair.
+# ユーザー/データベースペアごとに許可されるサーバー接続の数。
+default_pool_size = 20
+# Maximum number of client connections allowed.
+# 許可されるクライアント接続の最大数。
+max_client_conn = 100
+
+[realtime]
+enabled = true
+# Bind realtime via either IPv4 or IPv6. (default: IPv4)
+# IPv4またはIPv6を介してリアルタイムをバインドします。(デフォルト: IPv4)
+# ip_version = "IPv6"
+# The maximum length in bytes of HTTP request headers. (default: 4096)
+# HTTPリクエストヘッダーの最大長（バイト単位）。（デフォルト: 4096）
+# max_header_length = 4096
+
+[studio]
+enabled = true
+# Port to use for Supabase Studio.
+# Supabase Studioに使用するポート。
+port = 54323
+# External URL of the API server that frontend connects to.
+# フロントエンドが接続するAPIサーバーの外部URL。
+api_url = "http://127.0.0.1"
+# OpenAI API Key to use for Supabase AI in the Supabase Studio.
+# Supabase StudioでSupabase AIに使用するOpenAI APIキー。
+openai_api_key = "env(OPENAI_API_KEY)"
+
+# Email testing server. Emails sent with the local dev setup are not actually sent - rather, they
+# are monitored, and you can view the emails that would have been sent from the web interface.
+# メールテストサーバー。ローカル開発セットアップで送信されたメールは実際には送信されません。代わりに監視され、ウェブインターフェースから送信される予定のメールを表示できます。
+[inbucket]
+enabled = true
+# Port to use for the email testing server web interface.
+# メールテストサーバーのウェブインターフェースに使用するポート。
+port = 54324
+# Uncomment to expose additional ports for testing user applications that send emails.
+# メールを送信するユーザーアプリケーションをテストするために追加のポートを公開するにはコメントを解除します。
+# smtp_port = 54325
+# pop3_port = 54326
+
+[storage]
+enabled = true
+# The maximum file size allowed (e.g. "5MB", "500KB").
+# 許可される最大ファイルサイズ（例: "5MB", "500KB"）。
+file_size_limit = "50MiB"
+
+[storage.image_transformation]
+enabled = true
+
+# Uncomment to configure local storage buckets
+# ローカルストレージバケットを設定するにはコメントを解除します
+# [storage.buckets.images]
+# public = false
+# file_size_limit = "50MiB"
+# allowed_mime_types = ["image/png", "image/jpeg"]
+# objects_path = "./images"
+
+[auth]
+enabled = true
+# The base URL of your website. Used as an allow-list for redirects and for constructing URLs used
+# in emails.
+# あなたのウェブサイトのベースURL。リダイレクトの許可リストとして使用され、メールで使用されるURLの構築に使用されます。
+# site_url = "http://127.0.0.1:3000"
+site_url = "http://localhost:3000"
+
+# A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
+# 認証後に認証プロバイダーがリダイレクトを許可される*正確な*URLのリスト。
+additional_redirect_urls = ["https://127.0.0.1:3000"]
+# additional_redirect_urls = ["https://localhost:3000"]
+# How long tokens are valid for, in seconds. Defaults to 3600 (1 hour), maximum 604,800 (1 week).
+# トークンが有効な期間（秒単位）。デフォルトは3600（1時間）、最大は604,800（1週間）。
+jwt_expiry = 3600
+# If disabled, the refresh token will never expire.
+# 無効にすると、リフレッシュトークンは期限切れになりません。
+enable_refresh_token_rotation = true
+# Allows refresh tokens to be reused after expiry, up to the specified interval in seconds.
+# リフレッシュトークンが期限切れ後に再利用されることを許可します。指定された間隔（秒単位）まで。
+# Requires enable_refresh_token_rotation = true.
+# enable_refresh_token_rotation = trueが必要です。
+refresh_token_reuse_interval = 10
+# Allow/disallow new user signups to your project.
+# プロジェクトへの新規ユーザー登録を許可/不許可にします。
+enable_signup = true
+# Allow/disallow anonymous sign-ins to your project.
+# プロジェクトへの匿名サインインを許可/不許可にします。
+enable_anonymous_sign_ins = true
+# Allow/disallow testing manual linking of accounts
+# アカウントの手動リンクのテストを許可/不許可にします。
+enable_manual_linking = false
+
+[auth.email]
+# Allow/disallow new user signups via email to your project.
+# プロジェクトへのメールによる新規ユーザー登録を許可/不許可にします。
+enable_signup = true
+# If enabled, a user will be required to confirm any email change on both the old, and new email
+# addresses. If disabled, only the new email is required to confirm.
+# 有効にすると、ユーザーは古いメールアドレスと新しいメールアドレスの両方でメール変更を確認する必要があります。無効にすると、新しいメールアドレスのみが確認を必要とします。
+double_confirm_changes = true
+# If enabled, users need to confirm their email address before signing in.
+# 有効にすると、ユーザーはサインインする前にメールアドレスを確認する必要があります。
+enable_confirmations = true
+# If enabled, users will need to reauthenticate or have logged in recently to change their password.
+# 有効にすると、ユーザーはパスワードを変更するために再認証するか、最近ログインしている必要があります。
+secure_password_change = true
+# Controls the minimum amount of time that must pass before sending another signup confirmation or password reset email.
+# 別のサインアップ確認またはパスワードリセットメールを送信する前に経過する必要がある最小時間を制御します。
+max_frequency = "1s"
+
+# Use a production-ready SMTP server
+# 本番環境対応のSMTPサーバーを使用する
+[auth.email.smtp]
+# resend smtp
+host = "smtp.resend.com"
+port = 465
+user = "resend"
+pass = "env(SUPABAS_SMTP_RESEND_API_KEY)"
+admin_email = "noreply@myemm-next.online"
+sender_name = "MyEMM DEV"
+## gmail smtp
+# host = "smtp.gmail.com"
+# port = 465
+# user = "t3kuboki@gmail.com"
+# pass = "env(SUPABAS_SMTP_GOOGLE_API_KEY)"
+# admin_email = "t3kuboki@gmail.com"
+# sender_name = "SAMPLE SITE DEV"
+
+# Uncomment to customize email template
+# メールテンプレートをカスタマイズするにはコメントを解除します
+# 設定値:https://supabase.com/docs/guides/local-development/customizing-email-templates#configuring-templates
+[auth.email.template.confirmation]
+subject = "【MyEMM DEV】メールアドレス認証のお知らせ"
+content_path = "./supabase/templates/confirmation.html"
+
+[auth.email.template.recovery]
+subject = "【MyEMM DEV】パスワード再設定のお知らせ"
+content_path = "./supabase/templates/recovery.html"
+
+[auth.sms]
+# Allow/disallow new user signups via SMS to your project.
+# プロジェクトへのSMSによる新規ユーザー登録を許可/不許可にします。
+enable_signup = true
+# If enabled, users need to confirm their phone number before signing in.
+# 有効にすると、ユーザーはサインインする前に電話番号を確認する必要があります。
+enable_confirmations = false
+# Template for sending OTP to users
+# ユーザーにOTPを送信するためのテンプレート
+template = "Your code is {{ .Code }} ."
+# Controls the minimum amount of time that must pass before sending another sms otp.
+# 別のSMS OTPを送信する前に経過する必要がある最小時間を制御します。
+max_frequency = "5s"
+
+# Use pre-defined map of phone number to OTP for testing.
+# テストのために電話番号をOTPにマッピングする事前定義されたマップを使用します。
+# [auth.sms.test_otp]
+# 4152127777 = "123456"
+
+# Configure logged in session timeouts.
+# ログインセッションのタイムアウトを設定します。
+# [auth.sessions]
+# Force log out after the specified duration.
+# 指定された期間後に強制的にログアウトします。
+# timebox = "24h"
+# Force log out if the user has been inactive longer than the specified duration.
+# ユーザーが指定された期間以上アクティブでない場合に強制的にログアウトします。
+# inactivity_timeout = "8h"
+
+# This hook runs before a token is issued and allows you to add additional claims based on the authentication method used.
+# このフックはトークンが発行される前に実行され、使用される認証方法に基づいて追加のクレームを追加することができます。
+# [auth.hook.custom_access_token]
+# enabled = true
+# uri = "pg-functions://<database>/<schema>/<hook_name>"
+
+# Configure one of the supported SMS providers: `twilio`, `twilio_verify`, `messagebird`, `textlocal`, `vonage`.
+# サポートされているSMSプロバイダーのいずれかを設定します: `twilio`, `twilio_verify`, `messagebird`, `textlocal`, `vonage`。
+[auth.sms.twilio]
+enabled = false
+account_sid = ""
+message_service_sid = ""
+# DO NOT commit your Twilio auth token to git. Use environment variable substitution instead:
+# Twilio認証トークンをgitにコミットしないでください。代わりに環境変数の置換を使用してください:
+auth_token = "env(SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN)"
+
+[auth.mfa]
+# Control how many MFA factors can be enrolled at once per user.
+# ユーザーごとに一度に登録できるMFA要素の数を制御します。
+max_enrolled_factors = 10
+
+# Control use of MFA via App Authenticator (TOTP)
+# アプリ認証（TOTP）を介したMFAの使用を制御します
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
+# Configure Multi-factor-authentication via Phone Messaging
+# 電話メッセージングを介した多要素認証を設定します
+# [auth.mfa.phone]
+# enroll_enabled = true
+# verify_enabled = true
+# otp_length = 6
+# template = "Your code is {{ .Code }} ."
+# max_frequency = "10s"
+
+# Use an external OAuth provider. The full list of providers are: `apple`, `azure`, `bitbucket`,
+# `discord`, `facebook`, `github`, `gitlab`, `google`, `keycloak`, `linkedin_oidc`, `notion`, `twitch`,
+# `twitter`, `slack`, `spotify`, `workos`, `zoom`.
+# 外部OAuthプロバイダーを使用します。プロバイダーの完全なリストは次のとおりです: `apple`, `azure`, `bitbucket`, `discord`, `facebook`, `github`, `gitlab`, `google`, `keycloak`, `linkedin_oidc`, `notion`, `twitch`, `twitter`, `slack`, `spotify`, `workos`, `zoom`。
+[auth.external.apple]
+enabled = false
+client_id = ""
+# DO NOT commit your OAuth provider secret to git. Use environment variable substitution instead:
+# OAuthプロバイダーのシークレットをgitにコミットしないでください。代わりに環境変数の置換を使用してください:
+secret = "env(SUPABASE_AUTH_EXTERNAL_APPLE_SECRET)"
+# Overrides the default auth redirectUrl.
+# デフォルトの認証リダイレクトURLを上書きします。
+redirect_uri = ""
+# Overrides the default auth provider URL. Used to support self-hosted gitlab, single-tenant Azure,
+# or any other third-party OIDC providers.
+# デフォルトの認証プロバイダーURLを上書きします。セルフホストのgitlab、シングルテナントのAzure、またはその他のサードパーティのOIDCプロバイダーをサポートするために使用されます。
+url = ""
+# If enabled, the nonce check will be skipped. Required for local sign in with Google auth.
+# 有効にすると、ノンスチェックがスキップされます。Google認証でのローカルサインインに必要です。
+skip_nonce_check = false
+
+# 以下を追加
+[auth.external.github]
+enabled = true
+client_id = "env(SUPABASE_AUTH_GITHUB_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_GITHUB_SECRET)"
+
+[auth.external.google]
+enabled = true
+client_id = "env(SUPABASE_AUTH_GOOGLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_GOOGLE_SECRET)"
+
+[auth.external.discord]
+enabled = true
+client_id = "env(SUPABASE_AUTH_DISCORD_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_DISCORD_SECRET)"
+
+# Use Firebase Auth as a third-party provider alongside Supabase Auth.
+# Supabase Authと一緒にサードパーティプロバイダーとしてFirebase Authを使用します。
+[auth.third_party.firebase]
+enabled = false
+# project_id = "my-firebase-project"
+
+# Use Auth0 as a third-party provider alongside Supabase Auth.
+# Supabase Authと一緒にサードパーティプロバイダーとしてAuth0を使用します。
+[auth.third_party.auth0]
+enabled = false
+# tenant = "my-auth0-tenant"
+# tenant_region = "us"
+
+# Use AWS Cognito (Amplify) as a third-party provider alongside Supabase Auth.
+# Supabase Authと一緒にサードパーティプロバイダーとしてAWS Cognito（Amplify）を使用します。
+[auth.third_party.aws_cognito]
+enabled = false
+# user_pool_id = "my-user-pool-id"
+# user_pool_region = "us-east-1"
+
+[edge_runtime]
+enabled = true
+# Configure one of the supported request policies: `oneshot`, `per_worker`.
+# サポートされているリクエストポリシーのいずれかを設定します: `oneshot`, `per_worker`。
+# Use `oneshot` for hot reload, or `per_worker` for load testing.
+# ホットリロードには`oneshot`を、負荷テストには`per_worker`を使用します。
+policy = "oneshot"
+inspector_port = 8083
+
+[analytics]
+enabled = true
+port = 54327
+# Configure one of the supported backends: `postgres`, `bigquery`.
+# サポートされているバックエンドのいずれかを設定します: `postgres`, `bigquery`。
+backend = "postgres"
+
+# Experimental features may be deprecated any time
+# 実験的な機能はいつでも廃止される可能性があります
+[experimental]
+# Configures Postgres storage engine to use OrioleDB (S3)
+# OrioleDB（S3）を使用するようにPostgresストレージエンジンを設定します
+orioledb_version = ""
+# Configures S3 bucket URL, eg. <bucket_name>.s3-<region>.amazonaws.com
+# S3バケットURLを設定します。例: <bucket_name>.s3-<region>.amazonaws.com
+s3_host = "env(S3_HOST)"
+# Configures S3 bucket region, eg. us-east-1
+# S3バケットのリージョンを設定します。例: us-east-1
+s3_region = "env(S3_REGION)"
+# Configures AWS_ACCESS_KEY_ID for S3 bucket
+# S3バケットのAWS_ACCESS_KEY_IDを設定します
+s3_access_key = "env(S3_ACCESS_KEY)"
+# Configures AWS_SECRET_ACCESS_KEY for S3 bucket
+# S3バケットのAWS_SECRET_ACCESS_KEYを設定します
+s3_secret_key = "env(S3_SECRET_KEY)"

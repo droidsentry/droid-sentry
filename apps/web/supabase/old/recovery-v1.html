@@ -1,0 +1,20 @@
+<h2>Reset Password</h2>
+
+<p>Follow this link to reset the password for your user:</p>
+<p>
+  <a
+    href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/update-password"
+    >Reset Password</a
+  >
+  <p>.Email           : {{ .Email }}.     </p>
+  <p>.NewEmail        : {{ .NewEmail }}.  </p>
+  <p>.ConfirmationURL : {{ .ConfirmationURL }} </p>
+  <p>.Token           : {{ .Token }}      </p>
+  <p>.TokenHash       : {{ .TokenHash }}  </p>
+  <p>.SiteURL         : {{ .SiteURL }}    </p>
+  <p>.RedirectT       : {{ .RedirectTo }} </p>
+  <p>.Data            : {{ .Data }}       </p>
+
+</p>
+
+<p>kuboki</p>

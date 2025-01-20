@@ -1,0 +1,12 @@
+<h2>メールアドレス認証のお知らせ</h2>
+
+<p>MyEMMをご利用いただきありがとうございます。</p>
+<p>以下のリンクをクリックして、メールアドレスを認証してください。</p>
+
+
+  <a
+    href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=email&next={{ .RedirectTo }}"
+    >メールアドレスを認証する</a
+  >
+  <p></p>
+</p>
