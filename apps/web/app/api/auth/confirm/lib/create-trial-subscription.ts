@@ -2,9 +2,10 @@ import "server-only";
 
 import { createOrRetrieveCustomer } from "@/data/stripe/get-customer";
 import { getListPrices } from "@/data/stripe/get-prices";
-import { stripe } from "@/lib/stripe";
+// import { stripe } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
 import { trialPlanConfig } from "../data/trial-plan-config";
+import Stripe from "stripe";
 
 export const createTrialSubscription = async (userId: string) => {
   const lookupKeys = ["license"]; // 価格キー
@@ -16,6 +17,7 @@ export const createTrialSubscription = async (userId: string) => {
   // デフォルトの支払い方法を保存する
   // 試用期間終了時に支払い方法がない場合はサブスクリプションをキャンセルする
   // 参考URL
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
   const trialSubscription = await stripe.subscriptions
     .create({
       customer,
