@@ -112,11 +112,9 @@ export default function AppContent({ appsData }: { appsData: PolicyApp[] }) {
   return (
     <DndContext onDragEnd={handleDragEnd}>
       <ScrollArea className="w-full h-full bg-blue-500">
-        <div className="grid grid-cols-2 gap-4 overflow-hidden">
-          {/* <div className="bg-green-500">test</div> */}
+        <div className="grid grid-cols-2 gap-4">
           <ApplicationLibrary apps={apps} />
           <AppManagement apps={apps} className="bg-yellow-500" />
-          {/* <div className="bg-red-500">test2</div> */}
         </div>
       </ScrollArea>
     </DndContext>
