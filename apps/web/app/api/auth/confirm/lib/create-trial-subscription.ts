@@ -17,7 +17,8 @@ export const createTrialSubscription = async (userId: string) => {
   // デフォルトの支払い方法を保存する
   // 試用期間終了時に支払い方法がない場合はサブスクリプションをキャンセルする
   // 参考URL
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
+  // const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
+  const stripe = "123!!" as unknown as Stripe;
   const trialSubscription = await stripe.subscriptions
     .create({
       customer,

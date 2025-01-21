@@ -72,8 +72,8 @@ export default function ApplicationLibrary({ apps }: { apps: Apps[] }) {
           </Select>
         </div>
       </div>
-      <div className="relative flex-1">
-        <div className="space-y-2 absolute top-0">
+      <div className="">
+        <div className="space-y-2">
           {filteredApps.map((app) => (
             <AppCard key={app.appId} app={app} />
           ))}
