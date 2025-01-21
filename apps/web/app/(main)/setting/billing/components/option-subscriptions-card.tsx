@@ -1,3 +1,5 @@
+"use client";
+
 import { Price } from "@/app/types/stripe";
 import { Button } from "@/components/ui/button";
 import {
