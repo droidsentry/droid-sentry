@@ -1,8 +1,9 @@
 "use server";
 
 import { createOrRetrieveCustomer } from "@/data/stripe/get-customer";
-import { stripe } from "@/lib/stripe";
+// import { stripe } from "@/lib/stripe";
 import { redirect } from "next/navigation";
+import Stripe from "stripe";
 
 /**
  * オプションサブスクリプションのチェックアウト
@@ -13,6 +14,7 @@ export const redirectToOptionSubscriptionCheckout = async (
   lookupKey: string,
   url: string
 ) => {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
   const price = await stripe.prices.list({
     lookup_keys: [lookupKey],
   });
@@ -50,7 +52,7 @@ export const redirectToDeviceSubscriptionCheckout = async (
   url: string,
   quantity: number
 ) => {
-  //
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
   const prices = await stripe.prices.list({
     lookup_keys: [lookupKey],
     expand: ["data.product"],
@@ -87,6 +89,7 @@ export const getPrices = async (
   }[]
 ) => {
   const lookupKeys = plans.map((plan) => plan.lookupKey);
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
   const prices = await stripe.prices.list({
     lookup_keys: lookupKeys,
     active: true,
@@ -116,6 +119,7 @@ export const getPrices = async (
 
 export const redirectToCustomerPortal = async (url: string) => {
   const customer = await createOrRetrieveCustomer();
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
   const portalSession = await stripe.billingPortal.sessions.create({
     customer,
     return_url: `${url}/plans`,

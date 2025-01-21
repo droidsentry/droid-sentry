@@ -3,6 +3,7 @@ import { type NextRequest } from "next/server";
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { createTrialSubscription } from "./lib/create-trial-subscription";
 // import { createTrialSubscription } from "./lib/create-trial-subscription";
 
 export async function GET(request: NextRequest) {
@@ -30,10 +31,9 @@ export async function GET(request: NextRequest) {
       throw new Error("ユーザーIDが取得できません");
     }
     // ログイン成功時、自動でトライアルサブスクリプションを作成する。
-    // await createTrialSubscription(userId).then(() => {
-    //   redirect(next);
-    // });
-    redirect(next);
+    await createTrialSubscription(userId).then(() => {
+      redirect(next);
+    });
   }
   redirect("/error");
 }

@@ -1,6 +1,7 @@
 import "server-only";
+import Stripe from "stripe";
 
-import { stripe } from "@/lib/stripe";
+// import { stripe } from "@/lib/stripe";
 
 /**
  * 価格のリストをStripeから取得する
@@ -9,6 +10,7 @@ import { stripe } from "@/lib/stripe";
  * 参考URL:https://docs.stripe.com/api/prices/list
  */
 export const getListPrices = async (lookupKey: string[]) => {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
   const prices = await stripe.prices.list({
     lookup_keys: lookupKey,
     expand: ["data.product"],

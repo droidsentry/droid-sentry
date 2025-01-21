@@ -1,8 +1,9 @@
 import "server-only";
 
 import { currentUser } from "@/app/data/auth";
-import { stripe } from "@/lib/stripe";
+// import { stripe } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
+import Stripe from "stripe";
 
 /**
  * ユーザーの顧客IDを作成または取得する
@@ -18,6 +19,7 @@ export const createOrRetrieveCustomer = async () => {
 
   const customerId = user.user_metadata.stripe_customer_id;
 
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
   if (customerId) {
     const customer = await stripe.customers.retrieve(customerId);
     console.log("customer", customer);
