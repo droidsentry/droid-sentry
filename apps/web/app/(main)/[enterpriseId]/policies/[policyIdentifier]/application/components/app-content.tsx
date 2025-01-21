@@ -8,6 +8,7 @@ import { useFormContext } from "react-hook-form";
 import AppManagement from "./app-management";
 import ApplicationLibrary from "./application-library";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { test } from "@playwright/test";
 
 export default function AppContent({ appsData }: { appsData: PolicyApp[] }) {
   const [apps, setApps] = useState<Apps[]>([]); //アプリケーションのデータ
@@ -111,18 +112,24 @@ export default function AppContent({ appsData }: { appsData: PolicyApp[] }) {
 
   return (
     <DndContext onDragEnd={handleDragEnd}>
-      <ScrollArea className="w-full h-full bg-blue-500 ">
-        <div
+      <ScrollArea className="w-full h-full bg-blue-500">
+        <div className="grid grid-cols-2 gap-4">
+          {/* <div className="bg-green-500">test</div> */}
+          <ApplicationLibrary apps={apps} />
+          <AppManagement apps={apps} className="bg-yellow-500" />
+          {/* <div className="bg-red-500">test2</div> */}
+        </div>
+        {/* <div
           className={cn(
             `grid grid-cols-2 gap-4`,
             `px-4 py-8 overflow-hidden bg-red-500 h-dvh`
 
             // "overflow-y-auto"
           )}
-        >
-          <ApplicationLibrary apps={apps} />
-          <AppManagement apps={apps} className="bg-yellow-500" />
-        </div>
+        > */}
+        {/* <ApplicationLibrary apps={apps} /> */}
+        {/* <AppManagement apps={apps} className="bg-yellow-500" /> */}
+        {/* </div> */}
       </ScrollArea>
     </DndContext>
   );

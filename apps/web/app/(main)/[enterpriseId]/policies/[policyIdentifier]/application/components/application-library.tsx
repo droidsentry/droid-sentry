@@ -11,8 +11,15 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import AppCard from "./app-card";
+import { cn } from "@/lib/utils";
 
-export default function ApplicationLibrary({ apps }: { apps: Apps[] }) {
+export default function ApplicationLibrary({
+  apps,
+  className,
+}: {
+  apps: Apps[];
+  className?: string;
+}) {
   const [filterApps, setFilterApps] = useState("");
   const [appType, setAppType] = useState("all");
   const [status, setStatus] = useState("all");
@@ -30,7 +37,7 @@ export default function ApplicationLibrary({ apps }: { apps: Apps[] }) {
   });
 
   return (
-    <div className="flex flex-col h-full">
+    <div className={cn("flex flex-col h-full relative", className)}>
       <div className="space-y-4 mb-4 sticky top-0 bg-green-400">
         <h2 className="text-2xl font-bold">アプリケーション一覧</h2>
         <div className="flex flex-wrap gap-2">
