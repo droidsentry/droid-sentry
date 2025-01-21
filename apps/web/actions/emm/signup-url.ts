@@ -29,7 +29,7 @@ export const getSignUpUrl = async (
       // callbackUrl: process.env.EMM_SIGNUP_URL + "/api/emm/callback",
       // callbackUrl: `${process.env.HOST}/api/emm/callback
       callbackUrl: `${url}/api/emm/callback`,
-      projectId: process.env.EMM_PROJECT_ID,
+      projectId: process.env.GOOGLE_EMM_PROJECT_ID,
     })
     .catch((error) => {
       console.error("Error creating signup URL:", error.message);

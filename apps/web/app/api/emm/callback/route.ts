@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
     const { data: enterpriseData } = await androidmanagement.enterprises
       .create({
         enterpriseToken,
-        projectId: process.env.EMM_PROJECT_ID,
+        projectId: process.env.GOOGLE_EMM_PROJECT_ID,
         signupUrlName,
         requestBody,
       })

@@ -103,21 +103,15 @@ export default function ProjectsCard({
               <ChevronRight className="absolute right-6 top-7 text-muted-foreground transition-all duration-200 group-hover/card:right-5 group-hover/card:text-foreground" />
               {enterpriseId && (
                 <div className="absolute left-5 bottom-3 flex flex-row space-x-2">
-                  <ProductOptionsButton
-                    className="z-30"
-                    icon={<SmartphoneIcon />}
-                    link={`${enterpriseId}/devices`}
-                  />
-                  <ProductOptionsButton
-                    className="z-30"
-                    icon={<ShieldCheckIcon />}
-                    link={`${enterpriseId}/policies`}
-                  />
-                  <ProductOptionsButton
-                    className="z-30"
-                    icon={<SiAndroid />}
-                    link={`${enterpriseId}/apps`}
-                  />
+                  {projectOptions.map((option) => (
+                    <ProductOptionsButton
+                      key={option.name}
+                      className="z-30"
+                      icon={option.icon}
+                      link={`${enterpriseId}/${option.link}`}
+                      name={option.name}
+                    />
+                  ))}
                 </div>
               )}
               {!enterpriseId && (
@@ -127,7 +121,6 @@ export default function ProjectsCard({
                   }
                   className="group/button absolute inset-0 z-20 w-full h-full transition-colors duration-300"
                 >
-                  {/* <span className="absolute inset-0 z-20 group"></span> */}
                   <span className="sr-only">
                     サインアップURLを発行し、リダイレクトする
                   </span>
@@ -152,3 +145,9 @@ export default function ProjectsCard({
     </div>
   );
 }
+
+const projectOptions = [
+  { icon: <SmartphoneIcon />, link: "devices", name: "デバイス一覧" },
+  { icon: <ShieldCheckIcon />, link: "policies", name: "ポリシー一覧" },
+  { icon: <SiAndroid />, link: "apps", name: "アプリ一覧" },
+];

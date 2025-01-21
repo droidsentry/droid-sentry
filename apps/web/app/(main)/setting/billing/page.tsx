@@ -10,8 +10,8 @@ export default async function Page() {
   console.log(mainPrices, optionPrices, url);
   return (
     <div className="container mx-auto mt-4 px-4 pb-20 lg:mt-6">
-      {/* <MainSubscriptionsCard url={url} prices={mainPrices} />
-      <OptionSubscriptionsCard url={url} prices={optionPrices} /> */}
+      <MainSubscriptionsCard url={url} prices={mainPrices} />
+      <OptionSubscriptionsCard url={url} prices={optionPrices} />
     </div>
   );
 }
