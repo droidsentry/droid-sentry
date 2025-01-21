@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import AppManagement from "./app-management";
 import ApplicationLibrary from "./application-library";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function AppContent({ appsData }: { appsData: PolicyApp[] }) {
   const [apps, setApps] = useState<Apps[]>([]); //アプリケーションのデータ
@@ -31,8 +32,8 @@ export default function AppContent({ appsData }: { appsData: PolicyApp[] }) {
         over.id === "availableApps"
           ? "FORCE_INSTALLED"
           : over.id === "restrictedApps"
-          ? "BLOCKED"
-          : "AVAILABLE";
+            ? "BLOCKED"
+            : "AVAILABLE";
       const disabled = over.id === "disabledApps";
       const newApp = {
         packageName,
@@ -110,15 +111,19 @@ export default function AppContent({ appsData }: { appsData: PolicyApp[] }) {
 
   return (
     <DndContext onDragEnd={handleDragEnd}>
-      <div
-        className={cn(
-          `grid grid-cols-2 gap-8 px-4 py-8 h-full overflow-hidden`
-          // "overflow-y-auto"
-        )}
-      >
-        <ApplicationLibrary apps={apps} />
-        <AppManagement apps={apps} />
-      </div>
+      <ScrollArea className="w-full h-full bg-blue-500 ">
+        <div
+          className={cn(
+            `grid grid-cols-2 gap-4`,
+            `px-4 py-8 overflow-hidden bg-red-500 h-dvh`
+
+            // "overflow-y-auto"
+          )}
+        >
+          <ApplicationLibrary apps={apps} />
+          <AppManagement apps={apps} className="bg-yellow-500" />
+        </div>
+      </ScrollArea>
     </DndContext>
   );
 }

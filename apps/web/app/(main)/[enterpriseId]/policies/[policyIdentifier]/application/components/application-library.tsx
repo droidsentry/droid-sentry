@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import AppCard from "./app-card";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 export default function ApplicationLibrary({ apps }: { apps: Apps[] }) {
   const [filterApps, setFilterApps] = useState("");
@@ -32,7 +31,7 @@ export default function ApplicationLibrary({ apps }: { apps: Apps[] }) {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="space-y-4 mb-4">
+      <div className="space-y-4 mb-4 sticky top-0 bg-green-400">
         <h2 className="text-2xl font-bold">アプリケーション一覧</h2>
         <div className="flex flex-wrap gap-2">
           <Input
@@ -73,13 +72,13 @@ export default function ApplicationLibrary({ apps }: { apps: Apps[] }) {
           </Select>
         </div>
       </div>
-      <ScrollArea className="flex-1 min-h-0">
-        <div className="space-y-2">
+      <div className="relative flex-1">
+        <div className="space-y-2 absolute top-0">
           {filteredApps.map((app) => (
             <AppCard key={app.appId} app={app} />
           ))}
         </div>
-      </ScrollArea>
+      </div>
     </div>
   );
 }

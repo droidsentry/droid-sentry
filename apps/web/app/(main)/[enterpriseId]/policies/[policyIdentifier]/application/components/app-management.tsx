@@ -2,10 +2,17 @@
 
 import { Apps } from "@/app/types/policy";
 import AppDropZone from "./app-drop-zone";
+import { cn } from "@/lib/utils";
 
-export default function AppManagement({ apps }: { apps: Apps[] }) {
+export default function AppManagement({
+  apps,
+  className,
+}: {
+  apps: Apps[];
+  className?: string;
+}) {
   return (
-    <div className="flex flex-col gap-4">
+    <div className={cn("flex flex-col gap-4", className)}>
       <h2 className="text-2xl font-bold">アプリケーション管理</h2>
       {APP_ZONES.map((zone) => (
         <AppDropZone
