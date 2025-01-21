@@ -12,17 +12,19 @@ export default function AppManagement({
   className?: string;
 }) {
   return (
-    <div className={cn("flex flex-col gap-4", className)}>
-      <h2 className="text-2xl font-bold">アプリケーション管理</h2>
-      {APP_ZONES.map((zone) => (
-        <AppDropZone
-          key={zone.id}
-          apps={apps}
-          id={zone.id}
-          title={zone.title}
-          filterCondition={zone.filterCondition}
-        />
-      ))}
+    <div className={cn(" relative", className)}>
+      <div className="flex flex-col gap-4 sticky top-0">
+        <h2 className="text-2xl font-bold ">アプリケーション管理</h2>
+        {APP_ZONES.map((zone) => (
+          <AppDropZone
+            key={zone.id}
+            apps={apps}
+            id={zone.id}
+            title={zone.title}
+            filterCondition={zone.filterCondition}
+          />
+        ))}
+      </div>
     </div>
   );
 }

@@ -38,7 +38,7 @@ export default function ApplicationLibrary({
 
   return (
     <div className={cn("flex flex-col h-full relative", className)}>
-      <div className="space-y-4 mb-4 sticky top-0 bg-green-400">
+      <div className="space-y-4 mb-4 sticky top-0 bg-green-400 z-20">
         <h2 className="text-2xl font-bold">アプリケーション一覧</h2>
         <div className="flex flex-wrap gap-2">
           <Input

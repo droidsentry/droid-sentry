@@ -1,14 +1,21 @@
 import { stripe } from "@/lib/stripe";
 import { NextRequest } from "next/server";
 import { StripeCustomerMetadata } from "../types/stripe";
+import Stripe from "stripe";
 
 export async function POST(request: NextRequest) {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) {
+    return Response.json(
+      { message: "missing stripe key" },
+      {
+        status: 400,
+      }
+    );
+  }
+  const stripe = new Stripe(key);
   const sig = request.headers.get("stripe-signature");
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  // console.log("endpointSecret", endpointSecret);
-  // console.log("sig", sig);
-  // console.log("request.body", request.body);
-
   if (!request.body || !sig || !endpointSecret) {
     return Response.json(
       { message: "missing data" },

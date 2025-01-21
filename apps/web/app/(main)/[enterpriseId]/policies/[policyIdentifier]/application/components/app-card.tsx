@@ -54,7 +54,11 @@ export default function AppCard({ app }: { app: Apps }) {
   }
 
   return (
-    <Card ref={setNodeRef} style={style} className="relative  hover:shadow-md">
+    <Card
+      ref={setNodeRef}
+      style={style}
+      className="relative  hover:shadow-md z-10"
+    >
       <CardContent
         className={cn(
           "flex items-center space-x-2 p-4"
@@ -100,10 +104,10 @@ export default function AppCard({ app }: { app: Apps }) {
               {app.installType === "BLOCKED"
                 ? "インストール不可"
                 : app.installType === "FORCE_INSTALLED"
-                ? "自動インストール"
-                : app.disabled
-                ? "アプリ無効"
-                : ""}
+                  ? "自動インストール"
+                  : app.disabled
+                    ? "アプリ無効"
+                    : ""}
             </Badge>
           </div>
         )}
