@@ -1,4 +1,4 @@
-import { stripe } from "@/lib/stripe";
+// import { stripe } from "@/lib/stripe";
 import { NextRequest } from "next/server";
 import { StripeCustomerMetadata } from "../types/stripe";
 import Stripe from "stripe";
@@ -123,6 +123,7 @@ export async function POST(request: NextRequest) {
 }
 
 const getMetadataByStripeCustomerId = async (stripeCustomerId: string) => {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
   const customer = await stripe.customers.retrieve(stripeCustomerId);
   //DeletedCustomer型を除外
   if ("deleted" in customer) {
@@ -130,18 +131,3 @@ const getMetadataByStripeCustomerId = async (stripeCustomerId: string) => {
   }
   return customer.metadata;
 };
-
-// const getPlanIdByProductId = async (productId: string) => {
-//   const prices = await stripe.prices.list({
-//     lookup_keys: lookupKeys,
-//     active: true,
-//     expand: ["data.product"],
-//   });
-
-//   const price = prices.data.find((price) => price.product === productId);
-//   if (!price) {
-//     throw new Error(`Price not found: ${productId}`);
-//   }
-//   console.log(price);
-//   return price.id;
-// };
