@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PolicySidebar } from "./components/policy-sidebar";
-import { PolicyFormProvider } from "../providers/policy-form-provider";
+import { PolicyFormProvider } from "../providers/policy-form";
 
 export const metadata: Metadata = {
   title: "Create Next App",

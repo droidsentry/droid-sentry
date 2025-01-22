@@ -13,10 +13,6 @@ import useSWR from "swr";
 import { defaultGeneralConfig } from "../policies/[policyIdentifier]/device-general/data/default-general-config";
 import { getPolicyData } from "../policies/actions/get-policy";
 
-// type ContextType = {};
-
-// const Context = createContext<ContextType>({} as ContextType);
-
 export function PolicyFormProvider({ children }: { children: ReactNode }) {
   const params = useParams<RouteParams>();
   const enterpriseId = params.enterpriseId;
@@ -50,12 +46,5 @@ export function PolicyFormProvider({ children }: { children: ReactNode }) {
     }
   }, [policyIdentifier, form, data]);
 
-  return (
-    <Form {...form}>
-      {/* <Context.Provider value={{}}>{children}</Context.Provider> */}
-      {children}
-    </Form>
-  );
+  return <Form {...form}>{children}</Form>;
 }
-
-// export const usePolicyForm = () => useContext(Context);
