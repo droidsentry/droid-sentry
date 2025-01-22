@@ -23,7 +23,9 @@ export default function AppDropZone({
   filterCondition,
 }: AppDropZoneProps) {
   const [isClient, setIsClient] = useState(false);
-  const { isOver, setNodeRef } = useDroppable({ id });
+  const { isOver, setNodeRef } = useDroppable({
+    id,
+  });
 
   const filteredApps = useMemo(
     () => apps.filter(filterCondition),
@@ -39,7 +41,7 @@ export default function AppDropZone({
   }
 
   return (
-    <Card ref={setNodeRef} className={cn("", isOver ? "border-green-500" : "")}>
+    <Card ref={setNodeRef} className={cn(isOver ? "border-green-500" : "")}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
@@ -59,7 +61,6 @@ export default function AppDropZone({
                   size="icon"
                   variant="ghost"
                   className="absolute -top-4 -right-4 size-6 opacity-0 group-hover:opacity-100 rounded-full m-1"
-                  // asChild
                 >
                   <CircleX className="text-muted-foreground" />
                 </Button>

@@ -2,6 +2,7 @@
 
 import { Apps } from "@/app/types/policy";
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -11,16 +12,8 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import AppCard from "./app-card";
-import { cn } from "@/lib/utils";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
-export default function ApplicationLibrary({
-  apps,
-  className,
-}: {
-  apps: Apps[];
-  className?: string;
-}) {
+export default function ApplicationLibrary({ apps }: { apps: Apps[] }) {
   const [filterApps, setFilterApps] = useState("");
   const [appType, setAppType] = useState("all");
   const [status, setStatus] = useState("all");
@@ -38,8 +31,8 @@ export default function ApplicationLibrary({
   });
 
   return (
-    <div className={cn("flex flex-col h-full", className)}>
-      <div className="space-y-4 mb-4 bg-green-400 z-20">
+    <div className="flex flex-col overflow-hidden">
+      <div className="space-y-4 mb-4 ">
         <h2 className="text-2xl font-bold">アプリケーション一覧</h2>
         <div className="flex flex-wrap gap-2">
           <Input
@@ -80,14 +73,14 @@ export default function ApplicationLibrary({
           </Select>
         </div>
       </div>
-      <div className="bg-red-400 flex-1">
-        {/* <ScrollArea>
-          <div className="space-y-2">
+      <div className=" flex-1 min-w-0 relative">
+        <div className="absolute size-full overflow-hidden">
+          <ScrollArea className="h-full gap-2 p-2 ">
             {filteredApps.map((app) => (
               <AppCard key={app.appId} app={app} />
             ))}
-          </div>
-        </ScrollArea> */}
+          </ScrollArea>
+        </div>
       </div>
     </div>
   );

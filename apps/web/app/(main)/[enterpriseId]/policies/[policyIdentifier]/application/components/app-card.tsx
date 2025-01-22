@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { useDraggable } from "@dnd-kit/core";
+import { DragOverlay, useDraggable } from "@dnd-kit/core";
 import { SiGoogleplay } from "@icons-pack/react-simple-icons";
 import {
   GlobeLockIcon,
@@ -26,19 +26,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function AppCard({ app }: { app: Apps }) {
+export default function AppCard({
+  app,
+  isDragging,
+}: {
+  app: Apps;
+  isDragging?: boolean;
+}) {
   const [isClient, setIsClient] = useState(false);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: app.appId,
     data: app,
   });
-  const style = transform
-    ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-        opacity: 0.5,
-        boxShadow: "0 5px 15px rgba(0,0,0,0.15)",
-      }
-    : undefined;
+  const style =
+    transform && !isDragging
+      ? {
+          transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+          // transition: "transform 0.3s ease",
+          opacity: isDragging ? 1 : 0, // ドラッグ中は半透明に
+        }
+      : undefined;
 
   const handleResetAppPolicy = () => {
     console.log("reset app policy");
@@ -57,7 +64,7 @@ export default function AppCard({ app }: { app: Apps }) {
     <Card
       ref={setNodeRef}
       style={style}
-      className="relative  hover:shadow-md z-10"
+      className={cn("relative hover:shadow-md mb-2")}
     >
       <CardContent
         className={cn(
@@ -91,7 +98,6 @@ export default function AppCard({ app }: { app: Apps }) {
         <CardTitle className="truncate text-lg pl-2 w-full" title={app.title}>
           {app.title}
         </CardTitle>
-        {/* <span className="flex-1"></span> */}
         <Separator orientation="vertical" className="h-10 mx-1" />
         {(app.installType || app.disabled) && (
           <div className="w-[200px]">

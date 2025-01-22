@@ -1,21 +1,44 @@
 "use client";
 
 import { Apps, FormPolicy, PolicyApp } from "@/app/types/policy";
-import { cn } from "@/lib/utils";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
+} from "@dnd-kit/core";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import AppCard from "./app-card";
 import AppManagement from "./app-management";
 import ApplicationLibrary from "./application-library";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  restrictToVerticalAxis,
+  restrictToWindowEdges,
+} from "@dnd-kit/modifiers";
 
 export default function AppContent({ appsData }: { appsData: PolicyApp[] }) {
+  const [isDragging, setIsDragging] = useState(false);
+  const [activeApp, setActiveApp] = useState<Apps | null>(null); // 追加：ドラッグ中のアプリを管理
+
   const [apps, setApps] = useState<Apps[]>([]); //アプリケーションのデータ
   const form = useFormContext<FormPolicy>();
+
+  const handleDragStart = (event: DragStartEvent) => {
+    setIsDragging(true);
+    // ドラッグ開始時のアプリを保存
+    if (event.active.data.current) {
+      setActiveApp(event.active.data.current as Apps);
+    }
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
+    setIsDragging(false);
+    setActiveApp(null); // ドラッグ終了時にアクティブアプリをクリア
+
     const { active, over } = event;
-    // console.log("active", active);
-    // console.log("over", over);
+    console.log("active", active);
+    console.log("over", over);
     if (!active.data.current || !("appId" in active.data.current)) return;
 
     if (
@@ -25,8 +48,6 @@ export default function AppContent({ appsData }: { appsData: PolicyApp[] }) {
         over.id === "disabledApps")
     ) {
       const draggedApp = active.data.current as Apps;
-      // console.log(draggedApp, "draggedApp");
-
       const packageName = draggedApp.packageName;
       const installType =
         over.id === "availableApps"
@@ -81,17 +102,15 @@ export default function AppContent({ appsData }: { appsData: PolicyApp[] }) {
           ? { ...app, installType, disabled }
           : app
       );
-      console.log("updatedApps", updatedApps);
-      console.log("apps", apps);
       setApps(updatedApps);
     }
   };
 
   useEffect(() => {
     const policyApps = form.getValues().policyData.applications;
-    console.log("policyApps", policyApps);
+    // console.log("policyApps", policyApps);
 
-    console.log("apps", apps);
+    // console.log("apps", apps);
     if (policyApps) {
       const updatedApps = apps?.map((app) => ({
         ...app,
@@ -102,7 +121,7 @@ export default function AppContent({ appsData }: { appsData: PolicyApp[] }) {
           (policyApp) => policyApp.packageName === app.packageName
         )?.disabled,
       }));
-      console.log("updatedApps", updatedApps);
+      // console.log("updatedApps", updatedApps);
       setApps(updatedApps);
     } else {
       setApps(appsData);
@@ -110,13 +129,18 @@ export default function AppContent({ appsData }: { appsData: PolicyApp[] }) {
   }, [appsData, form]);
 
   return (
-    <div className="flex-1">
-      <DndContext onDragEnd={handleDragEnd}>
-        <div className="grid grid-cols-2 gap-4">
-          <ApplicationLibrary apps={apps} />
-          <AppManagement apps={apps} className="bg-yellow-500" />
-        </div>
-      </DndContext>
-    </div>
+    <DndContext
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      modifiers={[restrictToWindowEdges]}
+    >
+      <div className="grid grid-cols-2 gap-4 h-full">
+        <ApplicationLibrary apps={apps} />
+        <AppManagement apps={apps} />
+      </div>
+      <DragOverlay modifiers={[restrictToWindowEdges]}>
+        {activeApp ? <AppCard app={activeApp} isDragging={isDragging} /> : null}
+      </DragOverlay>
+    </DndContext>
   );
 }
