@@ -16,7 +16,7 @@ import { signInFormSchema } from "../../schemas/auth-validation";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useTransition } from "react";
-import { signInWithEmailOrUsername } from "@/actions/auth-supabase";
+import { signInWithEmailOrUsername } from "@/actions/auth/auth-supabase";
 
 const schema = signInFormSchema;
 

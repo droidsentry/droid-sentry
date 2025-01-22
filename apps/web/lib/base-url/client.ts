@@ -20,10 +20,10 @@ export const getBaseURL = (parentUrl?: string) => {
     return prodUrl
       ? `https://${prodUrl}`
       : vercelUrl
-      ? `https://${vercelUrl}`
-      : branchUrl
-      ? `https://${branchUrl}`
-      : `http://localhost:${process.env.PORT || 3000}`;
+        ? `https://${vercelUrl}`
+        : branchUrl
+          ? `https://${branchUrl}`
+          : `http://localhost:${process.env.PORT || 3000}`;
   }
 
   // 開発環境でparentFrameUrlが提供されている場合
@@ -34,3 +34,19 @@ export const getBaseURL = (parentUrl?: string) => {
   // 開発環境 URL
   return `http://localhost:${process.env.PORT || 3000}`;
 };
+
+// export const getVercelEnv =() => {
+//   const env = process.env.NEXT_PUBLIC_VERCEL_ENV;
+//   switch (env) {
+//     case caseExpression1:
+//       文
+//     case caseExpression2:
+//       文
+//     // …
+//     case caseExpressionN:
+//       文
+//     default:
+//       文
+//   }
+
+// }

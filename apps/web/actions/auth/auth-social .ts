@@ -1,5 +1,6 @@
 "use server";
 
+import { currentBaseUrl } from "@/lib/base-url/server";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -23,11 +24,13 @@ export const signInWithGithub = async () => {
 };
 
 export const signInWithGoogle = async () => {
+  const baseUrl = currentBaseUrl();
+  console.log("baseUrl", baseUrl);
   const supabase = await createClient();
   const { data } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${host}/api/auth/callback`,
+      redirectTo: `${baseUrl}/api/auth/callback`,
     },
   });
 
