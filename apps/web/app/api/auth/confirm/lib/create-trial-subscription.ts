@@ -2,23 +2,23 @@ import "server-only";
 
 import { createOrRetrieveCustomer } from "@/data/stripe/get-customer";
 import { getListPrices } from "@/data/stripe/get-prices";
-// import { stripe } from "@/lib/stripe";
+import { stripe } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
 import { trialPlanConfig } from "../data/trial-plan-config";
-import Stripe from "stripe";
 
+/**
+ * トライアルサブスクリプションの作成
+ * @param userId ユーザーID
+ * 参考URL https://stripe.com/docs/api/subscriptions/create
+ */
 export const createTrialSubscription = async (userId: string) => {
   const lookupKeys = ["license"]; // 価格キー
   const prices = await getListPrices(lookupKeys);
-
   const quantity = 1; // 1IDを使用可能にする
   const customer = await createOrRetrieveCustomer();
   const trial_period_days = 30; // 30日間の試用期間
+
   // デフォルトの支払い方法を保存する
-  // 試用期間終了時に支払い方法がない場合はサブスクリプションをキャンセルする
-  // 参考URL
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
-  // const stripe = "123!!" as unknown as Stripe;
   const trialSubscription = await stripe.subscriptions
     .create({
       customer,
@@ -28,7 +28,7 @@ export const createTrialSubscription = async (userId: string) => {
         save_default_payment_method: "on_subscription",
       },
       trial_settings: {
-        end_behavior: { missing_payment_method: "cancel" },
+        end_behavior: { missing_payment_method: "cancel" }, // 試用期間終了時に支払い方法がない場合はサブスクリプションをキャンセルする
       },
     })
     .catch((error) => {

@@ -32,34 +32,3 @@ export const getBaseSubscriptionURL = () => {
     throw new Error("Failed to get base subscription URL");
   }
 };
-
-export const currentBaseUrl = () => {
-  const env = process.env.NEXT_PUBLIC_VERCEL_ENV;
-  console.log("env", env);
-  switch (env) {
-    case "production": {
-      const customDomain =
-        process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL; //my-site.com
-      if (customDomain) {
-        return `https://${customDomain}`;
-      }
-      const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL; //my-site.vercel.app, *-vercel.app
-      return `https://${vercelUrl}`;
-    }
-    case "preview": {
-      const branchUrl = process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL;
-      if (branchUrl) {
-        return `https://${branchUrl}`;
-      }
-    }
-    case "development": {
-      const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL; //my-site.vercel.app, *-vercel.app
-      if (vercelUrl) {
-        return `https://${vercelUrl}`;
-      }
-      return `http://localhost:${process.env.PORT || 3000}`;
-    }
-    default:
-      return `http://localhost:${process.env.PORT || 3000}`;
-  }
-};
