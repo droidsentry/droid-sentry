@@ -13,9 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <div className="flex">
-      {/* <DeviceSidebar /> */}
       <DeviceSidebar className="hidden xl:block" />
-      {/* <DevicesMenuBar className="hidden md:block" /> */}
       {/* <DevicesMenuBar
         className={cn(
           "w-80 hidden lg:block",

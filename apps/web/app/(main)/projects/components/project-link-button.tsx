@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { LayoutDashboardIcon } from "lucide-react";
+import { LayoutGrid } from "lucide-react";
 import Link from "next/link";
 
 export default function ProjectLinkButton({
@@ -17,7 +17,7 @@ export default function ProjectLinkButton({
       asChild
     >
       <Link href="/projects">
-        <LayoutDashboardIcon size={20} className="absolute left-3" />
+        <LayoutGrid size={20} className="absolute left-3" />
         <span
           className={cn(
             "absolute left-12",

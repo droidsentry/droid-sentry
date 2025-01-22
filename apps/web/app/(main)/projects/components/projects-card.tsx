@@ -43,7 +43,6 @@ export default function ProjectsCard({
 
   const [isPending, startTransition] = useTransition();
   const [pendingProjectId, setPendingProjectId] = useState<string | null>(null);
-  // const currentUrl = window.location.origin;
   const url = getBaseURL(currentUrl);
 
   const handleGetSignUpUrl = (projectId: string, projectName: string) => {
@@ -63,7 +62,6 @@ export default function ProjectsCard({
     });
   };
   useEffect(() => {
-    // エラーが出るので、useEffectの中に記述
     const currentUrl = window.location.origin;
     setCurrentUrl(currentUrl);
   }, [setCurrentUrl]);
@@ -77,7 +75,6 @@ export default function ProjectsCard({
     >
       {projects.map((project) => {
         const enterpriseId = project.enterprise_id;
-        // console.log(enterpriseId);
         return (
           <div className="group/card" key={project.project_id}>
             <Card className=" relative h-60 duration-300 dark:bg-zinc-900 dark:border-zinc-700 transition ease-in-out group-hover/card:bg-accent">
@@ -147,7 +144,7 @@ export default function ProjectsCard({
 }
 
 const projectOptions = [
-  { icon: <SmartphoneIcon />, link: "devices", name: "デバイス一覧" },
-  { icon: <ShieldCheckIcon />, link: "policies", name: "ポリシー一覧" },
-  { icon: <SiAndroid />, link: "apps", name: "アプリ一覧" },
+  { icon: <SmartphoneIcon />, link: "devices", name: "デバイス" },
+  { icon: <ShieldCheckIcon />, link: "policies", name: "ポリシー" },
+  { icon: <SiAndroid />, link: "apps", name: "アプリ" },
 ];

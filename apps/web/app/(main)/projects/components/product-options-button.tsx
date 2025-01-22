@@ -7,6 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { ReactNode } from "react";
 
 export default function ProductOptionsButton({
   className,
@@ -16,7 +17,7 @@ export default function ProductOptionsButton({
 }: {
   className?: string;
   link: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   name: string;
 }) {
   return (

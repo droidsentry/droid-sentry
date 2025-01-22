@@ -32,10 +32,7 @@ export function DeviceSidebar({ className }: { className?: string }) {
   const pathname = usePathname();
 
   return (
-    <Sidebar
-      className={cn("inset-x-14", className)}
-      // collapsible="icon"
-    >
+    <Sidebar className={cn("inset-x-14", className)}>
       {/* // <Sidebar variant="inset"> */}
       <SidebarHeader className="border-b flex min-h-12 px-6">
         <SidebarContent>
