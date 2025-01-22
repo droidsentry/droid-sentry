@@ -12,8 +12,8 @@ export default function AppManagement({
   className?: string;
 }) {
   return (
-    <div className={cn(" relative", className)}>
-      <div className="flex flex-col gap-4 sticky top-0">
+    <div className={cn("", className)}>
+      <div className="flex flex-col gap-">
         <h2 className="text-2xl font-bold ">アプリケーション管理</h2>
         {APP_ZONES.map((zone) => (
           <AppDropZone

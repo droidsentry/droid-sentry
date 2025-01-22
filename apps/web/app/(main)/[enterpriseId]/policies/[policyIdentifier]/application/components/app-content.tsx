@@ -110,13 +110,13 @@ export default function AppContent({ appsData }: { appsData: PolicyApp[] }) {
   }, [appsData, form]);
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
-      <ScrollArea className="w-full h-full bg-blue-500">
+    <div className="flex-1">
+      <DndContext onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-2 gap-4">
           <ApplicationLibrary apps={apps} />
           <AppManagement apps={apps} className="bg-yellow-500" />
         </div>
-      </ScrollArea>
-    </DndContext>
+      </DndContext>
+    </div>
   );
 }

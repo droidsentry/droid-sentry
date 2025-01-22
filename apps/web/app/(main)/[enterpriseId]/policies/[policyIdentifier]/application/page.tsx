@@ -9,7 +9,7 @@ export default async function Page({
   const enterpriseId = (await params).enterpriseId;
   const appsData = await getPolicyApps(enterpriseId);
   return (
-    <div className="h-full">
+    <div className="flex">
       <AppContent appsData={appsData} />
     </div>
   );
