@@ -1,4 +1,4 @@
-import { signInWithGoogle } from "@/actions/auth-social ";
+import { signInWithGoogle } from "@/actions/auth/auth-social ";
 import { cn } from "@/lib/utils";
 import { SiGoogle } from "@icons-pack/react-simple-icons";
 import SubmitButton from "./submit-button";

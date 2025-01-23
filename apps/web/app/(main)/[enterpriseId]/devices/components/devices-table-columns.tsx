@@ -2,7 +2,12 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { CheckCircle2Icon, LucideXCircle, PlusIcon } from "lucide-react"; // 行アクション
+import {
+  ArrowUpDown,
+  CheckCircle2Icon,
+  LucideXCircle,
+  PlusIcon,
+} from "lucide-react"; // 行アクション
 
 import { Button } from "@/components/ui/button";
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
@@ -17,6 +22,34 @@ import DataTableMenu from "./data-table-menu";
 
 export const deviceColumns: ColumnDef<DeviceTableType>[] = [
   selectColumn<DeviceTableType>(),
+  {
+    accessorKey: "number",
+    accessorFn: (_, index) => index + 1,
+    minSize: 48, //
+    size: 48, //
+    enableResizing: false, // リサイズを無効化
+    header: ({ column }) => (
+      <div className={"flex items-center justify-center space-x-2"}>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="px-2 flex group h-8"
+        >
+          <span className="group-hover:hidden size-4">No.</span>
+          <ArrowUpDown className="size-4 hidden group-hover:block" />
+        </Button>
+      </div>
+    ),
+    cell: ({ row }) => (
+      <div
+        className="truncate flex items-center justify-center"
+        title={String(row.index + 1)}
+      >
+        {row.index + 1}
+      </div>
+    ),
+    enableHiding: false, // 非表示を無効化
+  },
   ...generateSortFilterColumnsHeader<DeviceTableType>(devicesTableColumnList),
   {
     accessorKey: "appliedState",
@@ -98,7 +131,7 @@ export const deviceColumns: ColumnDef<DeviceTableType>[] = [
     ),
     cell: ({ row, column }) => {
       return (
-        <div>
+        <div className="flex items-center justify-center">
           {row.getValue(column.id)
             ? formatToJapaneseDateTime(row.getValue(column.id))
             : "不明"}

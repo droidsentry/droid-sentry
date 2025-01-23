@@ -30,7 +30,7 @@ import {
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import SignOutButton from "../../projects/components/sign-out-button";
-import { signOut } from "@/actions/auth-social ";
+import { signOut } from "@/actions/auth/auth-social ";
 
 export default function UserMenu({ mode }: { mode?: "hover" }) {
   return (

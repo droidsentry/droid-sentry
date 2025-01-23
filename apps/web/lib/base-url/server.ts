@@ -17,12 +17,12 @@ export const getBaseSubscriptionURL = () => {
     const url = isProd
       ? prodUrl
       : devUrl
-      ? devUrl
-      : vercelUrl
-      ? vercelUrl
-      : branchUrl
-      ? branchUrl
-      : devUrl;
+        ? devUrl
+        : vercelUrl
+          ? vercelUrl
+          : branchUrl
+            ? branchUrl
+            : devUrl;
 
     return url
       ? `https://${url}`

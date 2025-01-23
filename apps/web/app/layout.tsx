@@ -28,13 +28,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" suppressHydrationWarning>
-      {/* <body
-        className={cn(
-          `${geistSans.variable} ${geistMono.variable} antialiased`,
-          "min-h-dvh flex flex-col"
-        )}
-        suppressHydrationWarning
-      > */}
       <body
         className={cn(
           `${fontSans.variable} ${fontMono.variable} antialiased `,
@@ -49,7 +42,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-          {/* <Toaster richColors closeButton/> */}
           <Toaster richColors />
         </ThemeProvider>
       </body>

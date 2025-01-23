@@ -2,7 +2,7 @@ import Stripe from "stripe";
 import {
   SubscriptionDeviceSchema,
   SubscriptionPlanSchema,
-} from "../(main)/schema/stripe";
+} from "../schema/stripe";
 import { z } from "zod";
 
 export type Price = {

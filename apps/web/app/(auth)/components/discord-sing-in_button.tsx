@@ -1,4 +1,4 @@
-import { signInWithDiscord } from "@/actions/auth-social ";
+import { signInWithDiscord } from "@/actions/auth/auth-social ";
 import { cn } from "@/lib/utils";
 import { SiDiscord } from "@icons-pack/react-simple-icons";
 import SubmitButton from "./submit-button";

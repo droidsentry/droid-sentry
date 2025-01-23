@@ -1,7 +1,7 @@
 // import { Tables } from "@/types/database";
 import { androidmanagement_v1 } from "googleapis";
 import { z } from "zod";
-import { DevicesTableSchema } from "../(main)/schema/devices";
+import { DevicesTableSchema } from "../schema/devices";
 
 export type AndroidManagementDevice = androidmanagement_v1.Schema$Device;
 export type ListDevicesResponse =

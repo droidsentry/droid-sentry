@@ -11,7 +11,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 
-import { formPolicySchema } from "@/app/(main)/schema/policy";
 import {
   useParams,
   usePathname,
@@ -23,6 +22,7 @@ import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 import { createOrUpdatePolicy } from "../actions/policy";
 import { RouteParams } from "@/app/types/enterprise";
+import { formPolicySchema } from "@/app/schema/policy";
 
 export default function PolicyToolBar() {
   const form = useFormContext<FormPolicy>();

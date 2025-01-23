@@ -1,6 +1,6 @@
 "use server";
 
-import { formPolicySchema } from "@/app/(main)/schema/policy";
+import { formPolicySchema } from "@/app/schema/policy";
 import { createClient } from "@/lib/supabase/server";
 // import { PolicyForm } from "@/app/(main)/types/policy";
 

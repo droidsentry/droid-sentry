@@ -1,19 +1,16 @@
 "use server";
 
+import { getBaseURL } from "@/lib/base-url/client";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
-const host =
-  process.env.NODE_ENV === "production" //本番環境にデプロイされていれば、本番とみなす
-    ? "https://sample-site-pearl.vercel.app/" // 本番環境の URL
-    : "http://localhost:3000";
-
 export const signInWithGithub = async () => {
+  const baseUrl = getBaseURL();
   const supabase = await createClient();
   const { data } = await supabase.auth.signInWithOAuth({
     provider: "github",
     options: {
-      redirectTo: `${host}/api/auth/callback`,
+      redirectTo: `${baseUrl}/api/auth/callback`,
     },
   });
 
@@ -23,11 +20,12 @@ export const signInWithGithub = async () => {
 };
 
 export const signInWithGoogle = async () => {
+  const baseUrl = getBaseURL();
   const supabase = await createClient();
   const { data } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${host}/api/auth/callback`,
+      redirectTo: `${baseUrl}/api/auth/callback`,
     },
   });
 
@@ -37,11 +35,12 @@ export const signInWithGoogle = async () => {
 };
 
 export const signInWithDiscord = async () => {
+  const baseUrl = getBaseURL();
   const supabase = await createClient();
   const { data } = await supabase.auth.signInWithOAuth({
     provider: "discord",
     options: {
-      redirectTo: `${host}/api/auth/callback`,
+      redirectTo: `${baseUrl}/api/auth/callback`,
     },
   });
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { SubscriptionDeviceSchema } from "@/app/(main)/schema/stripe";
 import { Price, SubscriptionDevice } from "@/app/types/stripe";
 import {
   Card,
@@ -24,6 +23,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { redirectToDeviceSubscriptionCheckout } from "../actions/stripe";
 import MainSubscriptionButton from "./main-subscriptions-button";
+import { SubscriptionDeviceSchema } from "@/app/schema/stripe";
 
 export default function MainSubscriptionsCard({
   url,

@@ -1,6 +1,6 @@
 "use client";
 
-import { resetPasswordVerify } from "@/actions/auth-supabase";
+import { resetPasswordVerify } from "@/actions/auth/auth-supabase";
 import { useEmailOrUsername } from "@/app/(auth)/providers/user";
 import { Button } from "@/components/ui/button";
 import {

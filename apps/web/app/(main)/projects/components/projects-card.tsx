@@ -1,7 +1,5 @@
 "use client";
 
-import { getSignUpUrl } from "@/actions/emm/signup-url";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -15,58 +13,28 @@ import {
   Plus,
   ShieldCheckIcon,
   SmartphoneIcon,
-  Trash2Icon,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState, useTransition } from "react";
 
-import { ProjectWithEnterpriseRelation } from "../../../types/project";
-import { deleteProject } from "../actions/projects";
 import ProductOptionsButton from "./product-options-button";
 
-import { SiAndroid } from "@icons-pack/react-simple-icons";
-import { getBaseURL } from "@/lib/base-url/client";
 import { cn } from "@/lib/utils";
+import { SiAndroid } from "@icons-pack/react-simple-icons";
+import ProjectDeleteButton from "./project-delete-button";
+import { useProject } from "./project-provider";
 
 interface ProjectCardProps {
-  projectsData: ProjectWithEnterpriseRelation[];
   className?: string;
 }
 
-export default function ProjectsCard({
-  projectsData,
-  className,
-}: ProjectCardProps) {
-  const [projects, setProjects] =
-    useState<ProjectWithEnterpriseRelation[]>(projectsData);
-  const [currentUrl, setCurrentUrl] = useState<string>("");
-
-  const [isPending, startTransition] = useTransition();
-  const [pendingProjectId, setPendingProjectId] = useState<string | null>(null);
-  // const currentUrl = window.location.origin;
-  const url = getBaseURL(currentUrl);
-
-  const handleGetSignUpUrl = (projectId: string, projectName: string) => {
-    setPendingProjectId(projectId);
-    startTransition(async () => {
-      await getSignUpUrl(projectId, url, projectName);
-      setPendingProjectId(null);
-    });
-  };
-
-  const handleProjectDelete = async (projectId: string) => {
-    setPendingProjectId(projectId);
-    startTransition(async () => {
-      await deleteProject(projectId);
-      setProjects((prev) => prev.filter((p) => p.project_id !== projectId));
-      setPendingProjectId(null);
-    });
-  };
-  useEffect(() => {
-    // エラーが出るので、useEffectの中に記述
-    const currentUrl = window.location.origin;
-    setCurrentUrl(currentUrl);
-  }, [setCurrentUrl]);
+export default function ProjectsCard({ className }: ProjectCardProps) {
+  const {
+    projects,
+    handleProjectDelete,
+    handleGetSignUpUrl,
+    isPending,
+    pendingProjectId,
+  } = useProject();
 
   return (
     <div
@@ -77,29 +45,23 @@ export default function ProjectsCard({
     >
       {projects.map((project) => {
         const enterpriseId = project.enterprise_id;
-        // console.log(enterpriseId);
         return (
           <div className="group/card" key={project.project_id}>
             <Card className=" relative h-60 duration-300 dark:bg-zinc-900 dark:border-zinc-700 transition ease-in-out group-hover/card:bg-accent">
-              <CardHeader>
-                <CardTitle className="text-lg flex">
+              <CardHeader className="pr-16">
+                <CardTitle className="text-lg overflow-hidden text-ellipsis whitespace-nowrap">
                   プロジェクト : {project.project_name}
                 </CardTitle>
-                <CardDescription>{enterpriseId ?? "未設定"}</CardDescription>
+                <CardDescription>
+                  エンタープライズID : {enterpriseId ?? "未設定"}
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <p>端末数：</p>
                 <p>管理者：</p>
                 <p>メンバー：</p>
               </CardContent>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-3 bottom-3 text-muted-foreground transition-all duration-300 hover:right-5 hover:text-foreground z-30 "
-                onClick={() => handleProjectDelete(project.project_id)}
-              >
-                <Trash2Icon />
-              </Button>
+              <ProjectDeleteButton projectId={project.project_id} />
               <ChevronRight className="absolute right-6 top-7 text-muted-foreground transition-all duration-200 group-hover/card:right-5 group-hover/card:text-foreground" />
               {enterpriseId && (
                 <div className="absolute left-5 bottom-3 flex flex-row space-x-2">
@@ -147,7 +109,7 @@ export default function ProjectsCard({
 }
 
 const projectOptions = [
-  { icon: <SmartphoneIcon />, link: "devices", name: "デバイス一覧" },
-  { icon: <ShieldCheckIcon />, link: "policies", name: "ポリシー一覧" },
-  { icon: <SiAndroid />, link: "apps", name: "アプリ一覧" },
+  { icon: <SmartphoneIcon />, link: "devices", name: "デバイス" },
+  { icon: <ShieldCheckIcon />, link: "policies", name: "ポリシー" },
+  { icon: <SiAndroid />, link: "apps", name: "アプリ" },
 ];

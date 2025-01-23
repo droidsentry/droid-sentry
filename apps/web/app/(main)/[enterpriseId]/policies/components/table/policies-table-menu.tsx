@@ -34,9 +34,9 @@ import { useRouter } from "next/navigation";
 import { deletePolicy } from "../../actions/delete-policy";
 
 import { toast } from "sonner";
-import { PolicyTableType } from "../../types/policy";
 import { usePoliciesTable } from "../policies-table-provider";
 import { revalidatePath } from "next/cache";
+import { PolicyTableType } from "@/app/types/policy";
 
 interface DataTableMenuProps {
   row: Row<PolicyTableType>;

@@ -1,6 +1,6 @@
 "use client";
 
-import { resetPassword } from "@/actions/auth-supabase";
+import { resetPassword } from "@/actions/auth/auth-supabase";
 import { emailOrUsernameSchema } from "@/app/(auth)/schemas/password-email-schema";
 import { Button } from "@/components/ui/button";
 import {

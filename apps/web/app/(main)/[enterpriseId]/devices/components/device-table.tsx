@@ -51,7 +51,6 @@ export default function DeviceTable<TData, TValue>({
     columnResizeMode: "onChange", // リアルタイムで列のリサイズを行う
     enableColumnResizing: true, // カラムのリサイズを有効化
     onStateChange: () => {}, // 状態変更時の処理
-
     getCoreRowModel: getCoreRowModel(), // コア行モデルを取得
     getPaginationRowModel: getPaginationRowModel(), // ページネーション行モデルを取得
     onSortingChange: setSorting, // ソート状態が変更されたときの処理
@@ -80,7 +79,7 @@ export default function DeviceTable<TData, TValue>({
     <div className="flex flex-col h-full w-full p-1">
       <DataTableToolbar
         table={table}
-        className="pb-1"
+        className="pb-2 pt-1"
         enterpriseId={enterpriseId}
       />
       <Table
@@ -101,7 +100,7 @@ export default function DeviceTable<TData, TValue>({
                       "border-b z-10 bg-background border-l",
                       "[&:nth-child(2)]:border-l-0", // 2番目のセルの左ボーダーを削除
                       "first:sticky first:left-0 first:z-30 first:border-l-0 first:border-r",
-                      "last:sticky  last:right-0 last:z-30 last:border-r-0",
+                      "last:sticky  last:right-0 last:z-30 last:border-r",
                       "p-1 h-8",
                       "first:px-0"
                     )}
@@ -154,6 +153,8 @@ export default function DeviceTable<TData, TValue>({
                       "whitespace-nowrap overflow-hidden",
                       "border-b",
                       "first:sticky first:left-0 first:z-10 first:bg-background first:border-r",
+                      "[&:nth-child(3)]:border-l", // 3番目のセルの左ボーダーを追加
+
                       "last:sticky last:right-0 last:z-10 last:bg-background last:border-r last:border-l",
                       "p-0",
                       "transition-all duration-200"

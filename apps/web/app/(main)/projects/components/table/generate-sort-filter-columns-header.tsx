@@ -14,7 +14,7 @@ export function generateSortFilterColumnsHeader<T>(
       <DataTableColumnHeader column={column} title={def.title} />
     ),
     cell: ({ row }) => (
-      <div className="truncate" title={row.getValue(def.accessorKey)}>
+      <div className="truncate pl-4" title={row.getValue(def.accessorKey)}>
         {row.getValue(def.accessorKey)}
       </div>
     ),

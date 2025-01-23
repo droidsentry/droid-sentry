@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { useDraggable } from "@dnd-kit/core";
 import { SiGoogleplay } from "@icons-pack/react-simple-icons";
 import {
   GlobeLockIcon,
@@ -16,7 +15,6 @@ import {
   RefreshCw,
 } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
 import {
   DropdownMenu,
@@ -26,56 +24,29 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function AppCard({ app }: { app: Apps }) {
-  const [isClient, setIsClient] = useState(false);
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: app.appId,
-    data: app,
-  });
-  const style = transform
-    ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-        opacity: 0.5,
-        boxShadow: "0 5px 15px rgba(0,0,0,0.15)",
-      }
-    : undefined;
+type AppCardProps = {
+  app: Apps;
+  className?: string;
+};
 
+export default function AppCard({ app, className }: AppCardProps) {
   const handleResetAppPolicy = () => {
     console.log("reset app policy");
     console.log("app", app);
   };
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <Card
-      ref={setNodeRef}
-      style={style}
-      className="relative  hover:shadow-md z-10"
-    >
-      <CardContent
-        className={cn(
-          "flex items-center space-x-2 p-4"
-          // app.installType === "BLOCKED" ? "bg-muted/50" : "",
-        )}
-      >
-        {" "}
+    <Card className={cn("relative hover:shadow-md mb-2", className)}>
+      <CardContent className={cn("flex items-center space-x-2 p-4")}>
         <Button
           size="icon"
           variant="ghost"
           className="text-muted-foreground size-10 cursor-grab w-fit p-2 z-10"
-          {...listeners}
-          {...attributes}
         >
           <GripVertical className="size-4" />
           <span className="sr-only">ドラッグハンドル</span>
         </Button>
+
         <div className="relative">
           <div className="relative border rounded-md size-10 overflow-hidden">
             <Image src={app.iconUrl} alt={app.title} fill sizes="40px" />
@@ -91,25 +62,22 @@ export default function AppCard({ app }: { app: Apps }) {
         <CardTitle className="truncate text-lg pl-2 w-full" title={app.title}>
           {app.title}
         </CardTitle>
-        {/* <span className="flex-1"></span> */}
         <Separator orientation="vertical" className="h-10 mx-1" />
         {(app.installType || app.disabled) && (
-          <div className="w-[200px]">
-            <Badge
-              variant={
-                app.installType === "BLOCKED" ? "destructive" : "secondary"
-              }
-              className=""
-            >
-              {app.installType === "BLOCKED"
-                ? "インストール不可"
-                : app.installType === "FORCE_INSTALLED"
-                  ? "自動インストール"
-                  : app.disabled
-                    ? "アプリ無効"
-                    : ""}
-            </Badge>
-          </div>
+          <Badge
+            variant={
+              app.installType === "BLOCKED" ? "destructive" : "secondary"
+            }
+            className="whitespace-nowrap shrink-0"
+          >
+            {app.installType === "BLOCKED"
+              ? "インストール不可"
+              : app.installType === "FORCE_INSTALLED"
+                ? "自動インストール"
+                : app.disabled
+                  ? "アプリ無効"
+                  : ""}
+          </Badge>
         )}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

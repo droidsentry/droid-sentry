@@ -105,10 +105,7 @@ export function ManagementAppsTableToolbar<TData>({
             )}
           </div>
         </div>
-        <div className="flex text-xs text-muted-foreground items-center justify-center min-w-[50px] px-1">
-          {table.getFilteredRowModel().rows.length} /{" "}
-          {table.getCoreRowModel().rows.length}
-        </div>
+        <div className="flex text-xs text-muted-foreground items-center justify-center min-w-[50px] px-1"></div>
       </div>
       <ScrollBar orientation="horizontal" />
     </ScrollArea>

@@ -2,6 +2,7 @@
 
 import { Apps } from "@/app/types/policy";
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -11,15 +12,10 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import AppCard from "./app-card";
-import { cn } from "@/lib/utils";
+import { DragOverlay } from "@dnd-kit/core";
+import Draggable from "./draggable";
 
-export default function ApplicationLibrary({
-  apps,
-  className,
-}: {
-  apps: Apps[];
-  className?: string;
-}) {
+export default function ApplicationLibrary({ apps }: { apps: Apps[] }) {
   const [filterApps, setFilterApps] = useState("");
   const [appType, setAppType] = useState("all");
   const [status, setStatus] = useState("all");
@@ -37,8 +33,8 @@ export default function ApplicationLibrary({
   });
 
   return (
-    <div className={cn("flex flex-col h-full relative", className)}>
-      <div className="space-y-4 mb-4 sticky top-0 bg-green-400 z-20">
+    <div className="flex flex-col">
+      <div className="space-y-4 mb-4 ">
         <h2 className="text-2xl font-bold">アプリケーション一覧</h2>
         <div className="flex flex-wrap gap-2">
           <Input
@@ -79,11 +75,15 @@ export default function ApplicationLibrary({
           </Select>
         </div>
       </div>
-      <div className="">
-        <div className="space-y-2">
-          {filteredApps.map((app) => (
-            <AppCard key={app.appId} app={app} />
-          ))}
+      <div className="flex-1 min-w-0 relative">
+        <div className="absolute size-full">
+          <div className="h-full gap-2 pr-3 overflow-y-auto overflow-x-hidden">
+            {filteredApps.map((app) => (
+              <Draggable key={app.appId} app={app}>
+                <AppCard app={app} />
+              </Draggable>
+            ))}
+          </div>
         </div>
       </div>
     </div>

@@ -1,19 +1,8 @@
-// import { stripe } from "@/lib/stripe";
 import { NextRequest } from "next/server";
 import { StripeCustomerMetadata } from "../types/stripe";
-import Stripe from "stripe";
+import { stripe } from "@/lib/stripe";
 
 export async function POST(request: NextRequest) {
-  const key = process.env.STRIPE_SECRET_KEY;
-  if (!key) {
-    return Response.json(
-      { message: "missing stripe key" },
-      {
-        status: 400,
-      }
-    );
-  }
-  const stripe = new Stripe(key);
   const sig = request.headers.get("stripe-signature");
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
   if (!request.body || !sig || !endpointSecret) {
@@ -59,11 +48,6 @@ export async function POST(request: NextRequest) {
       );
       console.log("sessionWithLineItems", sessionWithLineItems);
       const lineItems = sessionWithLineItems.line_items;
-
-      // // 商品のプランIDを取得
-      // const planId = await getPlanIdByProductId(
-      //   lineItems?.data[0].price?.product as string
-      // );
       const planId = lineItems?.data[0].price?.id;
       metadata = await getMetadataByStripeCustomerId(object.customer as string);
 
@@ -90,9 +74,6 @@ export async function POST(request: NextRequest) {
         customerSubscriptionUpdated.customer as string
       );
 
-      // const newPlanId = await getPlanIdByProductId(
-      //   customerSubscriptionUpdated.items.data[0].plan.product as string
-      // );
       const newPlanId = customerSubscriptionUpdated.items.data[0].plan.id;
       console.log("newPlanId", newPlanId);
 
@@ -100,10 +81,10 @@ export async function POST(request: NextRequest) {
       console.log("prevProduct", prevProduct);
       if (prevProduct) {
         // サブスクリプションを変更した際の処理
-        console.log("サブスクリプションを変更した際の処理");
-        console.log("prevProduct", prevProduct);
-        console.log("newPlanId", newPlanId);
-        console.log("metadata", metadata);
+        // console.log("サブスクリプションを変更した際の処理");
+        // console.log("prevProduct", prevProduct);
+        // console.log("newPlanId", newPlanId);
+        // console.log("metadata", metadata);
       }
       break;
     case "customer.subscription.deleted":
@@ -111,7 +92,7 @@ export async function POST(request: NextRequest) {
 
       break;
     default:
-      console.log(`Unhandled event type ${event.type}`);
+    // console.log(`Unhandled event type ${event.type}`);
   }
 
   return Response.json(
@@ -123,7 +104,6 @@ export async function POST(request: NextRequest) {
 }
 
 const getMetadataByStripeCustomerId = async (stripeCustomerId: string) => {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
   const customer = await stripe.customers.retrieve(stripeCustomerId);
   //DeletedCustomer型を除外
   if ("deleted" in customer) {

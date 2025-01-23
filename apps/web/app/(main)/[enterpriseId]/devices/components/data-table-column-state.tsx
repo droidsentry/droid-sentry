@@ -21,14 +21,14 @@ export default function DataTableColumnState<TData>({
   });
 
   return state ? (
-    <div className="flex items-center justify-center gap-2">
+    <div className="flex items-center justify-start pl-4 gap-2">
       <state.icon className={`size-5 ${state.color} `} />
       <span className={state.color}>{state.label}</span>
     </div>
   ) : (
     <div className="flex items-center gap-2">
-      <HelpCircle className="text-muted-foreground justify-center size-5" />
-      <span className="text-muted-foreground">
+      <HelpCircle className="text-muted-foreground justify-start size-5" />
+      <span className="text-muted-foreground pl-4">
         {row.getValue(column.id ?? "")}
       </span>
     </div>
