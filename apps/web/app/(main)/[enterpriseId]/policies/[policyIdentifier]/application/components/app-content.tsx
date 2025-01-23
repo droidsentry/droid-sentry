@@ -12,20 +12,14 @@ import { useFormContext } from "react-hook-form";
 import AppCard from "./app-card";
 import AppManagement from "./app-management";
 import ApplicationLibrary from "./application-library";
-import {
-  restrictToVerticalAxis,
-  restrictToWindowEdges,
-} from "@dnd-kit/modifiers";
 
 export default function AppContent({ appsData }: { appsData: PolicyApp[] }) {
-  const [isDragging, setIsDragging] = useState(false);
   const [activeApp, setActiveApp] = useState<Apps | null>(null); // 追加：ドラッグ中のアプリを管理
 
   const [apps, setApps] = useState<Apps[]>([]); //アプリケーションのデータ
   const form = useFormContext<FormPolicy>();
 
   const handleDragStart = (event: DragStartEvent) => {
-    setIsDragging(true);
     // ドラッグ開始時のアプリを保存
     if (event.active.data.current) {
       setActiveApp(event.active.data.current as Apps);
@@ -33,7 +27,6 @@ export default function AppContent({ appsData }: { appsData: PolicyApp[] }) {
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
-    setIsDragging(false);
     setActiveApp(null); // ドラッグ終了時にアクティブアプリをクリア
 
     const { active, over } = event;
@@ -129,17 +122,13 @@ export default function AppContent({ appsData }: { appsData: PolicyApp[] }) {
   }, [appsData, form]);
 
   return (
-    <DndContext
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      modifiers={[restrictToWindowEdges]}
-    >
-      <div className="grid grid-cols-2 gap-4 h-full">
+    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <div className="grid grid-cols-2 space-x-2 h-full py-2 px-4">
         <ApplicationLibrary apps={apps} />
         <AppManagement apps={apps} />
       </div>
-      <DragOverlay modifiers={[restrictToWindowEdges]}>
-        {activeApp ? <AppCard app={activeApp} isDragging={isDragging} /> : null}
+      <DragOverlay>
+        {activeApp ? <AppCard app={activeApp} className="opacity-50" /> : null}
       </DragOverlay>
     </DndContext>
   );

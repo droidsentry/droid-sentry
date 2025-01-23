@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import AppCard from "./app-card";
+import { DragOverlay } from "@dnd-kit/core";
+import Draggable from "./draggable";
 
 export default function ApplicationLibrary({ apps }: { apps: Apps[] }) {
   const [filterApps, setFilterApps] = useState("");
@@ -31,7 +33,7 @@ export default function ApplicationLibrary({ apps }: { apps: Apps[] }) {
   });
 
   return (
-    <div className="flex flex-col overflow-hidden">
+    <div className="flex flex-col">
       <div className="space-y-4 mb-4 ">
         <h2 className="text-2xl font-bold">アプリケーション一覧</h2>
         <div className="flex flex-wrap gap-2">
@@ -73,13 +75,15 @@ export default function ApplicationLibrary({ apps }: { apps: Apps[] }) {
           </Select>
         </div>
       </div>
-      <div className=" flex-1 min-w-0 relative">
-        <div className="absolute size-full overflow-hidden">
-          <ScrollArea className="h-full gap-2 p-2 ">
+      <div className="flex-1 min-w-0 relative">
+        <div className="absolute size-full">
+          <div className="h-full gap-2 pr-3 overflow-y-auto overflow-x-hidden">
             {filteredApps.map((app) => (
-              <AppCard key={app.appId} app={app} />
+              <Draggable key={app.appId} app={app}>
+                <AppCard app={app} />
+              </Draggable>
             ))}
-          </ScrollArea>
+          </div>
         </div>
       </div>
     </div>

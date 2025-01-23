@@ -3,6 +3,7 @@ import NavigationBar from "../components/projects/navigation-ber";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { cookies } from "next/headers";
 import { GapiIframesProvider } from "./providers/gapi-iframes";
+import { RouteParams } from "../../types/enterprise";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,7 +15,7 @@ export default async function RootLayout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ enterpriseId: string }>;
+  params: Promise<RouteParams>;
 }>) {
   const enterpriseId = (await params).enterpriseId;
   const cookieStore = await cookies();

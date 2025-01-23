@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { formPolicySchema } from "@/app/(main)/schema/policy";
 import { RouteParams } from "@/app/types/enterprise";
 import { FormPolicy } from "@/app/types/policy";
 import { Form } from "@/components/ui/form";
@@ -12,6 +11,7 @@ import { useParams } from "next/navigation";
 import useSWR from "swr";
 import { defaultGeneralConfig } from "../policies/[policyIdentifier]/device-general/data/default-general-config";
 import { getPolicyData } from "../policies/actions/get-policy";
+import { formPolicySchema } from "@/app/schema/policy";
 
 export function PolicyFormProvider({ children }: { children: ReactNode }) {
   const params = useParams<RouteParams>();

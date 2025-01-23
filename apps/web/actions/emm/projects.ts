@@ -1,6 +1,6 @@
 "use server";
 
-import { onboardingSchema } from "@/app/(main)/schema/onboarding-schema";
+import { onboardingSchema } from "@/app/schema/onboarding-schema";
 import { createClient } from "@/lib/supabase/server";
 import { z } from "zod";
 

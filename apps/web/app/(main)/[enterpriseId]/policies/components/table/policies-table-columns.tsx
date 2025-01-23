@@ -6,10 +6,10 @@ import { Button } from "@/components/ui/button";
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
 import { ArrowUpDown, PlusIcon } from "lucide-react";
 import { selectColumn } from "../../../../projects/components/table/select-column";
-import { PolicyTableType } from "../../types/policy";
 
 import PoliciesTableMenu from "./policies-table-menu";
 import { DataTableColumnSortHeader } from "@/app/(main)/projects/components/table/data-table-column-sort-header";
+import { PolicyTableType } from "@/app/types/policy";
 
 export const policyColumns: ColumnDef<PolicyTableType>[] = [
   selectColumn<PolicyTableType>(),
@@ -47,7 +47,7 @@ export const policyColumns: ColumnDef<PolicyTableType>[] = [
       <DataTableColumnSortHeader column={column} title="ポリシー名" />
     ),
     cell: ({ row }) => (
-      <div className="truncate" title={row.getValue("policyDisplayName")}>
+      <div className="truncate pl-4" title={row.getValue("policyDisplayName")}>
         {row.getValue("policyDisplayName")}
       </div>
     ),

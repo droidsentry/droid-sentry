@@ -8,12 +8,12 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import DateTableColumnAllResizer from "../../../devices/components/data-table-column-all-resizer";
 import { DataTableViewOptions } from "../../../devices/components/data-table-view-options";
-import { PolicyTableType } from "../../types/policy";
 
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import SyncPoliciesButton from "../sync-policies-button";
 import CreatePolicyButton from "./create-policy-button";
 import DeleteSelectedPoliciesButton from "./delete-selected-policies-button";
+import { PolicyTableType } from "@/app/types/policy";
 
 interface PoliciesTableToolbarProps<TData extends PolicyTableType> {
   table: Table<TData>;

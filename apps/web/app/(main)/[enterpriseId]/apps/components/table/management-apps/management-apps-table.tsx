@@ -94,7 +94,7 @@ export default function ManagementAppsTable<TData>({
                       "border-b z-10 bg-background border-l",
                       "[&:nth-child(2)]:border-l-0", // 2番目のセルの左ボーダーを削除
                       "first:sticky first:left-0 first:z-30 first:border-l-0 first:border-r",
-                      "last:sticky  last:right-0 last:z-30 last:border-r-0",
+                      "last:sticky  last:right-0 last:z-30 last:border-r",
                       "p-1 h-8",
                       "first:px-0"
                     )}
@@ -131,7 +131,7 @@ export default function ManagementAppsTable<TData>({
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody className="bg-transparent">
+        <TableBody className="">
           {isValidating ? (
             <LoaderTable />
           ) : table.getRowModel().rows?.length ? (
@@ -148,10 +148,11 @@ export default function ManagementAppsTable<TData>({
                       "relative",
                       "whitespace-nowrap overflow-hidden",
                       "border-b",
-                      "border-l",
+                      // "border-l",
                       "first:sticky first:left-0 first:z-10 first:bg-background first:border-r first:border-l-0",
-                      "[&:nth-child(2)]:border-l-0", // 2番目のセルの左ボーダーを追加
-                      "last:sticky last:right-0 last:z-10 last:bg-background last:border-r-0 last:border-l",
+                      "[&:nth-child(3)]:border-l", // 3番目のセルの左ボーダーを追加
+                      "[&:nth-child(4)]:border-l", // 4番目のセルの左ボーダーを追加
+                      "last:sticky last:right-0 last:z-10 last:bg-background last:border-r last:border-l",
                       "p-0",
                       "transition-all duration-200"
                     )}

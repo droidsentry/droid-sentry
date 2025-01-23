@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { AndroidManagementPolicy, PolicyApps } from "../../types/policy";
+import { AndroidManagementPolicy, PolicyApps } from "../types/policy";
 
 const advancedSecurityOverridesSchema = z.object({
   untrustedAppsPolicy: z.enum([
@@ -119,4 +119,13 @@ export const formPolicySchema = z.object({
     .trim()
     .min(1, "ポリシー名を入力してください。")
     .optional(),
+});
+
+export const policyTableSchema = z.object({
+  enterpriseId: z.string(),
+  policyIdentifier: z.string(),
+  policyDisplayName: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  version: z.string(),
 });

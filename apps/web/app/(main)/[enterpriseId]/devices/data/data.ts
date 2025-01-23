@@ -48,7 +48,7 @@ export const deviceStates = [
   },
   {
     value: "DELETED",
-    label: "削除済み",
+    label: "初期化済み",
     icon: XCircle,
     color: "text-red-500",
   },

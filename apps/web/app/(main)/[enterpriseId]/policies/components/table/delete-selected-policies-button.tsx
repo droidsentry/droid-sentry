@@ -5,17 +5,16 @@ import { Table } from "@tanstack/react-table";
 import { Loader2Icon, Trash2Icon } from "lucide-react";
 import { useTransition } from "react";
 import { toast } from "sonner";
-// import { usePoliciesTableData } from "../../../apps/data/use-policies-table";
 import { deleteSelectedPolicies } from "../../actions/delete-policy";
-import { PolicyTableType } from "../../types/policy";
 import { usePoliciesTable } from "../policies-table-provider";
+import { PolicyTableType } from "@/app/types/policy";
 
 interface DeleteSelectedPoliciesButtonProps<TData extends PolicyTableType> {
   table: Table<TData>;
 }
 
 export default function DeleteSelectedPoliciesButton<
-  TData extends PolicyTableType
+  TData extends PolicyTableType,
 >({ table }: DeleteSelectedPoliciesButtonProps<TData>) {
   const [isPending, startTransition] = useTransition();
   const { enterpriseId } = usePoliciesTable();

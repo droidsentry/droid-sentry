@@ -1,8 +1,8 @@
 "use client";
 
+import { PolicyTableType } from "@/app/types/policy";
 import { Table } from "@tanstack/react-table";
 import { ReactNode, createContext, useCallback, useContext } from "react";
-import { PolicyTableType } from "../policies/types/policy";
 
 type ContextType = {
   autoResizeColumn: (columnId: string) => void;

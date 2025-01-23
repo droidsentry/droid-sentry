@@ -3,10 +3,11 @@
 import { Loader2Icon } from "lucide-react";
 import useSWR from "swr";
 import { getPolicies } from "../data/policy";
-import { PolicyTableType } from "../types/policy";
+
 import { PoliciesTableProvider } from "./policies-table-provider";
 import { policyColumns } from "./table/policies-table-columns";
 import PoliciesTable from "./table/policy-table";
+import { PolicyTableType } from "@/app/types/policy";
 
 export default function PoliciesContent({
   data,

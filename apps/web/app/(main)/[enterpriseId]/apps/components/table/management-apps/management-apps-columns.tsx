@@ -122,7 +122,7 @@ export const ManagementAppsColumns: ColumnDef<AppsTableType>[] = [
       );
       return (
         <div
-          className="truncate flex items-center justify-center"
+          className="truncate flex items-center justify-start pl-4"
           title={appType?.title || "不明"}
         >
           {appType?.label || "不明"}
@@ -147,7 +147,9 @@ export const ManagementAppsColumns: ColumnDef<AppsTableType>[] = [
         className="truncate flex items-center justify-center"
         title={row.getValue(column.id)}
       >
-        {row.getValue(column.id)}
+        <span className="flex items-center justify-start">
+          {row.getValue(column.id)}
+        </span>
       </div>
     ),
     filterFn: (row, id, value) => {

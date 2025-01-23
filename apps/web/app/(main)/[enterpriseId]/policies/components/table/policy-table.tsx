@@ -17,9 +17,9 @@ import {
 import { cn } from "@/lib/utils";
 import { TablePagination } from "../../../apps/components/table/table-pagination";
 import { useResizeColumn } from "../../../providers/policies-table";
-import { PolicyTableType } from "../../types/policy";
 import { usePoliciesTable } from "../policies-table-provider";
 import { PoliciesTableToolbar } from "./policies-table-toolbar";
+import { PolicyTableType } from "@/app/types/policy";
 
 interface DataTableProps<TData extends PolicyTableType, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -109,6 +109,7 @@ export default function PoliciesTable<TData extends PolicyTableType, TValue>({
                       "whitespace-nowrap overflow-hidden",
                       "border-b",
                       "first:sticky first:left-0 first:z-10 first:bg-background first:border-r",
+                      "[&:nth-child(3)]:border-l", // 3番目のセルの左ボーダーを追加
                       "last:sticky last:right-0 last:z-10 last:bg-background last:border-r last:border-l",
                       "p-0",
                       "transition-all duration-200"
