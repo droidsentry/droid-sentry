@@ -32,7 +32,7 @@ type AppCardProps = {
 export default function AppCard({ app, className }: AppCardProps) {
   const handleResetAppPolicy = () => {
     console.log("reset app policy");
-    console.log("app", app);
+    // console.log("app", app);
   };
 
   return (
@@ -59,7 +59,10 @@ export default function AppCard({ app, className }: AppCardProps) {
             <GlobeLockIcon className="size-4 text-muted-foreground absolute -top-3 -right-3" />
           )}
         </div>
-        <CardTitle className="truncate text-lg pl-2 w-full" title={app.title}>
+        <CardTitle
+          className="truncate pl-2 text-lg flex-1 w-5"
+          title={app.title}
+        >
           {app.title}
         </CardTitle>
         <Separator orientation="vertical" className="h-10 mx-1" />
@@ -88,7 +91,7 @@ export default function AppCard({ app, className }: AppCardProps) {
           </DropdownMenuTrigger>
           <DropdownMenuPortal>
             <DropdownMenuContent className=" space-y-1 px-2" align="end">
-              <DropdownMenuItem onSelect={handleResetAppPolicy}>
+              <DropdownMenuItem onClick={handleResetAppPolicy}>
                 <RefreshCw className="mr-4 size-4" />
                 <span>設定をリセット</span>
               </DropdownMenuItem>

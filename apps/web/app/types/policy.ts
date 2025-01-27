@@ -1,13 +1,15 @@
 import { androidmanagement_v1 } from "googleapis";
 import { z } from "zod";
-import { getPolicyApps } from "../(main)/[enterpriseId]/policies/[policyIdentifier]/application/data/get-policy-apps";
 import {
   formPolicySchema,
   policySchema,
   policyTableSchema,
 } from "../schema/policy";
+import { getPolicyApps } from "../(main)/[enterpriseId]/policies/[policyIdentifier]/application/components/data/get-policy-apps";
 
 export type AndroidManagementPolicy = androidmanagement_v1.Schema$Policy;
+export type ApplicationPolicy = androidmanagement_v1.Schema$ApplicationPolicy;
+
 export type ListPoliciesResponse =
   androidmanagement_v1.Schema$ListPoliciesResponse;
 

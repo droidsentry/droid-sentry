@@ -1,4 +1,3 @@
-import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useDroppable } from "@dnd-kit/core";
 
@@ -6,17 +5,15 @@ export default function Droppable({
   children,
   id,
   className,
-  title,
 }: {
   children: React.ReactNode;
   id: "availableApps" | "restrictedApps" | "disabledApps";
   className?: string;
-  title?: string;
 }) {
   const { isOver, setNodeRef } = useDroppable({ id });
 
   return (
-    <Card
+    <div
       ref={setNodeRef}
       className={cn(
         "rounded-md",
@@ -25,6 +22,6 @@ export default function Droppable({
       )}
     >
       {children}
-    </Card>
+    </div>
   );
 }

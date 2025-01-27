@@ -2,7 +2,6 @@
 
 import { Apps } from "@/app/types/policy";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -12,8 +11,8 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import AppCard from "./app-card";
-import { DragOverlay } from "@dnd-kit/core";
 import Draggable from "./draggable";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function ApplicationLibrary({ apps }: { apps: Apps[] }) {
   const [filterApps, setFilterApps] = useState("");
@@ -77,13 +76,13 @@ export default function ApplicationLibrary({ apps }: { apps: Apps[] }) {
       </div>
       <div className="flex-1 min-w-0 relative">
         <div className="absolute size-full">
-          <div className="h-full gap-2 pr-3 overflow-y-auto overflow-x-hidden">
+          <ScrollArea className="h-full gap-2 pr-3 overflow-y-auto overflow-x-hidden">
             {filteredApps.map((app) => (
               <Draggable key={app.appId} app={app}>
                 <AppCard app={app} />
               </Draggable>
             ))}
-          </div>
+          </ScrollArea>
         </div>
       </div>
     </div>

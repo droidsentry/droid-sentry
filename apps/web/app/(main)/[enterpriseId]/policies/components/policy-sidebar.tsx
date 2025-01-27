@@ -2,6 +2,7 @@
 
 import { LucideIcon } from "lucide-react";
 
+import { RouteParams } from "@/app/types/enterprise";
 import {
   Sidebar,
   SidebarContent,
@@ -24,7 +25,6 @@ import {
   policyListItems,
   scheduleDeliveryItems,
 } from "../data/side-bar-menu-list";
-import { RouteParams } from "@/app/types/enterprise";
 
 /**
  * ポリシー一覧用のURL生成を作成するヘルパー関数

@@ -496,6 +496,36 @@ export type Database = {
           },
         ]
       }
+      pubsub_logs: {
+        Row: {
+          attributes: Json | null
+          created_at: string
+          id: number
+          message_id: string | null
+          ordering_key: string | null
+          publish_time: string | null
+          pubsub_data: Json | null
+        }
+        Insert: {
+          attributes?: Json | null
+          created_at?: string
+          id?: number
+          message_id?: string | null
+          ordering_key?: string | null
+          publish_time?: string | null
+          pubsub_data?: Json | null
+        }
+        Update: {
+          attributes?: Json | null
+          created_at?: string
+          id?: number
+          message_id?: string | null
+          ordering_key?: string | null
+          publish_time?: string | null
+          pubsub_data?: Json | null
+        }
+        Relationships: []
+      }
       pubsub_messages: {
         Row: {
           created_at: string

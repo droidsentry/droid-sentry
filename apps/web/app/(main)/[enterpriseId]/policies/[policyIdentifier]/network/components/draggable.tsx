@@ -5,23 +5,24 @@ import { cn } from "@/lib/utils";
 import { useDndMonitor, useDraggable } from "@dnd-kit/core";
 import { GripVerticalIcon } from "lucide-react";
 import { useState } from "react";
-import { useAppRestriction } from "./app-restriction-provider";
 
 export default function Draggable({
   children,
   className,
   policyApp,
+  selectedPolicyAppPackages,
+  setSelectedPolicyAppPackages,
 }: {
   children: React.ReactNode;
   className?: string;
   policyApp: PolicyApp;
+  selectedPolicyAppPackages: string[];
+  setSelectedPolicyAppPackages: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: policyApp.packageName,
     data: policyApp,
   });
-  const { selectedAppPackages, setSelectedAppPackages, appRestrictionConfigs } =
-    useAppRestriction();
   const [isDragging, setIsDragging] = useState(false);
   useDndMonitor({
     onDragStart(event) {
@@ -33,35 +34,17 @@ export default function Draggable({
   });
 
   const style =
-    transform && selectedAppPackages.length < 1
+    transform && selectedPolicyAppPackages.length < 1
       ? {
           opacity: 0.5,
         }
       : undefined;
-  const isSelectedPolicyApp = selectedAppPackages?.includes(
+
+  const isSelectedPolicyApp = selectedPolicyAppPackages?.includes(
     policyApp.packageName
   );
-  const isSelectedPolicyAppDragging =
-    selectedAppPackages.length > 0 && !isSelectedPolicyApp;
-
-  const handleSelect = () => {
-    setSelectedAppPackages((prev) => {
-      if (prev === null) {
-        return [policyApp.packageName];
-      }
-
-      const isSelectedPolicyApp = prev.includes(policyApp.packageName);
-      if (isSelectedPolicyApp) {
-        return prev.filter(
-          (packageName) => packageName !== policyApp.packageName
-        );
-      }
-      return [...prev, policyApp.packageName];
-    });
-  };
-  const appConfig = appRestrictionConfigs?.find(
-    (config) => config.packageName === policyApp.packageName
-  );
+  const isSelectedPolicyAppAndDragging =
+    selectedPolicyAppPackages.length > 0 && !isSelectedPolicyApp;
 
   return (
     <Card ref={setNodeRef} className={cn("relative", className)} style={style}>
@@ -72,23 +55,33 @@ export default function Draggable({
           {...listeners}
           {...attributes}
           className="text-muted-foreground size-8 mr-2 z-10 hover:cursor-grab "
-          disabled={isSelectedPolicyAppDragging}
+          disabled={isSelectedPolicyAppAndDragging}
         >
           <GripVerticalIcon className="size-4" />
         </Button>
         {children}
       </CardContent>
       <button
-        onClick={handleSelect}
+        onClick={() => {
+          setSelectedPolicyAppPackages((prev) => {
+            if (prev === null) {
+              return [policyApp.packageName];
+            }
+            const isSelectedPolicyApp = prev?.includes(policyApp.packageName);
+            if (isSelectedPolicyApp) {
+              return prev?.filter(
+                (packageName) => packageName !== policyApp.packageName
+              );
+            }
+            return [...prev, policyApp.packageName];
+          });
+        }}
         className={cn(
           "absolute inset-0 rounded-md",
           isSelectedPolicyApp ? "ring-1 ring-muted-foreground" : "",
           isSelectedPolicyApp && isDragging ? "ring-1 ring-green-500" : ""
         )}
       />
-      {appConfig?.installType === "BLOCKED" && (
-        <span className="absolute inset-0 bg-muted/50" />
-      )}
     </Card>
   );
 }
