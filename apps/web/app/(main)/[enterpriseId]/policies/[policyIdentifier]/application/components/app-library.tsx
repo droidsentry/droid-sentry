@@ -8,7 +8,6 @@ import { Separator } from "@/components/ui/separator";
 import AppLibraryBadge from "./app-library-badge";
 import { useAppRestriction } from "./app-restriction-provider";
 import Draggable from "./draggable";
-import { Card } from "@/components/ui/card";
 
 export default function AppLibrary({
   policyApps,
