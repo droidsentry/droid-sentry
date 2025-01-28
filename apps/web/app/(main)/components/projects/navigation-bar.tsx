@@ -58,7 +58,7 @@ export default function NavigationBar({
             />
             <span
               className={cn(
-                "opacity-0 group-hover:opacity-100 absolute left-12 "
+                "opacity-0 group-hover:opacity-100 absolute left-12 font-bold"
                 // isActive(`/${enterpriseId}`) && "text-primary"
               )}
             >
@@ -80,14 +80,14 @@ export default function NavigationBar({
               <SmartphoneIcon
                 size={20}
                 className={cn(
-                  "absolute left-3 ",
+                  "absolute left-3",
                   isActive(`/${enterpriseId}/devices`) && "text-primary",
                   "group-hover/device:text-primary"
                 )}
               />
               <span
                 className={cn(
-                  "opacity-0 group-hover:opacity-100 absolute left-12 ",
+                  "opacity-0 group-hover:opacity-100 absolute left-12 font-bold",
                   isActive(`/${enterpriseId}/devices`) && "text-primary",
                   "group-hover/device:text-primary",
                   "transition-all duration-200"
@@ -111,7 +111,7 @@ export default function NavigationBar({
               <ShieldCheckIcon
                 size={20}
                 className={cn(
-                  "absolute left-3 ",
+                  "absolute left-3",
                   isActive(`/${enterpriseId}/policies`) && "text-primary",
                   "group-hover/policy:text-primary",
                   "transition-all duration-200"
@@ -119,7 +119,7 @@ export default function NavigationBar({
               />
               <span
                 className={cn(
-                  "opacity-0 group-hover:opacity-100 absolute left-12 ",
+                  "opacity-0 group-hover:opacity-100 absolute left-12 font-bold",
                   isActive(`/${enterpriseId}/policies`) && "text-primary",
                   "group-hover/policy:text-primary",
                   "transition-all duration-200"
@@ -142,7 +142,7 @@ export default function NavigationBar({
               <SiAndroid
                 size={20}
                 className={cn(
-                  "absolute left-3 ",
+                  "absolute left-3",
                   isActive(`/${enterpriseId}/apps`) && "text-primary",
                   "group-hover/app:text-primary",
                   "transition-all duration-200"
@@ -150,7 +150,7 @@ export default function NavigationBar({
               />
               <span
                 className={cn(
-                  "opacity-0 group-hover:opacity-100 absolute left-12",
+                  "opacity-0 group-hover:opacity-100 absolute left-12 font-bold",
                   isActive(`/${enterpriseId}/apps`) && "text-primary",
                   // "group-hover/app:text-primary",
                   "transition-all duration-200"

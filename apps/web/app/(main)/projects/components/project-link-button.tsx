@@ -24,10 +24,9 @@ export default function ProjectLinkButton({
         <LayoutGrid
           size={20}
           className={cn(
-            "absolute left-3 text-muted-foreground/80",
+            "absolute left-3",
             isActive && "text-primary",
-            "group-hover/project:text-primary",
-            "transition-all duration-200"
+            "group-hover/project:text-primary"
           )}
         />
         <span
@@ -39,10 +38,9 @@ export default function ProjectLinkButton({
         >
           <span
             className={cn(
-              "text-muted-foreground/80",
+              "font-bold",
               isActive && "text-primary",
-              "group-hover/project:text-primary",
-              "transition-all duration-200"
+              "group-hover/project:text-primary"
             )}
           >
             プロジェクト

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AppsInfoSheetProvider } from "../providers/apps-info-sheet";
 
 import { AppsSidebar } from "./components/apps-sidebar";
+import MableTopBar from "../components/mable-top-bar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +18,10 @@ export default function RootLayout({
     <AppsInfoSheetProvider>
       <div className="flex">
         <AppsSidebar className="hidden xl:block" />
-        <div className="flex-1 min-w-0">{children}</div>
+        <div className="flex-1 min-w-0">
+          <MableTopBar className="lg:hidden" />
+          {children}
+        </div>
       </div>
     </AppsInfoSheetProvider>
   );

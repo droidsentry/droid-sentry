@@ -9,7 +9,7 @@ export default function Wave({ direction = "down", className }: Props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1280 100"
+      viewBox="0 0 1280 98"
       preserveAspectRatio="none"
       className={cn(
         "fill-[#57B0FF] dark:fill-zinc-900 canvas",

@@ -1,13 +1,13 @@
 import { TabsContent } from "@/components/ui/tabs";
 import { notFound } from "next/navigation";
-import { CategoryProvider } from "../components/category-provider";
+import { CategoryProvider } from "../../../components/category-provider";
 import { RouteParams } from "@/app/types/enterprise";
 import {
   CATEGORIES,
   CATEGORY_NAMES,
   CategoryType,
-} from "../../data/categories";
-
+} from "../../../../data/categories";
+import HardwareInfo from "./components/hardware-info";
 import SoftwareInfo from "./components/software-info";
 import ApplicationReport from "./components/application-report";
 import PolicyInfo from "./components/policy-info";
@@ -17,7 +17,6 @@ import DeviceLog from "./components/device-log";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Undo2Icon } from "lucide-react";
-// import HardwareInfo from './components/hardware-info';
 
 export default async function Page({
   params,
@@ -42,7 +41,7 @@ export default async function Page({
       </Button>
       <CategoryProvider className="hidden lg:block">
         <TabsContent value="hardware" className="flex m-1">
-          {/* <HardwareInfo /> */}
+          <HardwareInfo />
         </TabsContent>
         <TabsContent value="software">
           <SoftwareInfo />

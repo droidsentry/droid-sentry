@@ -1,36 +1,29 @@
-"use client";
-
 import { RouteParams } from "@/app/types/enterprise";
+import CategoryTopBar from "../../components/category-top-bar";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { ReactNode, createContext, useContext } from "react";
+import { Button } from "@/components/ui/button";
+import { Undo2Icon } from "lucide-react";
 
-type ContextType = {
-  enterpriseId: string;
-  deviceIdentifier: string;
-  category: string;
-};
-
-const Context = createContext<ContextType>({} as ContextType);
-
-export function CategoryProvider({
+export default async function Layout({
   children,
-  className,
+  params,
 }: {
-  children: ReactNode;
-  className?: string;
+  children: React.ReactNode;
+  params: Promise<RouteParams>;
 }) {
-  const params = useParams<RouteParams>();
-  const enterpriseId = params.enterpriseId;
-  const deviceIdentifier = params.deviceIdentifier;
-  const category = params.category;
-
+  const { enterpriseId, deviceIdentifier, category } = await params;
   return (
-    <Context.Provider value={{ enterpriseId, deviceIdentifier, category }}>
-      <Tabs defaultValue={category} className={cn("", className)}>
-        <TabsList className="mt-1.5 ml-2 ">
+    <div className="flex flex-col h-full">
+      {/* <CategoryTopBar
+        enterpriseId={enterpriseId}
+        deviceIdentifier={deviceIdentifier}
+        category={category}
+      ></CategoryTopBar>
+      <div className="flex-1 min-h-0 min-w-0">{children}</div> */}
+      <Tabs defaultValue={category} className={cn("flex flex-col h-full")}>
+        <TabsList className="m-1 w-fit hidden lg:block">
           <TabsTrigger value="hardware">
             <Link
               href={`/${enterpriseId}/devices/${deviceIdentifier}/hardware`}
@@ -75,10 +68,15 @@ export function CategoryProvider({
             </Link>
           </TabsTrigger>
         </TabsList>
-        {children}
+        <div className="lg:hidden m-1">
+          <Button variant="ghost" size="icon" asChild>
+            <Link href={`/${enterpriseId}/devices/${deviceIdentifier}`}>
+              <Undo2Icon className="hover:text-primary transition-all duration-300" />
+            </Link>
+          </Button>
+        </div>
+        <div className="flex-1">{children}</div>
       </Tabs>
-    </Context.Provider>
+    </div>
   );
 }
-
-export const useCategoryProvider = () => useContext(Context);
