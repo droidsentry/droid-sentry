@@ -10,9 +10,10 @@ import { createStatusReportDescription } from "./lib/status-report";
 import { createUsageLogsDescription } from "./lib/usage-logs";
 import { verifyPubSubToken } from "./lib/verify-token";
 import { AndroidManagementDevice, DeviceOperation } from "@/app/types/device";
+import { savePubSubLogs } from "./lib/data/save-pusub-logs";
 
 // Pub/Subメッセージの型定義
-interface PubSubMessage {
+export interface PubSubMessage {
   message: {
     data: string;
     attributes: {
@@ -22,6 +23,7 @@ interface PubSubMessage {
     message_id: string;
     publishTime: string;
     publish_time: string;
+    orderingKey: string;
   };
   subscription: string;
 }
@@ -49,6 +51,8 @@ export async function POST(request: Request) {
     const isProd = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
     const contentTitle = isProd ? "" : "【開発環境】";
     const supabase = createAdminClient();
+
+    await savePubSubLogs({ body, pubsubData: data });
 
     // デバイス名の取得ロジックをマッピングオブジェクトで単純化
     const deviceNameExtractors = {

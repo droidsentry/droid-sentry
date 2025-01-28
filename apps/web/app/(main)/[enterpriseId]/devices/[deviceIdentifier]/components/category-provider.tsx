@@ -29,7 +29,7 @@ export function CategoryProvider({
 
   return (
     <Context.Provider value={{ enterpriseId, deviceIdentifier, category }}>
-      <Tabs defaultValue={category} className={cn("w-[400px]", className)}>
+      <Tabs defaultValue={category} className={cn("", className)}>
         <TabsList className="mt-1.5 ml-2 ">
           <TabsTrigger value="hardware">
             <Link

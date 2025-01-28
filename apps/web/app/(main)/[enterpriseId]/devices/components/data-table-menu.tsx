@@ -66,7 +66,7 @@ export default function DataTableMenu({ row }: DataTableMenuProps) {
       toast.error("デバイス情報は確認できません。");
       return;
     }
-    router.push(`/${enterpriseId}/devices/${deviceIdentifier}`);
+    router.push(`/${enterpriseId}/devices/${deviceIdentifier}/hardware`);
   };
 
   const handleSyncDeviceInfo = async (deviceIdentifier: string | null) => {

@@ -1,14 +1,13 @@
 "use client";
 
-import { Loader2Icon } from "lucide-react";
 import { DeviceTableType } from "@/app/types/device";
+import { createClient } from "@/lib/supabase/client";
+import { useEffect } from "react";
+import { toast } from "sonner";
 import useSWR from "swr";
 import { getDevicesData } from "../data/device";
 import DeviceTable from "./device-table";
 import { deviceColumns } from "./devices-table-columns";
-import { useEffect } from "react";
-import { createClient } from "@/lib/supabase/client";
-import { toast } from "sonner";
 
 export default function DevicesContent({
   data,

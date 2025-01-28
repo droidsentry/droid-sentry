@@ -1,48 +1,94 @@
-import { Apps } from "@/app/types/policy";
-import { useDraggable } from "@dnd-kit/core";
-import { useEffect, useState } from "react";
-import AppCard from "./app-card";
+import { PolicyApp } from "@/app/types/policy";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { useDndMonitor, useDraggable } from "@dnd-kit/core";
+import { GripVerticalIcon } from "lucide-react";
+import { useState } from "react";
+import { useAppRestriction } from "./app-restriction-provider";
 
 export default function Draggable({
   children,
-  app,
+  className,
+  policyApp,
 }: {
   children: React.ReactNode;
-  app: Apps;
+  className?: string;
+  policyApp: PolicyApp;
 }) {
-  const [isClient, setIsClient] = useState(false);
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: app.appId,
-    data: app,
+    id: policyApp.packageName,
+    data: policyApp,
   });
-  const style = transform
-    ? {
-        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-        opacity: 0.5, // ドラッグ中は半透明に
+  const { selectedAppPackages, setSelectedAppPackages, appRestrictionConfigs } =
+    useAppRestriction();
+  const [isDragging, setIsDragging] = useState(false);
+  useDndMonitor({
+    onDragStart(event) {
+      setIsDragging(true);
+    },
+    onDragEnd(event) {
+      setIsDragging(false);
+    },
+  });
+
+  const style =
+    transform && selectedAppPackages.length < 1
+      ? {
+          opacity: 0.5,
+        }
+      : undefined;
+  const isSelectedPolicyApp = selectedAppPackages?.includes(
+    policyApp.packageName
+  );
+  const isSelectedPolicyAppDragging =
+    selectedAppPackages.length > 0 && !isSelectedPolicyApp;
+
+  const handleSelect = () => {
+    setSelectedAppPackages((prev) => {
+      if (prev === null) {
+        return [policyApp.packageName];
       }
-    : undefined;
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return <div>Loading...</div>;
-  }
+      const isSelectedPolicyApp = prev.includes(policyApp.packageName);
+      if (isSelectedPolicyApp) {
+        return prev.filter(
+          (packageName) => packageName !== policyApp.packageName
+        );
+      }
+      return [...prev, policyApp.packageName];
+    });
+  };
+  const appConfig = appRestrictionConfigs?.find(
+    (config) => config.packageName === policyApp.packageName
+  );
 
   return (
-    <>
-      <div
-        ref={setNodeRef}
-        {...listeners}
-        {...attributes}
-        style={style}
-        // className={cn(transform ? "fixed w-3/12" : "")}
-      >
+    <Card ref={setNodeRef} className={cn("relative", className)} style={style}>
+      <CardContent className={cn("flex items-center space-x-2 p-4")}>
+        <Button
+          size="icon"
+          variant="ghost"
+          {...listeners}
+          {...attributes}
+          className="text-muted-foreground size-8 mr-2 z-10 hover:cursor-grab "
+          disabled={isSelectedPolicyAppDragging}
+        >
+          <GripVerticalIcon className="size-4" />
+        </Button>
         {children}
-      </div>
-      {/* <div className={cn(transform ? "h-20 w-full mb-0.5" : "")}> </div> */}
-    </>
+      </CardContent>
+      <button
+        onClick={handleSelect}
+        className={cn(
+          "absolute inset-0 rounded-md",
+          isSelectedPolicyApp ? "ring-1 ring-muted-foreground" : "",
+          isSelectedPolicyApp && isDragging ? "ring-1 ring-green-500" : ""
+        )}
+      />
+      {appConfig?.installType === "BLOCKED" && (
+        <span className="absolute inset-0 bg-muted/50" />
+      )}
+    </Card>
   );
 }

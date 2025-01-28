@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import NavigationBar from "../components/projects/navigation-ber";
+import NavigationBar from "../components/projects/navigation-bar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { cookies } from "next/headers";
 import { GapiIframesProvider } from "./providers/gapi-iframes";
@@ -30,12 +30,6 @@ export default async function RootLayout({
           enterpriseId={enterpriseId}
         />
         <SidebarProvider defaultOpen={defaultOpen} className="min-w-0">
-          {/* <div className="hidden lg:block">
-        <NavigationBar />
-      </div>
-      <div className="lg:hidden">
-        <MobileNavigationBar />
-      </div> */}
           <div className="flex-1 min-w-0">{children}</div>
         </SidebarProvider>
       </div>

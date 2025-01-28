@@ -15,7 +15,9 @@ export function ProjectsSidebar({ className }: { className?: string }) {
   )?.title;
 
   return (
-    <div className={cn("w-64 h-dvh border-r flex flex-col", className)}>
+    <div
+      className={cn("w-64 h-dvh border-r flex flex-col bg-sidebar", className)}
+    >
       <nav className="flex flex-col justify-between h-full px-2">
         <ul className="flex flex-col space-y-2">
           <li className="h-12 py-1 border-b">

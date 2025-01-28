@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PolicySidebar } from "./components/policy-sidebar";
 import { PolicyFormProvider } from "../providers/policy-form";
+import MableTopBar from "../components/mable-top-bar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +17,10 @@ export default async function RootLayout({
     <div className="flex h-dvh">
       <PolicyFormProvider>
         <PolicySidebar />
-        <div className="flex-1 min-w-0">{children}</div>
+        <div className="flex-1 min-w-0">
+          <MableTopBar className="lg:hidden" />
+          {children}
+        </div>
       </PolicyFormProvider>
     </div>
   );
