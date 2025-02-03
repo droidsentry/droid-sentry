@@ -6,6 +6,7 @@ import {
   WifiHighIcon,
   KeyRoundIcon,
   FileIcon,
+  BatteryIcon,
 } from "lucide-react";
 
 export const navigationItems = [
@@ -43,5 +44,58 @@ export const navigationItems = [
     icon: FileIcon,
     title: "ログ",
     url: "/log",
+  },
+];
+
+export const deviceInfoNavigationItems = [
+  {
+    icon: HardDriveIcon,
+    label: "基本情報",
+    url: "base-info",
+  },
+  {
+    icon: HardDriveIcon,
+    label: "ハードウェア",
+    url: "hardware",
+  },
+  {
+    icon: ClipboardListIcon,
+    label: "ソフトウェア",
+    url: "software",
+  },
+  {
+    icon: SiAndroid,
+    label: "アプリケーションレポート",
+    url: "application",
+  },
+  {
+    icon: ShieldCheckIcon,
+    label: "ポリシー",
+    url: "policy",
+  },
+  {
+    icon: WifiHighIcon,
+    label: "ネットワーク",
+    url: "network",
+  },
+  {
+    icon: KeyRoundIcon,
+    label: "セキュリティ",
+    url: "security",
+  },
+  {
+    icon: FileIcon,
+    label: "メモリとストレージ",
+    url: "memory",
+  },
+  {
+    icon: BatteryIcon,
+    label: "バッテリー",
+    url: "battery",
+  },
+  {
+    icon: FileIcon,
+    label: "ログ",
+    url: "log",
   },
 ];

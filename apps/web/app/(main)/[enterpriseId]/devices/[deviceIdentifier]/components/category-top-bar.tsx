@@ -1,59 +1,44 @@
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+"use client";
+
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { deviceInfoNavigationItems } from "../data/navigation";
 
 export default function CategoryTopBar({
   enterpriseId,
   deviceIdentifier,
   className,
-  category,
 }: {
   enterpriseId: string;
   deviceIdentifier: string;
   className?: string;
-  category: string;
 }) {
+  const pathname = usePathname();
   return (
-    <Tabs defaultValue={category} className={cn("", className)}>
-      <TabsList className="m-1 ">
-        <TabsTrigger value="hardware">
-          <Link href={`/${enterpriseId}/devices/${deviceIdentifier}/hardware`}>
-            ハードウェア情報
-          </Link>
-        </TabsTrigger>
-        <TabsTrigger value="software">
-          <Link href={`/${enterpriseId}/devices/${deviceIdentifier}/software`}>
-            ソフトウェア情報
-          </Link>
-        </TabsTrigger>
-        <TabsTrigger value="application">
+    <div
+      className={cn(
+        "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground m-1 mx-1.5 w-fit",
+        className
+      )}
+    >
+      {deviceInfoNavigationItems.map((item) => {
+        const href = `/${enterpriseId}/devices/${deviceIdentifier}/${item.url}`;
+        const isActive = pathname === href;
+
+        return (
           <Link
-            href={`/${enterpriseId}/devices/${deviceIdentifier}/application`}
+            key={item.url}
+            href={href}
+            className={cn(
+              "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all",
+              isActive && "text-foreground shadow-sm bg-card"
+            )}
           >
-            アプリケーションレポート
+            {item.label}
           </Link>
-        </TabsTrigger>
-        <TabsTrigger value="policy">
-          <Link href={`/${enterpriseId}/devices/${deviceIdentifier}/policy`}>
-            ポリシー情報
-          </Link>
-        </TabsTrigger>
-        <TabsTrigger value="network">
-          <Link href={`/${enterpriseId}/devices/${deviceIdentifier}/network`}>
-            ネットワーク情報
-          </Link>
-        </TabsTrigger>
-        <TabsTrigger value="security">
-          <Link href={`/${enterpriseId}/devices/${deviceIdentifier}/security`}>
-            セキュリティ情報
-          </Link>
-        </TabsTrigger>
-        <TabsTrigger value="log">
-          <Link href={`/${enterpriseId}/devices/${deviceIdentifier}/log`}>
-            ログ
-          </Link>
-        </TabsTrigger>
-      </TabsList>
-    </Tabs>
+        );
+      })}
+    </div>
   );
 }

@@ -1,10 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function HardwareInfo() {
+export default function SecurityInfo() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>ハードウェア情報</CardTitle>
+        <CardTitle>セキュリティ情報</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-4">
@@ -59,3 +59,10 @@ export default function HardwareInfo() {
     </Card>
   );
 }
+
+const HardwareInfoItems = [
+  {
+    label: "管理モード",
+    href: "hardware",
+  },
+];

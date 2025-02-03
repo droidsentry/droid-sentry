@@ -47,7 +47,7 @@ export const getAppData = async ({
   if (!appData) {
     throw new Error("Get getAppData failed");
   }
-  console.log("Get getAppData:", appData);
+  // console.log("Get getAppData:", appData);
 
   const saveData = await saveApp({ appData, enterpriseId, appType });
 

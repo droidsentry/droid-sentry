@@ -79,6 +79,117 @@ export type Database = {
           },
         ]
       }
+      device_displays: {
+        Row: {
+          created_at: string | null
+          device_identifier: string
+          displays: Json[]
+          enterprise_id: string
+          last_status_report_time: string
+        }
+        Insert: {
+          created_at?: string | null
+          device_identifier: string
+          displays: Json[]
+          enterprise_id: string
+          last_status_report_time: string
+        }
+        Update: {
+          created_at?: string | null
+          device_identifier?: string
+          displays?: Json[]
+          enterprise_id?: string
+          last_status_report_time?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "device_displays_enterprise_id_device_identifier_fkey"
+            columns: ["enterprise_id", "device_identifier"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["enterprise_id", "device_identifier"]
+          },
+        ]
+      }
+      device_hardware_status: {
+        Row: {
+          create_time: string
+          created_at: string
+          device_identifier: string
+          enterprise_id: string
+          hardware_status: Json
+        }
+        Insert: {
+          create_time: string
+          created_at?: string
+          device_identifier: string
+          enterprise_id: string
+          hardware_status: Json
+        }
+        Update: {
+          create_time?: string
+          created_at?: string
+          device_identifier?: string
+          enterprise_id?: string
+          hardware_status?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "device_hardware_status_device_fkey"
+            columns: ["enterprise_id", "device_identifier"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["enterprise_id", "device_identifier"]
+          },
+        ]
+      }
+      device_metrics: {
+        Row: {
+          battery_temperatures: number[] | null
+          cpu_temperatures: number[] | null
+          cpu_usages: number[] | null
+          create_time: string
+          created_at: string
+          device_identifier: string
+          enterprise_id: string
+          fan_speeds: number[] | null
+          gpu_temperatures: number[] | null
+          skin_temperatures: number[] | null
+        }
+        Insert: {
+          battery_temperatures?: number[] | null
+          cpu_temperatures?: number[] | null
+          cpu_usages?: number[] | null
+          create_time: string
+          created_at?: string
+          device_identifier: string
+          enterprise_id: string
+          fan_speeds?: number[] | null
+          gpu_temperatures?: number[] | null
+          skin_temperatures?: number[] | null
+        }
+        Update: {
+          battery_temperatures?: number[] | null
+          cpu_temperatures?: number[] | null
+          cpu_usages?: number[] | null
+          create_time?: string
+          created_at?: string
+          device_identifier?: string
+          enterprise_id?: string
+          fan_speeds?: number[] | null
+          gpu_temperatures?: number[] | null
+          skin_temperatures?: number[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "device_metrics_device_fkey"
+            columns: ["enterprise_id", "device_identifier"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["enterprise_id", "device_identifier"]
+          },
+        ]
+      }
       devices: {
         Row: {
           created_at: string
@@ -240,25 +351,28 @@ export type Database = {
       }
       memory_events: {
         Row: {
+          byte_count: number | null
+          create_time: string
           created_at: string
           device_identifier: string
           enterprise_id: string
-          memory_event_data: Json
-          updated_at: string
+          event_type: string
         }
         Insert: {
+          byte_count?: number | null
+          create_time: string
           created_at?: string
           device_identifier: string
           enterprise_id: string
-          memory_event_data: Json
-          updated_at: string
+          event_type: string
         }
         Update: {
+          byte_count?: number | null
+          create_time?: string
           created_at?: string
           device_identifier?: string
           enterprise_id?: string
-          memory_event_data?: Json
-          updated_at?: string
+          event_type?: string
         }
         Relationships: [
           {
@@ -386,25 +500,25 @@ export type Database = {
       }
       power_management_events: {
         Row: {
-          created_at: string
+          battery_level: number | null
+          create_time: string
           device_identifier: string
           enterprise_id: string
-          power_management_event_data: Json
-          updated_at: string
+          event_type: string
         }
         Insert: {
-          created_at?: string
+          battery_level?: number | null
+          create_time: string
           device_identifier: string
           enterprise_id: string
-          power_management_event_data: Json
-          updated_at: string
+          event_type: string
         }
         Update: {
-          created_at?: string
+          battery_level?: number | null
+          create_time?: string
           device_identifier?: string
           enterprise_id?: string
-          power_management_event_data?: Json
-          updated_at?: string
+          event_type?: string
         }
         Relationships: [
           {
@@ -824,17 +938,78 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
-      is_active_subscriber: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      upsert_device_data: {
+      insert_or_upsert_devices_data: {
         Args: {
           devices: Json[]
           application_reports: Json[]
           memory_events: Json[]
           power_management_events: Json[]
           device_histories: Json[]
+          device_displays: Json[]
+          device_hardware_status: Json[]
+          device_metrics: Json[]
+        }
+        Returns: undefined
+      }
+      is_active_subscriber: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      upsert_device_data_old: {
+        Args: {
+          devices: Json[]
+          application_reports: Json[]
+          memory_events: Json[]
+          power_management_events: Json[]
+          device_histories: Json[]
+        }
+        Returns: undefined
+      }
+      upsert_device_data_old_r1: {
+        Args: {
+          devices: Json[]
+          application_reports: Json[]
+          memory_events: Json[]
+          power_management_events: Json[]
+          device_histories: Json[]
+          device_displays: Json[]
+        }
+        Returns: undefined
+      }
+      upsert_device_data_old_r2: {
+        Args: {
+          devices: Json[]
+          application_reports: Json[]
+          memory_events: Json[]
+          power_management_events: Json[]
+          device_histories: Json[]
+          device_displays: Json[]
+          device_hardware_status: Json[]
+        }
+        Returns: undefined
+      }
+      upsert_device_data_old_r3: {
+        Args: {
+          devices: Json[]
+          application_reports: Json[]
+          memory_events: Json[]
+          power_management_events: Json[]
+          device_histories: Json[]
+          device_displays: Json[]
+          device_hardware_status: Json[]
+        }
+        Returns: undefined
+      }
+      upsert_device_data_old_r4: {
+        Args: {
+          devices: Json[]
+          application_reports: Json[]
+          memory_events: Json[]
+          power_management_events: Json[]
+          device_histories: Json[]
+          device_displays: Json[]
+          device_hardware_status: Json[]
+          device_metrics: Json[]
         }
         Returns: undefined
       }

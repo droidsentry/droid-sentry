@@ -26,11 +26,11 @@ export const getDevicesData = async ({
   const supabase = await createClient();
   const { data: devices, error } = await supabase
     .from("devices")
+    // .select("*")
     .select(selectDevicesTableFields)
     .eq("enterprise_id", enterpriseId)
-    .order("updated_at", { ascending: true })
+    .order("updated_at", { ascending: false })
     .range(firstSize, maxDeviceSize);
-  // console.log("devices", devices);
 
   // エラーが発生した場合の処理
   if (error) {

@@ -10,7 +10,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import DeviceInfoNavigationMenu from "../devices/[deviceIdentifier]/components/device-info-navigation-menu";
 
 export default function MableTopBar({ className }: { className?: string }) {
   return (
@@ -29,9 +28,8 @@ export default function MableTopBar({ className }: { className?: string }) {
         </SheetTrigger>
         <SheetContent className="mb-20">
           <SheetHeader className="m-4">
-            <SheetTitle>デバイス詳細</SheetTitle>
+            <SheetTitle>メニュー</SheetTitle>
           </SheetHeader>
-          <DeviceInfoNavigationMenu />
         </SheetContent>
       </Sheet>
     </div>

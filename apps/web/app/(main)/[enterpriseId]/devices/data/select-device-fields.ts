@@ -13,6 +13,6 @@ export const selectDevicesTableFields = `
         createdAt:created_at,
         updatedAt:updated_at,
         ...policies (
-            policyDisplayName:policy_display_name
-            )
-    `;
+        policyDisplayName:policy_display_name
+        )
+`;

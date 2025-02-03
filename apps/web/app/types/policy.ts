@@ -32,3 +32,4 @@ export type Apps = {
 };
 
 export type PolicyApp = Awaited<ReturnType<typeof getPolicyApps>>[number];
+export type PolicyApp1 = Awaited<ReturnType<typeof getPolicyApps>>;
