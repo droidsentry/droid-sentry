@@ -4,7 +4,7 @@ import { HardwareCpuUsagesChart } from "./components/charts/hardware-cpu-chart";
 import { HardwareCpuTemperatureChart } from "./components/charts/hardware-cpu-temperature-chart";
 import { HardwareGpuTemperatureChart } from "./components/charts/hardware-gpu-temperature-chart";
 import { HardwareSkinTemperatureChart } from "./components/charts/hardware-skin-temperature-chart";
-import { HardwareTemperaturesAverageChart } from "./components/charts/hardware-temperature-chart";
+import { HardwareTemperaturesAverageChart } from "./components/charts/hardware-temperatures-average-chart";
 import DisplaysTable from "./components/displays-table";
 import HardwareInfoTable from "./components/hardware-info-table";
 import { getHardwareInfo } from "./data/hardware";
@@ -17,28 +17,38 @@ export default async function Page({
   params: Promise<RouteParams>;
 }) {
   const { enterpriseId, deviceIdentifier } = await params;
-  const hardwareInfo = await getHardwareInfo({
+  const deviceSource = await getHardwareInfo({
     enterpriseId,
     deviceIdentifier,
   });
-  const hardwareStatus = await getHardwareStatus({
+  const hardwareStatusSource = await getHardwareStatus({
     enterpriseId,
     deviceIdentifier,
   });
   return (
     <div className="mx-1.5 grid grid-cols-1 md:grid-cols-2 gap-2">
       <div className="flex flex-col gap-2">
-        <HardwareInfoTable hardwareInfo={hardwareInfo} />
-        <DisplaysTable hardwareInfo={hardwareInfo} />
+        <HardwareInfoTable deviceSource={deviceSource} />
+        <DisplaysTable deviceSource={deviceSource} />
       </div>
       <div className="grid grid-cols-1 gap-2">
-        <HardwareTemperaturesAverageChart hardwareStatus={hardwareStatus} />
-        <HardwareCpuUsagesChart hardwareStatus={hardwareStatus} />
-        <HardwareCpuTemperatureChart hardwareStatus={hardwareStatus} />
-        <HardwareGpuTemperatureChart hardwareStatus={hardwareStatus} />
-        <HardwareSkinTemperatureChart hardwareStatus={hardwareStatus} />
-        <HardwareBatteryTemperatureChart hardwareStatus={hardwareStatus} />
-        <HardwareFanSpeedsChart hardwareStatus={hardwareStatus} />
+        <HardwareTemperaturesAverageChart
+          hardwareStatusSource={hardwareStatusSource}
+        />
+        <HardwareCpuUsagesChart hardwareStatusSource={hardwareStatusSource} />
+        <HardwareCpuTemperatureChart
+          hardwareStatusSource={hardwareStatusSource}
+        />
+        <HardwareGpuTemperatureChart
+          hardwareStatusSource={hardwareStatusSource}
+        />
+        <HardwareSkinTemperatureChart
+          hardwareStatusSource={hardwareStatusSource}
+        />
+        <HardwareBatteryTemperatureChart
+          hardwareStatusSource={hardwareStatusSource}
+        />
+        <HardwareFanSpeedsChart hardwareStatusSource={hardwareStatusSource} />
       </div>
     </div>
   );

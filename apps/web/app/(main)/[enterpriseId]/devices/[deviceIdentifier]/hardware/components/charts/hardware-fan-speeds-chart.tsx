@@ -1,6 +1,10 @@
 "use client";
 
-import { HardwareStatusSourceType } from "@/app/types/device";
+import {
+  ChartType,
+  HardwareStatusSourceType,
+  HardwareStatusType,
+} from "@/app/types/device";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,6 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
+  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -29,45 +34,36 @@ import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import SelectTimeButton from "./select-time-button";
 
 export function HardwareFanSpeedsChart({
-  hardwareStatus,
+  hardwareStatusSource,
 }: {
-  hardwareStatus: HardwareStatusSourceType;
+  hardwareStatusSource: HardwareStatusSourceType;
 }) {
-  const [timeRange, setTimeRange] = useState("30d");
-  const { fanSpeedsChartItem } = hardwareStatus;
-  const fanSpeedsChartConfig = fanSpeedsChartItem.chartConfig;
-  const [selectedSkins, setSelectedSkins] = useState<string[]>(
-    Object.keys(fanSpeedsChartConfig)
-  );
-  const chartSource = fanSpeedsChartItem.chart;
+  const [timeRange, setTimeRange] = useState(30);
+  const { chartSource, chartConfig, configCount } =
+    transformHardwareStatusSourceToFanSpeedsChart(hardwareStatusSource);
+  const initialSelectedSkins = Object.keys(chartConfig);
+  const [selectedSkins, setSelectedSkins] =
+    useState<string[]>(initialSelectedSkins);
+
   const filteredChartSource = chartSource.filter((item) => {
     const date = parseISO(item.date);
     const referenceDate = parseISO(chartSource[chartSource.length - 1].date); // 最新の日付
-    let daysToSubtract = 30;
-    if (timeRange === "15d") {
-      daysToSubtract = 15;
-    } else if (timeRange === "7d") {
-      daysToSubtract = 7;
-    } else if (timeRange === "3d") {
-      daysToSubtract = 3;
-    } else if (timeRange === "1d") {
-      daysToSubtract = 1;
-    }
+
     // 日付が範囲内かチェック
     return isWithinInterval(date, {
-      start: subDays(referenceDate, daysToSubtract),
+      start: subDays(referenceDate, timeRange),
       end: referenceDate,
     });
   });
   return (
-    <Card>
+    <Card className="h-fit">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
           <CardTitle>ファン速度</CardTitle>
           <CardDescription>デバイスのファン速度を表示。</CardDescription>
         </div>
         <div className="flex flex-row gap-2 w-fit">
-          {fanSpeedsChartItem.configCount > 1 && (
+          {configCount > 1 && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline">各ファン速度</Button>
@@ -76,15 +72,13 @@ export function HardwareFanSpeedsChart({
                 <Button
                   variant="ghost"
                   className="w-full h-10"
-                  onClick={() =>
-                    setSelectedSkins(Object.keys(fanSpeedsChartConfig))
-                  }
+                  onClick={() => setSelectedSkins(initialSelectedSkins)}
                 >
                   <RefreshCcwIcon className="size-4" />
                   リセット
                 </Button>
                 <DropdownMenuSeparator />
-                {Object.entries(fanSpeedsChartConfig).map(([key, config]) => (
+                {Object.entries(chartConfig).map(([key, config]) => (
                   <DropdownMenuCheckboxItem
                     key={key}
                     checked={selectedSkins.includes(key)}
@@ -122,7 +116,7 @@ export function HardwareFanSpeedsChart({
           </div>
         ) : (
           <ChartContainer
-            config={fanSpeedsChartConfig}
+            config={chartConfig}
             className="aspect-auto h-[300px] w-full"
           >
             <LineChart data={filteredChartSource}>
@@ -134,7 +128,7 @@ export function HardwareFanSpeedsChart({
                 axisLine={false}
                 tickFormatter={(value) => {
                   switch (timeRange) {
-                    case "1d":
+                    case 1:
                       return formatToJapaneseDateTime(value, "HH:mm");
                     default:
                       return formatToJapaneseDateTime(value, "MM/dd");
@@ -153,7 +147,7 @@ export function HardwareFanSpeedsChart({
                   />
                 }
               />
-              {Object.entries(fanSpeedsChartConfig).map(
+              {Object.entries(chartConfig).map(
                 ([key, config]) =>
                   selectedSkins.includes(key) && (
                     <Line
@@ -172,3 +166,83 @@ export function HardwareFanSpeedsChart({
     </Card>
   );
 }
+
+/**
+ * ハードウェアステータスソースをファン速度のチャートソースに変換
+ * @param hardwareStatusSource ハードウェアステータスソース
+ * @returns チャートのデータと設定
+ */
+const transformHardwareStatusSourceToFanSpeedsChart = (
+  hardwareStatusSource: HardwareStatusSourceType
+) => {
+  const configKey = "ファン";
+  let configCount = 0;
+  const chartSource = hardwareStatusSource
+    .map((status) => {
+      const result = formatSingleHardwareStatus(status, configKey);
+      configCount = Math.max(configCount, result?.keyCount ?? 0);
+      return result?.chart;
+    })
+    .filter((data) => data !== undefined);
+
+  const chartConfig = createChartConfig(configKey, configCount);
+
+  return { chartSource, chartConfig, configCount };
+};
+
+/**
+ * ハードウェアステータスをチャートのデータに変換
+ * @param status ハードウェアステータス
+ * @param configKey 設定キー
+ * @returns チャートのデータ
+ */
+const formatSingleHardwareStatus = (
+  status: HardwareStatusType,
+  configKey: string
+) => {
+  if (!status.createTime) return null;
+  let keyCount = 1;
+  const chart: ChartType = {
+    date: status.createTime,
+  };
+  if (!status.fanSpeeds) return null;
+  status.fanSpeeds.forEach((speed, index) => {
+    const cpuKey = `${configKey}${index + 1}`;
+    chart[cpuKey] = formatSpeed(speed);
+    keyCount = index + 1;
+  });
+
+  return { chart, keyCount };
+};
+
+/**
+ * 速度をRPMに変換
+ * @param speed 速度
+ * @returns 速度、小数点第2位まで
+ */
+const formatSpeed = (speed: number): string => {
+  return speed.toFixed(2);
+};
+
+const createChartConfig = (configKey: string, configCount: number) => {
+  return Object.fromEntries(
+    Array.from({ length: configCount }, (_, index) => [
+      `${configKey}${index + 1}`,
+      {
+        label: getLabel(configKey, index, configCount) + " RPM",
+        color: `hsl(var(--chart-6))`,
+      },
+    ])
+  ) satisfies ChartConfig;
+};
+
+/**
+ * ラベルを取得
+ * @param configKey 基準ラベル
+ * @param index インデックス
+ * @param configCount 設定数
+ * @returns ラベル, 設定数が2以上の場合はコア番号を含む
+ */
+const getLabel = (configKey: string, index: number, configCount: number) => {
+  return configCount < 2 ? configKey : `${configKey}${index + 1}`;
+};

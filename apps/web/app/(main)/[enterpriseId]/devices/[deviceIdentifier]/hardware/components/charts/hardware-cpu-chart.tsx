@@ -1,6 +1,10 @@
 "use client";
 
-import { HardwareStatusSourceType } from "@/app/types/device";
+import {
+  ChartType,
+  HardwareStatusSourceType,
+  HardwareStatusType,
+} from "@/app/types/device";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,6 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
+  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -29,47 +34,36 @@ import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import SelectTimeButton from "./select-time-button";
 
 export function HardwareCpuUsagesChart({
-  hardwareStatus,
+  hardwareStatusSource,
 }: {
-  hardwareStatus: HardwareStatusSourceType;
+  hardwareStatusSource: HardwareStatusSourceType;
 }) {
-  const [timeRange, setTimeRange] = useState("30d");
-  const { cpuUsagesChartItem } = hardwareStatus;
-  const cpuUsagesChartConfig = cpuUsagesChartItem.chartConfig;
-  const [selectedCpus, setSelectedCpus] = useState<string[]>(
-    Object.keys(cpuUsagesChartConfig)
-  );
-  const chartSource = cpuUsagesChartItem.chart;
+  const [timeRange, setTimeRange] = useState(30);
+
+  const { chartSource, chartConfig, configCount } =
+    transformHardwareStatusSourceToCpuUsagesChart(hardwareStatusSource);
+  const initialSelectedCpus = Object.keys(chartConfig);
+  const [selectedCpus, setSelectedCpus] =
+    useState<string[]>(initialSelectedCpus);
   const filteredChartSource = chartSource.filter((item) => {
     const date = parseISO(item.date);
     const referenceDate = parseISO(chartSource[chartSource.length - 1].date); // 最新の日付
-    let daysToSubtract = 30;
-    if (timeRange === "15d") {
-      daysToSubtract = 15;
-    } else if (timeRange === "7d") {
-      daysToSubtract = 7;
-    } else if (timeRange === "3d") {
-      daysToSubtract = 3;
-    } else if (timeRange === "1d") {
-      daysToSubtract = 1;
-    }
     // 日付が範囲内かチェック
     return isWithinInterval(date, {
-      start: subDays(referenceDate, daysToSubtract),
+      start: subDays(referenceDate, timeRange),
       end: referenceDate,
     });
   });
-  // console.log("filteredChartSource", filteredChartSource);
 
   return (
-    <Card>
+    <Card className="h-fit">
       <CardHeader className="flex items-center gap-2 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
           <CardTitle>CPU使用率</CardTitle>
           <CardDescription>各コアのCPU使用率を表示。</CardDescription>
         </div>
         <div className="flex flex-row gap-2 w-fit">
-          {cpuUsagesChartItem.configCount > 1 && (
+          {configCount > 1 && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline">表示するCPUコア</Button>
@@ -78,15 +72,13 @@ export function HardwareCpuUsagesChart({
                 <Button
                   variant="ghost"
                   className="w-full h-10"
-                  onClick={() =>
-                    setSelectedCpus(Object.keys(cpuUsagesChartConfig))
-                  }
+                  onClick={() => setSelectedCpus(Object.keys(chartConfig))}
                 >
                   <RefreshCcwIcon className="size-4" />
                   リセット
                 </Button>
                 <DropdownMenuSeparator />
-                {Object.entries(cpuUsagesChartConfig).map(([key, config]) => (
+                {Object.entries(chartConfig).map(([key, config]) => (
                   <DropdownMenuCheckboxItem
                     key={key}
                     checked={selectedCpus.includes(key)}
@@ -124,7 +116,7 @@ export function HardwareCpuUsagesChart({
           </div>
         ) : (
           <ChartContainer
-            config={cpuUsagesChartConfig}
+            config={chartConfig}
             className="aspect-auto h-[300px] w-full"
           >
             <LineChart data={filteredChartSource}>
@@ -136,7 +128,7 @@ export function HardwareCpuUsagesChart({
                 axisLine={false}
                 tickFormatter={(value) => {
                   switch (timeRange) {
-                    case "1d":
+                    case 1:
                       return formatToJapaneseDateTime(value, "HH:mm");
                     default:
                       return formatToJapaneseDateTime(value, "MM/dd");
@@ -155,7 +147,7 @@ export function HardwareCpuUsagesChart({
                   />
                 }
               />
-              {Object.entries(cpuUsagesChartConfig).map(
+              {Object.entries(chartConfig).map(
                 ([key, config]) =>
                   selectedCpus.includes(key) && (
                     <Line
@@ -174,3 +166,83 @@ export function HardwareCpuUsagesChart({
     </Card>
   );
 }
+
+/**
+ * ハードウェアステータスソースをCPU使用率のチャートソースに変換
+ * @param hardwareStatusSource ハードウェアステータスソース
+ * @returns チャートのデータと設定
+ */
+const transformHardwareStatusSourceToCpuUsagesChart = (
+  hardwareStatusSource: HardwareStatusSourceType
+) => {
+  const configKey = "CPU";
+  let configCount = 0;
+  const chartSource = hardwareStatusSource
+    .map((status) => {
+      const result = formatSingleHardwareStatus(status, configKey);
+      configCount = Math.max(configCount, result?.keyCount ?? 0);
+      return result?.chart;
+    })
+    .filter((data) => data !== undefined);
+
+  const chartConfig = createChartConfig(configKey, configCount);
+
+  return { chartSource, chartConfig, configCount };
+};
+
+/**
+ * ハードウェアステータスをチャートのデータに変換
+ * @param status ハードウェアステータス
+ * @param configKey 設定キー
+ * @returns チャートのデータ
+ */
+const formatSingleHardwareStatus = (
+  status: HardwareStatusType,
+  configKey: string
+) => {
+  if (!status.createTime) return null;
+  let keyCount = 1;
+  const chart: ChartType = {
+    date: status.createTime,
+  };
+  if (!status.cpuUsages) return null;
+  status.cpuUsages.forEach((usageRate, index) => {
+    const cpuKey = `${configKey}${index + 1}`;
+    chart[cpuKey] = formatUsagePercentage(usageRate);
+    keyCount = index + 1;
+  });
+
+  return { chart, keyCount };
+};
+
+/**
+ * 使用率をパーセンテージに変換
+ * @param usage 使用率
+ * @returns パーセンテージ、小数点第2位まで
+ */
+const formatUsagePercentage = (usage: number): string => {
+  return (usage * 100).toFixed(2);
+};
+
+const createChartConfig = (configKey: string, configCount: number) => {
+  return Object.fromEntries(
+    Array.from({ length: configCount }, (_, index) => [
+      `${configKey}${index + 1}`,
+      {
+        label: getLabel(configKey, index, configCount) + " 使用率",
+        color: `hsl(var(--chart-1))`,
+      },
+    ])
+  ) satisfies ChartConfig;
+};
+
+/**
+ * ラベルを取得
+ * @param configKey 基準ラベル
+ * @param index インデックス
+ * @param configCount 設定数
+ * @returns ラベル, 設定数が2以上の場合はコア番号を含む
+ */
+const getLabel = (configKey: string, index: number, configCount: number) => {
+  return configCount < 2 ? configKey : `${configKey}${index + 1}`;
+};

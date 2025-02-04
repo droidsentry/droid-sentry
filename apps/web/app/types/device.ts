@@ -20,6 +20,10 @@ export type HardwareStatusType = androidmanagement_v1.Schema$HardwareStatus;
 export type HardwareStatusSourceType = Awaited<
   ReturnType<typeof getHardwareStatus>
 >;
+export type ChartType = {
+  date: string;
+  [key: string]: string | null;
+};
 
 // route.tsで使用
 export type DeviceOperation = androidmanagement_v1.Schema$Operation;

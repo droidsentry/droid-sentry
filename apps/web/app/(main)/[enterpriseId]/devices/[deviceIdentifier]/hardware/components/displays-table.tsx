@@ -1,9 +1,4 @@
-import {
-  DisplaysType,
-  HardwareInfoSourceType,
-  HardwareInfoType,
-  HardwareStatusType,
-} from "@/app/types/device";
+import { DisplaysType, HardwareInfoSourceType } from "@/app/types/device";
 import {
   Card,
   CardContent,
@@ -15,45 +10,46 @@ import {
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
-import { number } from "zod";
-import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { InfoIcon } from "lucide-react";
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
+import { InfoIcon } from "lucide-react";
 
 export default function DisplaysTable({
-  hardwareInfo,
+  deviceSource,
 }: {
-  hardwareInfo: HardwareInfoSourceType;
+  deviceSource: HardwareInfoSourceType;
 }) {
-  const { displaysSource, lastStatusReportTime } = hardwareInfo ?? {};
+  const displaysSource = deviceSource?.displays;
+  const transformedDisplaysSource = displaysSource
+    ? displaysSource.map((display) =>
+        displaysItems.map((displaysItem) => ({
+          ...displaysItem,
+          value: display[displaysItem.label as keyof DisplaysType] ?? null,
+        }))
+      )
+    : null;
 
-  const deviceLastStatusReportTime = lastStatusReportTime
-    ? formatToJapaneseDateTime(lastStatusReportTime)
+  const deviceLastStatusReportTime = deviceSource?.lastStatusReportTime
+    ? formatToJapaneseDateTime(deviceSource.lastStatusReportTime)
     : "";
-  const cardDescription = lastStatusReportTime
+  const cardDescription = deviceLastStatusReportTime
     ? `取得日時：${deviceLastStatusReportTime}`
     : "";
 
   return (
     <>
-      {displaysSource ? (
-        displaysSource.map((displays, displayIndex) => (
+      {transformedDisplaysSource ? (
+        transformedDisplaysSource.map((displays, displayIndex) => (
           <Card key={`display-${displayIndex}`} className="h-fit">
             <TooltipProvider delayDuration={200}>
               <CardHeader>
@@ -113,3 +109,41 @@ export default function DisplaysTable({
     </>
   );
 }
+
+const displaysItems = [
+  {
+    label: "name",
+    title: "ディスプレイ名",
+    explanation: "デバイスのディスプレイ名.例:内蔵スクリーン",
+  },
+  {
+    label: "displayId",
+    title: "ディスプレイID",
+    explanation: "デバイスのディスプレイID.例:1",
+  },
+  {
+    label: "state",
+    title: "ディスプレイの状態",
+    explanation: "デバイスのディスプレイの状態.例:ON",
+  },
+  {
+    label: "width",
+    title: "ディスプレイの幅",
+    explanation: "デバイスのディスプレイの幅.例:1080",
+  },
+  {
+    label: "height",
+    title: "ディスプレイの高さ",
+    explanation: "デバイスのディスプレイの高さ.例:2160",
+  },
+  {
+    label: "density",
+    title: "ディスプレイの密度",
+    explanation: "デバイスのディスプレイの密度.例:440",
+  },
+  {
+    label: "refreshRate",
+    title: "ディスプレイのリフレッシュレート(Hz)",
+    explanation: "デバイスのディスプレイのリフレッシュレート.例:60",
+  },
+];

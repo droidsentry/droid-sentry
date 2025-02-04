@@ -1,21 +1,17 @@
 "use client";
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
-import {
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
+import {
+  HardwareStatusSourceType,
+  HardwareStatusType,
+} from "@/app/types/device";
 import {
   Card,
   CardContent,
@@ -23,39 +19,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  HardwareStatusSourceType,
-  HardwareStatusType,
-} from "@/app/types/device";
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
-import SelectTimeButton from "./select-time-button";
-import { useState } from "react";
 import { isWithinInterval, parseISO, subDays } from "date-fns";
+import { useState } from "react";
+import SelectTimeButton from "./select-time-button";
 
 const chartConfig = {
-  cpuUsage: {
-    label: "CPU使用率",
-    color: "hsl(var(--chart-1))",
-  },
-  cpuTemp: {
-    label: "CPU温度",
-    color: "hsl(var(--chart-2))",
-  },
-  gpuTemp: {
-    label: "GPU温度",
-    color: "hsl(var(--chart-3))",
-  },
-  skinTemp: {
-    label: "表面温度",
-    color: "hsl(var(--chart-4))",
-  },
-  batteryTemp: {
-    label: "バッテリー温度",
-    color: "hsl(var(--chart-5))",
-  },
-} as const;
-
-const chartConfigAverage = {
   cpuTemperature: {
     label: "CPU温度",
     color: "hsl(var(--chart-2))",
@@ -75,36 +44,28 @@ const chartConfigAverage = {
 } as const;
 
 export function HardwareTemperaturesAverageChart({
-  hardwareStatus,
+  hardwareStatusSource,
 }: {
-  hardwareStatus: HardwareStatusSourceType;
+  hardwareStatusSource: HardwareStatusSourceType;
 }) {
-  const { hardwareTemperatureAverageChartSource } = hardwareStatus;
-  const [timeRange, setTimeRange] = useState("30d");
+  const [timeRange, setTimeRange] = useState(30);
 
-  const chartSource = hardwareTemperatureAverageChartSource;
+  const chartSource =
+    transformHardwareStatusSourceToTemperaturesAverageChart(
+      hardwareStatusSource
+    );
   const filteredChartSource = chartSource.filter((item) => {
     const date = parseISO(item.date);
     const referenceDate = parseISO(chartSource[chartSource.length - 1].date); // 最新の日付
-    let daysToSubtract = 30;
-    if (timeRange === "15d") {
-      daysToSubtract = 15;
-    } else if (timeRange === "7d") {
-      daysToSubtract = 7;
-    } else if (timeRange === "3d") {
-      daysToSubtract = 3;
-    } else if (timeRange === "1d") {
-      daysToSubtract = 1;
-    }
     // 日付が範囲内かチェック
     return isWithinInterval(date, {
-      start: subDays(referenceDate, daysToSubtract),
+      start: subDays(referenceDate, timeRange),
       end: referenceDate,
     });
   });
 
   return (
-    <Card>
+    <Card className="h-fit">
       <CardHeader className="flex items-center gap-2 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
           <CardTitle>温度モニター</CardTitle>
@@ -132,7 +93,7 @@ export function HardwareTemperaturesAverageChart({
           </div>
         ) : (
           <ChartContainer
-            config={chartConfigAverage}
+            config={chartConfig}
             className="aspect-auto h-[300px] w-full "
           >
             <LineChart data={filteredChartSource}>
@@ -144,7 +105,7 @@ export function HardwareTemperaturesAverageChart({
                 axisLine={false}
                 tickFormatter={(value) => {
                   switch (timeRange) {
-                    case "1d":
+                    case 1:
                       return formatToJapaneseDateTime(value, "HH:mm");
                     default:
                       return formatToJapaneseDateTime(value, "MM/dd");
@@ -202,3 +163,52 @@ export function HardwareTemperaturesAverageChart({
     </Card>
   );
 }
+
+/**
+ * ハードウェアステータスソースを温度の平均値を計算したチャートデータに変換
+ * @param hardwareStatusSource ハードウェアステータスソース
+ * @returns 温度の平均値を計算したチャートデータの配列
+ */
+const transformHardwareStatusSourceToTemperaturesAverageChart = (
+  hardwareStatusSource: HardwareStatusSourceType
+) => {
+  const chart = hardwareStatusSource
+    .map((hardwareStatus) => {
+      return formatHardwareTemperatureAverage(hardwareStatus);
+    })
+    .filter((data) => data !== null);
+  return chart;
+};
+
+/**
+ * ハードウェアステータスオブジェクトを温度の平均値を計算し、チャートデータのオブジェクトに変換
+ * @param hardwareStatus ハードウェアステータス
+ * @returns 温度の平均値を計算したチャートデータのオブジェクト
+ */
+const formatHardwareTemperatureAverage = (
+  hardwareStatus: HardwareStatusType
+) => {
+  if (!hardwareStatus.createTime) return null;
+  const chart = {
+    date: hardwareStatus.createTime,
+    cpuTemperature: calculateAverage(hardwareStatus.cpuTemperatures),
+    gpuTemperature: calculateAverage(hardwareStatus.gpuTemperatures),
+    skinTemperature: calculateAverage(hardwareStatus.skinTemperatures),
+    batteryTemperature: calculateAverage(hardwareStatus.batteryTemperatures),
+  };
+  return chart;
+};
+
+/**
+ * 温度の平均値を計算
+ * @param temperatures 温度の配列
+ * @returns 温度の平均値 (小数点第2位までの文字列)
+ */
+const calculateAverage = (
+  temperatures: number[] | null | undefined
+): string | null => {
+  if (!temperatures?.length) return null;
+  return (
+    temperatures.reduce((sum, temp) => sum + temp, 0) / temperatures.length
+  ).toFixed(2);
+};
