@@ -1,8 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Check, Copy } from "lucide-react";
+import { Check, Clipboard, Copy } from "lucide-react";
 import { useState } from "react";
+import { Button } from "./ui/button";
 
 export default function CopyButton({
   value,
@@ -18,6 +19,10 @@ export default function CopyButton({
   return (
     <button
       onClick={() => {
+        // setCopied(true);
+        // setTimeout(() => {
+        //   setCopied(false);
+        // }, 1500);
         navigator.clipboard.writeText(value).then(() => {
           setCopied(true);
           setTimeout(() => {
@@ -26,16 +31,19 @@ export default function CopyButton({
         });
       }}
       className={cn(
-        "border relative rounded-md w-8 h-8 grid place-content-center bg-muted text-muted-foreground",
+        "border relative rounded-md size-6 grid place-content-center bg-muted text-muted-foreground hover:bg-accent-foreground/10",
         className
       )}
     >
       <Check
-        size={16}
-        className={cn(iconBaseClass, copied ? "scale-1" : "scale-0 opacity-0")}
+        size={12}
+        className={cn(
+          iconBaseClass,
+          copied ? "scale-1 text-primary" : "scale-0 opacity-0"
+        )}
       />
-      <Copy
-        size={16}
+      <Clipboard
+        size={12}
         className={cn(iconBaseClass, copied ? "scale-0 opacity-0" : "scale-1")}
       />
       <span className="sr-only">コピー</span>

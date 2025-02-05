@@ -1,4 +1,4 @@
-import "server-only";
+"use server";
 
 import { AndroidManagementDevice } from "@/app/types/device";
 import { createClient } from "@/lib/supabase/server";
@@ -10,7 +10,15 @@ export const getHardwareInfo = async ({
   enterpriseId: string;
   deviceIdentifier: string;
 }) => {
+  // 5秒待ってからデータを返す
+  await new Promise((resolve) => setTimeout(resolve, 5000));
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    throw new Error("ユーザーが見つかりません");
+  }
   const { data, error } = await supabase
     .from("devices")
     .select(

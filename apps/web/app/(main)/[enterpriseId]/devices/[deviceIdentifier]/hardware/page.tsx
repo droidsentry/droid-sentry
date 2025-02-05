@@ -7,7 +7,7 @@ import { HardwareSkinTemperatureChart } from "./components/charts/hardware-skin-
 import { HardwareTemperaturesAverageChart } from "./components/charts/hardware-temperatures-average-chart";
 import DisplaysTable from "./components/displays-table";
 import HardwareInfoTable from "./components/hardware-info-table";
-import { getHardwareInfo } from "./data/hardware";
+import { getHardwareInfo } from "../actions/device";
 import { getHardwareStatus } from "./data/hardware-status";
 import { HardwareFanSpeedsChart } from "./components/charts/hardware-fan-speeds-chart";
 

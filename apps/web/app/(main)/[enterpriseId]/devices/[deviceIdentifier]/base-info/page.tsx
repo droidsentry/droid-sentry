@@ -1,7 +1,6 @@
 import { RouteParams } from "@/app/types/enterprise";
-import { getHardwareInfo } from "../hardware/data/hardware";
-import { DeviceBaseInfoTable } from "./components/table/device-base-info-table";
-import HardwareInfoTable from "../hardware/components/hardware-info-table";
+import { getHardwareInfo } from "../actions/device";
+import { DeviceBaseInfoTable } from "./components/device-base-info-table";
 
 export default async function Page({
   params,
@@ -14,8 +13,12 @@ export default async function Page({
     deviceIdentifier,
   });
   return (
-    <div className="mx-2 space-y-2 ">
-      <DeviceBaseInfoTable deviceSource={deviceSource} />
+    <div className="mx-1.5">
+      <DeviceBaseInfoTable
+        deviceSource={deviceSource}
+        enterpriseId={enterpriseId}
+        deviceIdentifier={deviceIdentifier}
+      />
     </div>
   );
 }

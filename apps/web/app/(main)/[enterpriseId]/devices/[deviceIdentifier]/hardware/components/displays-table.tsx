@@ -80,7 +80,9 @@ export default function DisplaysTable({
                             </Tooltip>
                           </div>
                         </TableCell>
-                        <TableCell className="w-1/2">{item.value}</TableCell>
+                        <TableCell className="w-1/2">
+                          {item.value ?? "-"}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

@@ -2,7 +2,7 @@
 import { androidmanagement_v1 } from "googleapis";
 import { z } from "zod";
 import { DevicesTableSchema } from "../schema/devices";
-import { getHardwareInfo } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/hardware/data/hardware";
+import { getHardwareInfo } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/actions/device";
 import { getHardwareStatus } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/hardware/data/hardware-status";
 
 export type AndroidManagementDevice = androidmanagement_v1.Schema$Device;

@@ -59,46 +59,16 @@ export default function HardwareInfoTable({
           <CardDescription>{cardDescription}</CardDescription>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>項目</TableHead>
-                <TableHead>値</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {inputHardwareInfoItems.map((item) => (
-                <TableRow key={item.label}>
-                  <TableCell className="w-1/2">
-                    <div className="flex items-center gap-4">
-                      {item.title}
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <InfoIcon
-                            size={15}
-                            className="shrink-0 text-muted-foreground hover:text-foreground transition-colors"
-                          />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{item.explanation}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </div>
-                  </TableCell>
-                  <TableCell className="w-1/2">{item.value}</TableCell>
+          <div className="rounded-none border-t sm:border sm:rounded-md">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>項目</TableHead>
+                  <TableHead>値</TableHead>
                 </TableRow>
-              ))}
-              {inputHardwareTemperaturesItems.map((item) => {
-                const name = item.label.slice(0, 3).toUpperCase();
-                const valueList =
-                  item.value && Array.isArray(item.value)
-                    ? item.value.map(
-                        (num, index) => ` ${name}${index + 1} : ${num}℃`
-                      )
-                    : item.value
-                      ? `${item.value[0].toString().slice(0, 4)}℃`
-                      : "";
-                return (
+              </TableHeader>
+              <TableBody>
+                {inputHardwareInfoItems.map((item) => (
                   <TableRow key={item.label}>
                     <TableCell className="w-1/2">
                       <div className="flex items-center gap-4">
@@ -116,12 +86,44 @@ export default function HardwareInfoTable({
                         </Tooltip>
                       </div>
                     </TableCell>
-                    <TableCell className="w-1/2">{valueList}</TableCell>
+                    <TableCell className="w-1/2">{item.value}</TableCell>
                   </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+                ))}
+                {inputHardwareTemperaturesItems.map((item) => {
+                  const name = item.label.slice(0, 3).toUpperCase();
+                  const valueList =
+                    item.value && Array.isArray(item.value)
+                      ? item.value.map(
+                          (num, index) => ` ${name}${index + 1} : ${num}℃`
+                        )
+                      : item.value
+                        ? `${item.value[0].toString().slice(0, 4)}℃`
+                        : "-";
+                  return (
+                    <TableRow key={item.label}>
+                      <TableCell className="w-1/2">
+                        <div className="flex items-center gap-4">
+                          {item.title}
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <InfoIcon
+                                size={15}
+                                className="shrink-0 text-muted-foreground hover:text-foreground transition-colors"
+                              />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>{item.explanation}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
+                      </TableCell>
+                      <TableCell className="w-1/2">{valueList}</TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </TooltipProvider>
     </Card>

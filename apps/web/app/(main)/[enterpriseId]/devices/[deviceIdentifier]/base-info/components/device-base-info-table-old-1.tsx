@@ -1,37 +1,16 @@
 "use client";
 
-import * as React from "react";
 import {
   ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  ArrowUpDown,
-  ChevronDown,
-  InfoIcon,
-  MoreHorizontal,
-} from "lucide-react";
+import { InfoIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
+import { HardwareInfoSourceType } from "@/app/types/device";
+import CopyButton from "@/components/copy-button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -41,22 +20,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  AndroidManagementDevice,
-  HardwareInfoSourceType,
-} from "@/app/types/device";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import {
-  formatToJapaneseDate,
-  formatToJapaneseDateTime,
-} from "@/lib/date-fns/get-date";
-import { deviceStates } from "../../../../data/data";
-import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import CopyButton from "@/components/copy-button";
+import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
+import { deviceStates } from "../../../data/data";
 
 export type DeviceBaseInfo = {
   label: string;
@@ -152,7 +122,7 @@ export const columns: ColumnDef<DeviceBaseInfo>[] = [
     accessorKey: "title",
     header: "項目",
     cell: ({ row }) => (
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 h-10">
         {row.getValue("title")}
         <Tooltip>
           <TooltipTrigger>
@@ -168,9 +138,17 @@ export const columns: ColumnDef<DeviceBaseInfo>[] = [
   {
     accessorKey: "value",
     header: "値",
-    cell: ({ row }) => (
-      <span className="break-all">{row.getValue("value")}</span>
-    ),
+    cell: ({ row }) => {
+      // システムプロパティの場合は、preタグで表示
+      if (row.original.label === "systemProperties") {
+        return (
+          <pre className="text-muted-foreground bg-muted p-2 border rounded-md text-xs break-all whitespace-pre-wrap">
+            {row.getValue("value")}
+          </pre>
+        );
+      }
+      return <span className="break-all">{row.getValue("value")}</span>;
+    },
   },
   {
     id: "actions",
@@ -189,11 +167,11 @@ export function DeviceBaseInfoTable({
 }: {
   deviceSource: HardwareInfoSourceType;
 }) {
-  const transformedDeviceBaseInfoItems =
+  const transformedDeviceBaseInfoSource =
     transformDeviceBaseInfoItems(deviceSource);
 
   const table = useReactTable({
-    data: transformedDeviceBaseInfoItems,
+    data: transformedDeviceBaseInfoSource,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
@@ -323,7 +301,7 @@ const transformDeviceBaseInfoItems = (deviceSource: HardwareInfoSourceType) => {
     }
     if (label === "systemProperties" && deviceSource?.[label]) {
       const systemProperties = deviceSource[label];
-      const value = JSON.stringify(systemProperties) ?? null;
+      const value = JSON.stringify(systemProperties, null, 2) ?? null;
       return {
         ...deviceBaseInfoItem,
         value,

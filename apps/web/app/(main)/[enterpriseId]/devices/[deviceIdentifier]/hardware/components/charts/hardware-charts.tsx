@@ -1,6 +1,6 @@
 "use client";
 
-import { hardwareStatus } from "../../data/hardware";
+import { hardwareStatus } from "../../../actions/device";
 
 import {
   LineChart,
