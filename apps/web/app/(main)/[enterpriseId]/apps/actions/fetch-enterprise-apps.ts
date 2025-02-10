@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { AppType } from "@/app/types/apps";
-import { selectAppFields } from "./select-app-fields";
+import { selectAppFields } from "../data/select-app-fields";
 
 export const getApps = async (enterpriseId: string, appType?: AppType) => {
   //10秒待機

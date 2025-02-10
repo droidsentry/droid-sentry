@@ -11,12 +11,12 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
-import { devicesTableColumnList } from "../data/columnList";
+import { devicesTableColumnList } from "../../data/columnList";
 
 import { DeviceTableType } from "@/app/types/device";
-import { DataTableColumnHeader } from "../../../projects/components/table/data-table-column-header";
-import { generateSortFilterColumnsHeader } from "../../../projects/components/table/generate-sort-filter-columns-header";
-import { selectColumn } from "../../../projects/components/table/select-column";
+import { DataTableColumnHeader } from "../../../../projects/components/table/data-table-column-header";
+import { generateSortFilterColumnsHeader } from "../../../../projects/components/table/generate-sort-filter-columns-header";
+import { selectColumn } from "../../../../projects/components/table/select-column";
 import DataTableColumnState from "./data-table-column-state";
 import DataTableMenu from "./data-table-menu";
 

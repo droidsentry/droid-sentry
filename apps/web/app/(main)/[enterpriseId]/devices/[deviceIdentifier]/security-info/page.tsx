@@ -1,6 +1,7 @@
 import { RouteParams } from "@/app/types/enterprise";
 import { getHardwareInfo } from "../actions/device";
 import { DeviceSecurityTable } from "./components/device-security-table";
+import DeviceSecurityPostureDetailsTable from "./components/device-security-posture-details-table";
 
 export default async function Page({
   params,
@@ -8,14 +9,13 @@ export default async function Page({
   params: Promise<RouteParams>;
 }) {
   const { enterpriseId, deviceIdentifier } = await params;
-  const deviceSource = await getHardwareInfo({
-    enterpriseId,
-    deviceIdentifier,
-  });
   return (
-    <div className="mx-1.5">
+    <div className="mx-1.5 grid grid-cols-1 md:grid-cols-2 gap-2">
       <DeviceSecurityTable
-        deviceSource={deviceSource}
+        enterpriseId={enterpriseId}
+        deviceIdentifier={deviceIdentifier}
+      />
+      <DeviceSecurityPostureDetailsTable
         enterpriseId={enterpriseId}
         deviceIdentifier={deviceIdentifier}
       />
@@ -24,12 +24,12 @@ export default async function Page({
 }
 
 const securityInfoData = {
-  deviceSettings: {
-    isEncrypted: true,
-    encryptionStatus: "ACTIVE_PER_USER",
-    verifyAppsEnabled: true,
-    unknownSourcesEnabled: true,
-  },
+  // deviceSettings: {
+  //   isEncrypted: true,
+  //   encryptionStatus: "ACTIVE_PER_USER",
+  //   verifyAppsEnabled: true,
+  //   unknownSourcesEnabled: true,
+  // },
   securityPosture: {
     devicePosture: "POTENTIALLY_COMPROMISED",
     postureDetails: [

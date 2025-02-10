@@ -3,7 +3,8 @@ import { androidmanagement_v1 } from "googleapis";
 import { z } from "zod";
 import { DevicesTableSchema } from "../schema/devices";
 import { getHardwareInfo } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/actions/device";
-import { getHardwareStatus } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/hardware/data/hardware-status";
+import { getHardwareStatus } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/hardware-info/data/hardware-status";
+import { getPolicyDisplayName } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/actions/policy";
 
 export type AndroidManagementDevice = androidmanagement_v1.Schema$Device;
 export type ListDevicesResponse =
@@ -14,6 +15,9 @@ export type DisplaysType = androidmanagement_v1.Schema$Display;
 export type HardwareInfoType = androidmanagement_v1.Schema$HardwareInfo;
 export type HardwareInfoSourceType = Awaited<
   ReturnType<typeof getHardwareInfo>
+>;
+export type PolicyDisplayNameType = Awaited<
+  ReturnType<typeof getPolicyDisplayName>
 >;
 
 export type HardwareStatusType = androidmanagement_v1.Schema$HardwareStatus;

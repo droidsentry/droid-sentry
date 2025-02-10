@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import WebAppIframe from "./components/web-app-iframe";
 import WebAppsContent from "./components/web-apps-content";
 import { RouteParams } from "@/app/types/enterprise";
-import { getApps } from "../data/fetch-enterprise-apps";
+import { getApps } from "../actions/fetch-enterprise-apps";
 
 export default async function Page({
   params,

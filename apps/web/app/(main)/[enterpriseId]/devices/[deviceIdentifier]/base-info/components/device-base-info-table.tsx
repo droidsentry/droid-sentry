@@ -1,34 +1,27 @@
 "use client";
 
-import { HardwareInfoSourceType } from "@/app/types/device";
+import {
+  AndroidManagementDevice,
+  HardwareInfoSourceType,
+} from "@/app/types/device";
 import CopyButton from "@/components/copy-button";
 import InformationTooltip from "@/components/information-tooltip";
-import { Button } from "@/components/ui/button";
-import { CardContent, Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
 
-import { CopyIcon, InfoIcon } from "lucide-react";
-import { deviceStates } from "../../../data/data";
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
 import { deviceManagementMode, deviceOwnership } from "@/lib/device";
-import { getHardwareInfo } from "../../actions/device";
 import useSWR from "swr";
+import { deviceStates } from "../../../data/data";
+import { getHardwareInfo } from "../../actions/device";
+import LoadingWithinPageSkeleton from "@/app/(main)/[enterpriseId]/components/loading-within-page-sleleton";
 
 type FormattedValue = {
   value: React.ReactNode;
@@ -208,23 +201,20 @@ export function DeviceBaseInfoTable({
   deviceIdentifier: string;
 }) {
   const key = `/api/devices/${enterpriseId}/${deviceIdentifier}`;
-  const {
-    data,
-    error,
-    // isLoading,
-    mutate,
-    isValidating,
-  } = useSWR<HardwareInfoSourceType>(
-    key,
-    () => {
-      return getHardwareInfo({ enterpriseId, deviceIdentifier });
-    },
-    {
-      fallbackData: deviceSource,
-      revalidateOnFocus: false, // タブ移動しても関数を実行しない
-    }
-  );
+  const { data, error, isLoading, isValidating } =
+    useSWR<HardwareInfoSourceType>(
+      key,
+      () => {
+        return getHardwareInfo({ enterpriseId, deviceIdentifier });
+      },
+      {
+        fallbackData: deviceSource,
+        revalidateOnFocus: false,
+        dedupingInterval: 3600000, // enterpriseId,deviceIdentifierが同じ場合は1時間、関数を実行しない
+      }
+    );
   if (error) return <div>エラーが発生しました</div>;
+  if (isLoading || isValidating) return <LoadingWithinPageSkeleton />;
   if (!data) return null;
   return (
     <Card>

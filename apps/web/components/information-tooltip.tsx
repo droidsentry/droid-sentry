@@ -5,8 +5,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import React from "react";
 
-export default function InformationTooltip({ tooltip }: { tooltip: string }) {
+export default function InformationTooltip({
+  tooltip,
+}: {
+  tooltip: React.ReactNode;
+}) {
   return (
     <TooltipProvider delayDuration={200}>
       <Tooltip>
@@ -16,9 +21,7 @@ export default function InformationTooltip({ tooltip }: { tooltip: string }) {
             className="shrink-0 text-muted-foreground hover:text-foreground transition-colors"
           />
         </TooltipTrigger>
-        <TooltipContent>
-          <p>{tooltip}</p>
-        </TooltipContent>
+        <TooltipContent>{tooltip}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

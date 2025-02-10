@@ -26,7 +26,7 @@ import {
 
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { TablePagination } from "../../apps/components/table/table-pagination";
+import { TablePagination } from "../../../apps/components/table/table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
 
 interface DataTableProps<TData, TValue> {

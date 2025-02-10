@@ -56,46 +56,46 @@ export const deviceInfoNavigationItems = [
   {
     icon: HardDriveIcon,
     label: "ハードウェア",
-    url: "hardware",
+    url: "hardware-info",
   },
   {
     icon: ClipboardListIcon,
     label: "ソフトウェア",
-    url: "software",
+    url: "software-info",
   },
   {
     icon: SiAndroid,
-    label: "アプリケーションレポート",
-    url: "application",
+    label: "アプリケーション",
+    url: "application-info",
   },
   {
     icon: ShieldCheckIcon,
     label: "ポリシー",
-    url: "policy",
+    url: "policy-info",
   },
   {
     icon: WifiHighIcon,
     label: "ネットワーク",
-    url: "network",
+    url: "network-info",
   },
   {
     icon: KeyRoundIcon,
     label: "セキュリティ",
-    url: "security",
+    url: "security-info",
   },
   {
     icon: FileIcon,
     label: "メモリとストレージ",
-    url: "memory",
+    url: "memory-and-storage-info",
   },
   {
     icon: BatteryIcon,
     label: "バッテリー",
-    url: "battery",
+    url: "battery-info",
   },
   {
     icon: FileIcon,
     label: "ログ",
-    url: "log",
+    url: "log-info",
   },
 ];

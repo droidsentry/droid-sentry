@@ -9,11 +9,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 
-import { deviceStates } from "../data/data";
-import CreateQrButton from "./create-qr-button";
+import { deviceStates } from "../../data/data";
+import CreateQrButton from "../create-qr-button";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import SyncDevicesButton from "./sync-devices-button";
-import DeleteSelectedDevicesButton from "./delete-selected-devices-button";
+import SyncDevicesButton from "../sync-devices-button";
+import DeleteSelectedDevicesButton from "../delete-selected-devices-button";
+import ChangePolicyButton from "../change-policy/change-policy-button";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -76,6 +77,7 @@ export function DataTableToolbar<TData>({
             </Button>
           )}
         </div>
+        <ChangePolicyButton table={table} isSelected={isSelected} />
 
         {/* <DateTableColumnAllResizer table={table} /> */}
         <CreateQrButton />

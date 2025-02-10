@@ -41,11 +41,11 @@ import { toast } from "sonner";
 import {
   startLostModeSelectedDevice,
   stopLostModeSelectedDevice,
-} from "../actions/lost-mode-devices";
+} from "../../actions/lost-mode-devices";
 
 import { RouteParams } from "@/app/types/enterprise";
-import { deleteDevice } from "../data/delete-devices";
-import { syncDeviceInfoFromDB } from "../data/device";
+import { deleteDevice } from "../../data/delete-devices";
+import { syncDeviceInfoFromDB } from "../../data/device";
 
 interface DataTableMenuProps {
   row: Row<DeviceTableType>;

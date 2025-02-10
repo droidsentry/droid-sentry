@@ -38,7 +38,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { deviceInfoNavigationItems } from "../data/navigation";
 
-export default function MableDeviceInfoTopBar({
+export default function MableDeviceDetailInfoTopBar({
   className,
   enterpriseId,
   deviceIdentifier,

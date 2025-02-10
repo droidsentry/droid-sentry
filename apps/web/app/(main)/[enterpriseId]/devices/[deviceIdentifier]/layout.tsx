@@ -1,6 +1,6 @@
 import { RouteParams } from "@/app/types/enterprise";
-import CategoryTopBar from "./components/category-top-bar";
-import MableDeviceInfoTopBar from "./components/mable-device-info-top-bar";
+import DeviceDetailInfoTopBar from "./components/device-detail-info-top-bar";
+import MableDeviceDetailInfoTopBar from "./components/mable-device-detail-info-top-bar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default async function Layout({
@@ -14,12 +14,12 @@ export default async function Layout({
   return (
     <div className="flex flex-col h-full ">
       <div className="flex">
-        <CategoryTopBar
+        <DeviceDetailInfoTopBar
           enterpriseId={enterpriseId}
           deviceIdentifier={deviceIdentifier}
           className="hidden lg:block"
         />
-        <MableDeviceInfoTopBar
+        <MableDeviceDetailInfoTopBar
           enterpriseId={enterpriseId}
           deviceIdentifier={deviceIdentifier}
           className="lg:hidden"

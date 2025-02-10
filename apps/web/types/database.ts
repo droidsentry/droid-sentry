@@ -201,6 +201,7 @@ export type Database = {
           is_licensed: boolean
           operation_data: Json | null
           policy_identifier: string | null
+          requested_policy_identifier: string | null
           updated_at: string
         }
         Insert: {
@@ -213,6 +214,7 @@ export type Database = {
           is_licensed?: boolean
           operation_data?: Json | null
           policy_identifier?: string | null
+          requested_policy_identifier?: string | null
           updated_at: string
         }
         Update: {
@@ -225,6 +227,7 @@ export type Database = {
           is_licensed?: boolean
           operation_data?: Json | null
           policy_identifier?: string | null
+          requested_policy_identifier?: string | null
           updated_at?: string
         }
         Relationships: [

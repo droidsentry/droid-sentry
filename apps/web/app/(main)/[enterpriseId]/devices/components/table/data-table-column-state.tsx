@@ -1,5 +1,5 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { deviceStates } from "../data/data";
+import { deviceStates } from "../../data/data";
 import { HelpCircle } from "lucide-react";
 
 interface DataTableColumnStateProps<TData> {

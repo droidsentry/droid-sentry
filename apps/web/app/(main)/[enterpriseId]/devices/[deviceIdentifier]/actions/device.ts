@@ -11,7 +11,7 @@ export const getHardwareInfo = async ({
   deviceIdentifier: string;
 }) => {
   // 5秒待ってからデータを返す
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  // await new Promise((resolve) => setTimeout(resolve, 5000));
   const supabase = await createClient();
   const {
     data: { user },

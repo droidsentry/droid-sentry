@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { deviceInfoNavigationItems } from "../data/navigation";
 
-export default function CategoryTopBar({
+export default function DeviceDetailInfoTopBar({
   enterpriseId,
   deviceIdentifier,
   className,

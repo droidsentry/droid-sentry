@@ -4,6 +4,7 @@ import { AndroidManagementDevice } from "@/app/types/device";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { Json } from "@/types/database";
+import { request } from "http";
 
 /**
  * デバイスデータから不要なイベントデータを除外
@@ -32,19 +33,29 @@ export const saveDeviceStatus = async ({
 }) => {
   const supabase = createAdminClient();
   // const policyDetails = await getAdminListPolicyDetails(enterpriseId);
+  const appliedPolicyName = device.appliedPolicyName;
+  const policyIdentifier = appliedPolicyName?.includes(
+    `enterprises/${enterpriseId}/policies/`
+  )
+    ? appliedPolicyName.split(`enterprises/${enterpriseId}/policies/`)[1] ||
+      null
+    : null;
+  console.log("policyIdentifier", policyIdentifier);
+
   const policyName = device.policyName;
-  const policyIdentifier = policyName?.includes(
+  const requestedPolicyIdentifier = policyName?.includes(
     `enterprises/${enterpriseId}/policies/`
   )
     ? policyName.split(`enterprises/${enterpriseId}/policies/`)[1] || null
     : null;
-
+  console.log("requestedPolicyIdentifier", requestedPolicyIdentifier);
   try {
     // devicesテーブルに記録するデータ
     const deviceData = {
       enterprise_id: enterpriseId,
       device_identifier: deviceIdentifier,
       policy_identifier: policyIdentifier,
+      requested_policy_identifier: requestedPolicyIdentifier,
       device_data: prepareDeviceData(device) as Json,
       updated_at: new Date().toISOString(),
     };
