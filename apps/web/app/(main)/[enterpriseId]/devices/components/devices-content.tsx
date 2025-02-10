@@ -47,7 +47,13 @@ export default function DevicesContent({
     const isProduction = env === "production";
     // URLがlocalhostかどうか
     const isLocalhost = currentUrl.includes("localhost");
-    if (!isProduction || !isLocalhost) return;
+    if (!isProduction && !isLocalhost) {
+      console.log("currentUrl", currentUrl);
+      console.log(
+        "localhost or production 以外は、デバイステーブルをリアルタイムに監視しません。"
+      );
+      return;
+    }
 
     const enterpriseDevices = supabase.channel(enterpriseId);
     enterpriseDevices

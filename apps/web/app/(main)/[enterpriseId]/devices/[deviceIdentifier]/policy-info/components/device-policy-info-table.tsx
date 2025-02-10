@@ -1,6 +1,8 @@
 "use client";
 
 import {
+  AndroidManagementDevice,
+  DevicePolicyInfoType,
   HardwareInfoSourceType,
   PolicyDisplayNameType,
 } from "@/app/types/device";
@@ -18,33 +20,40 @@ import {
 import LoadingWithinPageSkeleton from "@/app/(main)/[enterpriseId]/components/loading-within-page-sleleton";
 import InformationTooltip from "@/components/information-tooltip";
 import useSWRImmutable from "swr/immutable";
-import { getHardwareInfo } from "../../actions/device";
+import { getDevicePolicyInfo, getHardwareInfo } from "../../actions/device";
+import { Badge } from "@/components/ui/badge";
 
 export function DevicePolicyInfoTable({
   deviceSource,
   enterpriseId,
   deviceIdentifier,
-  policyDisplayNames,
 }: {
-  deviceSource: HardwareInfoSourceType;
+  deviceSource: DevicePolicyInfoType;
   enterpriseId: string;
   deviceIdentifier: string;
-  policyDisplayNames: PolicyDisplayNameType;
 }) {
-  const key = `/api/devices/${enterpriseId}/${deviceIdentifier}`;
-  const { data, error, isLoading, isValidating } =
-    useSWRImmutable<HardwareInfoSourceType>(
-      key,
-      () => {
-        return getHardwareInfo({ enterpriseId, deviceIdentifier });
-      },
-      {
-        fallbackData: deviceSource,
-      }
-    );
-  if (error) return <div>エラーが発生しました</div>;
-  if (isLoading || isValidating) return <LoadingWithinPageSkeleton />;
-  if (!data) return null;
+  // const key = `/api/devices/${enterpriseId}/${deviceIdentifier}`;
+  // const { data, error, isLoading, isValidating } =
+  //   useSWRImmutable<DevicePolicyInfoType>(
+  //     key,
+  //     () => {
+  //       return getDevicePolicyInfo({ enterpriseId, deviceIdentifier });
+  //     }
+  //     // {
+  //     //   fallbackData: deviceSource,
+  //     // }
+  //   );
+  // if (error) return <div>エラーが発生しました</div>;
+  // if (isLoading || isValidating) return <LoadingWithinPageSkeleton />;
+  // if (!data) return null;
+  // const policyDisplayName = data.currentPolicy?.policyDisplayName;
+  // const requestedPolicyDisplayName =
+  //   data.requestedPolicy?.requestedPolicyDisplayName;
+  // const deviceData = data.device as AndroidManagementDevice;
+  const policyDisplayName = deviceSource?.currentPolicy?.policyDisplayName;
+  const requestedPolicyDisplayName =
+    deviceSource?.requestedPolicy?.requestedPolicyDisplayName;
+  const deviceData = deviceSource?.device as AndroidManagementDevice;
   return (
     <Card className="">
       <CardHeader>
@@ -54,42 +63,11 @@ export function DevicePolicyInfoTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-1/2">項目</TableHead>
-              <TableHead className="w-1/2">値</TableHead>
+              <TableHead className="w-1/3">項目</TableHead>
+              <TableHead className="w-2/3">値</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell>
-                <div className="flex items-center gap-2">
-                  <span className="font-bold">適用ポリシー</span>
-                  <InformationTooltip
-                    tooltip={"適用がリクエストされているポリシーを表示します。"}
-                  />
-                </div>
-              </TableCell>
-              <TableCell>
-                {data.policyName &&
-                data.policyName.includes("polices/") &&
-                policyDisplayNames ? (
-                  <div className="flex items-center gap-2">
-                    {policyDisplayNames.find(
-                      (policy) =>
-                        policy.policyIdentifier ===
-                        data.policyName?.split("polices/")[1]
-                    )?.policyDisplayName
-                      ? policyDisplayNames.find(
-                          (policy) =>
-                            policy.policyIdentifier ===
-                            data.policyName?.split("polices/")[1]
-                        )?.policyDisplayName
-                      : data.policyName}
-                  </div>
-                ) : (
-                  <span className="text-muted-foreground">-</span>
-                )}
-              </TableCell>
-            </TableRow>
             <TableRow>
               <TableCell>
                 <div className="flex items-center gap-2">
@@ -100,10 +78,19 @@ export function DevicePolicyInfoTable({
                 </div>
               </TableCell>
               <TableCell>
-                {data?.appliedPolicyName ? (
+                {policyDisplayName ? (
                   <div className="flex items-center gap-2">
-                    <span>{data.appliedPolicyName}</span>
-                    <CopyButton value={data.appliedPolicyName} />
+                    <span>{policyDisplayName}</span>
+                    {policyDisplayName !== requestedPolicyDisplayName && (
+                      <>
+                        <Badge className="bg-yellow-500 text-white">
+                          適用待ち
+                        </Badge>
+                        <span className="text-muted-foreground">
+                          {`現在、「${requestedPolicyDisplayName}」にポリシー変更のリクエストがされています。`}
+                        </span>
+                      </>
+                    )}
                   </div>
                 ) : (
                   <span className="text-muted-foreground">-</span>
@@ -122,51 +109,56 @@ export function DevicePolicyInfoTable({
                 </div>
               </TableCell>
               <TableCell>
-                {data?.networkInfo?.wifiMacAddress ? (
+                {deviceData?.networkInfo?.wifiMacAddress ? (
                   <div className="flex items-center gap-2">
-                    <span>{data.networkInfo.wifiMacAddress}</span>
-                    <CopyButton value={data.networkInfo.wifiMacAddress} />
+                    <span>{deviceData.networkInfo.wifiMacAddress}</span>
+                    <CopyButton value={deviceData.networkInfo.wifiMacAddress} />
                   </div>
                 ) : (
                   <span className="text-muted-foreground">-</span>
                 )}
               </TableCell>
             </TableRow>
-            {data.networkInfo?.telephonyInfos ? (
-              data.networkInfo?.telephonyInfos.map((telephonyInfo, index) => (
-                <TableRow key={`telephony-info-${index}`}>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold">SIM{index + 1}</span>
-                      <InformationTooltip
-                        tooltip={
-                          "デバイスに搭載されているSIMの情報を表示します。Android API レベル 23 以降の管理モード「デバイスオーナー」のデバイスのみサポートしています。"
-                        }
-                      />
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {telephonyInfo.phoneNumber && (
+            {deviceData.networkInfo?.telephonyInfos ? (
+              deviceData.networkInfo?.telephonyInfos.map(
+                (telephonyInfo, index) => (
+                  <TableRow key={`telephony-info-${index}`}>
+                    <TableCell>
                       <div className="flex items-center gap-2">
-                        <span>{telephonyInfo.phoneNumber}</span>
-                        <CopyButton value={telephonyInfo.phoneNumber} />
+                        <span className="font-bold">SIM{index + 1}</span>
+                        <InformationTooltip
+                          tooltip={
+                            "デバイスに搭載されているSIMの情報を表示します。Android API レベル 23 以降の管理モード「デバイスオーナー」のデバイスのみサポートしています。"
+                          }
+                        />
                       </div>
-                    )}
-                    {telephonyInfo.carrierName && (
-                      <div className="flex items-center gap-2">
-                        <span>{telephonyInfo.carrierName}</span>
-                        <CopyButton value={telephonyInfo.carrierName} />
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-col gap-2">
+                        {telephonyInfo.phoneNumber && (
+                          <div className="flex items-center gap-2">
+                            <span>電話番号 : {telephonyInfo.phoneNumber}</span>
+                            <CopyButton value={telephonyInfo.phoneNumber} />
+                          </div>
+                        )}
+                        {telephonyInfo.carrierName && (
+                          <div className="flex items-center gap-2">
+                            <span>
+                              キャリア情報 : {telephonyInfo.carrierName}
+                            </span>
+                          </div>
+                        )}
+                        {telephonyInfo.iccId && (
+                          <div className="flex items-center gap-2">
+                            <span>ICCID : {telephonyInfo.iccId}</span>
+                            <CopyButton value={telephonyInfo.iccId} />
+                          </div>
+                        )}
                       </div>
-                    )}
-                    {telephonyInfo.iccId && (
-                      <div className="flex items-center gap-2">
-                        <span>{telephonyInfo.iccId}</span>
-                        <CopyButton value={telephonyInfo.iccId} />
-                      </div>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))
+                    </TableCell>
+                  </TableRow>
+                )
+              )
             ) : (
               <TableRow>
                 <TableCell>

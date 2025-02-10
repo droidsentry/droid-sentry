@@ -2,7 +2,11 @@
 import { androidmanagement_v1 } from "googleapis";
 import { z } from "zod";
 import { DevicesTableSchema } from "../schema/devices";
-import { getHardwareInfo } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/actions/device";
+import {
+  getDeviceApplicationInfo,
+  getDevicePolicyInfo,
+  getHardwareInfo,
+} from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/actions/device";
 import { getHardwareStatus } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/hardware-info/data/hardware-status";
 import { getPolicyDisplayName } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/actions/policy";
 
@@ -16,6 +20,15 @@ export type HardwareInfoType = androidmanagement_v1.Schema$HardwareInfo;
 export type HardwareInfoSourceType = Awaited<
   ReturnType<typeof getHardwareInfo>
 >;
+export type DevicePolicyInfoType = Awaited<
+  ReturnType<typeof getDevicePolicyInfo>
+>;
+export type ApplicationInfoType = Awaited<
+  ReturnType<typeof getDeviceApplicationInfo>
+>;
+export type ApplicationReportType =
+  androidmanagement_v1.Schema$ApplicationReport;
+
 export type PolicyDisplayNameType = Awaited<
   ReturnType<typeof getPolicyDisplayName>
 >;

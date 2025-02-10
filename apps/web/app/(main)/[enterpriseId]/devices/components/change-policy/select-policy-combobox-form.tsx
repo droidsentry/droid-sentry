@@ -34,14 +34,14 @@ export default function SelectPolicyComboboxForm() {
   return (
     <FormField
       control={form.control}
-      name="language"
+      name="policy"
       render={({ field }) => (
         <FormItem className="flex flex-col">
           <FormLabel>ポリシーを選択</FormLabel>
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
-                <Button
+                {/* <Button
                   variant="outline"
                   role="combobox"
                   className={cn(
@@ -55,8 +55,9 @@ export default function SelectPolicyComboboxForm() {
                       )?.label
                     : "Select language"}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
-                {/* <Button
+                </Button> */}
+
+                <Button
                   variant="outline"
                   role="combobox"
                   className={cn(
@@ -66,11 +67,11 @@ export default function SelectPolicyComboboxForm() {
                 >
                   {field.value
                     ? policyList.find(
-                        (policy) => policy.policyDisplayName === field.value
+                        (policy) => policy.policyId === field.value.policyId
                       )?.policyDisplayName
                     : "デバイスに配信するポリシーを選択"}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button> */}
+                </Button>
               </FormControl>
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
@@ -78,7 +79,7 @@ export default function SelectPolicyComboboxForm() {
                 <CommandInput placeholder="Search language..." />
                 <CommandList>
                   <CommandEmpty>No language found.</CommandEmpty>
-                  <CommandGroup>
+                  {/* <CommandGroup>
                     {languages.map((language) => (
                       <CommandItem
                         value={language.label}
@@ -98,28 +99,29 @@ export default function SelectPolicyComboboxForm() {
                         />
                       </CommandItem>
                     ))}
-                  </CommandGroup>
-                  {/* <CommandGroup>
+                  </CommandGroup> */}
+
+                  <CommandGroup>
                     {policyList.map((policy) => (
                       <CommandItem
                         value={policy.policyDisplayName}
                         key={policy.policyId}
                         onSelect={() => {
-                          form.setValue("policy", policy.policyDisplayName);
+                          form.setValue("policy", policy);
                         }}
                       >
                         {policy.policyDisplayName}
                         <Check
                           className={cn(
                             "ml-auto",
-                            policy.policyDisplayName === field.value
+                            policy.policyId === field.value
                               ? "opacity-100"
                               : "opacity-0"
                           )}
                         />
                       </CommandItem>
                     ))}
-                  </CommandGroup> */}
+                  </CommandGroup>
                 </CommandList>
               </Command>
             </PopoverContent>

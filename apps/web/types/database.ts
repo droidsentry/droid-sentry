@@ -239,6 +239,13 @@ export type Database = {
             referencedColumns: ["enterprise_id"]
           },
           {
+            foreignKeyName: "devices_enterprise_id_requested_policy_identifier_fkey"
+            columns: ["enterprise_id", "requested_policy_identifier"]
+            isOneToOne: false
+            referencedRelation: "policies"
+            referencedColumns: ["enterprise_id", "policy_identifier"]
+          },
+          {
             foreignKeyName: "devices_policy_reference_fkey"
             columns: ["enterprise_id", "policy_identifier"]
             isOneToOne: false

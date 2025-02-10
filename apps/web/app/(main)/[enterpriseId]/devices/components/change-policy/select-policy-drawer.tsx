@@ -1,3 +1,4 @@
+import { PolicyList } from "@/app/types/policy";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -9,8 +10,11 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import SelectPolicyComboboxForm from "./select-policy-combobox-form";
-import { SelectPolicyProvider } from "./select-policy-provider";
-import { PolicyList } from "@/app/types/policy";
+import {
+  SelectPolicyProvider,
+  useSelectPolicy,
+} from "./select-policy-provider";
+import SubmitFormBotton from "./submit-form-botton";
 
 export default function SelectPolicyDrawer({
   isOpen,
@@ -30,6 +34,7 @@ export default function SelectPolicyDrawer({
           <SelectPolicyProvider
             deviceIdentifiers={deviceIdentifiers}
             policyList={policyList}
+            setIsOpen={setIsOpen}
           >
             <DrawerHeader className="pb-0">
               <DrawerTitle>ポリシーを変更</DrawerTitle>
@@ -40,14 +45,13 @@ export default function SelectPolicyDrawer({
             <div className="max-h-[500px] overflow-y-auto pt-4 pb-0">
               <div className="flex flex-col items-center justify-center space-x-2">
                 <SelectPolicyComboboxForm />
-                <div>123</div>
+                <div>カメラ無効</div>
+                <div>スクリーンショット無効</div>
               </div>
               <div className="mt-3 h-[120px]"></div>
             </div>
             <DrawerFooter>
-              <Button onClick={() => console.log("submit")}>
-                ポリシーを変更
-              </Button>
+              <SubmitFormBotton />
               <DrawerClose asChild>
                 <Button variant="outline" onClick={() => console.log("cancel")}>
                   閉じる

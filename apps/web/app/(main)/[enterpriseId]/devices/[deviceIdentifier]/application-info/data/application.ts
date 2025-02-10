@@ -15,12 +15,13 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "Digital Wellbeing",
     packageName: "com.google.android.apps.wellbeing",
-    versionCode: 276637,
-    versionName: "1.0.381222135",
+    versionCode: 674697,
+    versionName: "1.20.694338799 (674697)",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
-      "badba8bf4eacc36f3203f1ac21a56bc9cad008ebd78a74ba42cfd58528f535e3",
+      "b9494a44aa0033065cb8a5608b61a98ee8906ef1f898d75b2b2f866f607d47e9",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["4ebdd02380f1fa0b6741491f0af35625dba76e9f"],
   },
   {
@@ -63,12 +64,6 @@ export const applicationReportsData = [
   },
   {
     state: "INSTALLED",
-    events: [
-      {
-        eventType: "CHANGED",
-        createTime: "2025-01-28T22:49:37.713Z",
-      },
-    ],
     displayName: "Google Play Services for AR",
     packageName: "com.google.ar.core",
     versionCode: 243160293,
@@ -132,24 +127,26 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "Device Policy",
     packageName: "com.google.android.apps.work.clouddpc",
-    versionCode: 10284460,
-    versionName: "124.90.1 (10284460)",
+    versionCode: 10294460,
+    versionName: "125.33.2 (10294460)",
     userFacingType: "NOT_USER_FACING",
+    applicationSource: "INSTALLED_FROM_PLAY_STORE",
     packageSha256Hash:
       "b1a65e7cd5884651e23943e24303a0d5b9569799e309c994969fabe4f328e8ec",
-    installerPackageName: "com.android.managedprovisioning",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["693804be095bd77a327649a8b970ce25c1373069"],
   },
   {
     state: "INSTALLED",
-    displayName: "Android の設定",
+    displayName: "Android Switch",
     packageName: "com.google.android.apps.restore",
-    versionCode: 22680,
-    versionName: "1.0.382048734",
+    versionCode: 674478,
+    versionName: "1.0.695429499",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
-      "009c16867ecb1b7b31e8eacbbbc90a93d9317d0e21063a965c4de6686b30da0a",
+      "ca2ec7bcea656cc97d036178fff5262774d7ce6d93a15e6291fa310ea1694347",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["19da94896ce4078c38ca695701f1dec741ec6d67"],
   },
   {
@@ -219,12 +216,13 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "Google Partner Setup",
     packageName: "com.google.android.partnersetup",
-    versionCode: 1114,
-    versionName: "100.316795284",
+    versionCode: 1997,
+    versionName: "100.652836256",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
       "1e8aae2483640f80073cb626e8c9d542e1685fac4e9be9a3d33a59946c2bc204",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["38918a453d07199354f8b19af05ec6562ced5788"],
   },
   {
@@ -254,14 +252,27 @@ export const applicationReportsData = [
   },
   {
     state: "INSTALLED",
-    displayName: "Google の音声サービス",
-    packageName: "com.google.android.tts",
-    versionCode: 210321711,
-    versionName: "googletts.google-speech-apk_20210729.00_p0.387528199.tnt",
+    displayName: "Google セーフティ センターのリソース",
+    packageName: "com.google.android.safetycenter.resources",
+    versionCode: 339999900,
+    versionName: "33 system image",
     userFacingType: "NOT_USER_FACING",
     applicationSource: "SYSTEM_APP_FACTORY_VERSION",
     packageSha256Hash:
+      "cdedd0186023c0b2de0d82f0feb3b74e28a6e1b0dfdf352e40f164f4f96f0e93",
+    signingKeyCertFingerprints: ["e3dcbef3909618a76aaf568f1e7bd946ff775d46"],
+  },
+  {
+    state: "INSTALLED",
+    displayName: "Google 音声認識と音声合成サービス",
+    packageName: "com.google.android.tts",
+    versionCode: 210531874,
+    versionName: "googletts.google-speech-apk_20241223.02_p0.709178671",
+    userFacingType: "NOT_USER_FACING",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
+    packageSha256Hash:
       "4a4851cfc7377ddd994978906c0b5f63622a4e2501d31d35cbd700989c204817",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["38918a453d07199354f8b19af05ec6562ced5788"],
   },
   {
@@ -275,25 +286,6 @@ export const applicationReportsData = [
     packageSha256Hash:
       "bd493ee6107d43385b8751c3a8dbe9c6f1cb32ccabe6b7ba6148cae78ae99244",
     signingKeyCertFingerprints: ["d4d3d7ef20b8598a4371499cad130137aa30ff3b"],
-  },
-  {
-    state: "REMOVED",
-    events: [
-      {
-        eventType: "CHANGED",
-        createTime: "2025-01-28T22:50:40.066Z",
-      },
-    ],
-    displayName: "Boxer",
-    packageName: "com.boxer.email",
-    versionCode: 2797,
-    versionName: "24.11.1.81",
-    userFacingType: "USER_FACING",
-    applicationSource: "INSTALLED_FROM_PLAY_STORE",
-    packageSha256Hash:
-      "11c57fa3d6cd0a961031485effd09b0039ab21d02c17e1587c6407b490eb7120",
-    installerPackageName: "com.android.vending",
-    signingKeyCertFingerprints: ["09fa4b03b82e6fe42b3ccbe682cb1c719abedb96"],
   },
   {
     state: "INSTALLED",
@@ -311,8 +303,8 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "Google Play プロテクト サービス",
     packageName: "com.google.android.odad",
-    versionCode: 61147,
-    versionName: "S.38.playstore.pixel3.694191338",
+    versionCode: 66347,
+    versionName: "S.38.playstore.pixel3.718037954",
     userFacingType: "NOT_USER_FACING",
     applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
@@ -429,25 +421,6 @@ export const applicationReportsData = [
     signingKeyCertFingerprints: ["269aedacd24e4e4f6781b0aa28a97ee76b16b7ad"],
   },
   {
-    state: "REMOVED",
-    events: [
-      {
-        eventType: "INSTALLED",
-        createTime: "2025-01-28T22:51:04.518Z",
-      },
-    ],
-    displayName: "メモ帳",
-    packageName: "com.atomczak.notepat",
-    versionCode: 81,
-    versionName: "1.37.0",
-    userFacingType: "USER_FACING",
-    applicationSource: "INSTALLED_FROM_PLAY_STORE",
-    packageSha256Hash:
-      "9eecd10d905f939f58ab160caf8e7323f0e98f9e9915af1982a29e7456d1bc40",
-    installerPackageName: "com.android.vending",
-    signingKeyCertFingerprints: ["79a87db7ed283970cb8da4ffa92989eb99a21d0a"],
-  },
-  {
     state: "INSTALLED",
     displayName: "com.android.nfc.auto_generated_rro_vendor__",
     packageName: "com.android.nfc.auto_generated_rro_vendor__",
@@ -475,12 +448,13 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "Carrier Services",
     packageName: "com.google.android.ims",
-    versionCode: 30454854,
-    versionName: "64.0.380248474-carrierservices_V64U_RC00",
+    versionCode: 31144015,
+    versionName: "carrierservices.android_20240520_00_RC00.phone",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
       "79719b837ae792a68cd42a55b9a6db1f0f9990473185a3b5b18d14d436875665",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["6ddb6673e07f05a1bece93343651ad167faddc10"],
   },
   {
@@ -657,8 +631,8 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "Tethering",
     packageName: "com.google.android.networkstack.tethering",
-    versionCode: 31,
-    versionName: "12-7653768",
+    versionCode: 35,
+    versionName: "15",
     userFacingType: "NOT_USER_FACING",
     applicationSource: "SYSTEM_APP_FACTORY_VERSION",
     packageSha256Hash:
@@ -883,6 +857,18 @@ export const applicationReportsData = [
   },
   {
     state: "INSTALLED",
+    displayName: "写真と動画",
+    packageName: "com.google.android.photopicker",
+    versionCode: 35,
+    versionName: "15",
+    userFacingType: "NOT_USER_FACING",
+    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    packageSha256Hash:
+      "30d3ab9dfb28a74d5bc4ccbd6130ff772bcfdef8d91d46501f72217fcf063e05",
+    signingKeyCertFingerprints: ["5af68c62c5e3e025e0696218569119d3f8c83403"],
+  },
+  {
+    state: "INSTALLED",
     displayName: "Bluetooth MIDI Service",
     packageName: "com.android.bluetoothmidiservice",
     versionCode: 31,
@@ -922,12 +908,12 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "Android System WebView",
     packageName: "com.google.android.webview",
-    versionCode: 677826033,
-    versionName: "131.0.6778.260",
+    versionCode: 683416333,
+    versionName: "132.0.6834.163",
     userFacingType: "NOT_USER_FACING",
     applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
-      "6238fcba00c2ac666ab2fe6e77c36052b26a9f3ae3e75246b436b83d7944fbc0",
+      "09f6b078b2aae70ee19d65635b8195c3dbacd6b90b39643cab911ee854ac9ae5",
     installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["1f387cb25e0069efca490ade28c060e09d37dd45"],
   },
@@ -935,26 +921,14 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "おサイフケータイ 設定アプリ",
     packageName: "com.felicanetworks.mfs",
-    versionCode: 540,
-    versionName: "5.4.0",
+    versionCode: 1342410,
+    versionName: "34.24.10",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
       "d64a3498b797c5db47571eae03982de9d2272407e0bac29a1ce7d705b7042c2e",
-    signingKeyCertFingerprints: ["1eca204f4e611817fde8faa37bd747ddeb96bcfb"],
-  },
-  {
-    state: "REMOVED",
-    displayName: "LinkedIn",
-    packageName: "com.linkedin.android",
-    versionCode: 193600,
-    versionName: "4.1.1028",
-    userFacingType: "USER_FACING",
-    applicationSource: "INSTALLED_FROM_PLAY_STORE",
-    packageSha256Hash:
-      "0685f905d9994d4ba4887f0574a1968b1eb9293bd1fac96b0e3387f3815e324c",
     installerPackageName: "com.android.vending",
-    signingKeyCertFingerprints: ["443cb997718d0ac5162888bae5e4724582862676"],
+    signingKeyCertFingerprints: ["1eca204f4e611817fde8faa37bd747ddeb96bcfb"],
   },
   {
     state: "INSTALLED",
@@ -1008,12 +982,13 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "Google サポート サービス",
     packageName: "com.google.android.apps.helprtc",
-    versionCode: 892,
-    versionName: "3.6.0",
+    versionCode: 1348,
+    versionName: "3.21.1",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
       "e9fc95f8e43193f6c5e9a20ed793265d1a9083daeb089f16d24639f45b6df839",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["2914b664fa856ca0bb9f3a1ced6ff10bc0928bf1"],
   },
   {
@@ -1053,29 +1028,6 @@ export const applicationReportsData = [
     packageSha256Hash:
       "5aae0ed1f28ea2e96702565172df0e36ebfd8c983afc38917bae4ee60f03acfa",
     signingKeyCertFingerprints: ["b496d5cf646af6fbffd2caa7f5976b6ba48f1e96"],
-  },
-  {
-    state: "REMOVED",
-    events: [
-      {
-        eventType: "INSTALLED",
-        createTime: "2025-01-28T22:51:04.574Z",
-      },
-      {
-        eventType: "CHANGED",
-        createTime: "2025-01-28T22:51:08.805Z",
-      },
-    ],
-    displayName: "Slack",
-    packageName: "com.Slack",
-    versionCode: 90013961,
-    versionName: "25.01.30.0",
-    userFacingType: "USER_FACING",
-    applicationSource: "INSTALLED_FROM_PLAY_STORE",
-    packageSha256Hash:
-      "5a4050d05a10cb37fffba412f7addb0a5a775d5f766f034c71df006044021d8c",
-    installerPackageName: "com.android.vending",
-    signingKeyCertFingerprints: ["c2a4e59ef0ab8081c671b28d89a8586647b5bf3e"],
   },
   {
     state: "INSTALLED",
@@ -1150,25 +1102,6 @@ export const applicationReportsData = [
     signingKeyCertFingerprints: ["d4d3d7ef20b8598a4371499cad130137aa30ff3b"],
   },
   {
-    state: "REMOVED",
-    events: [
-      {
-        eventType: "CHANGED",
-        createTime: "2025-01-28T22:55:16.713Z",
-      },
-    ],
-    displayName: "BasicNote",
-    packageName: "notizen.basic.notes.notas.note.notepad",
-    versionCode: 46,
-    versionName: "2.1.7",
-    userFacingType: "USER_FACING",
-    applicationSource: "INSTALLED_FROM_PLAY_STORE",
-    packageSha256Hash:
-      "e952d9c61a1bd89eeb695ebad426e909621ee34ee3d01b9d5d14cc39cc648d5a",
-    installerPackageName: "com.android.vending",
-    signingKeyCertFingerprints: ["710e568c5511f66f4644b5cd09ec8416d19055f1"],
-  },
-  {
     state: "INSTALLED",
     displayName: "仕事用の設定",
     packageName: "com.android.managedprovisioning",
@@ -1241,29 +1174,6 @@ export const applicationReportsData = [
     signingKeyCertFingerprints: ["269aedacd24e4e4f6781b0aa28a97ee76b16b7ad"],
   },
   {
-    state: "REMOVED",
-    events: [
-      {
-        eventType: "INSTALLED",
-        createTime: "2025-01-28T22:50:57.369Z",
-      },
-      {
-        eventType: "CHANGED",
-        createTime: "2025-01-28T22:50:57.414Z",
-      },
-    ],
-    displayName: "Authenticator",
-    packageName: "com.azure.authenticator",
-    versionCode: 202501913,
-    versionName: "6.2501.0191",
-    userFacingType: "USER_FACING",
-    applicationSource: "INSTALLED_FROM_PLAY_STORE",
-    packageSha256Hash:
-      "d6a9596e8a476f0d32f314aecbdffedb4421b23230f5d619d6ead5d59a379225",
-    installerPackageName: "com.android.vending",
-    signingKeyCertFingerprints: ["868d38d12ddf7d9926c6ab50ad2c294d53a7f6bd"],
-  },
-  {
     state: "INSTALLED",
     displayName: "Presence",
     packageName: "com.android.service.ims.presence",
@@ -1277,12 +1187,6 @@ export const applicationReportsData = [
   },
   {
     state: "INSTALLED",
-    events: [
-      {
-        eventType: "CHANGED",
-        createTime: "2025-01-28T22:48:30.683Z",
-      },
-    ],
     displayName: "Android システム",
     packageName: "android",
     versionCode: 31,
@@ -1297,12 +1201,12 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "Google Play 開発者サービス",
     packageName: "com.google.android.gms",
-    versionCode: 245034029,
-    versionName: "24.50.34 (190400-713002902)",
+    versionCode: 250234029,
+    versionName: "25.02.34 (190400-716794385)",
     userFacingType: "NOT_USER_FACING",
     applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
-      "1861d8a86b26f3689299f0ca8a878b5bdd671dfa5337b149f5868d71695f32cd",
+      "df2c8a381e6c1d06269971b27c8d2c4fe84129e01c47218df0e122a05780f9b9",
     installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["38918a453d07199354f8b19af05ec6562ced5788"],
   },
@@ -1346,24 +1250,26 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "Android ユーザー補助設定ツール",
     packageName: "com.google.android.marvin.talkback",
-    versionCode: 60119554,
-    versionName: "12.0.0.387552725",
+    versionCode: 60143461,
+    versionName: "15.1.0.693631415",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
-      "e8e2d88b0e716707ef145481ccd1792d2f1f2f4df89308689cf151bb803e0bdc",
+      "038faccf471912da861677ea3a2690e7e43a8b1d78e801017055d8b7bae941fd",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["9b424c2d27ad51a42a337e0bb6991c76eca44461"],
   },
   {
     state: "INSTALLED",
     displayName: "Android Auto",
     packageName: "com.google.android.projection.gearhead",
-    versionCode: 65512134,
-    versionName: "6.5.512134-preinstall",
+    versionCode: 134645054,
+    versionName: "13.4.645054-release",
     userFacingType: "USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
-      "b40f8bef042aee8da1a613950eb19eee4d17ac739a38090f5500f592dddbb7aa",
+      "324a1c4f841623154281a1d458974abebd8c63382f51adaf220f54261c25e0e9",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["9ca91f9e704d630ef67a23f52bf1577a92b9ca5d"],
   },
   {
@@ -1430,8 +1336,8 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "Android Services Library",
     packageName: "com.google.android.ext.services",
-    versionCode: 310727000,
-    versionName: "s_aml_310727000",
+    versionCode: 351312060,
+    versionName: "aml_ext_351312060",
     userFacingType: "NOT_USER_FACING",
     applicationSource: "SYSTEM_APP_FACTORY_VERSION",
     packageSha256Hash:
@@ -1440,15 +1346,15 @@ export const applicationReportsData = [
   },
   {
     state: "INSTALLED",
-    displayName:
-      "com.google.android.apps.wearables.maestro.companion.MaestroApplication",
+    displayName: "Pixel Buds",
     packageName: "com.google.android.apps.wearables.maestro.companion",
-    versionCode: 1,
-    versionName: "STUB",
+    versionCode: 10192211,
+    versionName: "1.0.709452546",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
-      "5a7739855efac7b7062552de6be31809d74edb828abf58ce77144079853d1197",
+      "d7b347bdd4eebb52556212fc4b2a1a38c6fa58165e26e96b1f4e36b5a9c916da",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["504dfe5f654afc841695888f912e62dab35872d7"],
   },
   {
@@ -1476,29 +1382,6 @@ export const applicationReportsData = [
     signingKeyCertFingerprints: ["d4d3d7ef20b8598a4371499cad130137aa30ff3b"],
   },
   {
-    state: "REMOVED",
-    events: [
-      {
-        eventType: "INSTALLED",
-        createTime: "2025-01-28T22:51:53.570Z",
-      },
-      {
-        eventType: "CHANGED",
-        createTime: "2025-01-28T22:51:53.641Z",
-      },
-    ],
-    displayName: "Evernote",
-    packageName: "com.evernote",
-    versionCode: 1235298,
-    versionName: "10.123.3",
-    userFacingType: "USER_FACING",
-    applicationSource: "INSTALLED_FROM_PLAY_STORE",
-    packageSha256Hash:
-      "88eadf197b0e28772d454dba89556ab08d6e247afd05a49acb68fc32a9b9c676",
-    installerPackageName: "com.android.vending",
-    signingKeyCertFingerprints: ["0b47d8d21d8a24a2a40c4159e8a5d4d6b027af25"],
-  },
-  {
     state: "INSTALLED",
     displayName: "壁紙とスタイル",
     packageName: "com.google.android.apps.wallpaper",
@@ -1522,29 +1405,6 @@ export const applicationReportsData = [
       "de22fa957827e41740045a4d03d467088c7877476d8123417d81f980e54fd111",
     installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["203997bc46b8792dc9747abd230569071f9a0439"],
-  },
-  {
-    state: "REMOVED",
-    events: [
-      {
-        eventType: "INSTALLED",
-        createTime: "2025-01-28T22:51:54.363Z",
-      },
-      {
-        eventType: "CHANGED",
-        createTime: "2025-01-28T22:51:54.434Z",
-      },
-    ],
-    displayName: "supabase",
-    packageName: "com.google.enterprise.webapp.x717ac3556ee51180",
-    versionCode: 1,
-    versionName: "1",
-    userFacingType: "USER_FACING",
-    applicationSource: "INSTALLED_FROM_PLAY_STORE",
-    packageSha256Hash:
-      "0b90b3dc33c879c9b7ccfebc674f5df245665c95440be8f51c123e36db9a0b09",
-    installerPackageName: "com.android.vending",
-    signingKeyCertFingerprints: ["7899f803e83929e6b633c5cb3c839f801e723449"],
   },
   {
     state: "INSTALLED",
@@ -1683,12 +1543,13 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "Google VR サービス",
     packageName: "com.google.vr.vrcore",
-    versionCode: 160607012,
-    versionName: "1.0.160607012",
+    versionCode: 1607363513,
+    versionName: "1.23.265693388",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
       "a2bfe808d52a5a2bdedff65033ae56b36ac2ee86099523c517b79e1cd9102d79",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["28391bf2d8cf1c39d0133d7f8a989e7a17c62c11"],
   },
   {
@@ -1764,25 +1625,6 @@ export const applicationReportsData = [
     signingKeyCertFingerprints: ["269aedacd24e4e4f6781b0aa28a97ee76b16b7ad"],
   },
   {
-    state: "REMOVED",
-    events: [
-      {
-        eventType: "REMOVED",
-        createTime: "2025-01-28T22:50:17.061Z",
-      },
-    ],
-    displayName: "QuickSupport",
-    packageName: "com.teamviewer.quicksupport.market",
-    versionCode: 1561634,
-    versionName: "15.61.634",
-    userFacingType: "USER_FACING",
-    applicationSource: "INSTALLED_FROM_PLAY_STORE",
-    packageSha256Hash:
-      "71396c6c8caa0f4562dee3f81b096b76b93d68721d5683a4f8281d0b1752cfa9",
-    installerPackageName: "com.android.vending",
-    signingKeyCertFingerprints: ["3e22144e1ba9151c08838d4c5eff236db48aaa32"],
-  },
-  {
     state: "INSTALLED",
     displayName: "com.android.sharedstoragebackup",
     packageName: "com.android.sharedstoragebackup",
@@ -1844,6 +1686,18 @@ export const applicationReportsData = [
   },
   {
     state: "INSTALLED",
+    displayName: "com.google.android.wifi.dialog",
+    packageName: "com.google.android.wifi.dialog",
+    versionCode: 35,
+    versionName: "15",
+    userFacingType: "NOT_USER_FACING",
+    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    packageSha256Hash:
+      "0054ab358f44b84d1b5d1ab6e485256804f88e5e6f4579956393bb9c8fa32168",
+    signingKeyCertFingerprints: ["5b3e8d939c52e8b437712a2fbffb332f5239a261"],
+  },
+  {
+    state: "INSTALLED",
     displayName: "Googleサービスフレームワーク",
     packageName: "com.google.android.gsf",
     versionCode: 31,
@@ -1870,12 +1724,13 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "Main components",
     packageName: "com.google.android.modulemetadata",
-    versionCode: 310005800,
-    versionName: "2021-09-01",
+    versionCode: 351371004,
+    versionName: "2025-01-01S+",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
       "b4320f8952a5a63fadb61e4dcd4680c1e459bcb32fdc35e865d9e74622fa5385",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["8e017ef64bdca26698fe60ec8f45fcf9819f1f4d"],
   },
   {
@@ -1940,6 +1795,16 @@ export const applicationReportsData = [
   },
   {
     state: "INSTALLED",
+    events: [
+      {
+        eventType: "CHANGED",
+        createTime: "2025-02-08T18:31:22.162Z",
+      },
+      {
+        eventType: "CHANGED",
+        createTime: "2025-02-09T10:38:26.025Z",
+      },
+    ],
     displayName: "Google",
     packageName: "com.google.android.googlequicksearchbox",
     versionCode: 301459242,
@@ -1947,7 +1812,7 @@ export const applicationReportsData = [
     userFacingType: "USER_FACING",
     applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
-      "6775f66ab294ebce080a20a2561c2f058d10042c396b391cb4ebb560baf8a325",
+      "3f1a4a9ebc2f8180affd209e52ab97b3caed6df8f50e954d327150fe7bb3763d",
     installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["38918a453d07199354f8b19af05ec6562ced5788"],
   },
@@ -2051,32 +1916,13 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "アクセス権限の管理",
     packageName: "com.google.android.permissioncontroller",
-    versionCode: 310733000,
-    versionName: "s_aml_310733000",
+    versionCode: 351310020,
+    versionName: "aml_per_351310020",
     userFacingType: "NOT_USER_FACING",
     applicationSource: "SYSTEM_APP_FACTORY_VERSION",
     packageSha256Hash:
       "fa9a34b1bb047fede2f8f7f10695a1700a4764b313ca963513c757c08221279d",
     signingKeyCertFingerprints: ["1d156d16e46b29796ef586b1b6c80e8690156717"],
-  },
-  {
-    state: "REMOVED",
-    events: [
-      {
-        eventType: "CHANGED",
-        createTime: "2025-01-28T22:50:40.177Z",
-      },
-    ],
-    displayName: "Adobe Acrobat",
-    packageName: "com.adobe.reader",
-    versionCode: 1930137036,
-    versionName: "25.1.0.37036",
-    userFacingType: "USER_FACING",
-    applicationSource: "INSTALLED_FROM_PLAY_STORE",
-    packageSha256Hash:
-      "ed595061d7a37f755425b77108badcbbd531ef96343820d95160b6230855df17",
-    installerPackageName: "com.android.vending",
-    signingKeyCertFingerprints: ["c07a0b5ec6f01a5789c4bbf88a830360514f02c5"],
   },
   {
     state: "INSTALLED",
@@ -2118,36 +1964,14 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "ファイル",
     packageName: "com.google.android.documentsui",
-    versionCode: 310727000,
-    versionName: "s_aml_310727000",
+    versionCode: 351311000,
+    versionName: "15",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
       "1537fdc1ac86614ba1699906235199f8901baf51e64fef7441a9c16278e12c13",
-    signingKeyCertFingerprints: ["76a97533da0b3f8d5a2faf0a331e6d549717fa2b"],
-  },
-  {
-    state: "REMOVED",
-    events: [
-      {
-        eventType: "INSTALLED",
-        createTime: "2025-01-28T22:51:45.712Z",
-      },
-      {
-        eventType: "CHANGED",
-        createTime: "2025-01-28T22:51:45.826Z",
-      },
-    ],
-    displayName: "Jnotes",
-    packageName: "com.jideos.jnotes.overseas.google",
-    versionCode: 458,
-    versionName: "2.9.9.9-gp",
-    userFacingType: "USER_FACING",
-    applicationSource: "INSTALLED_FROM_PLAY_STORE",
-    packageSha256Hash:
-      "3a87293dcdb1444c9a6304a47dd7ed58cc23c10a447dc3f85be4db591929e7db",
     installerPackageName: "com.android.vending",
-    signingKeyCertFingerprints: ["e410f6e65f17b8551fc31a037f959c934e930cf8"],
+    signingKeyCertFingerprints: ["76a97533da0b3f8d5a2faf0a331e6d549717fa2b"],
   },
   {
     state: "INSTALLED",
@@ -2165,12 +1989,13 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "ネットワーク マネージャ",
     packageName: "com.google.android.networkstack",
-    versionCode: 310727000,
-    versionName: "s_aml_310727000",
+    versionCode: 351310100,
+    versionName: "15",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
       "700964722a1ed7cb2c7709d21645cacc771c5a54cd8e238a20869d3e1368cb52",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["c6ae382ffb7836e34b4f499d11a41fe0fe003cb8"],
   },
   {
@@ -2355,25 +2180,6 @@ export const applicationReportsData = [
     signingKeyCertFingerprints: ["269aedacd24e4e4f6781b0aa28a97ee76b16b7ad"],
   },
   {
-    state: "REMOVED",
-    events: [
-      {
-        eventType: "INSTALLED",
-        createTime: "2025-01-28T22:51:09.055Z",
-      },
-    ],
-    displayName: "Cisco Secure Client",
-    packageName: "com.cisco.anyconnect.vpn.android.avf",
-    versionCode: 5652,
-    versionName: "5.1.7.84",
-    userFacingType: "USER_FACING",
-    applicationSource: "INSTALLED_FROM_PLAY_STORE",
-    packageSha256Hash:
-      "50af72aeb8d65d2f930e1fbe9b8d025ee72ed3e4850a4abc317b7b1f65ff8712",
-    installerPackageName: "com.android.vending",
-    signingKeyCertFingerprints: ["cc7a0d9c60d7a948c2a069b5457df9defcafd1c9"],
-  },
-  {
     state: "INSTALLED",
     displayName: "USCC",
     packageName: "com.android.sdm.plugins.usccdm",
@@ -2387,14 +2193,15 @@ export const applicationReportsData = [
   },
   {
     state: "INSTALLED",
-    displayName: "com.google.vr.apps.ornament",
+    displayName: "プレイグラウンド",
     packageName: "com.google.vr.apps.ornament",
-    versionCode: 190204006,
-    versionName: "0.1",
+    versionCode: 220912006,
+    versionName: "2.12.220912006",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
       "fa92dad48027fa245060a578f21eb32e484c00c9f88fe59a9cbe5ae07c17fb29",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["4b7ff0282c67d7d72ea43730f554263f04ce3155"],
   },
   {
@@ -2416,12 +2223,13 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "おサイフケータイ Webプラグインセットアップ",
     packageName: "com.felicanetworks.mfw.a.boot",
-    versionCode: 320,
-    versionName: "3.2.0",
+    versionCode: 1342411,
+    versionName: "34.24.11",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
       "2b329999ff1b9c673b1541ed8ca851c1f60aa357f7d41af34a848bc9b0ec929c",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["1eca204f4e611817fde8faa37bd747ddeb96bcfb"],
   },
   {
@@ -2448,25 +2256,6 @@ export const applicationReportsData = [
       "31ab0728be24ce570e9dacb6497a9d5f5902bc465a5ad98f0a4036b7b7c3dd0e",
     installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["dd5fe97609b3615afaa64c0fb41427db07151066"],
-  },
-  {
-    state: "REMOVED",
-    events: [
-      {
-        eventType: "CHANGED",
-        createTime: "2025-01-28T22:52:13.504Z",
-      },
-    ],
-    displayName: "Edge",
-    packageName: "com.microsoft.emmx",
-    versionCode: 295712905,
-    versionName: "132.0.2957.129",
-    userFacingType: "USER_FACING",
-    applicationSource: "INSTALLED_FROM_PLAY_STORE",
-    packageSha256Hash:
-      "dbd52cbe791db5ddfcdd63ad4b790c40b6555350b2256773501e780ae4af4c65",
-    installerPackageName: "com.android.vending",
-    signingKeyCertFingerprints: ["3f640e279f63bcea71082ae7e8c7efa2da014cad"],
   },
   {
     state: "INSTALLED",
@@ -2566,14 +2355,15 @@ export const applicationReportsData = [
   },
   {
     state: "INSTALLED",
-    displayName: "CaptivePortalLogin",
+    displayName: "キャプティブ ポータル ログイン",
     packageName: "com.google.android.captiveportallogin",
-    versionCode: 310727000,
-    versionName: "s_aml_310727000",
+    versionCode: 351310100,
+    versionName: "15",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
       "8bd05e17119e3c5f01610d8516e17e6f4060810941b897439d36fe3a3ac9648c",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["c6ae382ffb7836e34b4f499d11a41fe0fe003cb8"],
   },
   {
@@ -2616,12 +2406,13 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "SIM マネージャー",
     packageName: "com.google.android.euicc",
-    versionCode: 200433,
-    versionName: "D.2.0.386551598-google",
+    versionCode: 224706,
+    versionName: "D.2.1.692833496-google",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
       "a9c9f57c14269ca5b7e44fa30058c10a277d1c14ae87945c686c5d4c04488ae0",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["f1fea6b3c0b0b4a2bb101e99707e56f837658ec2"],
   },
   {
@@ -2640,12 +2431,12 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "Google Play ストア",
     packageName: "com.android.vending",
-    versionCode: 84452330,
-    versionName: "44.5.23-31 [0] [PR] 715840561",
+    versionCode: 84472430,
+    versionName: "44.7.24-31 [0] [PR] 719495724",
     userFacingType: "USER_FACING",
     applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
-      "dfae39a1108d470cbd07100d82580aa8cf9792ffcc8b76ab8ed20086064a7c76",
+      "405e47532693eae5bab1bd69643893130b448adc7f2be75ef78b1490b0b861aa",
     installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["38918a453d07199354f8b19af05ec6562ced5788"],
   },
@@ -2689,8 +2480,8 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "OsuLogin",
     packageName: "com.google.android.hotspot2.osulogin",
-    versionCode: 31,
-    versionName: "12-7653768",
+    versionCode: 35,
+    versionName: "15",
     userFacingType: "NOT_USER_FACING",
     applicationSource: "SYSTEM_APP_FACTORY_VERSION",
     packageSha256Hash:
@@ -2930,10 +2721,10 @@ export const applicationReportsData = [
   },
   {
     state: "INSTALLED",
-    displayName: "メディア ストレージ",
+    displayName: "メディアの選択",
     packageName: "com.google.android.providers.media.module",
-    versionCode: 31,
-    versionName: "12-7639396",
+    versionCode: 35,
+    versionName: "15",
     userFacingType: "NOT_USER_FACING",
     applicationSource: "SYSTEM_APP_FACTORY_VERSION",
     packageSha256Hash:
@@ -2951,29 +2742,6 @@ export const applicationReportsData = [
     packageSha256Hash:
       "cdb7447111726c0f783725011b44278f7581be064cedf4859dabf1a19e344096",
     signingKeyCertFingerprints: ["269aedacd24e4e4f6781b0aa28a97ee76b16b7ad"],
-  },
-  {
-    state: "REMOVED",
-    events: [
-      {
-        eventType: "INSTALLED",
-        createTime: "2025-01-28T22:49:37.744Z",
-      },
-      {
-        eventType: "CHANGED",
-        createTime: "2025-01-28T22:49:37.756Z",
-      },
-    ],
-    displayName: "WPS Office",
-    packageName: "cn.wps.moffice_eng",
-    versionCode: 1527,
-    versionName: "18.15.1",
-    userFacingType: "USER_FACING",
-    applicationSource: "INSTALLED_FROM_PLAY_STORE",
-    packageSha256Hash:
-      "8ca4ced87b3aff3b18a8ff8c87aa09214eff21adc62381f393a76d8b79f1a824",
-    installerPackageName: "com.android.vending",
-    signingKeyCertFingerprints: ["7266e5a058b08d4c67214e681a463eabe4034a32"],
   },
   {
     state: "INSTALLED",
@@ -3136,26 +2904,17 @@ export const applicationReportsData = [
     state: "INSTALLED",
     displayName: "Gboard",
     packageName: "com.google.android.inputmethod.latin",
-    versionCode: 60780718,
-    versionName: "10.8.03.382062350-preload-arm64-v8a",
+    versionCode: 157445426,
+    versionName: "14.9.07.696880419-release-arm64-v8a",
     userFacingType: "NOT_USER_FACING",
-    applicationSource: "SYSTEM_APP_FACTORY_VERSION",
+    applicationSource: "SYSTEM_APP_UPDATED_VERSION",
     packageSha256Hash:
       "621ee8d8c37261250b7b76ebde7532d181d9eb6b72f8e2a8eaef623ea3617dbd",
+    installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["38918a453d07199354f8b19af05ec6562ced5788"],
   },
   {
     state: "INSTALLED",
-    events: [
-      {
-        eventType: "CHANGED",
-        createTime: "2025-01-28T22:48:50.045Z",
-      },
-      {
-        eventType: "CHANGED",
-        createTime: "2025-01-28T23:03:33.662Z",
-      },
-    ],
     displayName: "Google Wi-Fi Provisioner",
     packageName: "com.google.android.apps.carrier.carrierwifi",
     versionCode: 98,
@@ -3230,6 +2989,44 @@ export const applicationReportsData = [
       "d6c85eebbb8a8f67374edcd5ceff8382e5dfb707636cc95dc0c942e38fe9a0ae",
     installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["7dc83cd2abe833560c2896626e307041c0df3a7a"],
+  },
+  {
+    state: "REMOVED",
+    events: [
+      {
+        eventType: "CHANGED",
+        createTime: "2025-01-28T22:50:40.066Z",
+      },
+    ],
+    displayName: "Boxer",
+    packageName: "com.boxer.email",
+    versionCode: 2797,
+    versionName: "24.11.1.81",
+    userFacingType: "USER_FACING",
+    applicationSource: "INSTALLED_FROM_PLAY_STORE",
+    packageSha256Hash:
+      "11c57fa3d6cd0a961031485effd09b0039ab21d02c17e1587c6407b490eb7120",
+    installerPackageName: "com.android.vending",
+    signingKeyCertFingerprints: ["09fa4b03b82e6fe42b3ccbe682cb1c719abedb96"],
+  },
+  {
+    state: "REMOVED",
+    events: [
+      {
+        eventType: "INSTALLED",
+        createTime: "2025-01-28T22:51:04.518Z",
+      },
+    ],
+    displayName: "メモ帳",
+    packageName: "com.atomczak.notepat",
+    versionCode: 81,
+    versionName: "1.37.0",
+    userFacingType: "USER_FACING",
+    applicationSource: "INSTALLED_FROM_PLAY_STORE",
+    packageSha256Hash:
+      "9eecd10d905f939f58ab160caf8e7323f0e98f9e9915af1982a29e7456d1bc40",
+    installerPackageName: "com.android.vending",
+    signingKeyCertFingerprints: ["79a87db7ed283970cb8da4ffa92989eb99a21d0a"],
   },
   {
     state: "REMOVED",
@@ -3331,6 +3128,42 @@ export const applicationReportsData = [
   },
   {
     state: "REMOVED",
+    displayName: "LinkedIn",
+    packageName: "com.linkedin.android",
+    versionCode: 193600,
+    versionName: "4.1.1028",
+    userFacingType: "USER_FACING",
+    applicationSource: "INSTALLED_FROM_PLAY_STORE",
+    packageSha256Hash:
+      "0685f905d9994d4ba4887f0574a1968b1eb9293bd1fac96b0e3387f3815e324c",
+    installerPackageName: "com.android.vending",
+    signingKeyCertFingerprints: ["443cb997718d0ac5162888bae5e4724582862676"],
+  },
+  {
+    state: "REMOVED",
+    events: [
+      {
+        eventType: "INSTALLED",
+        createTime: "2025-01-28T22:51:04.574Z",
+      },
+      {
+        eventType: "CHANGED",
+        createTime: "2025-01-28T22:51:08.805Z",
+      },
+    ],
+    displayName: "Slack",
+    packageName: "com.Slack",
+    versionCode: 90013961,
+    versionName: "25.01.30.0",
+    userFacingType: "USER_FACING",
+    applicationSource: "INSTALLED_FROM_PLAY_STORE",
+    packageSha256Hash:
+      "5a4050d05a10cb37fffba412f7addb0a5a775d5f766f034c71df006044021d8c",
+    installerPackageName: "com.android.vending",
+    signingKeyCertFingerprints: ["c2a4e59ef0ab8081c671b28d89a8586647b5bf3e"],
+  },
+  {
+    state: "REMOVED",
     displayName: "OneNote",
     packageName: "com.microsoft.office.onenote",
     versionCode: 1806376067,
@@ -3344,6 +3177,25 @@ export const applicationReportsData = [
   },
   {
     state: "REMOVED",
+    events: [
+      {
+        eventType: "CHANGED",
+        createTime: "2025-01-28T22:55:16.713Z",
+      },
+    ],
+    displayName: "BasicNote",
+    packageName: "notizen.basic.notes.notas.note.notepad",
+    versionCode: 46,
+    versionName: "2.1.7",
+    userFacingType: "USER_FACING",
+    applicationSource: "INSTALLED_FROM_PLAY_STORE",
+    packageSha256Hash:
+      "e952d9c61a1bd89eeb695ebad426e909621ee34ee3d01b9d5d14cc39cc648d5a",
+    installerPackageName: "com.android.vending",
+    signingKeyCertFingerprints: ["710e568c5511f66f4644b5cd09ec8416d19055f1"],
+  },
+  {
+    state: "REMOVED",
     displayName: "Excel",
     packageName: "com.microsoft.office.excel",
     versionCode: 2004419763,
@@ -3354,6 +3206,29 @@ export const applicationReportsData = [
       "a05f06d9bbac9db57aad2ccbcf9a8b52219e056d0ad79e3c72e2e23d235b647c",
     installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["7dc83cd2abe833560c2896626e307041c0df3a7a"],
+  },
+  {
+    state: "REMOVED",
+    events: [
+      {
+        eventType: "INSTALLED",
+        createTime: "2025-01-28T22:50:57.369Z",
+      },
+      {
+        eventType: "CHANGED",
+        createTime: "2025-01-28T22:50:57.414Z",
+      },
+    ],
+    displayName: "Authenticator",
+    packageName: "com.azure.authenticator",
+    versionCode: 202501913,
+    versionName: "6.2501.0191",
+    userFacingType: "USER_FACING",
+    applicationSource: "INSTALLED_FROM_PLAY_STORE",
+    packageSha256Hash:
+      "d6a9596e8a476f0d32f314aecbdffedb4421b23230f5d619d6ead5d59a379225",
+    installerPackageName: "com.android.vending",
+    signingKeyCertFingerprints: ["868d38d12ddf7d9926c6ab50ad2c294d53a7f6bd"],
   },
   {
     state: "REMOVED",
@@ -3383,6 +3258,29 @@ export const applicationReportsData = [
   },
   {
     state: "REMOVED",
+    events: [
+      {
+        eventType: "INSTALLED",
+        createTime: "2025-01-28T22:51:53.570Z",
+      },
+      {
+        eventType: "CHANGED",
+        createTime: "2025-01-28T22:51:53.641Z",
+      },
+    ],
+    displayName: "Evernote",
+    packageName: "com.evernote",
+    versionCode: 1235298,
+    versionName: "10.123.3",
+    userFacingType: "USER_FACING",
+    applicationSource: "INSTALLED_FROM_PLAY_STORE",
+    packageSha256Hash:
+      "88eadf197b0e28772d454dba89556ab08d6e247afd05a49acb68fc32a9b9c676",
+    installerPackageName: "com.android.vending",
+    signingKeyCertFingerprints: ["0b47d8d21d8a24a2a40c4159e8a5d4d6b027af25"],
+  },
+  {
+    state: "REMOVED",
     displayName: "nino+",
     packageName: "com.google.enterprise.webapp.xf73dc4256a1bf67a",
     versionCode: 1,
@@ -3393,6 +3291,29 @@ export const applicationReportsData = [
       "fccf6874268f1639c59db88f0695c12d79714544746260d7f121790f3bf7ed8a",
     installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["084e14c7cb7dc6a4a24b3063d9ae6bd0ce546a5a"],
+  },
+  {
+    state: "REMOVED",
+    events: [
+      {
+        eventType: "INSTALLED",
+        createTime: "2025-01-28T22:51:54.363Z",
+      },
+      {
+        eventType: "CHANGED",
+        createTime: "2025-01-28T22:51:54.434Z",
+      },
+    ],
+    displayName: "supabase",
+    packageName: "com.google.enterprise.webapp.x717ac3556ee51180",
+    versionCode: 1,
+    versionName: "1",
+    userFacingType: "USER_FACING",
+    applicationSource: "INSTALLED_FROM_PLAY_STORE",
+    packageSha256Hash:
+      "0b90b3dc33c879c9b7ccfebc674f5df245665c95440be8f51c123e36db9a0b09",
+    installerPackageName: "com.android.vending",
+    signingKeyCertFingerprints: ["7899f803e83929e6b633c5cb3c839f801e723449"],
   },
   {
     state: "REMOVED",
@@ -3432,6 +3353,25 @@ export const applicationReportsData = [
       "9d4e946264c7414a251bbfad964481383d31083ad33784361e23ff6448e5312c",
     installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["497aeee58af2a74530ce1f9b256d4654aa413020"],
+  },
+  {
+    state: "REMOVED",
+    events: [
+      {
+        eventType: "REMOVED",
+        createTime: "2025-01-28T22:50:17.061Z",
+      },
+    ],
+    displayName: "QuickSupport",
+    packageName: "com.teamviewer.quicksupport.market",
+    versionCode: 1561634,
+    versionName: "15.61.634",
+    userFacingType: "USER_FACING",
+    applicationSource: "INSTALLED_FROM_PLAY_STORE",
+    packageSha256Hash:
+      "71396c6c8caa0f4562dee3f81b096b76b93d68721d5683a4f8281d0b1752cfa9",
+    installerPackageName: "com.android.vending",
+    signingKeyCertFingerprints: ["3e22144e1ba9151c08838d4c5eff236db48aaa32"],
   },
   {
     state: "REMOVED",
@@ -3487,6 +3427,25 @@ export const applicationReportsData = [
   },
   {
     state: "REMOVED",
+    events: [
+      {
+        eventType: "CHANGED",
+        createTime: "2025-01-28T22:50:40.177Z",
+      },
+    ],
+    displayName: "Adobe Acrobat",
+    packageName: "com.adobe.reader",
+    versionCode: 1930137036,
+    versionName: "25.1.0.37036",
+    userFacingType: "USER_FACING",
+    applicationSource: "INSTALLED_FROM_PLAY_STORE",
+    packageSha256Hash:
+      "ed595061d7a37f755425b77108badcbbd531ef96343820d95160b6230855df17",
+    installerPackageName: "com.android.vending",
+    signingKeyCertFingerprints: ["c07a0b5ec6f01a5789c4bbf88a830360514f02c5"],
+  },
+  {
+    state: "REMOVED",
     displayName: "OneDrive",
     packageName: "com.microsoft.skydrive",
     versionCode: 2027220402,
@@ -3500,6 +3459,29 @@ export const applicationReportsData = [
   },
   {
     state: "REMOVED",
+    events: [
+      {
+        eventType: "INSTALLED",
+        createTime: "2025-01-28T22:51:45.712Z",
+      },
+      {
+        eventType: "CHANGED",
+        createTime: "2025-01-28T22:51:45.826Z",
+      },
+    ],
+    displayName: "Jnotes",
+    packageName: "com.jideos.jnotes.overseas.google",
+    versionCode: 458,
+    versionName: "2.9.9.9-gp",
+    userFacingType: "USER_FACING",
+    applicationSource: "INSTALLED_FROM_PLAY_STORE",
+    packageSha256Hash:
+      "3a87293dcdb1444c9a6304a47dd7ed58cc23c10a447dc3f85be4db591929e7db",
+    installerPackageName: "com.android.vending",
+    signingKeyCertFingerprints: ["e410f6e65f17b8551fc31a037f959c934e930cf8"],
+  },
+  {
+    state: "REMOVED",
     displayName: "Teams",
     packageName: "com.microsoft.teams",
     versionCode: 2025014525,
@@ -3510,6 +3492,44 @@ export const applicationReportsData = [
       "38766b07f778138b838ed9dd65b27ca9dcdb261f36ad0333bb713eb437c06911",
     installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["7dc83cd2abe833560c2896626e307041c0df3a7a"],
+  },
+  {
+    state: "REMOVED",
+    events: [
+      {
+        eventType: "INSTALLED",
+        createTime: "2025-01-28T22:51:09.055Z",
+      },
+    ],
+    displayName: "Cisco Secure Client",
+    packageName: "com.cisco.anyconnect.vpn.android.avf",
+    versionCode: 5652,
+    versionName: "5.1.7.84",
+    userFacingType: "USER_FACING",
+    applicationSource: "INSTALLED_FROM_PLAY_STORE",
+    packageSha256Hash:
+      "50af72aeb8d65d2f930e1fbe9b8d025ee72ed3e4850a4abc317b7b1f65ff8712",
+    installerPackageName: "com.android.vending",
+    signingKeyCertFingerprints: ["cc7a0d9c60d7a948c2a069b5457df9defcafd1c9"],
+  },
+  {
+    state: "REMOVED",
+    events: [
+      {
+        eventType: "CHANGED",
+        createTime: "2025-01-28T22:52:13.504Z",
+      },
+    ],
+    displayName: "Edge",
+    packageName: "com.microsoft.emmx",
+    versionCode: 295712905,
+    versionName: "132.0.2957.129",
+    userFacingType: "USER_FACING",
+    applicationSource: "INSTALLED_FROM_PLAY_STORE",
+    packageSha256Hash:
+      "dbd52cbe791db5ddfcdd63ad4b790c40b6555350b2256773501e780ae4af4c65",
+    installerPackageName: "com.android.vending",
+    signingKeyCertFingerprints: ["3f640e279f63bcea71082ae7e8c7efa2da014cad"],
   },
   {
     state: "REMOVED",
@@ -3633,5 +3653,28 @@ export const applicationReportsData = [
       "5f544419ddcb8594ccac8c944ea6485496ed7830e3a4bb5bfb36c9f3132940fc",
     installerPackageName: "com.android.vending",
     signingKeyCertFingerprints: ["3573b53feb45b6bc34f56abcae5584c0071df854"],
+  },
+  {
+    state: "REMOVED",
+    events: [
+      {
+        eventType: "INSTALLED",
+        createTime: "2025-01-28T22:49:37.744Z",
+      },
+      {
+        eventType: "CHANGED",
+        createTime: "2025-01-28T22:49:37.756Z",
+      },
+    ],
+    displayName: "WPS Office",
+    packageName: "cn.wps.moffice_eng",
+    versionCode: 1527,
+    versionName: "18.15.1",
+    userFacingType: "USER_FACING",
+    applicationSource: "INSTALLED_FROM_PLAY_STORE",
+    packageSha256Hash:
+      "8ca4ced87b3aff3b18a8ff8c87aa09214eff21adc62381f393a76d8b79f1a824",
+    installerPackageName: "com.android.vending",
+    signingKeyCertFingerprints: ["7266e5a058b08d4c67214e681a463eabe4034a32"],
   },
 ];
