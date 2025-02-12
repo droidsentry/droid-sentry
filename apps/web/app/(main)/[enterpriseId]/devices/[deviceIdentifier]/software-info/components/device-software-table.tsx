@@ -12,11 +12,10 @@ import {
 } from "@/components/ui/table";
 
 import LoadingWithinPageSkeleton from "@/app/(main)/[enterpriseId]/components/loading-within-page-sleleton";
-import InformationTooltip from "@/components/information-tooltip";
-import { devicePosture, encryptionStatus } from "@/lib/device";
+import InfoTooltip from "@/components/info-tooltip";
+import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
 import useSWRImmutable from "swr/immutable";
 import { getHardwareInfo } from "../../actions/device";
-import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
 
 export function DeviceSoftwareTable({
   enterpriseId,
@@ -51,7 +50,7 @@ export function DeviceSoftwareTable({
               <TableCell>
                 <div className="flex items-center gap-2">
                   <span className="font-bold">Android OSのバージョン</span>
-                  <InformationTooltip
+                  <InfoTooltip
                     tooltip={
                       "デバイスの設定画面で確認できるAndroid OSのバージョンを表示します。例: 6.0.1"
                     }
@@ -68,7 +67,7 @@ export function DeviceSoftwareTable({
               <TableCell>
                 <div className="flex items-center gap-2">
                   <span className="font-bold">Android ビルドタイム</span>
-                  <InformationTooltip
+                  <InfoTooltip
                     tooltip={"デバイスのAndroid OSのビルドタイムを表示します。"}
                   />
                 </div>

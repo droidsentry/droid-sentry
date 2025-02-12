@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 
 import LoadingWithinPageSkeleton from "@/app/(main)/[enterpriseId]/components/loading-within-page-sleleton";
+import InfoTooltip from "@/components/info-tooltip";
 import {
   Table,
   TableBody,
@@ -18,12 +19,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
+import { securityRisk } from "@/lib/device";
 import useSWRImmutable from "swr/immutable";
 import { getHardwareInfo } from "../../actions/device";
-import { securityRisk } from "@/lib/device";
-import InformationTooltip from "@/components/information-tooltip";
 
 export default function DeviceSecurityPostureDetailsTable({
   enterpriseId,
@@ -77,7 +76,7 @@ export default function DeviceSecurityPostureDetailsTable({
                           <span className="font-bold">
                             {securityPostureDetail.securityRisk ?? "不明"}
                           </span>
-                          <InformationTooltip
+                          <InfoTooltip
                             tooltip={
                               securityRisk.find(
                                 (risk) =>

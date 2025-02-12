@@ -18,38 +18,16 @@ import {
 } from "@/components/ui/table";
 
 import LoadingWithinPageSkeleton from "@/app/(main)/[enterpriseId]/components/loading-within-page-sleleton";
-import InformationTooltip from "@/components/information-tooltip";
+import InfoTooltip from "@/components/info-tooltip";
 import useSWRImmutable from "swr/immutable";
 import { getDevicePolicyInfo, getHardwareInfo } from "../../actions/device";
 import { Badge } from "@/components/ui/badge";
 
 export function DevicePolicyInfoTable({
   deviceSource,
-  enterpriseId,
-  deviceIdentifier,
 }: {
   deviceSource: DevicePolicyInfoType;
-  enterpriseId: string;
-  deviceIdentifier: string;
 }) {
-  // const key = `/api/devices/${enterpriseId}/${deviceIdentifier}`;
-  // const { data, error, isLoading, isValidating } =
-  //   useSWRImmutable<DevicePolicyInfoType>(
-  //     key,
-  //     () => {
-  //       return getDevicePolicyInfo({ enterpriseId, deviceIdentifier });
-  //     }
-  //     // {
-  //     //   fallbackData: deviceSource,
-  //     // }
-  //   );
-  // if (error) return <div>エラーが発生しました</div>;
-  // if (isLoading || isValidating) return <LoadingWithinPageSkeleton />;
-  // if (!data) return null;
-  // const policyDisplayName = data.currentPolicy?.policyDisplayName;
-  // const requestedPolicyDisplayName =
-  //   data.requestedPolicy?.requestedPolicyDisplayName;
-  // const deviceData = data.device as AndroidManagementDevice;
   const policyDisplayName = deviceSource?.currentPolicy?.policyDisplayName;
   const requestedPolicyDisplayName =
     deviceSource?.requestedPolicy?.requestedPolicyDisplayName;
@@ -72,7 +50,7 @@ export function DevicePolicyInfoTable({
               <TableCell>
                 <div className="flex items-center gap-2">
                   <span className="font-bold">適用済みポリシー</span>
-                  <InformationTooltip
+                  <InfoTooltip
                     tooltip={"現在、適用されているポリシーを表示します。"}
                   />
                 </div>
@@ -101,7 +79,7 @@ export function DevicePolicyInfoTable({
               <TableCell>
                 <div className="flex items-center gap-2">
                   <span className="font-bold">MACアドレス</span>
-                  <InformationTooltip
+                  <InfoTooltip
                     tooltip={
                       "Wi-FiのMACアドレスを表示します。例 : 7c:11:11:11:11:11"
                     }
@@ -126,7 +104,7 @@ export function DevicePolicyInfoTable({
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <span className="font-bold">SIM{index + 1}</span>
-                        <InformationTooltip
+                        <InfoTooltip
                           tooltip={
                             "デバイスに搭載されているSIMの情報を表示します。Android API レベル 23 以降の管理モード「デバイスオーナー」のデバイスのみサポートしています。"
                           }
@@ -164,7 +142,7 @@ export function DevicePolicyInfoTable({
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <span className="font-bold">SIM</span>
-                    <InformationTooltip
+                    <InfoTooltip
                       tooltip={
                         "デバイスに搭載されているSIMの情報を表示します。Android API レベル 23 以降の管理モード「デバイスオーナー」のデバイスのみサポートしています。"
                       }

@@ -7,11 +7,7 @@ import {
 } from "./ui/tooltip";
 import React from "react";
 
-export default function InformationTooltip({
-  tooltip,
-}: {
-  tooltip: React.ReactNode;
-}) {
+export default function InfoTooltip({ tooltip }: { tooltip: React.ReactNode }) {
   return (
     <TooltipProvider delayDuration={200}>
       <Tooltip>

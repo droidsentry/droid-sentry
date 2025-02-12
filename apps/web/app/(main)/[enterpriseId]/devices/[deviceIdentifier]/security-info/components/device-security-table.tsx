@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 
 import LoadingWithinPageSkeleton from "@/app/(main)/[enterpriseId]/components/loading-within-page-sleleton";
-import InformationTooltip from "@/components/information-tooltip";
+import InfoTooltip from "@/components/info-tooltip";
 import { devicePosture, encryptionStatus } from "@/lib/device";
 import useSWRImmutable from "swr/immutable";
 import { getHardwareInfo } from "../../actions/device";
@@ -50,7 +50,7 @@ export function DeviceSecurityTable({
               <TableCell>
                 <div className="flex items-center gap-2">
                   <span className="font-bold">画面ロックのステータス</span>
-                  <InformationTooltip
+                  <InfoTooltip
                     tooltip={
                       "デバイスがPIN、または、パスワードで保護されているかどうかを表示します。"
                     }
@@ -71,7 +71,7 @@ export function DeviceSecurityTable({
               <TableCell>
                 <div className="flex items-center gap-2">
                   <span className="font-bold">DPCの暗号化ステータス</span>
-                  <InformationTooltip
+                  <InfoTooltip
                     tooltip={
                       "Device Policy Controllerの暗号化ステータスを表示します。"
                     }
@@ -91,7 +91,7 @@ export function DeviceSecurityTable({
                   <span className="font-bold">
                     Google Play プロテクトのステータス
                   </span>
-                  <InformationTooltip
+                  <InfoTooltip
                     tooltip={
                       "Google Play プロテクトのステータスを使用してアプリの安全性とデータプライバシーが確保されているかどうかを示します。"
                     }
@@ -114,7 +114,7 @@ export function DeviceSecurityTable({
                   <span className="font-bold">
                     提供元不明アプリのインストール可否
                   </span>
-                  <InformationTooltip
+                  <InfoTooltip
                     tooltip={
                       "Play Store以外でアプリをインストールできるかどうかを示します。"
                     }
@@ -135,7 +135,7 @@ export function DeviceSecurityTable({
               <TableCell>
                 <div className="flex items-center gap-2">
                   <span className="font-bold">ADBの可否</span>
-                  <InformationTooltip
+                  <InfoTooltip
                     tooltip={
                       "デバイスで、ADBが有効になっているかどうかを示します。"
                     }
@@ -156,7 +156,7 @@ export function DeviceSecurityTable({
               <TableCell>
                 <div className="flex items-center gap-2">
                   <span className="font-bold">ストレージの暗号化</span>
-                  <InformationTooltip
+                  <InfoTooltip
                     tooltip={
                       "デバイスのストレージが暗号化されているかどうかを示します。"
                     }
@@ -179,7 +179,7 @@ export function DeviceSecurityTable({
                   <span className="font-bold">
                     デベロッパーモードのステータス
                   </span>
-                  <InformationTooltip
+                  <InfoTooltip
                     tooltip={
                       "デベロッパーモードが有効になっているかどうかを示します。"
                     }
@@ -203,7 +203,7 @@ export function DeviceSecurityTable({
                   <span className="font-bold">
                     デバイスのセキュリティステータス
                   </span>
-                  <InformationTooltip
+                  <InfoTooltip
                     tooltip={"デバイスのセキュリティ対策の状態を表示します。"}
                   />
                 </div>

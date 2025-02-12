@@ -28,6 +28,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { TablePagination } from "../../../apps/components/table/table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
+import FloatingToolbar from "./floating-toolbar";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -86,7 +87,8 @@ export default function DeviceTable<TData, TValue>({
         style={{ width: table.getCenterTotalSize() }}
         className={cn(
           "bg-background w-full",
-          "border-separate border-spacing-0" // セルの境界を分離し、あとでボーダーを重ねる
+          "border-separate border-spacing-0", // セルの境界を分離し、あとでボーダーを重ねる
+          "mb-20"
         )}
       >
         <TableHeader className="z-10">
@@ -154,7 +156,6 @@ export default function DeviceTable<TData, TValue>({
                       "border-b",
                       "first:sticky first:left-0 first:z-10 first:bg-background first:border-r",
                       "[&:nth-child(3)]:border-l", // 3番目のセルの左ボーダーを追加
-
                       "last:sticky last:right-0 last:z-10 last:bg-background last:border-r last:border-l",
                       "p-0",
                       "transition-all duration-200"
@@ -176,6 +177,7 @@ export default function DeviceTable<TData, TValue>({
         </TableBody>
       </Table>
       <TablePagination table={table} className="pt-1" />
+      <FloatingToolbar table={table} />
     </div>
   );
 }

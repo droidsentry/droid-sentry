@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
+  Ban,
   CaptionsOff,
   Download,
   EllipsisIcon,
@@ -149,7 +150,7 @@ export default function DataTableMenu({ row }: DataTableMenuProps) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon">
-            <EllipsisIcon className="h-4 w-4" />
+            <EllipsisIcon className="size-4" />
             <span className="sr-only">メニューを開く</span>
           </Button>
         </DropdownMenuTrigger>
@@ -157,13 +158,13 @@ export default function DataTableMenu({ row }: DataTableMenuProps) {
           <DropdownMenuItem
             onSelect={() => handleDeviceInfo(row.original.deviceIdentifier)}
           >
-            <Smartphone className="mr-4 h-4 w-4" />
+            <Smartphone className="mr-4 size-4" />
             <span>デバイス詳細</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => handleSyncDeviceInfo(row.original.deviceIdentifier)}
           >
-            <Download className="mr-4 h-4 w-4" />
+            <Download className="mr-4 size-4" />
             <span>デバイス情報取得</span>
           </DropdownMenuItem>
           <DropdownMenuItem
@@ -171,32 +172,32 @@ export default function DataTableMenu({ row }: DataTableMenuProps) {
               handleDeviceAction(row.original.deviceIdentifier ?? "")
             }
           >
-            <Lock className="mr-4 h-4 w-4" />
+            <Lock className="mr-4 size-4" />
             <span>リモートロック</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => handleDeviceAction(row.original.deviceIdentifier)}
           >
-            <Key className="mr-4 h-4 w-4" />
+            <Key className="mr-4 size-4" />
             <span>パスワードリセット</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => handleDeviceAction(row.original.deviceIdentifier)}
           >
-            <RefreshCw className="mr-4 h-4 w-4" />
+            <RefreshCw className="mr-4 size-4" />
             <span>端末再起動</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => handleDeviceAction(row.original.deviceIdentifier)}
           >
-            <CaptionsOff className="mr-4 h-4 w-4" />
+            <CaptionsOff className="mr-4 size-4" />
             <span>アプリデータ削除</span>
           </DropdownMenuItem>
           {isLostMode ? (
             <DropdownMenuItem
               onSelect={() => handleStopLostMode(row.original.deviceIdentifier)}
             >
-              <VibrateOffIcon className="mr-4 h-4 w-4" />
+              <VibrateOffIcon className="mr-4 size-4" />
               <span>紛失モード停止</span>
             </DropdownMenuItem>
           ) : (
@@ -205,12 +206,12 @@ export default function DataTableMenu({ row }: DataTableMenuProps) {
                 handleStartLostMode(row.original.deviceIdentifier)
               }
             >
-              <Vibrate className="mr-4 h-4 w-4" />
+              <Vibrate className="mr-4 size-4" />
               <span>紛失モード</span>
             </DropdownMenuItem>
           )}
           <DropdownMenuItem onSelect={() => setIsDialogOpen(true)}>
-            <Trash2 className="mr-4 h-4 w-4" />
+            <Ban className="mr-4 size-4" />
             <span className="text-red-500">端末初期化</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -275,133 +276,6 @@ export default function DataTableMenu({ row }: DataTableMenuProps) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
-      {/* <Dialog open={isDetailsDialogOpen} onOpenChange={setIsDetailsDialogOpen}>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>デバイス詳細</DialogTitle>
-          </DialogHeader>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <h3 className="font-semibold">基本情報</h3>
-              <p>API Level: {device?.apiLevel ?? "不明"}</p>
-              <p>管理モード: {device?.managementMode ?? "不明"}</p>
-              <p>所有権: {device?.ownership ?? "不明"}</p>
-              <p>状態: {device?.state ?? "不明"}</p>
-              <p>ポリシー準拠: {device?.policyCompliant ? "はい" : "いいえ"}</p>
-            </div>
-            <div>
-              <h3 className="font-semibold">ハードウェア情報</h3>
-              <p>ブランド: {device?.hardwareInfo?.brand ?? "不明"}</p>
-              <p>製造元: {device?.hardwareInfo?.manufacturer ?? "不明"}</p>
-              <p>モデル: {device?.hardwareInfo?.model ?? "不明"}</p>
-              <p>
-                シリアル番号: {device?.hardwareInfo?.serialNumber ?? "不明"}
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold">メモリ情報</h3>
-              <p>
-                内部ストレージ:{" "}
-                {(
-                  parseInt(device?.memoryInfo?.totalInternalStorage ?? "0") /
-                  (1024 * 1024 * 1024)
-                ).toFixed(2)}{" "}
-                GB
-              </p>
-              <p>
-                RAM:{" "}
-                {(
-                  parseInt(device?.memoryInfo?.totalRam ?? "0") /
-                  (1024 * 1024 * 1024)
-                ).toFixed(2)}{" "}
-                GB
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold">ポリシー情報</h3>
-              <p>
-                適用ポリシー名:{" "}
-                {device?.appliedPolicyName?.split("/").pop() ?? "不明"}
-              </p>
-              <p>
-                ポリシーバージョン: {device?.appliedPolicyVersion ?? "不明"}
-              </p>
-              <p>
-                最終同期:{" "}
-                {device?.lastPolicySyncTime
-                  ? new Date(device?.lastPolicySyncTime).toLocaleString("ja-JP")
-                  : "不明"}
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold">セキュリティ情報</h3>
-              <p>
-                デバイスの姿勢:{" "}
-                {device?.securityPosture?.devicePosture ?? "不明"}
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold">その他</h3>
-              <p>
-                登録日時:{" "}
-                {device?.enrollmentTime
-                  ? new Date(device?.enrollmentTime).toLocaleString("ja-JP")
-                  : "不明"}
-              </p>
-              <p>
-                最終ステータス報告:{" "}
-                {device?.lastStatusReportTime
-                  ? new Date(device?.lastStatusReportTime).toLocaleString(
-                      "ja-JP"
-                    )
-                  : "不明"}
-              </p>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button onClick={() => setIsDetailsDialogOpen(false)}>
-              閉じる
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog> */}
     </div>
   );
 }
-
-/**
- * // デバイスアクションの実装
-  const handleDeviceAction = async (action: string) => {
-    try {
-      const deviceName = device.name;
-      
-      switch (action) {
-        case "lock":
-          // リモートロックの実装
-          console.log("Locking device:", deviceName);
-          break;
-        case "reset":
-          // パスワードリセットの実装
-          console.log("Resetting password for device:", deviceName);
-          break;
-        case "reboot":
-          // 再起動の実装
-          console.log("Rebooting device:", deviceName);
-          break;
-        // ... 他のアクション
-      }
-    } catch (error) {
-      console.error("Device action failed:", error);
-      // エラー処理を追加
-    }
-  };
-
-  // ... 既存のJSXコード ...
-
-  // メニュー項目のクリックハンドラーを更新
-  <DropdownMenuItem onClick={() => handleDeviceAction("lock")}>
-    <Lock className="mr-4 h-4 w-4" />
-    <span>リモートロック</span>
-  </DropdownMenuItem>
- */

@@ -39,9 +39,6 @@ export function DataTableToolbar<TData>({
           <div className="w-[52px] flex justify-center">
             <SidebarTrigger className="w-full" />
           </div>
-          <div className="w-[54px] flex justify-center ">
-            {isSelected && <DeleteSelectedDevicesButton table={table} />}
-          </div>
           {/* <Input
             placeholder="識別 ID"
             value={
@@ -77,8 +74,6 @@ export function DataTableToolbar<TData>({
             </Button>
           )}
         </div>
-        <ChangePolicyButton table={table} isSelected={isSelected} />
-
         {/* <DateTableColumnAllResizer table={table} /> */}
         <CreateQrButton />
         <CreateQrButton />

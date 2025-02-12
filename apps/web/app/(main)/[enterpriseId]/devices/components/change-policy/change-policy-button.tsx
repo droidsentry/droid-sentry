@@ -1,16 +1,14 @@
-import { Button } from "@/components/ui/button";
-import { FilePenLine } from "lucide-react";
-import { useEffect, useState } from "react";
-import SelectPolicyDrawer from "./select-policy-drawer";
-import { toast } from "sonner";
-import { Table } from "@tanstack/react-table";
 import { DeviceTableType } from "@/app/types/device";
-import { getPolicyList } from "../../actions/policy";
-import { useParams } from "next/navigation";
 import { RouteParams } from "@/app/types/enterprise";
-import { SelectPolicyProvider } from "./select-policy-provider";
 import { PolicyList } from "@/app/types/policy";
-import { DrawerDemo } from "./demo/drawer-demo";
+import { Button } from "@/components/ui/button";
+import { Table } from "@tanstack/react-table";
+import { FilePenLine } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useState } from "react";
+import { getPolicyList } from "../../actions/policy";
+import SelectPolicyDrawer from "./select-policy-drawer";
+import TitleTooltip from "@/components/title-tooltip";
 
 interface ChangePolicyButtonProps<TData> {
   table: Table<TData>;
@@ -18,8 +16,8 @@ interface ChangePolicyButtonProps<TData> {
 }
 
 export default function ChangePolicyButton<TData>({
-  isSelected,
   table,
+  isSelected,
 }: ChangePolicyButtonProps<TData>) {
   const [isOpen, setIsOpen] = useState(false);
   const [deviceIdentifiers, setDeviceIdentifiers] = useState<string[]>([]);
@@ -28,11 +26,6 @@ export default function ChangePolicyButton<TData>({
   const enterpriseId = params.enterpriseId;
 
   const handleOpenChange = async () => {
-    // デバイスが選択されていない場合はエラーを表示
-    if (!isSelected) {
-      toast.error("デバイスを選択してください");
-      return;
-    }
     // デバイスの識別子のリストアップし、stateに格納
     const deviceIdentifiers = table
       .getSelectedRowModel()
@@ -51,11 +44,17 @@ export default function ChangePolicyButton<TData>({
 
   return (
     <>
-      <Button variant="outline" className="h-8" onClick={handleOpenChange}>
-        ポリシーを変更する
-        <FilePenLine className="ml-2 h-4 w-4" />
-      </Button>
-      {/* <DrawerDemo isOpen={isOpen} setIsOpen={setIsOpen} /> */}
+      <TitleTooltip tooltip="選択したデバイスのポリシーを変更する">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={handleOpenChange}
+          tabIndex={isSelected ? 0 : -1}
+          disabled={!isSelected}
+        >
+          <FilePenLine className="size-6" />
+        </Button>
+      </TitleTooltip>
       <SelectPolicyDrawer
         isOpen={isOpen}
         setIsOpen={setIsOpen}

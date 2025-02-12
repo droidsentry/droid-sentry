@@ -5,7 +5,7 @@ import {
   HardwareInfoSourceType,
 } from "@/app/types/device";
 import CopyButton from "@/components/copy-button";
-import InformationTooltip from "@/components/information-tooltip";
+import InfoTooltip from "@/components/info-tooltip";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -238,7 +238,7 @@ export function DeviceBaseInfoTable({
                     <TableCell className="px-2 md:px-4">
                       <div className="flex items-center gap-2 h-fit md:h-10">
                         <span className="font-bold">{row.label}</span>
-                        <InformationTooltip tooltip={tooltip} />
+                        <InfoTooltip tooltip={tooltip} />
                       </div>
                     </TableCell>
                     <TableCell className="px-2 md:px-4">{value}</TableCell>

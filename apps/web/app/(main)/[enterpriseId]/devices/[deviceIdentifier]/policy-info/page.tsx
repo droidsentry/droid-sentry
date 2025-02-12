@@ -16,11 +16,7 @@ export default async function Page({
 
   return (
     <div className="mx-1.5">
-      <DevicePolicyInfoTable
-        deviceSource={deviceSource}
-        enterpriseId={enterpriseId}
-        deviceIdentifier={deviceIdentifier}
-      />
+      <DevicePolicyInfoTable deviceSource={deviceSource} />
     </div>
   );
 }

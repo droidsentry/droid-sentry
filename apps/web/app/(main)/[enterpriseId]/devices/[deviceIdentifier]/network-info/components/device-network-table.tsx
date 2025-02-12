@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 
 import LoadingWithinPageSkeleton from "@/app/(main)/[enterpriseId]/components/loading-within-page-sleleton";
-import InformationTooltip from "@/components/information-tooltip";
+import InfoTooltip from "@/components/info-tooltip";
 import useSWRImmutable from "swr/immutable";
 import { getHardwareInfo } from "../../actions/device";
 
@@ -50,7 +50,7 @@ export function DeviceNetworkTable({
               <TableCell>
                 <div className="flex items-center gap-2">
                   <span className="font-bold">IMEI</span>
-                  <InformationTooltip
+                  <InfoTooltip
                     tooltip={
                       "GSMデバイスのIMEI番号を表示します。例 : A1000031212"
                     }
@@ -72,7 +72,7 @@ export function DeviceNetworkTable({
               <TableCell>
                 <div className="flex items-center gap-2">
                   <span className="font-bold">MEID</span>
-                  <InformationTooltip
+                  <InfoTooltip
                     tooltip={
                       "CDMAデバイスのMEID番号を表示します。例 : A00000292788E1"
                     }
@@ -94,7 +94,7 @@ export function DeviceNetworkTable({
               <TableCell>
                 <div className="flex items-center gap-2">
                   <span className="font-bold">MACアドレス</span>
-                  <InformationTooltip
+                  <InfoTooltip
                     tooltip={
                       "Wi-FiのMACアドレスを表示します。例 : 7c:11:11:11:11:11"
                     }
@@ -118,7 +118,7 @@ export function DeviceNetworkTable({
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <span className="font-bold">SIM-{index + 1}</span>
-                      <InformationTooltip
+                      <InfoTooltip
                         tooltip={
                           "デバイスに搭載されているSIMの情報を表示します。Android API レベル 23 以降の管理モード「デバイスオーナー」のデバイスのみサポートしています。"
                         }
@@ -151,7 +151,7 @@ export function DeviceNetworkTable({
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <span className="font-bold">SIM</span>
-                    <InformationTooltip
+                    <InfoTooltip
                       tooltip={
                         "デバイスに搭載されているSIMの情報を表示します。Android API レベル 23 以降の管理モード「デバイスオーナー」のデバイスのみサポートしています。"
                       }
