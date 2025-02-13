@@ -3,8 +3,6 @@
 import {
   AndroidManagementDevice,
   DevicePolicyInfoType,
-  HardwareInfoSourceType,
-  PolicyDisplayNameType,
 } from "@/app/types/device";
 import CopyButton from "@/components/copy-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,10 +15,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import LoadingWithinPageSkeleton from "@/app/(main)/[enterpriseId]/components/loading-within-page-sleleton";
 import InfoTooltip from "@/components/info-tooltip";
-import useSWRImmutable from "swr/immutable";
-import { getDevicePolicyInfo, getHardwareInfo } from "../../actions/device";
 import { Badge } from "@/components/ui/badge";
 
 export function DevicePolicyInfoTable({
@@ -59,16 +54,17 @@ export function DevicePolicyInfoTable({
                 {policyDisplayName ? (
                   <div className="flex items-center gap-2">
                     <span>{policyDisplayName}</span>
-                    {policyDisplayName !== requestedPolicyDisplayName && (
-                      <>
-                        <Badge className="bg-yellow-500 text-white">
-                          適用待ち
-                        </Badge>
-                        <span className="text-muted-foreground">
-                          {`現在、「${requestedPolicyDisplayName}」にポリシー変更のリクエストがされています。`}
-                        </span>
-                      </>
-                    )}
+                    {policyDisplayName !== requestedPolicyDisplayName &&
+                      requestedPolicyDisplayName && (
+                        <>
+                          <Badge className="bg-yellow-500 text-white">
+                            適用待ち
+                          </Badge>
+                          <span className="text-muted-foreground">
+                            {`現在、「${requestedPolicyDisplayName}」にポリシー変更のリクエストがされています。`}
+                          </span>
+                        </>
+                      )}
                   </div>
                 ) : (
                   <span className="text-muted-foreground">-</span>

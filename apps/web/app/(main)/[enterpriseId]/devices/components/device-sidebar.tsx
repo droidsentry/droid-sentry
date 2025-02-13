@@ -35,8 +35,6 @@ export function DeviceSidebar({
   enterpriseId: string;
 }) {
   const pathname = usePathname();
-  const params = useParams<RouteParams>();
-  const deviceIdentifier = params.deviceIdentifier;
 
   return (
     <Sidebar className={cn("inset-x-14", className)}>
@@ -76,6 +74,30 @@ export function DeviceSidebar({
                   </SidebarMenuItem>
                 );
               })}
+              <SidebarMenuItem className="px-3">
+                <SidebarMenuButton asChild disabled>
+                  <div className="flex items-center">
+                    <SearchIcon className="text-muted-foreground" />
+                    <span
+                      className={cn("font-semibold pl-2 text-muted-foreground")}
+                    >
+                      {"詳細検索 (近日リリース)"}
+                    </span>
+                  </div>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem className="px-3">
+                <SidebarMenuButton asChild disabled>
+                  <div className="flex items-center">
+                    <HistoryIcon className="text-muted-foreground" />
+                    <span
+                      className={cn("font-semibold pl-2 text-muted-foreground")}
+                    >
+                      {"ログ一覧 (近日リリース)"}
+                    </span>
+                  </div>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -93,8 +115,9 @@ export function DeviceSidebar({
 
                 return (
                   <SidebarMenuItem key={lostModeItems.title} className="px-3">
-                    <SidebarMenuButton asChild isActive={isActive}>
-                      <Link href={fullPath}>
+                    <SidebarMenuButton asChild isActive={isActive} disabled>
+                      {/* <Link href={fullPath}> */}
+                      <div className="flex items-center">
                         <lostModeItems.icon
                           className={cn(!isActive && "text-muted-foreground")}
                         />
@@ -104,9 +127,10 @@ export function DeviceSidebar({
                             !isActive && "text-muted-foreground"
                           )}
                         >
-                          {lostModeItems.title}
+                          {lostModeItems.title} (近日リリース)
                         </span>
-                      </Link>
+                        {/* </Link> */}
+                      </div>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
@@ -128,8 +152,9 @@ export function DeviceSidebar({
 
                 return (
                   <SidebarMenuItem key={zeroTouchItems.title} className="px-3">
-                    <SidebarMenuButton asChild isActive={isActive}>
-                      <Link href={fullPath}>
+                    <SidebarMenuButton asChild isActive={isActive} disabled>
+                      {/* <Link href={fullPath}> */}
+                      <div className="flex items-center">
                         <zeroTouchItems.icon
                           className={cn(!isActive && "text-muted-foreground")}
                         />
@@ -139,9 +164,10 @@ export function DeviceSidebar({
                             !isActive && "text-muted-foreground"
                           )}
                         >
-                          {zeroTouchItems.title}
+                          {zeroTouchItems.title} (近日リリース)
                         </span>
-                      </Link>
+                        {/* </Link> */}
+                      </div>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
@@ -164,21 +190,16 @@ const deviceListItems = [
     url: "/devices",
     icon: LayoutListIcon,
   },
-  {
-    title: "詳細検索",
-    url: "/policies/search",
-    icon: SearchIcon,
-  },
-  {
-    title: "履歴",
-    url: "/policies/history",
-    icon: HistoryIcon,
-  },
-  {
-    title: "作成ログ",
-    url: "/policies/create-log",
-    icon: FilePlusIcon,
-  },
+  // {
+  //   title: "詳細検索",
+  //   url: "/policies/search",
+  //   icon: SearchIcon,
+  // },
+  // {
+  //   title: "履歴",
+  //   url: "/policies/history",
+  //   icon: HistoryIcon,
+  // },
 ];
 // 紛失モード
 const lostModeItems = [

@@ -6,6 +6,7 @@ import ChangePolicyButton from "../change-policy/change-policy-button";
 import DeleteSelectedDevicesButton from "../delete-selected-devices-button";
 import CloseFloatingToolbarButton from "./close-floating-toolber-button";
 import { Separator } from "@/components/ui/separator";
+import AssortCommandsMenuButton from "./assort-commands-menu-button";
 
 interface FloatingToolbarProps<TData> {
   className?: string;
@@ -26,13 +27,13 @@ export default function FloatingToolbar<TData>({
         isSelected ? "translate-y-0" : "translate-y-40"
       )}
     >
-      <div className="flex items-center justify-center w-max shadow-lg backdrop-blur p-2 rounded-lg bg-muted/10 border">
-        <span className="h-8 mx-2 flex items-center">{`${filteredSelectedDevices} デバイスを選択中`}</span>
-        <Separator orientation="vertical" className="h-8 mx-2" />
+      <div className="flex items-center justify-center w-max shadow-lg backdrop-blur p-2 rounded-lg bg-sidebar/10 border">
+        <span className="h-8 mx-1 flex items-center">{`${filteredSelectedDevices} デバイスを選択中`}</span>
+        <Separator orientation="vertical" className="h-8 mx-1" />
         <DeleteSelectedDevicesButton table={table} isSelected={isSelected} />
         <ChangePolicyButton table={table} isSelected={isSelected} />
-      </div>
-      <div className="flex items-center w-max shadow-lg backdrop-blur p-2 rounded-lg bg-muted/10 border ml-2">
+        <AssortCommandsMenuButton table={table} isSelected={isSelected} />
+        <Separator orientation="vertical" className="h-8 mx-1" />
         <CloseFloatingToolbarButton table={table} isSelected={isSelected} />
       </div>
     </div>
