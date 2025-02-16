@@ -34,7 +34,7 @@ export default function HeaderLogoButton({
           className={`size-${size} dark:brightness-150 drop-shadow-lg`}
           priority
         />
-        {titleValue}
+        <span className="font-bold text-xl">{titleValue}</span>
       </Link>
     </Button>
   );

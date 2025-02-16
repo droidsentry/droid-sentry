@@ -18,21 +18,21 @@ export default function SingInButton() {
 
   return (
     <Button
-      variant="ghost"
-      className="gap-2"
+      variant="outline"
+      className={` border-2 rounded-full border-primary ml-4 px-6 py-3.5 h-[52px]`}
       disabled={isLoading}
       onClick={handleSignIn}
     >
       {isLoading ? (
         <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          <span className="hidden sm:block">サインイン中...</span>
+          <Loader2 className="mr-2 size-4 animate-spin" />
+          <span className="hidden sm:block text-16 font-medium">
+            サインイン中...
+          </span>
         </>
       ) : (
-        <>
-          <p className="hidden sm:block">サインイン</p>
-          <LogIn size={20} />
-        </>
+        // <>サインイン</>
+        <span className="text-base">Login</span>
       )}
     </Button>
   );

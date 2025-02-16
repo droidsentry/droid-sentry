@@ -96,7 +96,23 @@ const applicationsSchema = z.object({
   workProfileWidgets: z.string().nullable().optional(),
 }) satisfies z.ZodType<PolicyApps>;
 
+const deviceConnectivityManagementSchema = z
+  .object({
+    usbDataAccess: z
+      .enum([
+        "USB_DATA_ACCESS_UNSPECIFIED",
+        "ALLOW_USB_DATA_TRANSFER",
+        "DISALLOW_USB_FILE_TRANSFER",
+        "DISALLOW_USB_DATA_TRANSFER",
+      ])
+      .nullable()
+      .optional(),
+  })
+  .optional();
+
 export const policySchema = z.object({
+  adjustVolumeDisabled: z.boolean().default(false),
+  factoryResetDisabled: z.boolean().default(false),
   screenCaptureDisabled: z.boolean().default(false),
   cameraDisabled: z.boolean().default(false),
   advancedSecurityOverrides: advancedSecurityOverridesSchema,
@@ -110,6 +126,7 @@ export const policySchema = z.object({
     .optional(),
   statusReportingSettings: statusReportingSettingsSchema,
   applications: z.array(applicationsSchema).optional(),
+  deviceConnectivityManagement: deviceConnectivityManagementSchema,
 }) satisfies z.ZodType<AndroidManagementPolicy>;
 
 export const formPolicySchema = z.object({
