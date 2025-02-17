@@ -16,7 +16,7 @@ export default function SyncDevicesButton({
     startTransition(async () => {
       const data = await syncDevicesWithGoogle(enterpriseId);
       // mutate(key, data, false);
-      console.log("Devices data", data);
+      // console.log("Devices data", data);
     });
   };
 

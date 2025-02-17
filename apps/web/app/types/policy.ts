@@ -6,6 +6,7 @@ import {
   policyTableSchema,
 } from "../schema/policy";
 import { getPolicyApps } from "../(main)/[enterpriseId]/policies/[policyIdentifier]/application/components/data/get-policy-apps";
+import { getPolicyList } from "../(main)/[enterpriseId]/devices/actions/policy";
 
 export type AndroidManagementPolicy = androidmanagement_v1.Schema$Policy;
 export type ApplicationPolicy = androidmanagement_v1.Schema$ApplicationPolicy;
@@ -32,3 +33,6 @@ export type Apps = {
 };
 
 export type PolicyApp = Awaited<ReturnType<typeof getPolicyApps>>[number];
+// export type PolicyApp1 = Awaited<ReturnType<typeof getPolicyApps>>;
+
+export type PolicyList = Awaited<ReturnType<typeof getPolicyList>>[number];

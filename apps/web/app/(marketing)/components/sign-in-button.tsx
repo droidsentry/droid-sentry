@@ -1,38 +1,42 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Loader2, LogIn } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
-export default function SingInButton() {
+export default function SingInButton({ className }: { className?: string }) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleSignIn = () => {
     setIsLoading(true);
-    router.replace("/sign-in"); // replaceを使用することで<Link replace>と同等の動作になります
+    router.replace("/sign-in");
   };
 
   return (
     <Button
-      variant="ghost"
-      className="gap-2"
+      variant="outline"
+      className={cn(
+        `border-2 rounded-full border-primary ml-4 px-6 py-3.5 h-[52px]`,
+        className
+      )}
       disabled={isLoading}
       onClick={handleSignIn}
     >
       {isLoading ? (
         <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          <span className="hidden sm:block">サインイン中...</span>
+          <Loader2 className="mr-2 size-4 animate-spin" />
+          <span className="hidden sm:block text-16 font-medium">
+            サインイン中...
+          </span>
         </>
       ) : (
-        <>
-          <p className="hidden sm:block">サインイン</p>
-          <LogIn size={20} />
-        </>
+        // <>サインイン</>
+        <span className="text-base">サインイン</span>
       )}
     </Button>
   );

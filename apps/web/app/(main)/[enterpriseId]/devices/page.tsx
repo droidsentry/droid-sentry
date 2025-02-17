@@ -9,6 +9,7 @@ export default async function Page({
 }) {
   const enterpriseId = (await params).enterpriseId;
   const devices = await getDevicesData({ enterpriseId });
+  // console.log("device", devices);
   // ３秒待つ
   // await new Promise((resolve) => setTimeout(resolve, 3000));
 

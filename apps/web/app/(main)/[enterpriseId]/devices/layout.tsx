@@ -17,7 +17,7 @@ export default async function RootLayout({
 }) {
   const { enterpriseId } = await params;
   return (
-    <div className="flex">
+    <div className="flex h-full">
       <DeviceSidebar className="hidden xl:block" enterpriseId={enterpriseId} />
       <div className="flex-1 min-w-0">
         <MableTopBar className="lg:hidden" />

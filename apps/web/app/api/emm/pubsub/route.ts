@@ -10,7 +10,7 @@ import { createStatusReportDescription } from "./lib/status-report";
 import { createUsageLogsDescription } from "./lib/usage-logs";
 import { verifyPubSubToken } from "./lib/verify-token";
 import { AndroidManagementDevice, DeviceOperation } from "@/app/types/device";
-import { savePubSubLogs } from "./lib/data/save-pusub-logs";
+import { savePubSubLogs } from "./lib/data/save-pubsub-logs";
 
 // Pub/Subメッセージの型定義
 export interface PubSubMessage {

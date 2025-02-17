@@ -7,7 +7,7 @@ export const defaultPolicyRequestBody: Policy = {
 
   //   "accountTypesWithManagementDisabled": [],//ユーザーが管理できないアカウントの種類
   //   "addUserDisabled": false, // 新しいユーザーとプロファイルの追加が無効になっているかどうか.managementMode が DEVICE_OWNER のデバイスでは、このフィールドは無視され、ユーザーはユーザーの追加や削除を許可されません。
-  //   "adjustVolumeDisabled": false, // 音量調整の無効化
+  adjustVolumeDisabled: false, // 音量調整の無効化
   advancedSecurityOverrides: {
     // 高度なセキュリティ設定 https://developers.google.com/android/management/reference/rest/v1/enterprises.policies?hl=ja#advancedsecurityoverrides
     untrustedAppsPolicy: "ALLOW_INSTALL_DEVICE_WIDE", // 信頼できないアプリ（提供元不明のアプリ）の許可 https://developers.google.com/android/management/reference/rest/v1/enterprises.policies?hl=ja#untrustedappspolicy
@@ -39,7 +39,7 @@ export const defaultPolicyRequestBody: Policy = {
   //   "defaultPermissionPolicy": "PROMPT",　// アプリへの権限付与のリクエストに関するポリシー https://developers.google.com/android/management/reference/rest/v1/enterprises.policies?hl=ja#permissionpolicy
   //   "deviceOwnerLockScreenInfo": {},
   //   "encryptionPolicy": "ENCRYPTION_POLICY_UNSPECIFIED", // 暗号化のタイプ
-  //   "factoryResetDisabled": false, // ファクトリーリセットの無効化
+  factoryResetDisabled: false, // ファクトリーリセットの無効化
   //   "frpAdminEmails": [],
   //   "funDisabled": false,　//設定のイースター エッグ ゲームの制御
   //   "installAppsDisabled": false, // アプリのインストールの無効化

@@ -6,8 +6,8 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
 import { getDevicesData } from "../data/device";
-import DeviceTable from "./device-table";
-import { deviceColumns } from "./devices-table-columns";
+import DeviceTable from "./table/device-table";
+import { deviceColumns } from "./table/devices-table-columns";
 
 export default function DevicesContent({
   data,
@@ -47,7 +47,13 @@ export default function DevicesContent({
     const isProduction = env === "production";
     // URLがlocalhostかどうか
     const isLocalhost = currentUrl.includes("localhost");
-    if (!isProduction && !isLocalhost) return;
+    if (!isProduction && !isLocalhost) {
+      console.log("currentUrl", currentUrl);
+      console.log(
+        "localhost or production 以外は、デバイステーブルをリアルタイムに監視しません。"
+      );
+      return;
+    }
 
     const enterpriseDevices = supabase.channel(enterpriseId);
     enterpriseDevices

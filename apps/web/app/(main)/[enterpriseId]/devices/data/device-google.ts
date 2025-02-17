@@ -9,6 +9,15 @@ import {
   AndroidManagementDevice,
   ListDevicesResponse,
 } from "@/app/types/device";
+import { prepareDeviceData } from "@/app/api/emm/pubsub/lib/data/save-device";
+
+type ResolvedDeviceData = {
+  enterprise_id: string;
+  device_identifier: string | null;
+  policy_identifier: string | null;
+  device_data: AndroidManagementDevice;
+  updated_at: string;
+};
 
 /**
  * デバイスをDBに保存する関数
@@ -27,19 +36,17 @@ const saveDevices = async (
       const policyName = device.policyName;
       const deviceName = device.name;
       if (!deviceName || !policyName) return;
-
       const policyIdentifier = policyName.includes(
         `enterprises/${enterpriseId}/policies/`
       )
-        ? policyName.split(`enterprises/${enterpriseId}/policies/`)[1] ?? null
+        ? (policyName.split(`enterprises/${enterpriseId}/policies/`)[1] ?? null)
         : null;
 
       const deviceIdentifier = deviceName.includes(
         `enterprises/${enterpriseId}/devices/`
       )
-        ? deviceName.split(`enterprises/${enterpriseId}/devices/`)[1] ?? null
+        ? (deviceName.split(`enterprises/${enterpriseId}/devices/`)[1] ?? null)
         : null;
-
       return {
         enterprise_id: enterpriseId,
         device_identifier: deviceIdentifier,
@@ -50,75 +57,129 @@ const saveDevices = async (
     })
     .filter((device) => device !== undefined);
 
-  type ResolvedDeviceData = {
-    enterprise_id: string;
-    device_identifier: string | null;
-    policy_identifier: string | null;
-    device_data: AndroidManagementDevice;
-    updated_at: string;
-  };
   // upsertする共通データを作成
   const createBaseDeviceData = (device: ResolvedDeviceData) => ({
     device_identifier: device.device_identifier,
     enterprise_id: device.enterprise_id,
     updated_at: device.updated_at,
   });
-  // デバイス履歴データの作成
-  const devicesHistoriesList = devicesList.map((device) => ({
-    enterprise_id: device.enterprise_id,
-    device_identifier: device.device_identifier,
-    device_response_data: device.device_data as Json,
-  }));
-  // デバイスデータの作成
+
+  // devicesテーブルに記録するデータ
   const upsertDevices = devicesList.map((device) => {
     const baseData = createBaseDeviceData(device);
-    const deviceData = device.device_data as AndroidManagementDevice;
-    // 特定のイベントデータを除外
-    const mainDeviceData = { ...deviceData };
-    delete mainDeviceData.applicationReports;
-    delete mainDeviceData.memoryEvents;
-    delete mainDeviceData.powerManagementEvents;
     return {
       ...baseData,
       policy_identifier: device.policy_identifier,
-      device_data: mainDeviceData as Json,
+      device_data: prepareDeviceData(device.device_data) as Json,
     };
   });
+  // device_displaysテーブルに記録するデータ
+  const upsertDeviceDisplays = devicesList.map((device) => {
+    return {
+      enterprise_id: device.enterprise_id,
+      device_identifier: device.device_identifier,
+      last_status_report_time: device.device_data.lastStatusReportTime ?? "",
+      displays: device.device_data.displays as Json[],
+    };
+  });
+  // device_hardware_statusテーブルに記録するデータ
+  const upsertDeviceHardwareStatusList = devicesList
+    .map((device) => {
+      return (
+        device.device_data.hardwareStatusSamples
+          ?.map((hardwareStatus) => {
+            if (!hardwareStatus.createTime) return;
+            return {
+              enterprise_id: device.enterprise_id,
+              device_identifier: device.device_identifier,
+              create_time: hardwareStatus.createTime,
+              hardware_status: hardwareStatus as Json,
+            };
+          })
+          .filter((hardwareStatus) => hardwareStatus !== undefined) ?? []
+      );
+    })
+    .flat();
 
-  // アプリケーションデータの作成
-  const upsertApplicationReports = devicesList.map((device) => ({
-    ...createBaseDeviceData(device),
-    application_report_data: {
-      applicationReports: (device.device_data as AndroidManagementDevice)
-        .applicationReports,
-    } as Json,
-  }));
+  // device_metricsテーブルに記録するデータ
+  const upsertDeviceMetricsList = devicesList
+    .map((device) => {
+      return (
+        device.device_data.hardwareStatusSamples
+          ?.map((hardwareStatus) => {
+            if (!hardwareStatus.createTime) return;
+            return {
+              enterprise_id: enterpriseId,
+              device_identifier: device.device_identifier,
+              create_time: hardwareStatus.createTime,
+              battery_temperatures: hardwareStatus.batteryTemperatures ?? null,
+              cpu_temperatures: hardwareStatus.cpuTemperatures ?? null,
+              gpu_temperatures: hardwareStatus.gpuTemperatures ?? null,
+              skin_temperatures: hardwareStatus.skinTemperatures ?? null,
+              cpu_usages: hardwareStatus.cpuUsages ?? null,
+              fan_speeds: hardwareStatus.fanSpeeds ?? null,
+            };
+          })
+          .filter((hardwareStatus) => hardwareStatus !== undefined) ?? []
+      );
+    })
+    .flat();
+
   // メモリデータの作成
-  const upsertMemoryEvents = devicesList.map((device) => ({
-    ...createBaseDeviceData(device),
-    memory_event_data: {
-      memoryEvents: (device.device_data as AndroidManagementDevice)
-        .memoryEvents,
-    } as Json,
-  }));
+  // const upsertMemoryEvents = devicesList.map((device) => ({
+  //   ...createBaseDeviceData(device),
+  //   memory_event_data: (device.device_data.memoryEvents as Json) ?? [],
+  // }));
+  const upsertMemoryEvents = devicesList
+    .map((device) => {
+      return (
+        device.device_data.memoryEvents
+          ?.map((memoryEvent) => {
+            if (!memoryEvent.createTime || !memoryEvent.eventType) return;
+            return {
+              enterprise_id: enterpriseId,
+              device_identifier: device.device_identifier,
+              create_time: memoryEvent.createTime,
+              event_type: memoryEvent.eventType,
+              byte_count: memoryEvent.byteCount ?? null,
+            };
+          })
+          .filter((memoryEvent) => memoryEvent !== undefined) ?? []
+      );
+    })
+    .flat();
   // デバイスの電源管理データの作成
   const upsertPowerManagementEvents = devicesList.map((device) => ({
     ...createBaseDeviceData(device),
-    power_management_event_data: {
-      powerManagementEvents: (device.device_data as AndroidManagementDevice)
-        .powerManagementEvents,
-    } as Json,
+    power_management_event_data:
+      (device.device_data.powerManagementEvents as Json) ?? [],
+  }));
+  // アプリケーションデータの作成
+  const upsertApplicationReports = devicesList.map((device) => ({
+    ...createBaseDeviceData(device),
+    application_report_data:
+      (device.device_data.applicationReports as Json) ?? [],
+  }));
+  // device_historiesテーブルに記録するデータ
+  const upsertDeviceHistoryData = devicesList.map((device) => ({
+    enterprise_id: device.enterprise_id,
+    device_identifier: device.device_identifier,
+    device_response_data: (device.device_data as Json) ?? [],
   }));
 
-  const { error } = await supabase.rpc("upsert_device_data", {
+  const { error } = await supabase.rpc("insert_or_upsert_devices_data", {
     devices: upsertDevices,
     application_reports: upsertApplicationReports,
     memory_events: upsertMemoryEvents,
     power_management_events: upsertPowerManagementEvents,
-    device_histories: devicesHistoriesList,
+    device_histories: upsertDeviceHistoryData,
+    device_displays: upsertDeviceDisplays,
+    device_hardware_status: upsertDeviceHardwareStatusList,
+    device_metrics: upsertDeviceMetricsList,
   });
 
   if (error) {
+    console.log("Error upsert_device_data", error);
     throw new Error(`Failed to save device data: ${error.message}`);
   }
 };
