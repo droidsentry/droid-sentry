@@ -65,7 +65,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <Separator className="my-8 bg-muted-foreground" />
+        <Separator className="my-6 bg-muted-foreground" />
         <div className="text-muted-foreground">&copy; {AppConfig.company}</div>
       </div>
     </footer>

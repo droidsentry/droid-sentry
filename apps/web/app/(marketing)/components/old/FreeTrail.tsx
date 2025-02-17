@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { CircleCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import PCConsoleAppsFeatureGraphic from "../images/615shots_so.png";
+import PCConsoleAppsFeatureGraphic from "../images/pc-console-apps-manegement.png";
 
 export default function FreeTrail() {
   return (
