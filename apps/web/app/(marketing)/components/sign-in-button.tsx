@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Loader2, LogIn } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 
@@ -21,7 +21,7 @@ export default function SingInButton({ className }: { className?: string }) {
     <Button
       variant="outline"
       className={cn(
-        `border-2 rounded-full border-primary ml-4 px-6 py-3.5 h-[52px]`,
+        `border-2 rounded-full ml-4 px-6 py-3.5 h-[52px]`,
         className
       )}
       disabled={isLoading}

@@ -1,10 +1,12 @@
 import Image from "next/image";
 import quickStart from "../images/quick-start.png";
+import StartFreeAccountButton from "./start-free-account-button";
 
 export default function FreeTrail() {
   return (
-    <section className="py-[34px] md:py-10 bg-muted/50">
-      <div className="mx-auto px-4 md:px-6 max-w-full lg:max-w-[1140px] xl:max-w-7xl xl:px-[70px] grid md:grid-cols-2 md:gap-10 items-center">
+    <section className="py-[34px] md:py-10 bg-muted/50 mt-10 mb-0">
+      {/* <section className="py-[34px] md:py-10 bg-muted/50 m-[calc(50%-50vw)] mt-10 mb-0"> */}
+      <div className="container mx-auto px-4 md:px-6 xl:px-[70px] grid md:grid-cols-2 md:gap-10 items-center">
         <div className="pt-[68px] md:pt-20 text-center md:text-left mb-2 md:mb-14">
           <h2 className="text-[30.6px]/[34px] md:text-[40px]/[46px] font-bold mb-[8.5px] md:mb-6">
             無料で、即日開始
@@ -17,6 +19,7 @@ export default function FreeTrail() {
               ご不明な点は、お気軽にお問い合わせください。
             </p>
           </div>
+          <StartFreeAccountButton className="my-8" />
         </div>
         <div className="aspect-square size-full flex items-center justify-center">
           <div className="aspect-video w-full flex items-center justify-center bg-white rounded-3xl border overflow-hidden">

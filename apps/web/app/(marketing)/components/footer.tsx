@@ -7,8 +7,8 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="pt-[60px] pb-[100px] bg-card">
-      <div className="mx-auto max-w-full lg:max-w-[1140px] xl:max-w-7xl xl:px-[70px] md:px-6 px-4">
+    <footer className="sticky top-full pt-[60px] pb-[100px] bg-card">
+      <div className="container mx-auto md:px-6 px-4 xl:px-[70px] ">
         <HeaderLogoButton className="h-12" />
         <div
           className={cn(
@@ -37,7 +37,7 @@ export default function Footer() {
                 <Link href="/privacy">プライバシーポリシー</Link>
               </Button>
               <Button variant="ghost" className="w-fit">
-                特定商法表示
+                <Link href="/legal">特定商取引法に基づく表示</Link>
               </Button>
             </div>
           </div>
@@ -47,7 +47,7 @@ export default function Footer() {
             </div>
             <div className="flex flex-col mb-4 lg:mb-0 text-sm">
               <Button variant="ghost" className="w-fit">
-                プログ
+                ブログ
               </Button>
             </div>
           </div>
@@ -65,7 +65,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <Separator className="my-6 bg-muted-foreground" />
+        <Separator className="my-6" />
         <div className="text-muted-foreground">&copy; {AppConfig.company}</div>
       </div>
     </footer>
