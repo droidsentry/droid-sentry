@@ -24,7 +24,7 @@ export default function Hero() {
           <StartFreeAccountButton className="my-8" />
         </div>
         <div className="flex flex-col items-center justify-center">
-          <Image src={heroImageConsole} alt="hero-image-console-ui" priority />
+          <Image src={heroImageConsole} alt="hero-image-console-ui" />
         </div>
       </div>
     </section>

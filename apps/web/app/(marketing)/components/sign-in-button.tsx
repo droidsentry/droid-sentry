@@ -21,7 +21,7 @@ export default function SingInButton({ className }: { className?: string }) {
     <Button
       variant="outline"
       className={cn(
-        `border-2 rounded-full ml-4 px-6 py-3.5 h-[52px] dark:border-primary`,
+        `border-2 rounded-full ml-4 px-6 py-3.5 h-[52px]`,
         className
       )}
       disabled={isLoading}
