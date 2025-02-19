@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
   title: {
     default: AppConfig.title,
-    template: `%s | ${AppConfig.title}123`,
+    template: `%s | ${AppConfig.title}`,
   },
   description: AppConfig.description,
 };

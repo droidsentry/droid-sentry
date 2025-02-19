@@ -16,7 +16,7 @@ export default function StartFreeAccountButton({
       asChild
     >
       <Link href="/" replace>
-        <span className="text-base">無料アカウントで始める</span>
+        <span className="text-base ">無料アカウントで始める</span>
       </Link>
     </Button>
   );
