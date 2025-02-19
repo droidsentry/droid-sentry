@@ -4,9 +4,14 @@ import { AppConfig } from "@/app.config";
 import { ModeToggle } from "@/components/mode-toggle";
 import Footer from "./components/footer";
 import Header from "./components/header";
+import { getBaseURL } from "@/lib/base-url/client";
 
 export const metadata: Metadata = {
-  title: `${AppConfig.title} | Androidデバイスを管理する`,
+  metadataBase: new URL(getBaseURL()),
+  title: {
+    default: AppConfig.title,
+    template: `%s | ${AppConfig.title}123`,
+  },
   description: AppConfig.description,
 };
 

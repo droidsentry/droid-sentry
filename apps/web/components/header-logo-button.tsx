@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
 import Image from "next/image";
-import logo from "@/public/images/logo.png";
+// import logo from "@/public/images/logo.png";
+import Logo from "@/public/images/droid-sentry-logo.svg";
+
 import { AppConfig } from "@/app.config";
 import { cn } from "@/lib/utils";
 
@@ -27,13 +29,11 @@ export default function HeaderLogoButton({
       className={cn("text-2xl justify-start px-1", className)}
       asChild
     >
-      <Link href={hrefUrl} className="flex items-center font-bold gap-2">
-        <Image
-          src={logo}
-          alt=""
-          className={`size-${size} dark:brightness-150 drop-shadow-lg`}
-          priority
-        />
+      <Link href={hrefUrl} className="flex items-center font-bold gap-2 ">
+        <div className="aspect-square rounded-md w-fit overflow-hidden">
+          <Image src={Logo} alt="" className={`size-${size}`} priority />
+        </div>
+
         <span className="font-bold text-xl">{titleValue}</span>
       </Link>
     </Button>
