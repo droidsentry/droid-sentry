@@ -2,7 +2,7 @@ import { AppConfig } from "@/app.config";
 
 export default async function Page() {
   return (
-    <div className="container prose pt-8 pb-10 px-6 sm:px-0">
+    <div className="container mx-auto prose pt-8 pb-10 px-6 sm:px-0">
       <h1 className="dark:text-accent-foreground text-center">利用規約</h1>
       <p className="dark:text-muted-foreground dark:hover:text-accent-foreground transition duration-500">
         この利用規約（以下，「本規約」といいます。）は，{AppConfig.company}

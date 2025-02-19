@@ -4,6 +4,8 @@ import AppMiddleware from "./lib/middleware/app-middleware";
 
 export async function middleware(request: NextRequest) {
   const { response, user } = await updateSession(request);
+  // const in18request = inI18nMiddlewar(request);
+  // return AppMiddleware(in18request, response, user);
   return AppMiddleware(request, response, user);
 }
 

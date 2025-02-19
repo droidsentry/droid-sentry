@@ -10,6 +10,9 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  .lp-container {
+    @apply container px-[70px];
+  }
 }
 
 @layer base {
