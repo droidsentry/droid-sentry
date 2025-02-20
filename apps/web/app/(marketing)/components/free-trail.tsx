@@ -1,6 +1,5 @@
-import Image from "next/image";
-import quickStart from "../images/quick-start.png";
 import StartFreeAccountButton from "./start-free-account-button";
+import UsageExperience from "./usage-experience";
 
 export default function FreeTrail() {
   return (
@@ -22,12 +21,13 @@ export default function FreeTrail() {
           <StartFreeAccountButton className="my-8" />
         </div>
         <div className="aspect-square size-full flex items-center justify-center">
-          <div className="aspect-video w-full flex items-center justify-center bg-white rounded-3xl border overflow-hidden">
-            <Image
+          <div className="aspect-video w-full flex rounded-3xl border overflow-hidden p-3">
+            {/* <Image
               src={quickStart}
               alt="quick start"
               className="object-cover p-20"
-            />
+            /> */}
+            <UsageExperience />
           </div>
         </div>
       </div>
