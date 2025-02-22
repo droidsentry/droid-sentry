@@ -1,7 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function updateSession(request: NextRequest) {
+export async function updateSession(
+  request: NextRequest,
+  i18nResponse: NextResponse
+) {
   let supabaseResponse = NextResponse.next({
     request,
   });
@@ -18,12 +21,10 @@ export async function updateSession(request: NextRequest) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           );
-          supabaseResponse = NextResponse.next({
-            request,
+          cookiesToSet.forEach(({ name, value, options }) => {
+            i18nResponse.cookies.set(name, value, options);
+            supabaseResponse.cookies.set(name, value, options);
           });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          );
         },
       },
     }
@@ -32,25 +33,10 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  // console.log("middleware-supabase-user:", user);
-  // console.log("middleware-supabase-user-app_metadata:", user?.app_metadata);
-  // console.log("user-organization:", user?.app_metadata?.organization);
-  // console.log("user-profile:", user?.app_metadata?.hasProfile);
 
-  // リダイレクトの処理は、app-middleware.ts に移動
-  // if (
-  //   !user &&
-  //   !request.nextUrl.pathname.startsWith("/sign-in") &&
-  //   !request.nextUrl.pathname.startsWith("/auth")
-  // ) {
-  //   const url = request.nextUrl.clone();
-  //   url.pathname = "/sign-in";
-  //   return NextResponse.redirect(url);
-  // }
-
-  // return supabaseResponse;
   return {
-    response: supabaseResponse,
+    response: i18nResponse,
     user,
+    supabaseResponse,
   };
 }

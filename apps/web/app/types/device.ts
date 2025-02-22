@@ -6,9 +6,9 @@ import {
   getDeviceApplicationInfo,
   getDevicePolicyInfo,
   getHardwareInfo,
-} from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/actions/device";
-import { getHardwareStatus } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/hardware-info/data/hardware-status";
-import { getPolicyDisplayName } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/actions/policy";
+} from "../[locale]/(main)/[enterpriseId]/devices/[deviceIdentifier]/actions/device";
+import { getHardwareStatus } from "../[locale]/(main)/[enterpriseId]/devices/[deviceIdentifier]/hardware-info/data/hardware-status";
+import { getPolicyDisplayName } from "../[locale]/(main)/[enterpriseId]/devices/[deviceIdentifier]/actions/policy";
 
 export type AndroidManagementDevice = androidmanagement_v1.Schema$Device;
 export type ListDevicesResponse =

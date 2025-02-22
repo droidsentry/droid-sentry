@@ -1,11 +1,23 @@
 import { type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 import AppMiddleware from "./lib/middleware/app-middleware";
+import { createI18nMiddleware } from "next-international/middleware";
+
+const I18nMiddleware = createI18nMiddleware({
+  locales: ["ja", "en"],
+  defaultLocale: "ja",
+  urlMappingStrategy: "rewrite",
+});
 
 export async function middleware(request: NextRequest) {
-  const { response, user } = await updateSession(request);
-  // const in18request = inI18nMiddlewar(request);
-  // return AppMiddleware(in18request, response, user);
+  const i18nResponse = I18nMiddleware(request);
+  const { response, user, supabaseResponse } = await updateSession(
+    request,
+    i18nResponse
+  );
+  console.log("response", response);
+  console.log("supabaseResponse", supabaseResponse);
+
   return AppMiddleware(request, response, user);
 }
 

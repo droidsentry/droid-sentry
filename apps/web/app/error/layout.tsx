@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 import { ModeToggle } from "@/components/mode-toggle";
-import Header from "../(marketing)/components/header";
-import Footer from "../(marketing)/components/footer";
+import Header from "../[locale]/(marketing)/components/header";
+import Footer from "../[locale]/(marketing)/components/footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
