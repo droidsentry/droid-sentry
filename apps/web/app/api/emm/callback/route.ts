@@ -33,10 +33,10 @@ export async function GET(request: NextRequest) {
     // token,signupUrl,でenterpriseを作成する。
     const androidmanagement = await createAndroidManagementClient();
 
-    const logo = {
-      url: "https://sample-site-pearl.vercel.app/images/logo.png",
-      sha256Hash: "zwB79wWGgXq7V5Yk1Jt6khr1BrsM2msHYszD9MOa9Cc=",
-    };
+    // const logo = {
+    //   url: "https://sample-site-pearl.vercel.app/images/logo.png",
+    //   sha256Hash: "zwB79wWGgXq7V5Yk1Jt6khr1BrsM2msHYszD9MOa9Cc=",
+    // };
     const requestBody = {
       // request body parameters
       // {
@@ -49,18 +49,18 @@ export async function GET(request: NextRequest) {
         "USAGE_LOGS",
       ],
       enterpriseDisplayName: projectName,
-      logo,
+      // logo,
       //   "name": "my_name",
       //   "primaryColor": 0,
-      pubsubTopic: process.env.PUBSUB_TOPIC,
+      pubsubTopic: process.env.GCP_PUBSUB_TOPIC,
       //   "signinDetails": [],
-      //   "termsAndConditions": []
+      //   "termsAndConditions": []c
       // }
     };
     const { data: enterpriseData } = await androidmanagement.enterprises
       .create({
         enterpriseToken,
-        projectId: process.env.GOOGLE_EMM_PROJECT_ID,
+        projectId: process.env.GCP_PROJECT_ID,
         signupUrlName,
         requestBody,
       })

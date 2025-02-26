@@ -9,7 +9,7 @@ export const getBaseSubscriptionURL = () => {
     const prodUrl = process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL; //my-site.com
     const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL; //my-site.vercel.app
     const branchUrl = process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL; // my-site-git-improve-about-page.vercel.app
-    const devUrl = process.env.PUBSUB_SUBSCRIPTION_PUSH_URL;
+    const devUrl = process.env.GCP_PUBSUB_DEV_PUSH_ENDPOINT;
     // console.log("prodUrl", prodUrl);
     // console.log("vercelUrl", vercelUrl);
     // console.log("branchUrl", branchUrl);

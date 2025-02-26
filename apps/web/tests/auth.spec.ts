@@ -23,7 +23,7 @@ describe("認証テスト", () => {
       .getByRole("button", { name: "新規アカウント作成" })
       .first()
       .click();
-    const userId = process.env.USER_ID;
+    const userId = process.env.SUPABASE_USER_ID_PLAYWRIGHT_TEST;
     const checkUrl = new RegExp(
       `.*\/sign-up\/verify-email-address\\?id=${userId}`
     );

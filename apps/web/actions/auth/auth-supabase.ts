@@ -1,19 +1,22 @@
 "use server";
 
 import { SupabaseAuthErrorCode } from "@/lib/supabase/supabase-error-code-ja";
-import { authErrorMessage } from "@/app/(auth)/lib/displayAuthError";
-import {
-  signInFormSchema,
-  signUpFormSchema,
-} from "@/app/(auth)/schemas/auth-validation";
+
 import { getUserContextData } from "@/lib/context/user-context";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { passwordUpdateSchema } from "@/app/(auth)/schemas/password-update-schema";
+
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
+
+import { authErrorMessage } from "@/app/[locale]/(auth)/lib/displayAuthError";
+import {
+  passwordUpdateSchema,
+  signInFormSchema,
+  signUpFormSchema,
+} from "@/app/schema/auth";
 
 const host =
   process.env.NODE_ENV === "production" //本番環境にデプロイされていれば

@@ -2,7 +2,7 @@
 # working directory name when running `supabase init`.
 # Supabaseの異なるプロジェクトを同じホスト上で区別するために使用される文字列。`supabase init`を実行するときの作業ディレクトリ名がデフォルトです。
 # project_id = "sample-site"
-project_id = "my-emm-next"
+project_id = "droid-sentry"
 
 [api]
 enabled = true
@@ -162,14 +162,14 @@ max_frequency = "1s"
 host = "smtp.resend.com"
 port = 465
 user = "resend"
-pass = "env(SUPABAS_SMTP_RESEND_API_KEY)"
-admin_email = "noreply@myemm-next.online"
-sender_name = "MyEMM DEV"
+pass = "env(SUPABASE_LOCAL_SMTP_RESEND_API_KEY)"
+admin_email = "noreply@droidsentry.email"
+sender_name = "DroidSentry DEV"
 ## gmail smtp
 # host = "smtp.gmail.com"
 # port = 465
 # user = "t3kuboki@gmail.com"
-# pass = "env(SUPABAS_SMTP_GOOGLE_API_KEY)"
+# pass = "env(SUPABASE_SMTP_GOOGLE_API_KEY)"
 # admin_email = "t3kuboki@gmail.com"
 # sender_name = "SAMPLE SITE DEV"
 
@@ -177,17 +177,17 @@ sender_name = "MyEMM DEV"
 # メールテンプレートをカスタマイズするにはコメントを解除します
 # 設定値:https://supabase.com/docs/guides/local-development/customizing-email-templates#configuring-templates
 [auth.email.template.confirmation]
-subject = "【MyEMM DEV】メールアドレス認証のお知らせ"
+subject = "【DroidSentry DEV】メールアドレス認証のお知らせ"
 content_path = "./supabase/templates/confirmation.html"
 
 [auth.email.template.recovery]
-subject = "【MyEMM DEV】パスワード再設定のお知らせ"
+subject = "【DroidSentry DEV】パスワード再設定のお知らせ"
 content_path = "./supabase/templates/recovery.html"
 
 [auth.sms]
 # Allow/disallow new user signups via SMS to your project.
 # プロジェクトへのSMSによる新規ユーザー登録を許可/不許可にします。
-enable_signup = true
+enable_signup = false
 # If enabled, users need to confirm their phone number before signing in.
 # 有効にすると、ユーザーはサインインする前に電話番号を確認する必要があります。
 enable_confirmations = false
@@ -273,18 +273,18 @@ skip_nonce_check = false
 # 以下を追加
 [auth.external.github]
 enabled = true
-client_id = "env(SUPABASE_AUTH_GITHUB_CLIENT_ID)"
-secret = "env(SUPABASE_AUTH_GITHUB_SECRET)"
+client_id = "env(SUPABASE_LOCAL_AUTH_GITHUB_CLIENT_ID)"
+secret = "env(SUPABASE_LOCAL_AUTH_GITHUB_SECRET)"
 
 [auth.external.google]
 enabled = true
-client_id = "env(SUPABASE_AUTH_GOOGLE_CLIENT_ID)"
-secret = "env(SUPABASE_AUTH_GOOGLE_SECRET)"
+client_id = "env(SUPABASE_LOCAL_AUTH_GOOGLE_CLIENT_ID)"
+secret = "env(SUPABASE_LOCAL_AUTH_GOOGLE_SECRET)"
 
 [auth.external.discord]
 enabled = true
-client_id = "env(SUPABASE_AUTH_DISCORD_CLIENT_ID)"
-secret = "env(SUPABASE_AUTH_DISCORD_SECRET)"
+client_id = "env(SUPABASE_LOCAL_AUTH_DISCORD_CLIENT_ID)"
+secret = "env(SUPABASE_LOCAL_AUTH_DISCORD_SECRET)"
 
 # Use Firebase Auth as a third-party provider alongside Supabase Auth.
 # Supabase Authと一緒にサードパーティプロバイダーとしてFirebase Authを使用します。
@@ -316,7 +316,7 @@ policy = "oneshot"
 inspector_port = 8083
 
 [analytics]
-enabled = true
+enabled = true  # trueからfalseに変更
 port = 54327
 # Configure one of the supported backends: `postgres`, `bigquery`.
 # サポートされているバックエンドのいずれかを設定します: `postgres`, `bigquery`。
