@@ -8,7 +8,7 @@ export function GitHubLoginButton({ className }: { className?: string }) {
     <form action={signInWithGithub}>
       <SubmitButton className={cn(className)}>
         <SiGithub className="mr-4 size-5" />
-        <span>Discord</span>
+        <span>GitHub</span>
       </SubmitButton>
     </form>
   );

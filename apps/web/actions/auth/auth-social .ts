@@ -16,6 +16,7 @@ export const signInWithGithub = async () => {
   });
 
   if (data.url) {
+    console.log("data.url", data.url);
     redirect(data.url);
   }
 };
