@@ -16,6 +16,8 @@ export async function GET(request: NextRequest) {
 
     // エラーが発生した場合、ホームページにリダイレクト
     if (error) {
+      console.log("error", error);
+      console.log("request.url", request.url);
       return NextResponse.redirect(new URL("/", request.url));
     }
   }
