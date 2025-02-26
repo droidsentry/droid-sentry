@@ -11,7 +11,7 @@ const I18nMiddleware = createI18nMiddleware({
 
 export async function middleware(request: NextRequest) {
   const i18nResponse = I18nMiddleware(request);
-  // console.log("i18nResponse", i18nResponse);
+  console.log("i18nResponse", i18nResponse);
   const supabaseResponse = NextResponse.next({
     request,
   });
@@ -23,9 +23,9 @@ export async function middleware(request: NextRequest) {
   if (xNextLocaleValue) {
     supabaseResponse.headers.append("x-next-locale", xNextLocaleValue);
   }
-  // console.log("supabaseResponse", supabaseResponse);
+  console.log("supabaseResponse", supabaseResponse);
 
-  const { response, user } = await updateSession(request, i18nResponse);
+  const { response, user } = await updateSession(request, supabaseResponse);
   return AppMiddleware(request, response, user);
 }
 
