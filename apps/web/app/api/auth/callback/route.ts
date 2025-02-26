@@ -20,6 +20,7 @@ export async function GET(request: NextRequest) {
     }
   }
 
+  console.log("request.url", request.url);
   // 処理完了後、ホームページにリダイレクト
   return NextResponse.redirect(new URL("/projects", request.url));
 }
