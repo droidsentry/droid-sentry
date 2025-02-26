@@ -1,5 +1,6 @@
 import { AppConfig } from "@/app.config";
 import { getI18n } from "@/locales/server";
+import { StaticImageData } from "next/image";
 
 export type LocaleId = (typeof AppConfig)["locales"][number]["id"];
 export type i18nType = Awaited<ReturnType<typeof getI18n>>;
@@ -15,6 +16,7 @@ export type MarketingPage = {
   UsageExperienceCard: {
     title: string;
     text: string;
+    image: StaticImageData;
   }[];
   TechnologyStackTitle: string[];
   TechnologyStackText: string[];

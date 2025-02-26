@@ -1,4 +1,7 @@
 import { MarketingPage } from "@/app/types/locale";
+import AppDistribution from "../images/app-distribution.png";
+import ManUsingDevice from "../images/man-using-device.png";
+import LostDeviceMapsAndNavigation from "../images/lost-device-maps-and-navigation.png";
 
 const data: MarketingPage = {
   heroTitle: ["Simple and ideal", "Device Management"],
@@ -11,7 +14,7 @@ const data: MarketingPage = {
     "You can broadcast Wi-Fi SSID settings.",
     "You can lock the screen on specific apps.",
     "You can get location information in lost mode.",
-    "Google regularly adds new features and fixes bugs.",
+    "You can restrict the use of the camera and external media.",
   ],
   PCConsoleAppsManagementTitle:
     "Manage applications with a company Google account",
@@ -26,14 +29,17 @@ const data: MarketingPage = {
     {
       title: "Bulk distribution of apps",
       text: "You can broadcast business apps.",
+      image: AppDistribution,
     },
     {
       title: "Automated initial setup",
       text: "You can automate the initial setup to efficiently distribute devices to new employees.",
+      image: ManUsingDevice,
     },
     {
       title: "Location information retrieval in case of device loss",
       text: "You can retrieve location information to locate the device.",
+      image: LostDeviceMapsAndNavigation,
     },
   ],
   TechnologyStackTitle: ["We operate with", "modern technology stacks."],

@@ -1,6 +1,5 @@
 # EMM Enterprise 作成フロー
 
-```mermaid
 ---
 
 config:
@@ -9,6 +8,7 @@ theme: neutral
 
 ---
 
+```mermaid
 sequenceDiagram
 autonumber
 actor User

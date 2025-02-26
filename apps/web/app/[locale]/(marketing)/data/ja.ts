@@ -1,4 +1,7 @@
 import { MarketingPage } from "@/app/types/locale";
+import AppDistribution from "../images/app-distribution.png";
+import ManUsingDevice from "../images/man-using-device.png";
+import LostDeviceMapsAndNavigation from "../images/lost-device-maps-and-navigation.png";
 
 const data: MarketingPage = {
   heroTitle: ["シンプルで理想的な", "デバイス管理"],
@@ -11,7 +14,7 @@ const data: MarketingPage = {
     "Wi-FiのSSID設定を配信できます。",
     "特定のアプリで画面固定できます。",
     "紛失モードで位置情報を取得できます。",
-    "定期的に、Googleにより新機能追加、バグ修正などメンテナンスされています。",
+    "カメラや外部メディアなどの使用を制限できます。",
   ],
   PCConsoleAppsManagementTitle:
     "会社用のGoogleアカウントでアプリケーション管理",
@@ -26,14 +29,17 @@ const data: MarketingPage = {
     {
       title: "アプリの一括配信",
       text: "業務で使用するアプリを一括配信できます。",
+      image: AppDistribution,
     },
     {
       title: "初期設定の自動化",
-      text: "初期設定の自動化を行うことで、新入社員のデバイス配布を効率化できます。",
+      text: "初期設定の自動化を行うことで、デバイス配布やデバイス交換を効率化できます。",
+      image: ManUsingDevice,
     },
     {
       title: "デバイス紛失時の位置情報取得",
       text: "デバイス紛失時の位置情報取得を行うことで、デバイスの位置を特定できます。",
+      image: LostDeviceMapsAndNavigation,
     },
   ],
   TechnologyStackTitle: ["モダンな技術スタックで", "運用しています。"],

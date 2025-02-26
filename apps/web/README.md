@@ -130,3 +130,10 @@ pnpm dlx supabase db push
 1. [code ~/.zshrc] ファイルを開く
 2. [alias pj='cd ~/Projects'] エイリアスの追加
 3. [source ~/.zshrc] ターミナル再起動
+
+## Vercelから開発環境に必要な環境変数をDL
+
+```bash
+vercel env pull --environment=preview
+vercel env pull --environment=development
+```

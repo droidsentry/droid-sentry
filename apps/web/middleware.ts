@@ -1,4 +1,4 @@
-import { type NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 import AppMiddleware from "./lib/middleware/app-middleware";
 import { createI18nMiddleware } from "next-international/middleware";
@@ -11,13 +11,21 @@ const I18nMiddleware = createI18nMiddleware({
 
 export async function middleware(request: NextRequest) {
   const i18nResponse = I18nMiddleware(request);
-  const { response, user, supabaseResponse } = await updateSession(
+  // console.log("i18nResponse", i18nResponse);
+  const supabaseResponse = NextResponse.next({
     request,
-    i18nResponse
-  );
-  console.log("response", response);
-  console.log("supabaseResponse", supabaseResponse);
+  });
+  const xRewriteValue = i18nResponse.headers.get("x-middleware-rewrite");
+  if (xRewriteValue) {
+    supabaseResponse.headers.append("x-middleware-rewrite", xRewriteValue);
+  }
+  const xNextLocaleValue = i18nResponse.headers.get("x-next-locale");
+  if (xNextLocaleValue) {
+    supabaseResponse.headers.append("x-next-locale", xNextLocaleValue);
+  }
+  // console.log("supabaseResponse", supabaseResponse);
 
+  const { response, user } = await updateSession(request, i18nResponse);
   return AppMiddleware(request, response, user);
 }
 

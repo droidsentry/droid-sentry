@@ -36,7 +36,7 @@ export default function NavigationBar({
               <Image
                 src={logo}
                 alt=""
-                className="absolute left-1 size-8 dark:brightness-150 drop-shadow-lg"
+                className="absolute left-1 size-8"
                 priority
               />
             </Link>
