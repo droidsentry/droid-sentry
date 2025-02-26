@@ -1,3 +1,8 @@
+import bundleAnalyzer from "@next/bundle-analyzer";
+import createNextIntlPlugin from "next-intl/plugin";
+
+const withNextIntl = createNextIntlPlugin();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -73,4 +78,12 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+// export default nextConfig;
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
+
+// export default withBundleAnalyzer(nextConfig);
+// export default withNextIntl(nextConfig);
+export default withNextIntl(withBundleAnalyzer(nextConfig));

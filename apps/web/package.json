@@ -18,7 +18,10 @@
     "test-ui": "pnpm exec playwright test --ui",
     "ngrok": "pnpm dlx ngrok http 3000",
     "knip": "knip",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "env-pull": "vercel env pull --environment=development",
+    "prod-env-pull": "vercel env pull --environment=production check-prod.env",
+    "analyze": "ANALYZE=true pnpm build"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -27,6 +30,7 @@
     "@google-cloud/pubsub": "^4.9.0",
     "@hookform/resolvers": "^3.9.0",
     "@icons-pack/react-simple-icons": "^10.0.0",
+    "@next/bundle-analyzer": "^15.1.7",
     "@radix-ui/react-alert-dialog": "^1.1.2",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-checkbox": "^1.1.2",
@@ -65,6 +69,7 @@
     "lucide-react": "^0.469.0",
     "next": "15.1.3",
     "next-international": "^1.3.1",
+    "next-intl": "^3.26.5",
     "next-themes": "^0.4.4",
     "node-ipinfo": "^4.0.1",
     "playwright": "^1.48.2",
