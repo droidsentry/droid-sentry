@@ -7,12 +7,14 @@
  */
 export const getBaseURL = (parentUrl?: string) => {
   const isProd = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
-  // console.log("isProd", isProd);
+  console.log("isProd", isProd);
 
   // 本番環境の場合
   if (isProd) {
     const prodUrl = process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL; //ex: my-site.com
+    // console.log("prodUrl", prodUrl);
     const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL; // ex: my-site.vercel.app
+    // console.log("vercelUrl", vercelUrl);
     return prodUrl
       ? `https://${prodUrl}`
       : vercelUrl

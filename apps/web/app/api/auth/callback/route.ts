@@ -16,10 +16,10 @@ export async function GET(request: NextRequest) {
 
     // エラーが発生した場合、ホームページにリダイレクト
     if (error) {
+      console.error(error.message);
       return NextResponse.redirect(new URL("/", request.url));
     }
   }
-
   // 処理完了後、ホームページにリダイレクト
   return NextResponse.redirect(new URL("/projects", request.url));
 }

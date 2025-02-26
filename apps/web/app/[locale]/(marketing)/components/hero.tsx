@@ -4,10 +4,13 @@ import { MarketingPage } from "@/app/types/locale";
 import { Fragment } from "react";
 import heroImageConsole from "../images/hero-image-console.png";
 import StartFreeAccountButton from "./start-free-account-button";
+import { useTranslations } from "next-intl";
 
 export default function Hero({ data }: { data: MarketingPage }) {
+  const t = useTranslations("HomePage");
   return (
     <section className="pt-1.5 pb-28">
+      <h1>{t("title")}</h1>
       <div className="lg:pt-16 pt-5 grid lg:grid-cols-2 items-center">
         <div className="lg:text-left text-center mr-0 md:mr-18">
           <div className="mb-5 text-4xl md:text-6xl font-bold">
