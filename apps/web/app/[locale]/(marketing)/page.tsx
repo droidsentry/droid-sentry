@@ -7,6 +7,7 @@ import PhoneManagement from "./components/phone-management";
 import TechnologyStack from "./components/technology-stack";
 import UseCase from "./components/use-case";
 import { getMarketingPage } from "./data";
+import { useTranslations } from "next-intl";
 
 export default async function ({ params }: { params: Promise<RouteParams> }) {
   const { locale } = await params;

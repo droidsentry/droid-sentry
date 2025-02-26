@@ -2,16 +2,19 @@ import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 import AppMiddleware from "./lib/middleware/app-middleware";
 import { createI18nMiddleware } from "next-international/middleware";
+import createMiddleware from "next-intl/middleware";
+import { routing } from "./i18n/routing";
 
 const I18nMiddleware = createI18nMiddleware({
   locales: ["ja", "en"],
   defaultLocale: "ja",
   urlMappingStrategy: "rewrite",
 });
+const handleI18nRouting = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
   const i18nResponse = I18nMiddleware(request);
-  console.log("i18nResponse", i18nResponse);
+  // console.log("i18nResponse", i18nResponse);
   const supabaseResponse = NextResponse.next({
     request,
   });
@@ -23,7 +26,7 @@ export async function middleware(request: NextRequest) {
   if (xNextLocaleValue) {
     supabaseResponse.headers.append("x-next-locale", xNextLocaleValue);
   }
-  console.log("supabaseResponse", supabaseResponse);
+  // console.log("supabaseResponse", supabaseResponse);
 
   const { response, user } = await updateSession(request, supabaseResponse);
   return AppMiddleware(request, response, user);
