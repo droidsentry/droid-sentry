@@ -7,8 +7,7 @@ const publicRoutes = [
   "/error",
   "/terms",
   "/privacy",
-  "/storage",
-  "/line",
+  "/legal",
   "/api/auth/callback",
   "/api/auth/confirm",
   "/api/auth/route",
@@ -33,19 +32,19 @@ export default async function AppMiddleware(
 ) {
   // リクエストのパスを取得
   const path = request.nextUrl.pathname;
-  // ユーザーがサインインしているかどうかを確認
-  // ユーザーオブジェクトが存在するかどうかを確認し、存在する場合はサインインしているとみなす
-  // user が null または undefined の場合は false になり、サインインしていないとみなす
-  const signedIn = Boolean(user);
-  // パスがパブリックルートかどうかを確認
-  const isPublicRoute = publicRoutes.includes(path);
-  // パスがゲスト専用ルートかどうかを確認
-  const isGuestRoute = guestRoutes.includes(path);
-  // パスがプライベートルートかどうかを確認
-  const isPrivateRoute = !isPublicRoute && !isGuestRoute;
+  const basePath = "/" + path.split("/").slice(2).join("/");
+  // const localePath = "/" + path.split("/")[1];
 
+  // ユーザーがサインインしているかどうかを確認.サインインしていれば、true.
+  const signedIn = Boolean(user);
+  // パスがパブリックルートかどうかを確認.パブリックルートであれば、true.
+  const isPublicRoute = publicRoutes.includes(basePath);
+  // パスがゲスト専用ルートかどうかを確認.ゲスト専用ルートであれば、true.
+  const isGuestRoute = guestRoutes.includes(basePath);
+  // パスがプライベートルートかどうかを確認.プライベートルートであれば、true.
+  const isPrivateRoute = !isPublicRoute && !isGuestRoute;
+  // ユーザーがプロジェクトを作成しているかどうかを確認
   const hasProject = user?.user_metadata?.has_created_project;
-  // console.log(hasProject, "hasProject");
 
   // // ユーザーが所属する組織があるかどうかを確認
   // const hasOrganization = user?.app_metadata?.organization;
@@ -54,18 +53,18 @@ export default async function AppMiddleware(
 
   // ゲスト専用ルートにサインイン済みのユーザーがアクセスしようとした場合、emmページにリダイレクト
   if (isGuestRoute && signedIn) {
-    return NextResponse.redirect(new URL("/projects", request.url));
+    return NextResponse.redirect(new URL(`/projects`, request.url));
   }
 
   if (isPrivateRoute) {
     // サインインしていない場合、ログインページにリダイレクト
     if (!signedIn) {
       return NextResponse.redirect(
-        new URL(`/sign-in?from=${path}`, request.url)
+        new URL(`/sign-in?from=${basePath}`, request.url)
       );
     }
     // プロジェクト作成チェック（/welcome以外のプライベートルートの場合のみ）
-    if (!hasProject && path !== "/welcome") {
+    if (!hasProject && basePath !== `/welcome`) {
       return NextResponse.redirect(new URL("/welcome", request.url));
     }
 

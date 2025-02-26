@@ -2,7 +2,6 @@ import "server-only";
 
 import { OAuth2Client } from "google-auth-library";
 import { headers } from "next/headers";
-
 import { getBaseSubscriptionURL } from "@/lib/base-url/server";
 
 /**
@@ -33,8 +32,7 @@ export async function verifyPubSubToken() {
     if (!claim) throw new Error("Invalid claim");
 
     // Pub/Subサービスアカウントの検証
-    const expectedServiceAccount =
-      process.env.PUBSUB_SUBSCRIPTION_AUTH_SERVICE_ACCOUNT;
+    const expectedServiceAccount = process.env.GCP_SERVICE_ACCOUNT_EMAIL;
     if (claim.email !== expectedServiceAccount) {
       throw new Error("Invalid service account");
     } else if (claim.email === expectedServiceAccount) {

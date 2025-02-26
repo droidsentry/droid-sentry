@@ -13,7 +13,9 @@
         "PUBSUB_SUBSCRIPTION_AUTH_SERVICE_ACCOUNT",
         "ENCRYPTION_KEY",
         "GOOGLE_*",
-        "SUPABASE_*"
+        "GCP_*",
+        "SUPABASE_*",
+        "IPINFO_TOKEN"
       ]
     },
     "lint": {

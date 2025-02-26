@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
 import Image from "next/image";
-// import logo from "@/public/images/logo.png";
-import Logo from "@/public/images/droid-sentry-logo.svg";
+import Logo from "@/public/images/logo.png";
 
 import { AppConfig } from "@/app.config";
 import { cn } from "@/lib/utils";

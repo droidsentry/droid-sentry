@@ -23,7 +23,7 @@ export interface PubSubMessage {
     message_id: string;
     publishTime: string;
     publish_time: string;
-    orderingKey: string;
+    orderingKey?: string;
   };
   subscription: string;
 }
@@ -44,10 +44,29 @@ export async function POST(request: Request) {
     // トークンの検証
     await verifyPubSubToken();
 
-    const body: PubSubMessage = await request.json();
+    let body: PubSubMessage;
+    try {
+      body = await request.json();
+    } catch (error) {
+      console.error("JSON parse error:", error);
+      throw new Error("Invalid JSON in request body");
+    }
+
+    // リクエストボディの基本的なバリデーション
+    if (!body?.message?.data) {
+      throw new Error("Invalid message format: missing required fields");
+    }
+
     // Base64でエンコードされたデータをデコード
-    const decodedData = Buffer.from(body.message.data, "base64").toString();
-    const data = JSON.parse(decodedData);
+    let data;
+    try {
+      const decodedData = Buffer.from(body.message.data, "base64").toString();
+      data = JSON.parse(decodedData);
+    } catch (error) {
+      console.error("Base64 decode or JSON parse error:", error);
+      throw new Error("Failed to decode message data");
+    }
+
     const isProd = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
     const contentTitle = isProd ? "" : "【開発環境】";
     const supabase = createAdminClient();
