@@ -5,6 +5,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
+import { getLocale, getMessages } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -26,8 +28,13 @@ export default async function RooLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+
+  // Providing all messages to the client
+  // side is the easiest way to get started
+  const messages = await getMessages();
   return (
-    <html lang="ja" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={cn(
           `${fontSans.variable} ${fontMono.variable} antialiased `,
@@ -41,7 +48,9 @@ export default async function RooLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <NextIntlClientProvider messages={messages}>
+            {children}
+          </NextIntlClientProvider>
           <Toaster richColors />
         </ThemeProvider>
       </body>

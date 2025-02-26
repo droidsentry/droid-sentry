@@ -8,15 +8,13 @@
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**"],
       "env": [
-        "STRIPE_*",
         "DISCORD_PUBSUB_WEBHOOK_URL",
-        "PUBSUB_SUBSCRIPTION_AUTH_SERVICE_ACCOUNT",
         "ENCRYPTION_KEY",
-        "GOOGLE_*",
-        "GCP_*",
-        "SUPABASE_*",
         "IPINFO_TOKEN",
-        "NEXT_*"
+        "GCP_*",
+        "STRIPE_*",
+        "GOOGLE_*",
+        "VERCEL*"
       ]
     },
     "lint": {
