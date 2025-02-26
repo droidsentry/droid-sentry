@@ -15,7 +15,8 @@
         "GOOGLE_*",
         "GCP_*",
         "SUPABASE_*",
-        "IPINFO_TOKEN"
+        "IPINFO_TOKEN",
+        "NEXT_*"
       ]
     },
     "lint": {
