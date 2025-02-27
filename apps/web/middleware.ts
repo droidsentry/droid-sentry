@@ -14,7 +14,9 @@ const handleI18nRouting = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
   const i18nResponse = I18nMiddleware(request);
+  // const i18nInternalResponse = handleI18nRouting(request);
   // console.log("i18nResponse", i18nResponse);
+  // console.log("i18nInternalResponse", i18nInternalResponse);
   const supabaseResponse = NextResponse.next({
     request,
   });

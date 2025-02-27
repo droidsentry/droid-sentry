@@ -16,6 +16,7 @@ export default function PCConsoleAppsManagement({
           <Image
             src={PCConsoleAppsFeatureGraphic}
             alt="pc-console-apps-management"
+            priority
           />
         </div>
         <div className="md:pr-16 ">

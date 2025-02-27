@@ -170,13 +170,13 @@ export default function OnboardingForm() {
         </Form>
       </CardContent>
       <CardFooter className="flex flex-col space-y-4">
-        <Button
+        {/* <Button
           variant="link"
           className="text-sm text-muted-foreground"
           asChild
         >
-          <Link href="/dashboard">スキップして続行</Link>
-        </Button>
+          <Link href="/projects">スキップして続行</Link>
+        </Button> */}
       </CardFooter>
     </Card>
   );

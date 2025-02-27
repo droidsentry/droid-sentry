@@ -33,6 +33,7 @@ export default async function Page() {
           width={400}
           height={400}
           className="w-[300px] sm:w-[400px] md:w-[450px] lg:w-auto h-[598px] sm:h-auto xl:h-[550px] animate-[float_3s_ease-in-out_infinite]"
+          priority
         />
       </div>
 

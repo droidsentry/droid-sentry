@@ -1,13 +1,15 @@
 import Image from "next/image";
 
 import { MarketingPage } from "@/app/types/locale";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import heroImageConsole from "../images/hero-image-console.png";
 import StartFreeAccountButton from "./start-free-account-button";
 import { useTranslations } from "next-intl";
+import { getUserLocale } from "@/i18n/locale";
 
 export default function Hero({ data }: { data: MarketingPage }) {
   const t = useTranslations("HomePage");
+
   return (
     <section className="pt-1.5 pb-28">
       <h1>{t("title")}</h1>
@@ -29,7 +31,7 @@ export default function Hero({ data }: { data: MarketingPage }) {
           <StartFreeAccountButton className="my-8" />
         </div>
         <div className="flex flex-col items-center justify-center">
-          <Image src={heroImageConsole} alt="hero-image-console-ui" />
+          <Image src={heroImageConsole} alt="hero-image-console-ui" priority />
         </div>
       </div>
     </section>

@@ -29,6 +29,7 @@ export default async function RooLayout({
   children: React.ReactNode;
 }) {
   const locale = await getLocale();
+  console.log("locale", locale);
 
   // Providing all messages to the client
   // side is the easiest way to get started
