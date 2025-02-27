@@ -7,6 +7,7 @@ export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   // URLのクエリパラメータから'code'を取得
   const code = requestUrl.searchParams.get("code");
+  // console.log("request.url", request.url);
 
   if (code) {
     // Supabaseクライアントを作成
@@ -21,23 +22,25 @@ export async function GET(request: NextRequest) {
     // エラーが発生した場合、ホームページにリダイレクト
     if (error) {
       console.error(error.message);
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL("/auth-error", request.url));
     }
     // ユーザー情報を取得
     const userId = user?.id;
+    // console.log("userId", userId);
     if (!userId) {
       throw new Error("ユーザーIDが取得できません");
     }
 
     // ユーザーがサブスクリプションを作成しているかどうかを確認
     const hasSubscriptionId = user?.user_metadata?.stripe_customer_id;
+    // console.log("hasSubscriptionId", hasSubscriptionId);
     if (!hasSubscriptionId) {
-      await createTrialSubscription(userId).then(() => {
-        return NextResponse.redirect(new URL("/projects", request.url));
-      });
+      // awaitを使用して非同期処理の完了を待つ
+      await createTrialSubscription(userId);
+      return NextResponse.redirect(new URL("/projects", request.url));
     } else {
       return NextResponse.redirect(new URL("/projects", request.url));
     }
   }
-  return NextResponse.redirect(new URL("/error", request.url));
+  return NextResponse.redirect(new URL("/auth-error", request.url));
 }

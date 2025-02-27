@@ -44,9 +44,8 @@ export default function OnboardingForm() {
       agreeToTerms: false,
     },
   });
-  const currentUrl = window.location.origin;
+  const [currentUrl, setCurrentUrl] = useState<string>();
   const url = getBaseURL(currentUrl);
-  console.log(url);
 
   const onSubmit = async (data: FormData) => {
     await createProject(data).then(async (project) => {
@@ -57,6 +56,7 @@ export default function OnboardingForm() {
 
   // フォームの状態が変更されるたびにprogressを更新
   useEffect(() => {
+    setCurrentUrl(window.location.origin);
     const subscription = form.watch((values) => {
       let completedFields = 0;
       if (values.projectName) completedFields++;
