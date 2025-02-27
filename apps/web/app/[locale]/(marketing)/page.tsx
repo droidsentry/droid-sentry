@@ -8,16 +8,19 @@ import TechnologyStack from "./components/technology-stack";
 import UseCase from "./components/use-case";
 import { getMarketingPage } from "./data";
 import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 export default async function ({ params }: { params: Promise<RouteParams> }) {
   const { locale } = await params;
   setStaticParamsLocale(locale);
+  const t = await getTranslations("HomePage");
 
   const data = await getMarketingPage();
   return (
     <>
       <div className="container mx-auto px-4 md:px-6 xl:px-[70px] flex flex-col">
         <Hero data={data} />
+        <h1>{t("about")}</h1>
         <PhoneManagement data={data} />
         <PCConsoleAppsManagement data={data} />
         <UseCase data={data} />

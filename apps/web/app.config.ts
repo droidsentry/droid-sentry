@@ -7,16 +7,7 @@ export const AppConfig = {
   department: "DroidSentry-Department",
   email: "sentry@droidsentry.com",
   defaultLocale: "ja",
-  locales: [
-    {
-      id: "en",
-      label: "English",
-    },
-    {
-      id: "ja",
-      label: "Japanese",
-    },
-  ],
+  locales: ["ja", "en"],
   defaultTheme: "system", // 'light' | 'dark' | 'system'
 
   // Please set the features you want to hide to false.
@@ -26,3 +17,6 @@ export const AppConfig = {
     locale: true,
   },
 } as const;
+
+export type Locale = (typeof AppConfig)["locales"][number];
+export const defaultLocale: Locale = "ja";

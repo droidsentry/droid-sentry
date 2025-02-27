@@ -2,6 +2,7 @@
 
 import { Separator } from "@/components/ui/separator";
 import { Toggle } from "@/components/ui/toggle";
+import { setUserLocale } from "@/i18n/locale";
 import { cn } from "@/lib/utils";
 import { useChangeLocale, useCurrentLocale } from "@/locales/client";
 
@@ -13,7 +14,10 @@ export function LocaleToggle({ className }: { className?: string }) {
       // variant="outline"
       aria-label="Toggle bold"
       className={cn("rounded-full uppercase", className)}
-      onClick={() => changeLocale(locale === "en" ? "ja" : "en")}
+      onClick={async () => {
+        await setUserLocale(locale === "en" ? "ja" : "en");
+        changeLocale(locale === "en" ? "ja" : "en");
+      }}
     >
       <span
         className={cn(

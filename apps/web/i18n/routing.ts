@@ -1,13 +1,16 @@
 import { defineRouting } from "next-intl/routing";
 import { createNavigation } from "next-intl/navigation";
+import { AppConfig, defaultLocale } from "@/app.config";
+
+const supportedLocales = AppConfig.locales;
 
 export const routing = defineRouting({
   // A list of all locales that are supported
-  locales: ["en", "ja"],
+  locales: supportedLocales,
 
   // Used when no locale matches
-  defaultLocale: "ja",
-  localePrefix: "never",
+  defaultLocale: defaultLocale,
+  // localePrefix: "never",
 });
 
 // Lightweight wrappers around Next.js' navigation APIs

@@ -21,22 +21,18 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import PasswordForm from "../../components/password-form";
 
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { signUpFormSchema } from "@/app/schema/auth";
-
-const schema = signUpFormSchema;
-
-type FormData = z.infer<typeof schema>;
+import { SignUpForm } from "@/app/types/auth";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function UsernamePasswordSignUpForm() {
   const router = useRouter();
   const form = useForm({
     mode: "onChange",
-    resolver: zodResolver(schema),
+    resolver: zodResolver(signUpFormSchema),
     defaultValues: {
       username: process.env.NEXT_PUBLIC_DEV_USERNAME ?? "",
       email: process.env.NEXT_PUBLIC_DEV_EMAIL ?? "",
@@ -44,7 +40,7 @@ export default function UsernamePasswordSignUpForm() {
     },
   });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: SignUpForm) => {
     await signUpNewUser(data)
       .then((id) => {
         toast.success("サインアップ登録が完了しました。");

@@ -36,26 +36,31 @@ export default function TechnologyStack({ data }: { data: MarketingPage }) {
           src={nextjsLogo}
           alt="Next.js"
           className="md:h-6 h-5 mb-5 mx-2 rounded-none opacity-50 w-fit dark:invert"
+          priority
         />
         <Image
           src={vercelLogo}
           alt="Vercel"
           className="md:h-6 h-5 mb-5 mx-2 rounded-none opacity-50 w-fit dark:invert"
+          priority
         />
         <Image
           src={resendLogo}
           alt="Resend"
           className="md:h-6 h-5 mb-5 mx-2 rounded-none opacity-50 w-fit dark:invert"
+          priority
         />
         <Image
           src={sentryLogo}
           alt="Sentry"
           className="md:h-6 h-5 mb-5 mx-2 rounded-none opacity-50 w-fit dark:invert"
+          priority
         />
         <Image
           src={supabaseLogo}
           alt="Supabase"
           className="md:h-6 h-5 mb-5 mx-2 rounded-none opacity-50 w-fit dark:invert"
+          priority
         />
       </div>
       <div className="md:px-6 lg:px-0 flex flex-col justify-center items-center px-4">

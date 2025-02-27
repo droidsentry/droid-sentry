@@ -17,7 +17,7 @@ export default function UseCase({ data }: { data: MarketingPage }) {
             className="rounded-3xl md:size-full dark:bg-muted/50 bg-muted/10 p-6 border"
           >
             <div className="aspect-square flex items-center justify-center dark:bg-white bg-muted/50 rounded-3xl border mb-6">
-              <Image src={card.image} alt={card.title} />
+              <Image src={card.image} alt={card.title} priority />
             </div>
             <div className="space-y-4">
               <h3 className="font-semibold">{card.title}</h3>
