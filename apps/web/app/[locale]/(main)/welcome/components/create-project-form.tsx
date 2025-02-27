@@ -67,7 +67,7 @@ export default function CreateProjectForm({
     },
   });
   const [isPending, startTransition] = useTransition();
-  const currentUrl = window.location.origin;
+  const [currentUrl, setCurrentUrl] = useState<string>();
   const url = getBaseURL(currentUrl);
 
   const onSubmit = async (data: FormData) => {
@@ -87,6 +87,7 @@ export default function CreateProjectForm({
 
   // フォームの状態が変更されるたびにprogressを更新
   useEffect(() => {
+    setCurrentUrl(window.location.origin);
     const subscription = form.watch((values) => {
       let completedFields = 0;
       const totalFields = agreeToTermsButton ? 3 : 2; // フィールドの総数を動的に設定
