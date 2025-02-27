@@ -17,17 +17,14 @@ import {
   signInFormSchema,
   signUpFormSchema,
 } from "@/app/schema/auth";
-
-const host =
-  process.env.NODE_ENV === "production" //本番環境にデプロイされていれば
-    ? "https://sample-site-pearl.vercel.app" // 本番環境の URL
-    : "http://localhost:3000";
+import { getBaseURL } from "@/lib/base-url/client";
 
 type SignIn = z.infer<typeof signInFormSchema>; // zod のスキーマにbrandメソッドを使って"SignIn"という名前がある
 type SignUp = z.infer<typeof signUpFormSchema>;
 type PasswordUpdate = z.infer<typeof passwordUpdateSchema>;
 
 export const signUpNewUser = async (formData: SignUp) => {
+  const baseUrl = getBaseURL();
   const result = await signUpFormSchema.safeParseAsync(formData);
   if (result.success === false) {
     console.error(result.error);
@@ -47,7 +44,7 @@ export const signUpNewUser = async (formData: SignUp) => {
     email,
     password,
     options: {
-      emailRedirectTo: `${host}/welcome`, // メールアドレス確認後のリダイレクト先
+      emailRedirectTo: `${baseUrl}/welcome`, // メールアドレス確認後のリダイレクト先
       data: {
         username,
         created_at: now,
@@ -168,11 +165,12 @@ export const resendSignUpOPT = async ({
     if (!email) {
       throw new Error("email is required");
     }
+    const baseUrl = getBaseURL();
     const { error } = await supabase.auth.resend({
       type,
       email,
       options: {
-        emailRedirectTo: `${host}/welcome`, // メールアドレス確認後のリダイレクト先
+        emailRedirectTo: `${baseUrl}/welcome`, // メールアドレス確認後のリダイレクト先
       },
     });
     if (error) {
@@ -234,9 +232,10 @@ export const resendAuthChangeOPT = async ({
 };
 
 export async function resetPassword(email: string) {
+  const baseUrl = getBaseURL();
   const supabase = await createClient();
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${host}/update-password`, // パスワードリセット後のリダイレクト先
+    redirectTo: `${baseUrl}/update-password`, // パスワードリセット後のリダイレクト先
   });
   if (error) {
     console.error(error.message);
