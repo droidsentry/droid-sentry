@@ -25,7 +25,7 @@ export default async function RootLayout({
   params: Promise<RouteParams>;
 }>) {
   const { locale } = await params;
-  console.log("locale", locale);
+  // console.log("locale", locale);
   return (
     <I18nProviderClient locale={locale}>
       <Header />

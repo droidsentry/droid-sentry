@@ -1,8 +1,7 @@
 import "server-only";
 
-import { currentUser } from "@/app/data/auth";
-import { createClient } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe";
+import { createClient } from "@/lib/supabase/server";
 
 /**
  * ユーザーの顧客IDを作成または取得する
@@ -10,7 +9,10 @@ import { stripe } from "@/lib/stripe";
  * 参考URL:https://docs.stripe.com/api/customers/create
  */
 export const createOrRetrieveCustomer = async () => {
-  const user = await currentUser();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
     throw new Error("ログインしてください");
@@ -19,7 +21,7 @@ export const createOrRetrieveCustomer = async () => {
   const customerId = user.user_metadata.stripe_customer_id;
   if (customerId) {
     const customer = await stripe.customers.retrieve(customerId);
-    console.log("customer", customer);
+    // console.log("customer", customer);
     if (!customer.deleted) {
       return customerId;
     }
@@ -33,11 +35,15 @@ export const createOrRetrieveCustomer = async () => {
     },
   });
 
-  const supabase = await createClient();
+  // const supabase = await createClient();
   const { data, error } = await supabase.auth.updateUser({
     data: { stripe_customer_id: customer.id },
   });
-  console.log(data, error);
+  if (error) {
+    console.error("error", error);
+    throw new Error("顧客IDの更新に失敗しました");
+  }
+  // console.log(data, error);
 
   return data?.user?.user_metadata.stripe_customer_id;
 };

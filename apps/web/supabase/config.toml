@@ -111,7 +111,7 @@ enabled = true
 # あなたのウェブサイトのベースURL。リダイレクトの許可リストとして使用され、メールで使用されるURLの構築に使用されます。
 # site_url = "http://127.0.0.1:3000"
 site_url = "http://localhost:3000"
-
+# site_url = "https://97e0-240b-10-8e63-1a00-94a6-4ecb-906b-63de.ngrok-free.app"
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
 # 認証後に認証プロバイダーがリダイレクトを許可される*正確な*URLのリスト。
 additional_redirect_urls = ["https://127.0.0.1:3000"]
@@ -159,19 +159,19 @@ max_frequency = "1s"
 # 本番環境対応のSMTPサーバーを使用する
 [auth.email.smtp]
 # resend smtp
-# host = "smtp.resend.com"
-# port = 465
-# user = "resend"
-# pass = "env(SUPABASE_LOCAL_SMTP_RESEND_API_KEY)"
-# admin_email = "noreply@droidsentry.email"
-# sender_name = "DroidSentry DEV"
-# gmail smtp
-host = "smtp.gmail.com"
+host = "smtp.resend.com"
 port = 465
-user = "t3kuboki@gmail.com"
-pass = "env(SUPABASE_LOCAL_SMTP_GOOGLE_API_KEY)"
-admin_email = "t3kuboki@gmail.com"
+user = "resend"
+pass = "env(SUPABASE_LOCAL_SMTP_RESEND_API_KEY)"
+admin_email = "noreply@droidsentry.email"
 sender_name = "DroidSentry DEV"
+# gmail smtp
+# host = "smtp.gmail.com"
+# port = 465
+# user = "t3kuboki@gmail.com"
+# pass = "env(SUPABASE_LOCAL_SMTP_GOOGLE_API_KEY)"
+# admin_email = "t3kuboki@gmail.com"
+# sender_name = "DroidSentry DEV"
 
 # Uncomment to customize email template
 # メールテンプレートをカスタマイズするにはコメントを解除します
