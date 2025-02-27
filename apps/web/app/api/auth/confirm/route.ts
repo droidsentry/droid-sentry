@@ -4,13 +4,13 @@ import { type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { createTrialSubscription } from "./lib/create-trial-subscription";
-// import { createTrialSubscription } from "./lib/create-trial-subscription";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
   const next = searchParams.get("next") ?? "/";
+  // console.log("next", next); //http://localhost:3000/welcome
 
   if (token_hash && type) {
     const supabase = await createClient();
@@ -30,10 +30,15 @@ export async function GET(request: NextRequest) {
     if (!userId) {
       throw new Error("ユーザーIDが取得できません");
     }
-    // ログイン成功時、自動でトライアルサブスクリプションを作成する。
-    await createTrialSubscription(userId).then(() => {
-      redirect(next);
-    });
+    // ユーザーがサブスクリプションを作成しているかどうかを確認
+    const hasSubscriptionId = user?.user_metadata?.stripe_customer_id;
+    if (!hasSubscriptionId) {
+      await createTrialSubscription(userId).then(() => {
+        return redirect(next);
+      });
+    } else {
+      return redirect(next);
+    }
   }
   redirect("/error");
 }

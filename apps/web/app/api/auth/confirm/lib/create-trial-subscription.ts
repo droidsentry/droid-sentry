@@ -50,5 +50,4 @@ export const createTrialSubscription = async (userId: string) => {
     console.error("error", error);
     throw new Error("サブスクリプションの作成に失敗しました");
   }
-  return true;
 };
