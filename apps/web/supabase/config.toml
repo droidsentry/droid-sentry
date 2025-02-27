@@ -159,19 +159,19 @@ max_frequency = "1s"
 # 本番環境対応のSMTPサーバーを使用する
 [auth.email.smtp]
 # resend smtp
-host = "smtp.resend.com"
-port = 465
-user = "resend"
-pass = "env(SUPABASE_LOCAL_SMTP_RESEND_API_KEY)"
-admin_email = "noreply@droidsentry.email"
-sender_name = "DroidSentry DEV"
-## gmail smtp
-# host = "smtp.gmail.com"
+# host = "smtp.resend.com"
 # port = 465
-# user = "t3kuboki@gmail.com"
-# pass = "env(SUPABASE_SMTP_GOOGLE_API_KEY)"
-# admin_email = "t3kuboki@gmail.com"
-# sender_name = "SAMPLE SITE DEV"
+# user = "resend"
+# pass = "env(SUPABASE_LOCAL_SMTP_RESEND_API_KEY)"
+# admin_email = "noreply@droidsentry.email"
+# sender_name = "DroidSentry DEV"
+# gmail smtp
+host = "smtp.gmail.com"
+port = 465
+user = "t3kuboki@gmail.com"
+pass = "env(SUPABASE_LOCAL_SMTP_GOOGLE_API_KEY)"
+admin_email = "t3kuboki@gmail.com"
+sender_name = "DroidSentry DEV"
 
 # Uncomment to customize email template
 # メールテンプレートをカスタマイズするにはコメントを解除します
