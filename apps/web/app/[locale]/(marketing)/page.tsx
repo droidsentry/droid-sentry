@@ -19,14 +19,14 @@ export default async function ({ params }: { params: Promise<RouteParams> }) {
   return (
     <>
       <div className="container mx-auto px-4 md:px-6 xl:px-[70px] flex flex-col">
-        <Hero data={data} />
+        {/* <Hero data={data} /> */}
         <h1>{t("about")}</h1>
-        <PhoneManagement data={data} />
+        {/* <PhoneManagement data={data} />
         <PCConsoleAppsManagement data={data} />
         <UseCase data={data} />
-        <TechnologyStack data={data} />
+        <TechnologyStack data={data} /> */}
       </div>
-      <FreeTrail data={data} />
+      {/* <FreeTrail data={data} /> */}
     </>
   );
 }

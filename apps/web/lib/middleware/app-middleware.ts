@@ -33,8 +33,12 @@ export default async function AppMiddleware(
 ) {
   // リクエストのパスを取得
   const path = request.nextUrl.pathname;
+  console.log("path", path);
+
   const basePath = "/" + path.split("/").slice(2).join("/");
-  // const localePath = "/" + path.split("/")[1];
+  console.log("basePath", basePath);
+  const localePath = "/" + path.split("/")[1];
+  console.log("localePath", localePath);
 
   // ユーザーがサインインしているかどうかを確認.サインインしていれば、true.
   const signedIn = Boolean(user);
