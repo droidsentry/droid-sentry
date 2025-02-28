@@ -1,6 +1,6 @@
 "use server";
 
-import { AppConfig, Locale } from "@/app.config";
+import { Locale } from "@/app.config";
 import { cookies, headers } from "next/headers";
 
 const COOKIE_NAME = "NEXT_LOCALE";
@@ -15,7 +15,6 @@ export async function getUserLocale() {
       .get("accept-language")
       ?.split(",")[0];
     locale = browserLocale === "ja" ? "ja" : "en";
-    // cookieStore.set(COOKIE_NAME, locale);
   }
   return locale;
 }
