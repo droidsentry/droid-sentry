@@ -1,13 +1,13 @@
 import { getCurrentLocale } from "@/locales/server";
-import { AppConfig } from "@/app.config";
+import { AppConfig, Locale } from "@/app.config";
 
 import en from "./en";
 import ja from "./ja";
-import { MarketingPage, LocaleId } from "@/app/types/locale";
+import { MarketingPage } from "@/app/types/locale";
 
 export const getMarketingPage = async () => {
   const data: {
-    [key in LocaleId]: MarketingPage;
+    [key in Locale]: MarketingPage;
   } = {
     en,
     ja,
