@@ -1,10 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function updateSession(
-  request: NextRequest,
-  i18nResponse: NextResponse
-) {
+export async function updateSession(request: NextRequest) {
+  let response = NextResponse.next({
+    request,
+  });
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -18,7 +18,7 @@ export async function updateSession(
             request.cookies.set(name, value)
           );
           cookiesToSet.forEach(({ name, value, options }) => {
-            i18nResponse.cookies.set(name, value, options);
+            response.cookies.set(name, value, options);
           });
         },
       },
@@ -30,7 +30,7 @@ export async function updateSession(
   } = await supabase.auth.getUser();
 
   return {
-    response: i18nResponse,
+    response,
     user,
   };
 }

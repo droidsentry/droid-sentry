@@ -11,7 +11,7 @@ import { z } from "zod";
 
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
 
-import { authErrorMessage } from "@/app/[locale]/(auth)/lib/displayAuthError";
+import { authErrorMessage } from "@/app/(auth)/lib/displayAuthError";
 import {
   passwordUpdateSchema,
   signInFormSchema,

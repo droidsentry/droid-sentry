@@ -1,7 +1,6 @@
-import { getI18n } from "@/locales/server";
 import { StaticImageData } from "next/image";
 
-export type i18nType = Awaited<ReturnType<typeof getI18n>>;
+// export type i18nType = Awaited<ReturnType<typeof getI18n>>;
 
 export type MarketingPage = {
   heroTitle: string[];

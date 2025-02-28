@@ -9,13 +9,6 @@ export const AppConfig = {
   defaultLocale: "ja",
   locales: ["ja", "en"],
   defaultTheme: "system", // 'light' | 'dark' | 'system'
-
-  // Please set the features you want to hide to false.
-  toolbar: {
-    print: true,
-    theme: true,
-    locale: true,
-  },
 } as const;
 
 export type Locale = (typeof AppConfig)["locales"][number];
