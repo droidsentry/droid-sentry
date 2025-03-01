@@ -29,10 +29,7 @@ export default function HeaderLogoButton({
       asChild
     >
       <Link href={hrefUrl} className="flex items-center font-bold gap-2 ">
-        <div className="aspect-square rounded-md w-fit overflow-hidden">
-          <Image src={Logo} alt="" className={`size-${size}`} priority />
-        </div>
-
+        <Image src={Logo} alt="" className={`size-${size} `} priority />
         <span className="font-bold text-xl">{titleValue}</span>
       </Link>
     </Button>

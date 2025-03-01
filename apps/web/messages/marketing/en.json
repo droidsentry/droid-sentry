@@ -1,0 +1,107 @@
+{
+  "marketing": {
+    "sign": {
+      "signIn": "Sign in",
+      "signingIn": "Signing in..."
+    },
+    "header": {
+      "flowOfUse": "Flow of use",
+      "plan": "Plan",
+      "blog": "Blog",
+      "drawerTitle": "Menu"
+    },
+    "footer": {
+      "products": "Products",
+      "plan": "Plan",
+      "companyInfo": "Company information",
+      "terms": "Terms of use",
+      "privacy": "Privacy policy",
+      "legal": "Display based on the Specified Commercial Transactions Law",
+      "resources": "Resources",
+      "blog": "Blog",
+      "support": "Contact and help",
+      "supportEmail": "Support email",
+      "helpCenter": "Help center and frequently asked questions"
+    },
+    "startFreeAccount": "Start a free account",
+    "toggleTheme": "Toggle theme",
+    "toggleLocale": "Toggle language",
+    "theme": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "hero": {
+      "title": "Simple and ideal<br></br>Device Management",
+      "description": "Device loss security. Efficient asset management of devices. Bulk device setup to streamline business operations."
+    },
+    "phoneManagement": {
+      "title": "You can manage all Android devices powerfully.",
+      "features": {
+        "appUninstall": {
+          "description": "You can automatically uninstall apps."
+        },
+        "appDisable": {
+          "description": "You can disable specified apps."
+        },
+        "wifiConfig": {
+          "description": "You can configure Wi-Fi SSID."
+        },
+        "screenPinning": {
+          "description": "You can pin apps to the screen."
+        },
+        "lostMode": {
+          "description": "You can get location information in lost mode."
+        },
+        "restrictions": {
+          "description": "You can restrict the use of cameras and external media."
+        }
+      }
+    },
+    "pcConsoleAppsManagement": {
+      "title": "Manage applications with a company Google account",
+      "features": {
+        "appInfo": {
+          "description": "You can get detailed information about the target app."
+        },
+        "personalGoogleAccount": {
+          "description": "You can deliver apps without a personal Google account."
+        },
+        "limitedPublicAndroidApp": {
+          "description": "You can deliver limited public Android apps."
+        },
+        "pwa": {
+          "description": "You can deliver progressive web apps (PWAs)."
+        }
+      }
+    },
+    "useCase": {
+      "title": "You can efficiently manage devices in various cases.",
+      "usageExperience": {
+        "appDistribution": {
+          "title": "Bulk app distribution",
+          "description": "You can deliver apps to all devices at once.",
+          "image": "AppDistribution"
+        },
+        "autoSetup": {
+          "title": "Automated initial setup",
+          "description": "You can automate initial setup to streamline business operations.",
+          "image": "ManUsingDevice"
+        },
+        "lostDevice": {
+          "title": "Get location information when a device is lost",
+          "description": "You can get the location of a lost device.",
+          "image": "LostDeviceMapsAndNavigation"
+        }
+      }
+    },
+    "technologyStack": {
+      "title": "We operate with<br></br>modern technology stacks.",
+      "description": "We use the latest technologies such as Next.js, Vercel,<br></br> and Supabase to develop and operate efficiently."
+    },
+    "freeTrial": {
+      "title": "Start a free trial",
+      "description": "You can start managing Android devices with a company Google account.<br></br>First, experience managing Android devices with a free trial.<br></br>The first 500 people can try it for free up to 10 Android devices.<br></br>If you have any questions, please contact us."
+    }
+  }
+}
