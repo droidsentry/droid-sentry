@@ -19,7 +19,7 @@
     "ngrok": "pnpm dlx ngrok http 3000",
     "knip": "knip",
     "check-types": "tsc --noEmit",
-    "env-pull": "vercel env pull --environment=development",
+    "dev-env-pull": "vercel env pull --environment=development",
     "prod-env-pull": "vercel env pull --environment=production check-prod.env",
     "analyze": "ANALYZE=true pnpm build"
   },

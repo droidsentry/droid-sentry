@@ -21,13 +21,13 @@ export default function FreeTrail() {
           <StartFreeAccountButton className="my-8" />
         </div>
         <div className="aspect-square size-full flex items-center justify-center">
-          <div className="aspect-video w-full flex rounded-3xl border overflow-hidden p-3">
+          <div className="relative aspect-video w-full flex rounded-3xl border overflow-hidden p-3">
             {/* <Image
               src={quickStart}
               alt="quick start"
               className="object-cover p-20"
             /> */}
-            <UsageExperience />
+            <UsageExperience className="" />
           </div>
         </div>
       </div>
