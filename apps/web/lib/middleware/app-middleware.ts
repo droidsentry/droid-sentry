@@ -33,15 +33,12 @@ export default async function AppMiddleware(
 ) {
   // リクエストのパスを取得
   const path = request.nextUrl.pathname;
-  const basePath = "/" + path.split("/").slice(2).join("/");
-  // const localePath = "/" + path.split("/")[1];
-
   // ユーザーがサインインしているかどうかを確認.サインインしていれば、true.
   const signedIn = Boolean(user);
   // パスがパブリックルートかどうかを確認.パブリックルートであれば、true.
-  const isPublicRoute = publicRoutes.includes(basePath);
+  const isPublicRoute = publicRoutes.includes(path);
   // パスがゲスト専用ルートかどうかを確認.ゲスト専用ルートであれば、true.
-  const isGuestRoute = guestRoutes.includes(basePath);
+  const isGuestRoute = guestRoutes.includes(path);
   // パスがプライベートルートかどうかを確認.プライベートルートであれば、true.
   const isPrivateRoute = !isPublicRoute && !isGuestRoute;
   // ユーザーがプロジェクトを作成しているかどうかを確認
@@ -61,11 +58,11 @@ export default async function AppMiddleware(
     // サインインしていない場合、ログインページにリダイレクト
     if (!signedIn) {
       return NextResponse.redirect(
-        new URL(`/sign-in?from=${basePath}`, request.url)
+        new URL(`/sign-in?from=${path}`, request.url)
       );
     }
     // プロジェクト作成チェック（/welcome以外のプライベートルートの場合のみ）
-    if (!hasProject && basePath !== `/welcome`) {
+    if (!hasProject && path !== `/welcome`) {
       return NextResponse.redirect(new URL("/welcome", request.url));
     }
 

@@ -1,34 +1,9 @@
-import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
+import { type NextRequest } from "next/server";
 import AppMiddleware from "./lib/middleware/app-middleware";
-import { createI18nMiddleware } from "next-international/middleware";
-import createMiddleware from "next-intl/middleware";
-import { routing } from "./i18n/routing";
-
-const I18nMiddleware = createI18nMiddleware({
-  locales: ["ja", "en"],
-  defaultLocale: "ja",
-  urlMappingStrategy: "rewrite",
-});
-const handleI18nRouting = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
-  const i18nResponse = I18nMiddleware(request);
-  // console.log("i18nResponse", i18nResponse);
-  const supabaseResponse = NextResponse.next({
-    request,
-  });
-  const xRewriteValue = i18nResponse.headers.get("x-middleware-rewrite");
-  if (xRewriteValue) {
-    supabaseResponse.headers.append("x-middleware-rewrite", xRewriteValue);
-  }
-  const xNextLocaleValue = i18nResponse.headers.get("x-next-locale");
-  if (xNextLocaleValue) {
-    supabaseResponse.headers.append("x-next-locale", xNextLocaleValue);
-  }
-  // console.log("supabaseResponse", supabaseResponse);
-
-  const { response, user } = await updateSession(request, supabaseResponse);
+  const { response, user } = await updateSession(request);
   return AppMiddleware(request, response, user);
 }
 

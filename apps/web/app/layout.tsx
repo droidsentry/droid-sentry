@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
+import { AppConfig } from "@/app.config";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -29,9 +30,6 @@ export default async function RooLayout({
   children: React.ReactNode;
 }) {
   const locale = await getLocale();
-
-  // Providing all messages to the client
-  // side is the easiest way to get started
   const messages = await getMessages();
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -44,7 +42,7 @@ export default async function RooLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme={AppConfig.defaultTheme}
           enableSystem
           disableTransitionOnChange
         >

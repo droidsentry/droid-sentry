@@ -1,0 +1,8 @@
+{
+  "main": {
+    "homePage": {
+      "title": "Hello world!",
+      "about": "This app is a mobile device management app."
+    }
+  }
+}
