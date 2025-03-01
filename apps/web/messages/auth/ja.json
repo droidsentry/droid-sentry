@@ -1,0 +1,8 @@
+{
+  "auth": {
+    "signIn": {
+      "signIn": "サインイン",
+      "signingIn": "サインイン中..."
+    }
+  }
+}
