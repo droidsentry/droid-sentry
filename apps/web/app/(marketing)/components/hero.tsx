@@ -5,6 +5,7 @@ import heroImageConsole from "../images/hero-image-console.png";
 import StartFreeAccountButton from "./start-free-account-button";
 
 export default function Hero() {
+  ``;
   const t = useTranslations("marketing.hero");
 
   return (

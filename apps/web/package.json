@@ -1,9 +1,9 @@
 {
-  "name": "emm-next",
+  "name": "droid-sentry",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -62,7 +62,7 @@
     "@vis.gl/react-google-maps": "^1.4.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "cmdk": "1.0.4",
+    "cmdk": "1.0.0",
     "date-fns": "^4.1.0",
     "google-auth-library": "^9.15.0",
     "googleapis": "^144.0.0",
