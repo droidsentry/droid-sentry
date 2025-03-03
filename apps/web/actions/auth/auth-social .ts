@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 
 export const signInWithGithub = async () => {
   const baseUrl = getBaseURL();
-  // console.log("baseUrl", baseUrl);
   const supabase = await createClient();
   const { data } = await supabase.auth.signInWithOAuth({
     provider: "github",
@@ -16,7 +15,6 @@ export const signInWithGithub = async () => {
   });
 
   if (data.url) {
-    // console.log("data.url", data.url);
     redirect(data.url);
   }
 };

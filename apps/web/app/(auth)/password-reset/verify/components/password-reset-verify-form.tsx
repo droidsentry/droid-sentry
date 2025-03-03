@@ -29,10 +29,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { useEmailOrUsername } from "../../../providers/user";
 
 const schema = z.object({
   pin: z.string().min(6, "6桁の認証コードを入力してください"),
@@ -42,14 +41,15 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function PasswordResetVerifyForm() {
-  const { emailOrUsername } = useEmailOrUsername();
+  const formEmailOrUsername = useFormContext();
+  const emailOrUsername = formEmailOrUsername.getValues("emailOrUserName");
   const router = useRouter();
   const form = useForm({
     mode: "onChange",
     resolver: zodResolver(schema),
     defaultValues: {
       pin: "",
-      emailOrUsername: emailOrUsername,
+      emailOrUsername,
     },
   });
 

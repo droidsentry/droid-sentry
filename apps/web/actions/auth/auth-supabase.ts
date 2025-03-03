@@ -7,25 +7,21 @@ import { getUserContextData } from "@/lib/context/user-context";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { z } from "zod";
 
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
 
 import { authErrorMessage } from "@/app/(auth)/lib/displayAuthError";
 import {
   passwordUpdateSchema,
-  signInFormSchema,
-  signUpFormSchema,
+  signInSchema,
+  signUpSchema,
 } from "@/app/schema/auth";
 import { getBaseURL } from "@/lib/base-url/client";
-
-type SignIn = z.infer<typeof signInFormSchema>; // zod のスキーマにbrandメソッドを使って"SignIn"という名前がある
-type SignUp = z.infer<typeof signUpFormSchema>;
-type PasswordUpdate = z.infer<typeof passwordUpdateSchema>;
+import { SignUp, SignIn, PasswordUpdate } from "@/app/types/auth";
 
 export const signUpNewUser = async (formData: SignUp) => {
   const baseUrl = getBaseURL();
-  const result = await signUpFormSchema.safeParseAsync(formData);
+  const result = await signUpSchema.safeParseAsync(formData);
   if (result.success === false) {
     console.error(result.error);
     throw new Error("フォームデータの検証に失敗しました");
@@ -127,7 +123,7 @@ async function signInWithUsername(formData: SignIn) {
   }
 }
 export const signInWithEmailOrUsername = async (formData: SignIn) => {
-  const safeParsedFormData = signInFormSchema.safeParse(formData);
+  const safeParsedFormData = signInSchema.safeParse(formData);
   if (!safeParsedFormData.success) {
     throw new Error("フォームデータの検証に失敗しました");
   }
@@ -175,7 +171,8 @@ export const resendSignUpOPT = async ({
     });
     if (error) {
       console.error(error.message);
-      throw new Error(error.code);
+      const errorCode = error.code as SupabaseAuthErrorCode;
+      throw new Error(await authErrorMessage(errorCode));
     }
   }
   // SMS認証の再送信
@@ -191,7 +188,8 @@ export const resendSignUpOPT = async ({
     console.error(error?.message);
     if (error) {
       console.error(error.message);
-      throw new Error(error.code);
+      const errorCode = error.code as SupabaseAuthErrorCode;
+      throw new Error(await authErrorMessage(errorCode));
     }
   }
   return { message: "再送の処理に成功しました。" };
@@ -214,7 +212,8 @@ export const resendAuthChangeOPT = async ({
     });
     if (error) {
       console.error(error.message);
-      throw new Error(error.code);
+      const errorCode = error.code as SupabaseAuthErrorCode;
+      throw new Error(await authErrorMessage(errorCode));
     }
   }
   if (type === "phone_change" && phone) {
@@ -222,10 +221,10 @@ export const resendAuthChangeOPT = async ({
       type,
       phone,
     });
-    console.error(error?.message);
     if (error) {
       console.error(error.message);
-      throw new Error(error.code);
+      const errorCode = error.code as SupabaseAuthErrorCode;
+      throw new Error(await authErrorMessage(errorCode));
     }
   }
   return { message: "再送の処理に成功しました。" };
@@ -239,7 +238,8 @@ export async function resetPassword(email: string) {
   });
   if (error) {
     console.error(error.message);
-    throw new Error(error.code);
+    const errorCode = error.code as SupabaseAuthErrorCode;
+    throw new Error(await authErrorMessage(errorCode));
   }
   // return { message: "ご登録のメールアドレスに確認メールを送信しました。" };
   // return redirect("/password-reset/verify");

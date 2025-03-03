@@ -7,32 +7,29 @@ import { Form } from "@/components/ui/form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { passwordUpdateSchema } from "@/app/schema/auth";
+import { PasswordUpdate } from "@/app/types/auth";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import PasswordForm from "../../components/password-form";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { passwordUpdateSchema } from "@/app/schema/auth";
-import { useEmailOrUsername } from "../../providers/user";
-
-const schema = passwordUpdateSchema;
-
-type FormData = z.infer<typeof schema>;
+import { useForm, useFormContext } from "react-hook-form";
+import { toast } from "sonner";
+import PasswordForm from "../../components/password-form";
 
 export default function PasswordUpdateForm() {
-  const { emailOrUsername } = useEmailOrUsername();
+  const formEmailOrUsername = useFormContext();
+  const emailOrUsername = formEmailOrUsername.getValues("emailOrUserName");
+
   const router = useRouter();
   const form = useForm({
     mode: "onChange",
-    resolver: zodResolver(schema),
+    resolver: zodResolver(passwordUpdateSchema),
     defaultValues: {
       password: "",
     },
   });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: PasswordUpdate) => {
     await updatePassword(data)
       .then(() => {
         toast.success("パスワードを更新しました。");

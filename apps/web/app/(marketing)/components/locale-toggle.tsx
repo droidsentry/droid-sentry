@@ -1,7 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Toggle } from "@/components/ui/toggle";
 import { setUserLocale } from "@/i18n/locale";
 import { cn } from "@/lib/utils";
 import { useLocale } from "next-intl";
@@ -9,10 +9,10 @@ import { useLocale } from "next-intl";
 export function LocaleToggle({ className }: { className?: string }) {
   const locale = useLocale();
   return (
-    <Toggle
-      // variant="outline"
+    <Button
+      variant="ghost"
       aria-label="Toggle bold"
-      className={cn("rounded-full uppercase", className)}
+      className={cn(" group rounded-full uppercase", className)}
       onClick={async () => {
         await setUserLocale(locale === "en" ? "ja" : "en");
       }}
@@ -25,7 +25,10 @@ export function LocaleToggle({ className }: { className?: string }) {
       >
         JA
       </span>
-      <Separator orientation="vertical" className="h-4 mx-1" />
+      <Separator
+        orientation="vertical"
+        className="h-4 mx-1 group-hover:bg-muted-foreground"
+      />
       <span
         className={cn(
           "text-muted-foreground text-lg",
@@ -34,6 +37,6 @@ export function LocaleToggle({ className }: { className?: string }) {
       >
         EN
       </span>
-    </Toggle>
+    </Button>
   );
 }

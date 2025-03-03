@@ -21,11 +21,18 @@ export const usageExperienceAnimations = {
         opacity: "0",
         scale: "0",
       },
-      "100%": {
+      "80%": {
         top: "0.5",
         left: "0.5",
         transform: "translate(-50%, -50%)",
         opacity: "1",
+        scale: "1",
+      },
+      "100%": {
+        top: "0.5",
+        left: "0.5",
+        transform: "translate(-50%, -50%)",
+        opacity: "0",
         scale: "1",
       },
     },

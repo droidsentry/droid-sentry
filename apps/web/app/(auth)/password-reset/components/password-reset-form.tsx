@@ -2,6 +2,7 @@
 
 import { resetPassword } from "@/actions/auth/auth-supabase";
 
+import { PasswordReset } from "@/app/types/auth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,24 +11,25 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FormControl, FormField, FormItem } from "@/components/ui/form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useFormContext } from "react-hook-form";
-import { z } from "zod";
+import { toast } from "sonner";
 import DiscordSingInButton from "../../components/discord-sing-in_button";
 import { GitHubLoginButton } from "../../components/github-login-button";
 import GoogleSingInButton from "../../components/google-sing-in-button";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { emailOrUsernameSchema } from "@/app/schema/auth";
-
-type FormData = z.infer<typeof emailOrUsernameSchema>;
 
 export default function PasswordResetForm() {
-  const form = useFormContext<FormData>();
+  const form = useFormContext<PasswordReset>();
   const router = useRouter();
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: PasswordReset) => {
     await resetPassword(data.emailOrUserName)
       .then(() => {
         toast.success("パスワードリセットのメールを送信しました。");
@@ -62,6 +64,7 @@ export default function PasswordResetForm() {
                     {...field}
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />

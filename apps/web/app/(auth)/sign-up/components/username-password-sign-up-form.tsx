@@ -23,8 +23,8 @@ import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import PasswordForm from "../../components/password-form";
 
-import { signUpFormSchema } from "@/app/schema/auth";
-import { SignUpForm } from "@/app/types/auth";
+import { signUpSchema } from "@/app/schema/auth";
+import { SignUp } from "@/app/types/auth";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -32,7 +32,7 @@ export default function UsernamePasswordSignUpForm() {
   const router = useRouter();
   const form = useForm({
     mode: "onChange",
-    resolver: zodResolver(signUpFormSchema),
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       username: process.env.NEXT_PUBLIC_DEV_USERNAME ?? "",
       email: process.env.NEXT_PUBLIC_DEV_EMAIL ?? "",
@@ -40,7 +40,7 @@ export default function UsernamePasswordSignUpForm() {
     },
   });
 
-  const onSubmit = async (data: SignUpForm) => {
+  const onSubmit = async (data: SignUp) => {
     await signUpNewUser(data)
       .then((id) => {
         toast.success("サインアップ登録が完了しました。");

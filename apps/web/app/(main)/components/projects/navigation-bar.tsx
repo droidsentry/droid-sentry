@@ -152,7 +152,7 @@ export default function NavigationBar({
                 className={cn(
                   "opacity-0 group-hover:opacity-100 absolute left-12 font-bold",
                   isActive(`/${enterpriseId}/apps`) && "text-primary",
-                  // "group-hover/app:text-primary",
+                  "group-hover/app:text-primary",
                   "transition-all duration-200"
                 )}
               >
