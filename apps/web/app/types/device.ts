@@ -1,14 +1,17 @@
 // import { Tables } from "@/types/database";
 import { androidmanagement_v1 } from "googleapis";
 import { z } from "zod";
-import { DevicesTableSchema } from "../schema/devices";
 import {
   getDeviceApplicationInfo,
   getDevicePolicyInfo,
   getHardwareInfo,
 } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/actions/device";
-import { getHardwareStatus } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/hardware-info/data/hardware-status";
 import { getPolicyDisplayName } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/actions/policy";
+import { getHardwareStatus } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/hardware-info/data/hardware-status";
+import {
+  DeviceResetPasswordSchema,
+  DevicesTableSchema,
+} from "../schema/devices";
 
 export type AndroidManagementDevice = androidmanagement_v1.Schema$Device;
 export type ListDevicesResponse =
@@ -44,3 +47,5 @@ export type ChartType = {
 
 // route.tsで使用
 export type DeviceOperation = androidmanagement_v1.Schema$Operation;
+
+export type DeviceResetPassword = z.infer<typeof DeviceResetPasswordSchema>;

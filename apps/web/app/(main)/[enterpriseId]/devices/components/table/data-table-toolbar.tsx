@@ -11,10 +11,8 @@ import { cn } from "@/lib/utils";
 
 import { deviceStates } from "../../data/data";
 import CreateQrButton from "../create-qr-button";
-import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import SyncDevicesButton from "../sync-devices-button";
-import DeleteSelectedDevicesButton from "../delete-selected-devices-button";
-import ChangePolicyButton from "../change-policy/change-policy-button";
+import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -75,7 +73,6 @@ export function DataTableToolbar<TData>({
           )}
         </div>
         {/* <DateTableColumnAllResizer table={table} /> */}
-        <CreateQrButton />
         <CreateQrButton />
         <SyncDevicesButton enterpriseId={enterpriseId} />
         {/* <DataTableViewOptions table={table} /> */}

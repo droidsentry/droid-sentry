@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import useSWR from "swr";
-import { getDevicesData } from "../data/device";
+import { getDevicesData } from "../actions/device";
 import DeviceTable from "./table/device-table";
 import { deviceColumns } from "./table/devices-table-columns";
 
@@ -100,14 +100,6 @@ export default function DevicesContent({
     };
   }, [enterpriseId, mutate]);
   if (error) return <div>エラーが発生しました</div>;
-  // if (isValidating)
-  //   return (
-  //     <div className="relative w-full h-full rounded-lg overflow-hidden">
-  //       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-  //         <Loader2Icon className="animate-spin size-10 text-muted-foreground/50" />
-  //       </div>
-  //     </div>
-  //   );
   if (!devices) return null;
 
   return (

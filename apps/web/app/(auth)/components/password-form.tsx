@@ -15,17 +15,19 @@ import { FieldPath, FieldValues, UseFormReturn } from "react-hook-form";
 
 export default function PasswordForm<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   form,
   name,
   autoComplete,
   label = "パスワード",
+  minLength = 8,
 }: {
   form: UseFormReturn<TFieldValues>;
   name: TName;
   autoComplete: "new-password" | "current-password";
   label?: string;
+  minLength?: number;
 }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
@@ -43,7 +45,7 @@ export default function PasswordForm<
                 type={passwordVisible ? "text" : "password"}
                 autoComplete={autoComplete}
                 placeholder=""
-                minLength={8}
+                minLength={minLength}
                 className="pr-10"
                 {...field}
               />

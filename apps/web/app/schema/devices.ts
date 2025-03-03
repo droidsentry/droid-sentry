@@ -17,20 +17,6 @@ export const DevicesTableSchema = z.object({
   policyDisplayName: z.string().nullable(), // ポリシー名の表示名
 });
 
-/**
- *      enterpriseId:enterprise_id,
-        policyId:policy_id,
-        deviceIdentifier:device_identifier,
-        deviceDisplayName:device_display_name,
-        device_data->>state,
-        device_data->>appliedState,
-        device_data->>lastSyncTime,
-        device_data->>policyCompliant,
-        device_data->>enrollmentTime,
-        device_data->>lastStatusReportTime,
-        createdAt:created_at,
-        updatedAt:updated_at,
-        ...policies (
-            policyDisplayName:policy_display_name
-            )
- */
+export const DeviceResetPasswordSchema = z.object({
+  password: z.string().min(6, "パスワードは6文字以上で設定してください"),
+});

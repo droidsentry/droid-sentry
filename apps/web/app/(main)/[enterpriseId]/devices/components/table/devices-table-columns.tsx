@@ -18,7 +18,7 @@ import { DataTableColumnHeader } from "../../../../projects/components/table/dat
 import { generateSortFilterColumnsHeader } from "../../../../projects/components/table/generate-sort-filter-columns-header";
 import { selectColumn } from "../../../../projects/components/table/select-column";
 import DataTableColumnState from "./data-table-column-state";
-import DataTableMenu from "./data-table-menu";
+import DeviceTableMenu from "./menu/device-table-menu";
 
 export const deviceColumns: ColumnDef<DeviceTableType>[] = [
   selectColumn<DeviceTableType>(),
@@ -166,7 +166,7 @@ export const deviceColumns: ColumnDef<DeviceTableType>[] = [
       return (
         <div className="flex items-center justify-center">
           <Button variant="ghost" size="icon">
-            <PlusIcon className="h-4 w-4" />
+            <PlusIcon className="size-4" />
             <span className="sr-only">メニューを開く</span>
           </Button>
           <div title="メニュー" />
@@ -175,8 +175,8 @@ export const deviceColumns: ColumnDef<DeviceTableType>[] = [
     },
     cell: ({ row }) => {
       return (
-        <div className="flex items-center justify-center">
-          <DataTableMenu row={row} />
+        <div className="flex items-center justify-center m-1">
+          <DeviceTableMenu row={row} />
         </div>
       );
     },

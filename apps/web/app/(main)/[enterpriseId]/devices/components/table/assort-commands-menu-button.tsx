@@ -46,7 +46,7 @@ import {
 
 import { RouteParams } from "@/app/types/enterprise";
 import { deleteDevice } from "../../data/delete-devices";
-import { syncDeviceInfoFromDB } from "../../data/device";
+import { syncDeviceInfoFromDB } from "../../actions/device";
 
 interface AssortCommandsMenuButtonProps<TData> {
   table: Table<TData>;

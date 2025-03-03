@@ -4,7 +4,7 @@ import { createAndroidManagementClient } from "@/actions/emm/client";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
-import { selectDevicesTableFields } from "./select-device-fields";
+import { selectDevicesTableFields } from "../data/select-device-fields";
 
 type getDevicesDataProps = {
   enterpriseId: string;

@@ -90,6 +90,12 @@ export const stopLostModeSelectedDevice = async (
   enterpriseId: string,
   deviceIdentifier: string
 ) => {
+  const supabase = await createClient();
+  const { data: user } = await supabase.auth.getUser();
+  if (!user) {
+    throw new Error("User not found");
+  }
+
   const name = `enterprises/${enterpriseId}/devices/${deviceIdentifier}`;
   const androidmanagement = await createAndroidManagementClient();
   const requestBody = {
@@ -105,7 +111,6 @@ export const stopLostModeSelectedDevice = async (
       throw new Error(error.message);
     });
 
-  const supabase = await createClient();
   const operationName = data.name?.split("/operations/")[1] ?? null;
   const recordDevice = await supabase
     .from("devices")
