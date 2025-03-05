@@ -12,28 +12,28 @@ import {
 import { Loader2, Mail, Send } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { toast } from "sonner";
 
 export default function VerifyCard() {
   const searchParams = useSearchParams();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  const onSubmit = async () => {
-    setIsLoading(true);
-    const id = searchParams.get("id");
-    if (!id) {
-      alert(`
-        確認メールの再送ができませんでした。
-        お手数ですが、もう一度新規登録をお願いいたします。
-        `);
-      return;
-    }
-    await resendSignUpOPT({ type: "signup", id }).then((res) => {
-      if (res?.message) {
-        alert(res.message);
+  const handleResendSignUpOPT = async () => {
+    startTransition(async () => {
+      const id = searchParams.get("id");
+      if (!id) {
+        toast.error(
+          "確認メールの再送ができませんでした。お手数ですが、もう一度新規登録をお願いいたします。"
+        );
+        return;
       }
+      await resendSignUpOPT({ type: "signup", id }).then((res) => {
+        if (res?.message) {
+          toast.success(res.message);
+        }
+      });
     });
-    setIsLoading(false);
   };
 
   return (
@@ -64,13 +64,17 @@ export default function VerifyCard() {
         </ul>
       </CardContent>
       <CardFooter className="flex flex-col space-y-4">
-        {isLoading ? (
-          <Button onClick={onSubmit} className="w-2/3" disabled={isLoading}>
+        {isPending ? (
+          <Button className="w-2/3" disabled={isPending}>
             <Loader2 className="mr-4 h-4 w-4 animate-spin" />
             <span>送信中...</span>
           </Button>
         ) : (
-          <Button onClick={onSubmit} className="w-2/3" disabled={isLoading}>
+          <Button
+            onClick={handleResendSignUpOPT}
+            className="w-2/3"
+            disabled={isPending}
+          >
             <Mail className="mr-4 h-4 w-4" />
             <span>確認メールを再送信</span>
           </Button>

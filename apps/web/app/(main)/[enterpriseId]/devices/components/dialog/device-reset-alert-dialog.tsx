@@ -14,45 +14,52 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useState } from "react";
 import { toast } from "sonner";
-import { deleteDevice } from "../../../data/delete-devices";
+import { resetDevices } from "../../actions/reset-devices";
+import { Table } from "@tanstack/react-table";
 
-export default function DeviceResetAlertDialog({
-  isDialogOpen,
-  setIsDialogOpen,
-  enterpriseId,
-  deviceIdentifier,
-}: {
-  isDialogOpen: boolean;
-  setIsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+interface DeviceResetAlertDialogProps<TData> {
+  isResetDialogOpen: boolean;
+  setIsResetDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   enterpriseId: string | null;
-  deviceIdentifier: string | null;
-}) {
+  deviceIdentifiers: string[];
+  table?: Table<TData>;
+}
+export default function DeviceResetAlertDialog<TData>({
+  isResetDialogOpen,
+  setIsResetDialogOpen,
+  enterpriseId,
+  deviceIdentifiers,
+  table,
+}: DeviceResetAlertDialogProps<TData>) {
   const [initializationOption, setInitializationOption] = useState(
     "WIPE_DATA_FLAG_UNSPECIFIED"
   );
   const handleDeviceDelete = async () => {
-    if (!enterpriseId || !deviceIdentifier) {
-      toast.error("紛失モードの解除に失敗しました。");
+    console.log("deviceIdentifiers", deviceIdentifiers);
+    if (!enterpriseId || !deviceIdentifiers) {
+      toast.error("端末初期化に失敗しました。");
       return;
     }
-    toast.info("デバイスを削除中...");
-    await deleteDevice({
+    toast.info("端末初期化中...");
+    await resetDevices({
       enterpriseId,
-      deviceIdentifier,
+      deviceIdentifiers,
       wipeDataFlags: [initializationOption],
     })
       .then(() => {
-        toast.success("デバイスを削除しました。");
+        toast.success("端末初期化を開始しました。");
+        table?.resetRowSelection();
       })
       .catch((error) => {
-        toast.error(error.message);
+        toast.error("端末初期化に失敗しました。");
+        console.error("端末初期化に失敗しました。", error);
       })
       .finally(() => {
-        setIsDialogOpen(false);
+        setIsResetDialogOpen(false);
       });
   };
   return (
-    <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <AlertDialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>

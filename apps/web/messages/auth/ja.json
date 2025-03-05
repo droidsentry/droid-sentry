@@ -2,7 +2,18 @@
   "auth": {
     "signIn": {
       "signIn": "サインイン",
-      "signingIn": "サインイン中..."
+      "signingIn": "サインイン中...",
+      "tooSmallEmailOrUsername": "メールアドレスまたはユーザー名を入力してください",
+      "tooBigEmailOrUsername": "最大{maximum}文字までです。",
+      "tooSmallPassword": "最小{minimum}文字以上で設定してください",
+      "customInvalidPassword": "大文字、小文字、数字、記号を含む8文字以上で設定してください"
+    },
+    "passwordReset": {
+      "tooSmallEmail": "メールアドレスを入力してください。",
+      "tooBigEmail": "最大{maximum}文字までです。",
+      "invalidEmail": "メールアドレスの形式で入力してください。",
+      "tooSmallPassword": "最小{minimum}文字以上で設定してください",
+      "customInvalidPassword": "大文字、小文字、数字、記号を含む8文字以上で設定してください"
     }
   }
 }

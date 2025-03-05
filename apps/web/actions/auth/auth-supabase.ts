@@ -12,12 +12,20 @@ import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
 
 import { authErrorMessage } from "@/app/(auth)/lib/displayAuthError";
 import {
+  passwordResetSchema,
+  passwordResetVerifySchema,
   passwordUpdateSchema,
   signInSchema,
   signUpSchema,
 } from "@/app/schema/auth";
 import { getBaseURL } from "@/lib/base-url/client";
-import { SignUp, SignIn, PasswordUpdate } from "@/app/types/auth";
+import {
+  SignUp,
+  SignIn,
+  PasswordUpdate,
+  PasswordReset,
+  PasswordResetVerify,
+} from "@/app/types/auth";
 
 export const signUpNewUser = async (formData: SignUp) => {
   const baseUrl = getBaseURL();
@@ -26,13 +34,14 @@ export const signUpNewUser = async (formData: SignUp) => {
     console.error(result.error);
     throw new Error("フォームデータの検証に失敗しました");
   }
-  // フォームデータの検証に成功した場合, Supabase にユーザー登録を行う
-  const supabase = await createClient();
   const { username, email, password } = formData;
+  // フォームデータの検証に成功した場合, Supabase にユーザー登録を行う
+  const supabaseAdmin = createAdminClient();
   const now = formatToJapaneseDateTime();
 
   const userContextData = await getUserContextData();
 
+  const supabase = await createClient();
   const {
     data: { user },
     error,
@@ -61,7 +70,6 @@ export const signUpNewUser = async (formData: SignUp) => {
     throw new Error(await authErrorMessage(errorCode));
   }
 
-  const supabaseAdmin = createAdminClient();
   const currentIsoTimestamp = new Date().toISOString();
   const { error: dbError } = await supabaseAdmin.from("users").insert([
     {
@@ -82,7 +90,7 @@ export const signUpNewUser = async (formData: SignUp) => {
 };
 
 async function signInWithEmail(formData: SignIn) {
-  const { emailOrUserName: email, password } = formData;
+  const { emailOrUsername: email, password } = formData;
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
@@ -101,7 +109,7 @@ async function signInWithEmail(formData: SignIn) {
 
 async function signInWithUsername(formData: SignIn) {
   const supabaseAdmin = createAdminClient();
-  const { emailOrUserName: username, password } = formData;
+  const { emailOrUsername: username, password } = formData;
   const { data: user, error: dbError } = await supabaseAdmin
     .from("users")
     .select("user_id, email")
@@ -128,7 +136,7 @@ export const signInWithEmailOrUsername = async (formData: SignIn) => {
     throw new Error("フォームデータの検証に失敗しました");
   }
   // メールアドレスかユーザー名かを判断
-  const isEmail = formData.emailOrUserName.includes("@");
+  const isEmail = formData.emailOrUsername.includes("@");
   isEmail
     ? await signInWithEmail(safeParsedFormData.data)
     : await signInWithUsername(safeParsedFormData.data);
@@ -141,7 +149,7 @@ export const resendSignUpOPT = async ({
   type: "signup" | "sms";
   id: string;
 }) => {
-  const supabaseAdmin = await createAdminClient();
+  const supabaseAdmin = createAdminClient();
   const supabase = await createClient();
   const {
     data: { user },
@@ -230,7 +238,13 @@ export const resendAuthChangeOPT = async ({
   return { message: "再送の処理に成功しました。" };
 };
 
-export async function resetPassword(email: string) {
+export async function resetPassword(formData: PasswordReset) {
+  const result = await passwordResetSchema.safeParseAsync(formData);
+  if (result.success === false) {
+    console.error(result.error);
+    throw new Error("フォームデータの検証に失敗しました");
+  }
+  const { email } = formData;
   const baseUrl = getBaseURL();
   const supabase = await createClient();
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -245,12 +259,14 @@ export async function resetPassword(email: string) {
   // return redirect("/password-reset/verify");
 }
 
-export async function resetPasswordVerify(formData: {
-  emailOrUsername: string;
-  pin: string;
-}) {
-  const { emailOrUsername: email, pin: token } = formData;
-  console.log({ email, token });
+export async function resetPasswordVerify(formData: PasswordResetVerify) {
+  const result = await passwordResetVerifySchema.safeParseAsync(formData);
+  if (result.success === false) {
+    console.error(result.error);
+    throw new Error("フォームデータの検証に失敗しました");
+  }
+
+  const { email, pin: token } = formData;
   const supabase = await createClient();
   const { error } = await supabase.auth.verifyOtp({
     email,

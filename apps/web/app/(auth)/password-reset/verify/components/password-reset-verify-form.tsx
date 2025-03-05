@@ -1,6 +1,8 @@
 "use client";
 
 import { resetPasswordVerify } from "@/actions/auth/auth-supabase";
+import { passwordResetVerifySchema } from "@/app/schema/auth";
+import { PasswordResetVerify, SignIn } from "@/app/types/auth";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -33,28 +35,20 @@ import { useForm, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-const schema = z.object({
-  pin: z.string().min(6, "6桁の認証コードを入力してください"),
-  emailOrUsername: z.string().min(1, "メールアドレスを入力してください"),
-});
-
-type FormData = z.infer<typeof schema>;
-
 export default function PasswordResetVerifyForm() {
-  const formEmailOrUsername = useFormContext();
-  const emailOrUsername = formEmailOrUsername.getValues("emailOrUserName");
+  const emailOrUsername = useFormContext<SignIn>().getValues("emailOrUsername");
   const router = useRouter();
   const form = useForm({
     mode: "onChange",
-    resolver: zodResolver(schema),
+    resolver: zodResolver(passwordResetVerifySchema),
     defaultValues: {
       pin: "",
-      emailOrUsername,
+      email: emailOrUsername,
     },
   });
 
-  const onSubmit = async (data: FormData) => {
-    await resetPasswordVerify(data)
+  const onSubmit = async (formData: PasswordResetVerify) => {
+    await resetPasswordVerify(formData)
       .then(() => {
         toast.success("パスワードを更新しました。");
         router.push("/password-update");

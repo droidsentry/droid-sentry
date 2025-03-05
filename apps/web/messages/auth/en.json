@@ -1,8 +1,19 @@
 {
   "auth": {
     "signIn": {
-      "signIn": "Sign in",
-      "signingIn": "Signing in..."
+      "signIn": "Sign In",
+      "signingIn": "Signing In...",
+      "tooSmallEmailOrUsername": "Please enter your email address or username.",
+      "tooBigEmailOrUsername": "Maximum {maximum} characters allowed.",
+      "tooSmallPassword": "Please set a password with at least {minimum} characters.",
+      "customInvalidPassword": "Please set a password with at least 8 characters, including uppercase, lowercase, numbers, and symbols."
+    },
+    "passwordReset": {
+      "tooSmallEmail": "Please enter your email address.",
+      "tooBigEmail": "Maximum {maximum} characters allowed.",
+      "invalidEmail": "Please enter a valid email address.",
+      "tooSmallPassword": "Please set a password with at least {minimum} characters.",
+      "customInvalidPassword": "Please set a password with at least 8 characters, including uppercase, lowercase, numbers, and symbols."
     }
   }
 }

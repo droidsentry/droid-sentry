@@ -1,11 +1,38 @@
 "use server";
 
 import { createAndroidManagementClient } from "@/actions/emm/client";
-import { AndroidManagementPolicy } from "@/app/types/policy";
+import { formPolicySchema } from "@/app/schema/policy";
+import { AndroidManagementPolicy, FormPolicy } from "@/app/types/policy";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
 import { v7 as uuidv7 } from "uuid";
+
+/**
+ * ポリシー名が重複しているかどうかを確認
+ * @param policyDisplayName
+ * @returns
+ */
+export const isPolicyNameUnique = async (
+  enterpriseId: string,
+  policyDisplayName: string
+) => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    throw new Error("ユーザーが見つかりません");
+  }
+
+  const { data } = await supabase
+    .from("policies")
+    .select("policy_display_name")
+    .eq("enterprise_id", enterpriseId)
+    .eq("policy_display_name", policyDisplayName)
+    .single();
+  return !data;
+};
 
 /**
  * ポリシーを更新しDBに保存
@@ -18,14 +45,36 @@ import { v7 as uuidv7 } from "uuid";
 export const createOrUpdatePolicy = async ({
   enterpriseId,
   policyIdentifier,
-  policyDisplayName,
-  requestBody,
+  formData,
 }: {
   enterpriseId: string;
   policyIdentifier: string;
-  policyDisplayName: string;
-  requestBody: AndroidManagementPolicy;
+  formData: FormPolicy;
 }) => {
+  // ユーザー認証
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    throw new Error("ユーザーが見つかりません");
+  }
+  // ポリシー名の重複チェック
+  const isUnique = await isPolicyNameUnique(
+    enterpriseId,
+    formData.policyDisplayName
+  );
+  if (!isUnique) {
+    throw new Error("ポリシー名が重複しています");
+  }
+  // フォームデータの検証
+  const result = await formPolicySchema.safeParseAsync(formData);
+  if (result.success === false) {
+    console.error(result.error);
+    throw new Error("フォームデータの検証に失敗しました");
+  }
+  const { policyDisplayName, policyData: requestBody } = result.data;
+
   // ポリシーを作成
   const androidmanagement = await createAndroidManagementClient();
   if (policyIdentifier === "new") {
@@ -44,7 +93,6 @@ export const createOrUpdatePolicy = async ({
     });
 
   // ポリシーをデータベースに保存と取得
-  const supabase = await createClient();
   const { data: policy, error } = await supabase
     .from("policies")
     .upsert(

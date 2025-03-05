@@ -32,7 +32,6 @@ export default function DeviceStopLostModeAlertDialog({
     await stopLostModeSelectedDevice(enterpriseId, deviceIdentifier)
       .then(() => {
         toast.success("紛失モードを解除しました");
-        // setIsLostMode(false);
       })
       .catch((error) => {
         toast.error(error.message);

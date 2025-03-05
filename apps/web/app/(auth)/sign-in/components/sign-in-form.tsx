@@ -45,7 +45,7 @@ export function SignInForm() {
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
       <FormField
         control={form.control}
-        name="emailOrUserName"
+        name="emailOrUsername"
         render={({ field }) => (
           <FormItem>
             <FormLabel>

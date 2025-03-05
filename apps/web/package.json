@@ -60,6 +60,7 @@
     "@types/validator": "^13.12.2",
     "@vercel/functions": "^2.0.0",
     "@vis.gl/react-google-maps": "^1.4.2",
+    "awesome-debounce-promise": "^2.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.0",

@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { AndroidManagementPolicy, PolicyApps } from "../types/policy";
+import AwesomeDebouncePromise from "awesome-debounce-promise";
+import { isPolicyNameUnique } from "../(main)/[enterpriseId]/policies/actions/policy";
 
 const advancedSecurityOverridesSchema = z.object({
   untrustedAppsPolicy: z.enum([
@@ -131,11 +133,7 @@ export const policySchema = z.object({
 
 export const formPolicySchema = z.object({
   policyData: policySchema,
-  policyDisplayName: z
-    .string()
-    .trim()
-    .min(1, "ポリシー名を入力してください。")
-    .optional(),
+  policyDisplayName: z.string().trim().min(1, "ポリシー名を入力してください。"),
 });
 
 export const policyTableSchema = z.object({

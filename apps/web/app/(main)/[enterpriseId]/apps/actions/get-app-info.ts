@@ -1,6 +1,6 @@
 "use server";
 
-import { SheetAppInfo } from "@/app/types/apps";
+import { AppData, SheetAppInfo } from "@/app/types/apps";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -24,5 +24,5 @@ export const getSheetAppInfo = async (appId: string) => {
   if (error) {
     throw new Error(error.message);
   }
-  return data as SheetAppInfo;
+  return data as typeof data & { appData: AppData };
 };

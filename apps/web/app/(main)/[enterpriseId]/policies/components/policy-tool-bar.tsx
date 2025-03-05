@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 
+import { RouteParams } from "@/app/types/enterprise";
 import {
   useParams,
   usePathname,
@@ -20,9 +21,8 @@ import {
 import { useTransition } from "react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
-import { createOrUpdatePolicy } from "../actions/policy";
-import { RouteParams } from "@/app/types/enterprise";
-import { formPolicySchema } from "@/app/schema/policy";
+import { createOrUpdatePolicy, isPolicyNameUnique } from "../actions/policy";
+import AwesomeDebouncePromise from "awesome-debounce-promise";
 
 export default function PolicyToolBar() {
   const form = useFormContext<FormPolicy>();
@@ -40,24 +40,27 @@ export default function PolicyToolBar() {
 
   const policyBasePath = `/${enterpriseId}/policies/${policyIdentifier}`;
   const currentBase = pathname.split(policyBasePath)[1]; //device-general, device-security, etc.
-
-  const handleSave = async (data: FormPolicy) => {
+  const isPolicyNameUniqueCheck = AwesomeDebouncePromise(
+    async (policyDisplayName: string) =>
+      await isPolicyNameUnique(enterpriseId, policyDisplayName),
+    800
+  );
+  const handleSave = async (formData: FormPolicy) => {
     startTransition(async () => {
       if (!policyIdentifier) {
         toast.error("ポリシーIDが取得できませんでした。");
         return;
       }
-      if (!data.policyDisplayName) {
-        toast.error("ポリシー名を設定してください。");
+      const policyDisplayName = formData.policyDisplayName;
+      const isUnique = await isPolicyNameUniqueCheck(policyDisplayName);
+      if (!isUnique) {
+        toast.error("ポリシー名が重複しています。");
         return;
       }
-      const policyDisplayName = data.policyDisplayName;
-      const parsed = formPolicySchema.parse(data);
       const savedPolicyIdentifier = await createOrUpdatePolicy({
         enterpriseId,
         policyIdentifier,
-        policyDisplayName,
-        requestBody: parsed.policyData,
+        formData,
       });
       router.push(
         `/${enterpriseId}/policies/${savedPolicyIdentifier}/${currentBase}`
@@ -99,13 +102,17 @@ export default function PolicyToolBar() {
       />
       <span className="flex-1" />
       <Button
-        disabled={isPending || !form.formState.isValid}
+        disabled={
+          isPending ||
+          !form.formState.isValid || // フォームのバリデーションが成功していない場合はボタンを無効にする(初期状態)
+          form.formState.isSubmitting || // フォームが送信中の場合はボタンを無効にする
+          form.formState.isValidating // フォームのバリデーションが実行中の場合はボタンを無効にする
+        }
         className="h-8"
-        variant="outline"
       >
         {isPending ? (
           <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Loader2 className="mr-2 size-4 animate-spin" />
             保存中...
           </>
         ) : (

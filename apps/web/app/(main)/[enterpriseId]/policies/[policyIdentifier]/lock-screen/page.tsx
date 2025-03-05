@@ -1,5 +1,5 @@
 import { RouteParams } from "@/app/types/enterprise";
-import NetworkForm from "./components/network-form";
+import LockScreenForm from "./components/lock-screen-form";
 
 export default async function Page({
   params,
@@ -10,7 +10,7 @@ export default async function Page({
 
   return (
     <div>
-      <NetworkForm policyIdentifier={policyIdentifier} />
+      <LockScreenForm policyIdentifier={policyIdentifier} />
     </div>
   );
 }

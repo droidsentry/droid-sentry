@@ -17,18 +17,23 @@ import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { resetPasswordDevice } from "../../../actions/password-reset-device";
-export default function DevicePasswordResetAlertDialog({
-  isPasswordResetDialogOpen,
-  setIsPasswordResetDialogOpen,
-  enterpriseId,
-  deviceIdentifier,
-}: {
+import { resetPasswordDevices } from "../../../actions/password-reset-device";
+import { Table } from "@tanstack/react-table";
+
+interface DevicePasswordResetAlertDialogProps<TData> {
   isPasswordResetDialogOpen: boolean;
   setIsPasswordResetDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   enterpriseId: string | null;
-  deviceIdentifier: string | null;
-}) {
+  deviceIdentifiers: string[];
+  table?: Table<TData>;
+}
+export default function DevicePasswordResetAlertDialog<TData>({
+  isPasswordResetDialogOpen,
+  setIsPasswordResetDialogOpen,
+  enterpriseId,
+  deviceIdentifiers,
+  table,
+}: DevicePasswordResetAlertDialogProps<TData>) {
   const form = useForm({
     mode: "onChange",
     resolver: zodResolver(DeviceResetPasswordSchema),
@@ -38,17 +43,18 @@ export default function DevicePasswordResetAlertDialog({
   });
 
   const handleRemoteLookDevice = async (formData: DeviceResetPassword) => {
-    if (!enterpriseId || !deviceIdentifier) {
+    if (!enterpriseId || !deviceIdentifiers) {
       toast.error("デバイスのロックに失敗しました。");
       return;
     }
-    await resetPasswordDevice({
+    await resetPasswordDevices({
       formData,
-      deviceIdentifier,
+      deviceIdentifiers,
       enterpriseId,
     })
       .then(() => {
         toast.success("デバイスのパスワードをリセットしました。");
+        table?.resetRowSelection();
       })
       .catch((error) => {
         toast.error("デバイスのパスワードリセットに失敗しました。");
