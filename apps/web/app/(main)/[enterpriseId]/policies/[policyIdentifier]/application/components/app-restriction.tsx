@@ -13,13 +13,14 @@ import { useFormContext } from "react-hook-form";
 import AppLibrary from "./app-library";
 import AppRestrictionManager from "./app-restriction-manager";
 
-import {
-  RestrictedAppKey,
-  RestrictedAppPackages,
-} from "../../network/components/app-restriction";
+// import {
+//   RestrictedAppKey,
+//   RestrictedAppPackages,
+// } from "../../network/components/app-restriction";
 import { useAppRestriction } from "./app-restriction-provider";
 import DragAppCard from "./drag-app-card";
 import DragAppsCard from "./drag-apps-card";
+import { RestrictedAppKey, RestrictedAppPackages } from "../types/policy";
 
 export default function AppRestriction({
   policyApps,

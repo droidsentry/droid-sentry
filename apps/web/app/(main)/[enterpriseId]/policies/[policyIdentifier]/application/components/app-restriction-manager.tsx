@@ -1,10 +1,7 @@
 import { PolicyApp } from "@/app/types/policy";
-import Droppable from "./droppable";
-import AppRestrictionZone from "./app-restriction-zone";
-import { Button } from "@/components/ui/button";
-import { useAppRestriction } from "./app-restriction-provider";
 import AppRestrictionToolBar from "./app-restriction-tool-bar";
-import { Card } from "@/components/ui/card";
+import AppRestrictionZone from "./app-restriction-zone";
+import Droppable from "./droppable";
 
 export default function AppRestrictionManager({
   policyApps,
