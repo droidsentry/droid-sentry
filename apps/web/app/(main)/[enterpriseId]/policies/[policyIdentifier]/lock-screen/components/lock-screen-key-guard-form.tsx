@@ -9,11 +9,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+import { Checkbox } from "@/components/ui/checkbox";
 import { useFormContext } from "react-hook-form";
 
 import { FormPolicy } from "@/app/types/policy";
 // import { usePolicy } from "../../../data/use-policy";
-import { Input } from "@/components/ui/input";
+import { Loader2 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -21,9 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
-import { Loader2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 export default function LockScreenForm({
   policyIdentifier,
@@ -418,147 +418,6 @@ export default function LockScreenForm({
               )}
             />
           </div>
-        </div>
-      </div>
-      <div className="space-y-2 border rounded-lg p-4">
-        <h2 className="text-base">キーガード設定</h2>
-        <p className="text-sm text-muted-foreground">
-          キーガードの設定を行います。
-        </p>
-        <FormField
-          control={form.control}
-          name="policyData.deviceConnectivityManagement.usbDataAccess"
-          render={({ field }) => (
-            <FormItem className="flex flex-col rounded-md border p-4 gap-2">
-              <FormLabel>画面ロックメッセージ設定</FormLabel>
-
-              <FormControl>
-                <Textarea value="" onChange={field.onChange} className="" />
-              </FormControl>
-              <FormDescription></FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="space-y-2 border rounded-lg p-4">
-          <FormField
-            control={form.control}
-            name="policyData.screenCaptureDisabled"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between">
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="text-base">
-                    全てのキーガードを無効化
-                  </FormLabel>
-                  <FormDescription>
-                    全てのキーガードを無効化します。
-                  </FormDescription>
-                </div>
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className=""
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="policyData.screenCaptureDisabled"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="text-base">カメラ無効化</FormLabel>
-                  <FormDescription>カメラを無効化します。</FormDescription>
-                </div>
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className=""
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="policyData.screenCaptureDisabled"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="text-base">通知の無効化</FormLabel>
-                  <FormDescription>通知を無効化します。</FormDescription>
-                </div>
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className=""
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="policyData.screenCaptureDisabled"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="text-base">生体認証の無効化</FormLabel>
-                  <FormDescription>生体認証を無効化します。</FormDescription>
-                </div>
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className=""
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="policyData.screenCaptureDisabled"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="text-base">顔認証の無効化</FormLabel>
-                  <FormDescription>顔認証を無効化します。</FormDescription>
-                </div>
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className=""
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="policyData.screenCaptureDisabled"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="text-base">指紋認証の無効化</FormLabel>
-                  <FormDescription>指紋認証を無効化します。</FormDescription>
-                </div>
-                <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className=""
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
         </div>
       </div>
     </div>

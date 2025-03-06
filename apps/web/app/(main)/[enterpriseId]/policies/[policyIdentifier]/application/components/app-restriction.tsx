@@ -127,7 +127,7 @@ export default function AppRestriction({
       id={"custom-id-for-dnd-context"} //https://github.com/clauderic/dnd-kit/issues/926
     >
       <div className="flex items-center justify-center h-full">
-        <div className="grid grid-cols-2 gap-2 size-full my-2 px-1">
+        <div className="grid grid-cols-2 gap-2 size-full my-2 px-1 flex-1">
           <AppLibrary policyApps={policyApps} />
           <AppRestrictionManager policyApps={policyApps} />
         </div>

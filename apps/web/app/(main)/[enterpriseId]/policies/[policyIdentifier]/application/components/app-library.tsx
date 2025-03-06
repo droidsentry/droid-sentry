@@ -59,12 +59,12 @@ export default function AppLibrary({
   });
 
   return (
-    <div className="flex flex-col rounded-lg">
+    <div className="flex flex-col rounded-lg ">
       <AppLibraryTool filteredPolicyApps={filteredPolicyApps} />
-      <div className="flex-1 mx-2 mb-2 min-w-0 relative">
-        <div className="absolute size-full">
-          <ScrollArea className=" rounded-lg border h-full">
-            <div className="m-2 space-y-1">
+      <div className="flex-1 min-w-0 relative">
+        <div className="absolute size-full ">
+          <ScrollArea className="rounded-lg h-full">
+            <div className="mx-2">
               {filteredPolicyApps.map((policyApp) => (
                 <Draggable
                   key={policyApp.appId}

@@ -29,6 +29,7 @@ export function PolicyFormProvider({ children }: { children: ReactNode }) {
 
   const form = useForm<FormPolicy>({
     mode: "onChange",
+    // mode: "onBlur",
     resolver: zodResolver(formPolicySchema),
     defaultValues: defaultGeneralConfig,
     values: data, // フォームの値を設定
@@ -37,7 +38,8 @@ export function PolicyFormProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     // 新規作成の場合の処理
     if (policyIdentifier === "new") {
-      form.reset(defaultGeneralConfig);
+      // form.reset(defaultGeneralConfig);
+      form.reset();
       return;
     }
     // データ取得成功時

@@ -73,7 +73,7 @@ export default function AppLibraryTool({
   };
 
   return (
-    <div className="basis-1/6 m-2 rounded-lg">
+    <div className="basis-1/6 m-2">
       <h2 className="text-2xl font-bold mb-2">アプリケーション一覧</h2>
       <Input
         type="text"

@@ -59,13 +59,15 @@ export const createOrUpdatePolicy = async ({
   if (!user) {
     throw new Error("ユーザーが見つかりません");
   }
-  // ポリシー名の重複チェック
-  const isUnique = await isPolicyNameUnique(
-    enterpriseId,
-    formData.policyDisplayName
-  );
-  if (!isUnique) {
-    throw new Error("ポリシー名が重複しています");
+  // 新規作成時のみポリシー名の重複チェック
+  if (policyIdentifier === "new") {
+    const isUnique = await isPolicyNameUnique(
+      enterpriseId,
+      formData.policyDisplayName
+    );
+    if (!isUnique) {
+      throw new Error("ポリシー名が重複しています");
+    }
   }
   // フォームデータの検証
   const result = await formPolicySchema.safeParseAsync(formData);

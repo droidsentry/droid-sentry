@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
+import { Loader2, PlusIcon } from "lucide-react";
 
 import { RouteParams } from "@/app/types/enterprise";
 import {
@@ -18,15 +18,18 @@ import {
   useRouter,
   useSearchParams,
 } from "next/navigation";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 import { createOrUpdatePolicy, isPolicyNameUnique } from "../actions/policy";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
+import CreateNewPolicyLinkButton from "./table/create-new-policy-link-button";
+import SaveAsPolicyButton from "./policy-save-as-button";
 
 export default function PolicyToolBar() {
   const form = useFormContext<FormPolicy>();
   const [isPending, startTransition] = useTransition();
+  const [isSavingAs, setIsSavingAs] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -37,9 +40,10 @@ export default function PolicyToolBar() {
     policyIdentifier = searchPolicyIdentifier;
   }
   const enterpriseId = param.enterpriseId;
-
   const policyBasePath = `/${enterpriseId}/policies/${policyIdentifier}`;
-  const currentBase = pathname.split(policyBasePath)[1]; //device-general, device-security, etc.
+  const currentBase = pathname.split(policyBasePath)[1];
+  const { isValidating, isSubmitting, isDirty } = form.formState;
+
   const isPolicyNameUniqueCheck = AwesomeDebouncePromise(
     async (policyDisplayName: string) =>
       await isPolicyNameUnique(enterpriseId, policyDisplayName),
@@ -52,25 +56,39 @@ export default function PolicyToolBar() {
         return;
       }
       const policyDisplayName = formData.policyDisplayName;
-      const isUnique = await isPolicyNameUniqueCheck(policyDisplayName);
-      if (!isUnique) {
-        toast.error("ポリシー名が重複しています。");
-        return;
+      if (policyIdentifier === "new") {
+        const isUnique = await isPolicyNameUniqueCheck(policyDisplayName);
+        if (!isUnique) {
+          toast.error(
+            <div className="space-y-1">
+              <p>ポリシー名が重複しています。</p>
+              <p>別のポリシー名で保存してください。</p>
+            </div>
+          );
+          return;
+        }
       }
-      const savedPolicyIdentifier = await createOrUpdatePolicy({
+      await createOrUpdatePolicy({
         enterpriseId,
         policyIdentifier,
         formData,
-      });
-      router.push(
-        `/${enterpriseId}/policies/${savedPolicyIdentifier}/${currentBase}`
-      );
+      })
+        .then((savedPolicyIdentifier) => {
+          toast.success("ポリシーを保存しました。");
+          router.push(
+            `/${enterpriseId}/policies/${savedPolicyIdentifier}/${currentBase}`
+          );
+        })
+        .catch((error) => {
+          toast.error("ポリシーを保存できませんでした。");
+          console.error(error);
+        });
     });
   };
 
   const isLoading =
     policyIdentifier !== "new" && // 新規作成時はローディングチェックをスキップ
-    !form.formState.isDirty && // フォームが一度も編集されていない
+    !isDirty && // フォームが一度も編集されていない
     !form.getValues("policyDisplayName");
 
   if (isLoading) {
@@ -101,16 +119,30 @@ export default function PolicyToolBar() {
         )}
       />
       <span className="flex-1" />
+      <CreateNewPolicyLinkButton enterpriseId={enterpriseId} name="新規作成" />
+      <SaveAsPolicyButton
+        form={form}
+        isPending={isPending}
+        isSavingAs={isSavingAs}
+        setIsSavingAs={setIsSavingAs}
+        isValidating={isValidating}
+        isSubmitting={isSubmitting}
+        enterpriseId={enterpriseId}
+        currentBase={currentBase}
+        startTransition={startTransition}
+        router={router}
+      />
       <Button
         disabled={
           isPending ||
-          !form.formState.isValid || // フォームのバリデーションが成功していない場合はボタンを無効にする(初期状態)
-          form.formState.isSubmitting || // フォームが送信中の場合はボタンを無効にする
-          form.formState.isValidating // フォームのバリデーションが実行中の場合はボタンを無効にする
+          // !form.formState.isValid || // フォームのバリデーションが成功していない場合はボタンを無効にする(初期状態) 新規作成時でエラーが発生するため、使用せず
+          isValidating || // フォームのバリデーションが実行中の場合はボタンを無効にする
+          isSubmitting || // フォームが送信中の場合はボタンを無効にする
+          !form.getValues("policyDisplayName") // ポリシー名が空の場合はボタンを無効にする
         }
         className="h-8"
       >
-        {isPending ? (
+        {isPending && !isSavingAs ? (
           <>
             <Loader2 className="mr-2 size-4 animate-spin" />
             保存中...
