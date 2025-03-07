@@ -97,7 +97,15 @@ export default function PolicyToolBar() {
 
   return (
     <form
-      onSubmit={form.handleSubmit(handleSave)}
+      onSubmit={form.handleSubmit(handleSave, (errors) => {
+        console.log("Form errors:", errors);
+        toast.error(
+          <div className="space-y-1">
+            <p>入力内容に問題があります</p>
+            <p>フォームを確認してください</p>
+          </div>
+        );
+      })}
       className="h-12 px-4 flex flex-row items-center gap-2 border-b py-2"
     >
       <span className="text-sm">ポリシー名：</span>

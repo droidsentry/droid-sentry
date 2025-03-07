@@ -17,7 +17,7 @@ import {
   passwordUpdateSchema,
   signInSchema,
   signUpSchema,
-} from "@/app/schema/auth";
+} from "@/app/schemas/auth";
 import { getBaseURL } from "@/lib/base-url/client";
 import {
   SignUp,

@@ -47,75 +47,68 @@ export default function LockScreenForm({
   return (
     <div className="grid gap-2 grid-cols-1 md:grid-cols-2">
       <div className="space-y-2 border rounded-lg p-4">
+        <h2 className="text-base">画面ロック設定</h2>
         <FormField
           control={form.control}
-          name="policyData.screenCaptureDisabled"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between">
-              <div className="space-y-1 leading-none">
-                <FormLabel className="text-base">
-                  画面ロック設定の有効化
-                </FormLabel>
-                <FormDescription>
-                  画面ロックの設定を強制します。
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className=""
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="policyData.deviceConnectivityManagement.usbDataAccess"
+          name="policyData.passwordPolicies.0.passwordQuality"
           render={({ field }) => (
             <FormItem className="flex flex-col rounded-md border p-4 gap-2">
-              <FormLabel>画面ロック種別</FormLabel>
+              <FormLabel>パスワード要件</FormLabel>
               <Select
                 onValueChange={field.onChange}
-                defaultValue={field.value ?? "USB_DATA_ACCESS_UNSPECIFIED"}
-                value={field.value ?? "USB_DATA_ACCESS_UNSPECIFIED"}
+                defaultValue={field.value ?? "PASSWORD_QUALITY_UNSPECIFIED"}
+                value={field.value ?? "PASSWORD_QUALITY_UNSPECIFIED"}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="USB接続した際の動作選択" />
+                    <SelectValue placeholder="画面ロック種別" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="USB_DATA_ACCESS_UNSPECIFIED">
-                    バターン
+                  <SelectItem value="PASSWORD_QUALITY_UNSPECIFIED">
+                    パスワード要件を設定しません。
                   </SelectItem>
-                  <SelectItem value="ALLOW_USB_DATA_TRANSFER">
-                    PINまたはパスワード
+                  <SelectItem value="BIOMETRIC_WEAK">
+                    生体認証（3 桁の PINを含む）必須
                   </SelectItem>
-                  <SelectItem value="DISALLOW_USB_FILE_TRANSFER">
-                    PINまたはパスワード(推測されやすい数字は禁止)
+                  <SelectItem value="SOMETHING">パターン以上必須</SelectItem>
+                  <SelectItem value="NUMERIC">PINまたはパスワード</SelectItem>
+                  <SelectItem value="NUMERIC_COMPLEX">
+                    PINまたはパスワード（推測されやすい数字は禁止）
                   </SelectItem>
-                  <SelectItem value="DISALLOW_USB_DATA_TRANSFER">
-                    アルファベット必須
-                  </SelectItem>
-                  <SelectItem value="DISALLOW_USB_DATA_TRANSFER">
+                  <SelectItem value="ALPHABETIC">アルファベット必須</SelectItem>
+                  <SelectItem value="ALPHANUMERIC">
                     数字・アルファベット（記号）の両方を必須
                   </SelectItem>
-                  <SelectItem value="DISALLOW_USB_DATA_TRANSFER">
+                  <SelectItem value="COMPLEX">
+                    数字・アルファベット（記号）の両方を必須
+                  </SelectItem>
+                  <SelectItem value="COMPLEX">
                     より複雑なパスワード設定
+                  </SelectItem>
+                  <SelectItem value="COMPLEXITY_LOW">
+                    最も簡単なパスワード
+                  </SelectItem>
+                  <SelectItem value="COMPLEXITY_MEDIUM">
+                    複雑なパスワード
+                  </SelectItem>
+                  <SelectItem value="COMPLEXITY_HIGH">
+                    最も複雑なパスワード
                   </SelectItem>
                 </SelectContent>
               </Select>
               <FormDescription>
-                {field.value === "USB_DATA_ACCESS_UNSPECIFIED" &&
-                  "デフォルトとして「USB経由でのファイル転送のみ禁止」が設定されます。"}
-                {field.value === "ALLOW_USB_DATA_TRANSFER" &&
-                  "USB経由でファイル転送ができるようになります。"}
-                {field.value === "DISALLOW_USB_FILE_TRANSFER" &&
-                  "USB経由でのファイル転送のみできません。マウスやキーボードの接続など、USBデータ接続は制限されません。"}
-                {field.value === "DISALLOW_USB_DATA_TRANSFER" &&
-                  "全てのUSBデータ転送ができません。Android12かつ、USB HAL 1.3以降のデバイスのみサポートされます。サポート外のデバイスは、「USB経由でのファイル転送のみ禁止」が設定されます。"}
+                {field.value === "PASSWORD_QUALITY_UNSPECIFIED" &&
+                  "デフォルトとして「パスワード要件を設定しません。」が設定されます。"}
+                {field.value === "BIOMETRIC_WEAK" &&
+                  "生体認証（3 桁の PINを含む）必須"}
+                {field.value === "SOMETHING" && "パターン以上必須"}
+                {field.value === "NUMERIC" && "PINまたはパスワード"}
+                {field.value === "NUMERIC_COMPLEX" &&
+                  "PINまたはパスワード（推測されやすい数字は禁止）"}
+                {field.value === "ALPHABETIC" && "アルファベット必須"}
+                {field.value === "ALPHANUMERIC" &&
+                  "数字・アルファベット（記号）の両方を必須"}
               </FormDescription>
               <FormMessage />
             </FormItem>

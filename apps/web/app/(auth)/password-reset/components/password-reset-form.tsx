@@ -24,7 +24,7 @@ import DiscordSingInButton from "../../components/discord-sing-in_button";
 import { GitHubLoginButton } from "../../components/github-login-button";
 import GoogleSingInButton from "../../components/google-sing-in-button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { passwordResetSchema } from "@/app/schema/auth";
+import { passwordResetSchema } from "@/app/schemas/auth";
 import { PasswordReset, SignIn } from "@/app/types/auth";
 
 export default function PasswordResetForm() {

@@ -13,7 +13,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useFormContext } from "react-hook-form";
 
 import { FormPolicy } from "@/app/types/policy";
-// import { usePolicy } from "../../../data/use-policy";
 import { Loader2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -24,7 +23,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { DialogContent } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
+import DeviceGeneralDisplaySettingsForm from "./device-general-display-settings-form";
+import DeviceGeneralSystemUpdateForm from "./device-general-system-update-form";
 
 export default function DeviceGeneralForm({
   policyIdentifier,
@@ -45,6 +46,7 @@ export default function DeviceGeneralForm({
       </div>
     );
   }
+
   return (
     <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
       <FormField
@@ -114,7 +116,7 @@ export default function DeviceGeneralForm({
       />
       <FormField
         control={form.control}
-        name="policyData.adjustVolumeDisabled"
+        name="policyData.smsDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none">
@@ -133,32 +135,10 @@ export default function DeviceGeneralForm({
           </FormItem>
         )}
       />
+
       <FormField
         control={form.control}
-        name="policyData.adjustVolumeDisabled"
-        render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
-            <div className="space-y-1 leading-none">
-              <FormLabel className="text-base">
-                時刻の手動変更を無効化
-              </FormLabel>
-              <FormDescription>
-                時刻の手動変更ができなくなります。
-              </FormDescription>
-            </div>
-            <FormControl>
-              <Switch
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                className=""
-              />
-            </FormControl>
-          </FormItem>
-        )}
-      />
-      <FormField
-        control={form.control}
-        name="policyData.adjustVolumeDisabled"
+        name="policyData.mountPhysicalMediaDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none">
@@ -181,7 +161,7 @@ export default function DeviceGeneralForm({
       />
       <FormField
         control={form.control}
-        name="policyData.adjustVolumeDisabled"
+        name="policyData.cellBroadcastsConfigDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none">
@@ -204,28 +184,7 @@ export default function DeviceGeneralForm({
       />
       <FormField
         control={form.control}
-        name="policyData.adjustVolumeDisabled"
-        render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
-            <div className="space-y-1 leading-none">
-              <FormLabel className="text-base">開発者モードの無効化</FormLabel>
-              <FormDescription>
-                開発者モードが使用できなくなります。
-              </FormDescription>
-            </div>
-            <FormControl>
-              <Switch
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                className=""
-              />
-            </FormControl>
-          </FormItem>
-        )}
-      />
-      <FormField
-        control={form.control}
-        name="policyData.adjustVolumeDisabled"
+        name="policyData.outgoingBeamDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none">
@@ -267,7 +226,7 @@ export default function DeviceGeneralForm({
       />
       <FormField
         control={form.control}
-        name="policyData.factoryResetDisabled"
+        name="policyData.modifyAccountsDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none">
@@ -277,6 +236,25 @@ export default function DeviceGeneralForm({
               <FormDescription>
                 アカウント追加・削除設定ができなくなります。
               </FormDescription>
+            </div>
+            <FormControl>
+              <Switch
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                className=""
+              />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="policyData.outgoingCallsDisabled"
+        render={({ field }) => (
+          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
+            <div className="space-y-1 leading-none">
+              <FormLabel className="text-base">電話発信の無効化</FormLabel>
+              <FormDescription>電話発信ができなくなります。</FormDescription>
             </div>
             <FormControl>
               <Switch
@@ -335,41 +313,44 @@ export default function DeviceGeneralForm({
       />
       <FormField
         control={form.control}
-        name="policyData.deviceConnectivityManagement.usbDataAccess"
+        name="policyData.cameraAccess"
         render={({ field }) => (
           <FormItem className="flex flex-col rounded-md border p-4 gap-2">
             <FormLabel>カメラ設定</FormLabel>
             <Select
               onValueChange={field.onChange}
-              defaultValue={field.value ?? "USB_DATA_ACCESS_UNSPECIFIED"}
-              value={field.value ?? "USB_DATA_ACCESS_UNSPECIFIED"}
+              defaultValue={field.value ?? "CAMERA_ACCESS_UNSPECIFIED"}
+              value={field.value ?? "CAMERA_ACCESS_UNSPECIFIED"}
             >
               <FormControl>
                 <SelectTrigger>
-                  <SelectValue placeholder="USB接続した際の動作選択" />
+                  <SelectValue placeholder="カメラ設定" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                <SelectItem value="USB_DATA_ACCESS_UNSPECIFIED">
+                <SelectItem value="CAMERA_ACCESS_UNSPECIFIED">
+                  設定なし
+                </SelectItem>
+                <SelectItem value="CAMERA_ACCESS_USER_CHOICE">
                   カメラ使用許可
                 </SelectItem>
-                <SelectItem value="ALLOW_USB_DATA_TRANSFER">
+                <SelectItem value="CAMERA_ACCESS_DISABLED">
                   カメラ使用禁止
                 </SelectItem>
-                <SelectItem value="DISALLOW_USB_FILE_TRANSFER">
+                <SelectItem value="CAMERA_ACCESS_ENFORCED">
                   アプリのカメラ使用を強制的に有効
                 </SelectItem>
               </SelectContent>
             </Select>
             <FormDescription>
-              {field.value === "USB_DATA_ACCESS_UNSPECIFIED" &&
-                "デフォルトとして「USB経由でのファイル転送のみ禁止」が設定されます。"}
-              {field.value === "ALLOW_USB_DATA_TRANSFER" &&
-                "USB経由でファイル転送ができるようになります。"}
-              {field.value === "DISALLOW_USB_FILE_TRANSFER" &&
-                "USB経由でのファイル転送のみできません。マウスやキーボードの接続など、USBデータ接続は制限されません。"}
-              {field.value === "DISALLOW_USB_DATA_TRANSFER" &&
-                "全てのUSBデータ転送ができません。Android12かつ、USB HAL 1.3以降のデバイスのみサポートされます。サポート外のデバイスは、「USB経由でのファイル転送のみ禁止」が設定されます。"}
+              {field.value === "CAMERA_ACCESS_UNSPECIFIED" &&
+                "デフォルト設定：すべてのカメラが使用可能です。Android 12以降では、ユーザーがカメラアクセスの切り替えボタンを使用できます。"}
+              {field.value === "CAMERA_ACCESS_USER_CHOICE" &&
+                "すべてのカメラが使用可能です。Android 12以降では、ユーザーがカメラアクセスの切り替えボタンを使用できます。"}
+              {field.value === "CAMERA_ACCESS_DISABLED" &&
+                "カメラ使用を禁止します。完全管理対象デバイスではデバイス全体に適用され、仕事用プロファイルではプロファイル内のみに適用されます。仕事用プロファイルでは、プロファイル外のアプリには影響しません。"}
+              {field.value === "CAMERA_ACCESS_ENFORCED" &&
+                "カメラ使用を強制的に有効にします。Android 12以降の完全管理対象デバイスでは、ユーザーによるカメラアクセスの切り替えができなくなります。その他のデバイスでは「カメラ使用許可」と同じ動作になります。"}
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -379,15 +360,16 @@ export default function DeviceGeneralForm({
         <h2 className="text-lg font-bold">ユーザー設定</h2>
         <FormField
           control={form.control}
-          name="policyData.screenCaptureDisabled"
+          name="policyData.addUserDisabled"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
               <div className="space-y-1 leading-none">
                 <FormLabel className="text-base">
-                  ユーザー追加を無効化
+                  新しいユーザーとプロファイルの追加
                 </FormLabel>
                 <FormDescription>
-                  ユーザー追加ができなくなります。
+                  新しいユーザーとプロファイルの追加を無効化します。
+                  デバイスオーナーで管理されているデバイスは、デフォルトでユーザーはユーザーの追加や削除ができません。
                 </FormDescription>
               </div>
               <FormControl>
@@ -402,7 +384,7 @@ export default function DeviceGeneralForm({
         />
         <FormField
           control={form.control}
-          name="policyData.screenCaptureDisabled"
+          name="policyData.removeUserDisabled"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
               <div className="space-y-1 leading-none">
@@ -410,7 +392,7 @@ export default function DeviceGeneralForm({
                   ユーザー削除を無効化
                 </FormLabel>
                 <FormDescription>
-                  ユーザー削除ができなくなります。
+                  デバイスに追加されているユーザーの削除を無効化します。
                 </FormDescription>
               </div>
               <FormControl>
@@ -424,20 +406,21 @@ export default function DeviceGeneralForm({
           )}
         />
       </div>
+      <DeviceGeneralDisplaySettingsForm />
 
       <div className="space-y-2 border rounded-lg p-4">
-        <h2 className="text-lg font-bold">スリープモードの設定</h2>
+        <h2 className="text-lg font-bold">位置情報共有を無効化</h2>
         <FormField
           control={form.control}
-          name="policyData.screenCaptureDisabled"
+          name="policyData.shareLocationDisabled"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
               <div className="space-y-1 leading-none">
                 <FormLabel className="text-base">
-                  充電中のスリープモードを無効化
+                  位置情報共有の無効化
                 </FormLabel>
                 <FormDescription>
-                  充電中はスリープモードにしないようにします。
+                  現在地の共有が無効になります。
                 </FormDescription>
               </div>
               <FormControl>
@@ -452,228 +435,51 @@ export default function DeviceGeneralForm({
         />
         <FormField
           control={form.control}
-          name="policyData.screenCaptureDisabled"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
-              <div className="space-y-1 leading-none w-full">
-                <FormLabel className="text-base">スリープの最大時間</FormLabel>
-                <FormDescription>
-                  スリープの最大時間を設定します。
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Input
-                  type="number"
-                  value=""
-                  onChange={field.onChange}
-                  className=""
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-      </div>
-      <div className="space-y-2 border rounded-lg p-4">
-        <h2 className="text-lg font-bold">位置情報の設定</h2>
-        <FormField
-          control={form.control}
-          name="policyData.screenCaptureDisabled"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
-              <div className="space-y-1 leading-none">
-                <FormLabel className="text-base">
-                  位置情報取得の無効化
-                </FormLabel>
-                <FormDescription>
-                  位置情報の取得ができなくなります。
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className=""
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="policyData.deviceConnectivityManagement.usbDataAccess"
+          name="policyData.locationMode"
           render={({ field }) => (
             <FormItem className="flex flex-col rounded-md border p-4 gap-2">
               <FormLabel>位置情報の検出設定</FormLabel>
               <Select
                 onValueChange={field.onChange}
-                defaultValue={field.value ?? "USB_DATA_ACCESS_UNSPECIFIED"}
-                value={field.value ?? "USB_DATA_ACCESS_UNSPECIFIED"}
+                defaultValue={field.value ?? "LOCATION_MODE_UNSPECIFIED"}
+                value={field.value ?? "LOCATION_MODE_UNSPECIFIED"}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="USB接続した際の動作選択" />
+                    <SelectValue placeholder="位置情報の検出設定" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="USB_DATA_ACCESS_UNSPECIFIED">
+                  <SelectItem value="LOCATION_MODE_UNSPECIFIED">
                     設定なし
                   </SelectItem>
-                  <SelectItem value="ALLOW_USB_DATA_TRANSFER">
+                  <SelectItem value="LOCATION_USER_CHOICE">
+                    ユーザーの選択を許可
+                  </SelectItem>
+                  <SelectItem value="LOCATION_ENFORCED">
                     位置情報検出を強制的に有効
                   </SelectItem>
-                  <SelectItem value="DISALLOW_USB_FILE_TRANSFER">
+                  <SelectItem value="LOCATION_UNSPECIFIED">
                     位置情報検出を強制的に無効
                   </SelectItem>
                 </SelectContent>
               </Select>
               <FormDescription>
-                {field.value === "USB_DATA_ACCESS_UNSPECIFIED" &&
-                  "デフォルトとして「USB経由でのファイル転送のみ禁止」が設定されます。"}
-                {field.value === "ALLOW_USB_DATA_TRANSFER" &&
-                  "USB経由でファイル転送ができるようになります。"}
-                {field.value === "DISALLOW_USB_FILE_TRANSFER" &&
-                  "USB経由でのファイル転送のみできません。マウスやキーボードの接続など、USBデータ接続は制限されません。"}
-                {field.value === "DISALLOW_USB_DATA_TRANSFER" &&
-                  "全てのUSBデータ転送ができません。Android12かつ、USB HAL 1.3以降のデバイスのみサポートされます。サポート外のデバイスは、「USB経由でのファイル転送のみ禁止」が設定されます。"}
+                {field.value === "LOCATION_MODE_UNSPECIFIED" &&
+                  "デフォルトとして「ユーザーの選択を許可」が設定されます。"}
+                {field.value === "LOCATION_USER_CHOICE" &&
+                  "ユーザーが位置情報の検出を選択できるようになります。"}
+                {field.value === "LOCATION_ENFORCED" &&
+                  "位置情報検出を強制的に有効にします。"}
+                {field.value === "LOCATION_UNSPECIFIED" &&
+                  "位置情報検出を強制的に無効にします。"}
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
       </div>
-      <div className="space-y-2 border rounded-lg p-4">
-        <h2 className="text-lg font-bold">OSアップデート</h2>
-        <FormField
-          control={form.control}
-          name="policyData.deviceConnectivityManagement.usbDataAccess"
-          render={({ field }) => (
-            <FormItem className="flex flex-col rounded-md border p-4 gap-2">
-              <FormLabel>OSアップデートの設定</FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                defaultValue={field.value ?? "USB_DATA_ACCESS_UNSPECIFIED"}
-                value={field.value ?? "USB_DATA_ACCESS_UNSPECIFIED"}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="USB接続した際の動作選択" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="USB_DATA_ACCESS_UNSPECIFIED">
-                    設定なし
-                  </SelectItem>
-                  <SelectItem value="ALLOW_USB_DATA_TRANSFER">
-                    即時にアップデート
-                  </SelectItem>
-                  <SelectItem value="DISALLOW_USB_FILE_TRANSFER">
-                    指定した時刻にアップデート
-                  </SelectItem>
-                  <SelectItem value="DISALLOW_USB_FILE_TRANSFER">
-                    30日間のアップデートを延期
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                {field.value === "USB_DATA_ACCESS_UNSPECIFIED" &&
-                  "デフォルトとして「USB経由でのファイル転送のみ禁止」が設定されます。"}
-                {field.value === "ALLOW_USB_DATA_TRANSFER" &&
-                  "USB経由でファイル転送ができるようになります。"}
-                {field.value === "DISALLOW_USB_FILE_TRANSFER" &&
-                  "USB経由でのファイル転送のみできません。マウスやキーボードの接続など、USBデータ接続は制限されません。"}
-                {field.value === "DISALLOW_USB_DATA_TRANSFER" &&
-                  "全てのUSBデータ転送ができません。Android12かつ、USB HAL 1.3以降のデバイスのみサポートされます。サポート外のデバイスは、「USB経由でのファイル転送のみ禁止」が設定されます。"}
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="policyData.screenCaptureDisabled"
-          render={({ field }) => (
-            <FormItem className="flex flex-col items-center justify-between rounded-lg border p-4 gap-2">
-              <div className="space-y-1 leading-none w-full">
-                <FormLabel className="text-base">アップデート時刻</FormLabel>
-                <FormDescription>
-                  アップデート時刻を設定します。
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Input
-                  type="number"
-                  value=""
-                  onChange={field.onChange}
-                  className="sr-only"
-                />
-              </FormControl>
-              <div className="flex flex-row gap-2">
-                <Input
-                  type="number"
-                  value=""
-                  onChange={field.onChange}
-                  className=""
-                />
-                <span className="text-sm text-muted-foreground text-center">
-                  〜
-                </span>
-                <Input
-                  type="number"
-                  value=""
-                  onChange={field.onChange}
-                  className=""
-                />
-              </div>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="policyData.screenCaptureDisabled"
-          render={({ field }) => (
-            <FormItem className="flex flex-col items-center justify-between rounded-lg border p-4 gap-2">
-              <div className="flex flex-row items-center justify-between w-full">
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="text-base">アップデート停止</FormLabel>
-                  <FormDescription>
-                    最大90日間アップデートを停止します。
-                  </FormDescription>
-                </div>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  className=""
-                />
-              </div>
-              <FormControl>
-                <Input
-                  type="number"
-                  value=""
-                  onChange={field.onChange}
-                  className="sr-only"
-                />
-              </FormControl>
-              <div className="flex flex-row gap-2">
-                <Input
-                  type="number"
-                  value=""
-                  onChange={field.onChange}
-                  className=""
-                />
-                <span className="text-sm text-muted-foreground text-center">
-                  〜
-                </span>
-                <Input
-                  type="number"
-                  value=""
-                  onChange={field.onChange}
-                  className=""
-                />
-              </div>
-            </FormItem>
-          )}
-        />
-      </div>
+      {/* <DeviceGeneralSystemUpdateForm /> */}
     </div>
   );
 }

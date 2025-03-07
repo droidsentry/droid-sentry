@@ -5,7 +5,7 @@ import {
   passwordUpdateSchema,
   signInSchema,
   signUpSchema,
-} from "../schema/auth";
+} from "../schemas/auth";
 
 export type SignUp = z.infer<typeof signUpSchema>;
 export type SignIn = z.infer<typeof signInSchema>;

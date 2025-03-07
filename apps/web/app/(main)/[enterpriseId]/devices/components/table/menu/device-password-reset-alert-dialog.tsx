@@ -1,7 +1,7 @@
 "use client";
 
 import PasswordForm from "@/app/(auth)/components/password-form";
-import { DeviceResetPasswordSchema } from "@/app/schema/devices";
+import { DeviceResetPasswordSchema } from "@/app/schemas/devices";
 import { DeviceResetPassword } from "@/app/types/device";
 import {
   AlertDialog,

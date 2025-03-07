@@ -23,7 +23,7 @@ import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import PasswordForm from "../../components/password-form";
 
-import { extendedSignUpSchema } from "@/app/schema/auth";
+import { extendedSignUpSchema } from "@/app/schemas/auth";
 import { SignUp } from "@/app/types/auth";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";

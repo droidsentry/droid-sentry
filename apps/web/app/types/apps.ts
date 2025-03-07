@@ -1,6 +1,6 @@
 import { androidmanagement_v1 } from "googleapis";
 import { z } from "zod";
-import { AppsTableSchema, AppTypeSchema } from "../schema/apps";
+import { AppsTableSchema, AppTypeSchema } from "../schemas/apps";
 
 export type AppsTableType = z.infer<typeof AppsTableSchema>;
 

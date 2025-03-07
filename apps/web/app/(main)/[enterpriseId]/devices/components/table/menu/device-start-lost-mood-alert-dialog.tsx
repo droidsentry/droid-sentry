@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import { startLostModeSelectedDevice } from "../../../actions/lost-mode-devices";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DeviceLostModeSchema } from "@/app/schema/devices";
+import { DeviceLostModeSchema } from "@/app/schemas/devices";
 import {
   Form,
   FormControl,

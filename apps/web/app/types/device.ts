@@ -12,7 +12,7 @@ import {
   DeviceLostModeSchema,
   DeviceResetPasswordSchema,
   DevicesTableSchema,
-} from "../schema/devices";
+} from "../schemas/devices";
 
 export type AndroidManagementDevice = androidmanagement_v1.Schema$Device;
 export type ListDevicesResponse =

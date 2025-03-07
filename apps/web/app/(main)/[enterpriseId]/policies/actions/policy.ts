@@ -1,7 +1,7 @@
 "use server";
 
 import { createAndroidManagementClient } from "@/actions/emm/client";
-import { formPolicySchema } from "@/app/schema/policy";
+import { formPolicySchema } from "@/app/schemas/policy";
 import { AndroidManagementPolicy, FormPolicy } from "@/app/types/policy";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
@@ -75,19 +75,29 @@ export const createOrUpdatePolicy = async ({
     console.error(result.error);
     throw new Error("フォームデータの検証に失敗しました");
   }
-  const { policyDisplayName, policyData: requestBody } = result.data;
+  const { policyDisplayName, policyData } = result.data;
 
   // ポリシーを作成
   const androidmanagement = await createAndroidManagementClient();
   if (policyIdentifier === "new") {
     policyIdentifier = uuidv7();
   }
-  // console.log("requestBody", requestBody);
+  const requestBody: AndroidManagementPolicy = policyData;
+
+  type Exact<T, U> = T extends U
+    ? keyof T extends keyof U
+      ? T
+      : never
+    : never;
+
   const enterpriseName = `enterprises/${enterpriseId}`;
   const { data } = await androidmanagement.enterprises.policies
     .patch({
       name: `${enterpriseName}/policies/${policyIdentifier}`,
-      requestBody,
+      requestBody: requestBody as Exact<
+        AndroidManagementPolicy,
+        typeof requestBody
+      >,
     })
     .catch((error) => {
       console.error("Error creating policy:", error.message);

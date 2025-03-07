@@ -53,7 +53,7 @@ export default function NetworkForm({
         <h2 className="text-lg font-bold">ネットワーク設定</h2>
         <FormField
           control={form.control}
-          name="policyData.screenCaptureDisabled"
+          name="policyData.mobileNetworksConfigDisabled"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2 h-fit">
               <div className="space-y-1 leading-none">
@@ -78,7 +78,7 @@ export default function NetworkForm({
         />
         <FormField
           control={form.control}
-          name="policyData.screenCaptureDisabled"
+          name="policyData.dataRoamingDisabled"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2 h-fit">
               <div className="space-y-1 leading-none">
@@ -103,7 +103,7 @@ export default function NetworkForm({
         />
         <FormField
           control={form.control}
-          name="policyData.screenCaptureDisabled"
+          name="policyData.networkResetDisabled"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2 h-fit">
               <div className="space-y-1 leading-none">

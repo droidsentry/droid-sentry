@@ -26,7 +26,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { onboardingSchema } from "../../../schema/onboarding-schema";
+import { onboardingSchema } from "../../../schemas/onboarding-schema";
 import { toast } from "sonner";
 import { getSignUpUrl } from "@/actions/emm/signup-url";
 import { getBaseURL } from "@/lib/base-url/client";
