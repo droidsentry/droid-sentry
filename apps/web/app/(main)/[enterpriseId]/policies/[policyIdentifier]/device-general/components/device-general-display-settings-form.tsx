@@ -28,9 +28,9 @@ import { cn } from "@/lib/utils";
 export default function DeviceGeneralDisplaySettingsForm() {
   const form = useFormContext<FormPolicy>();
   const stayOnPluggedModes = form.getValues("policyData.stayOnPluggedModes");
-  const isStayOnPluggedModes = stayOnPluggedModes?.includes(
-    "BATTERY_PLUGGED_MODE_UNSPECIFIED"
-  );
+  const isStayOnPluggedModes =
+    !stayOnPluggedModes ||
+    stayOnPluggedModes.includes("BATTERY_PLUGGED_MODE_UNSPECIFIED");
   const screenTimeoutMode = form.getValues(
     "policyData.displaySettings.screenTimeoutSettings.screenTimeoutMode"
   );
@@ -38,10 +38,7 @@ export default function DeviceGeneralDisplaySettingsForm() {
     !screenTimeoutMode ||
     screenTimeoutMode === "SCREEN_TIMEOUT_USER_CHOICE" ||
     screenTimeoutMode === "SCREEN_TIMEOUT_MODE_UNSPECIFIED";
-  const screenTimeout = form.getValues(
-    "policyData.displaySettings.screenTimeoutSettings.screenTimeout"
-  );
-  // console.log("screenTimeout", screenTimeout);
+
   return (
     <div className="space-y-2 border rounded-lg p-4">
       <h2 className="text-lg font-bold">画面自動消灯の設定</h2>
@@ -65,7 +62,7 @@ export default function DeviceGeneralDisplaySettingsForm() {
                 onCheckedChange={(checked) => {
                   if (checked) {
                     field.onChange(["AC", "USB", "WIRELESS"]);
-                    form.setValue("policyData.maximumTimeToLock", "0");
+                    form.setValue("policyData.maximumTimeToLock", null);
                   } else {
                     field.onChange(["BATTERY_PLUGGED_MODE_UNSPECIFIED"]);
                   }
@@ -92,7 +89,7 @@ export default function DeviceGeneralDisplaySettingsForm() {
               </FormLabel>
               <FormDescription>
                 画面ロックまでの最大時間を設定します。
-                「充電中の自動消灯を無効化」が有効の場合、画面ロックまでの最大時間は0になります。
+                '0'と設定した場合は、制限なしとなります。
               </FormDescription>
               <FormMessage />
             </div>
@@ -103,10 +100,9 @@ export default function DeviceGeneralDisplaySettingsForm() {
                 // ミリ秒から分に変換して表示
                 value={
                   field.value
-                    ? Math.floor(parseInt(field.value) / (1000 * 60)).toString()
+                    ? Math.floor(parseInt(field.value) / (1000 * 60))
                     : ""
                 }
-                placeholder="0"
                 min={0}
                 max={60} // 60分 (3600秒)
                 onChange={(e) => {
@@ -204,18 +200,20 @@ export default function DeviceGeneralDisplaySettingsForm() {
                   disabled={isScreenTimeoutMode}
                   type="number"
                   value={
-                    field.value ? parseFloat(field.value.replace("m", "")) : ""
+                    field.value
+                      ? Math.floor(parseInt(field.value.replace("s", "")) / 60)
+                      : ""
                   }
                   min={0}
                   max={30}
                   onChange={(e) => {
                     const minutes = e.target.value;
                     if (minutes === "") {
-                      field.onChange(null);
+                      field.onChange(`0s`);
                     } else {
-                      // Duration形式（"Xm"）で保存
                       form.clearErrors("policyData.maximumTimeToLock");
-                      field.onChange(`${minutes}m`);
+                      const seconds = Math.floor(parseInt(minutes) * 60);
+                      field.onChange(`${seconds}s`);
                     }
                   }}
                   className="w-1/4"

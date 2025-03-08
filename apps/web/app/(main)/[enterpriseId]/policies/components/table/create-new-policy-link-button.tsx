@@ -15,22 +15,8 @@ export default function CreateNewPolicyLinkButton({
   name?: string;
 }) {
   const form = useFormContext<FormPolicy>();
-  const router = useRouter();
-
-  const handleNewPolicyLinkClick = () => {
-    // form.reset();
-    router.push(`/${enterpriseId}/policies/new/device-general`);
-  };
 
   return (
-    // <Button
-    //   variant="outline"
-    //   className="h-8"
-    //   onClick={handleNewPolicyLinkClick}
-    // >
-    //   <PlusIcon className="mr-2" />
-    //   <span>{name}</span>
-    // </Button>
     <Button
       variant="outline"
       className="h-8"

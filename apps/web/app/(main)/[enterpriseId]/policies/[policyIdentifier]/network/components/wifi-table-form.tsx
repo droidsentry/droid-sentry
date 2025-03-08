@@ -38,7 +38,7 @@ export default function WifiTableForm({
   const form = useFormContext<FormPolicy>();
 
   return (
-    <div className="space-y-1">
+    <form className="space-y-1">
       <h2 className="text-lg font-bold">Wi-Fi設定</h2>
       <FormField
         control={form.control}
@@ -172,6 +172,6 @@ export default function WifiTableForm({
           </Table>
         </div>
       </div>
-    </div>
+    </form>
   );
 }

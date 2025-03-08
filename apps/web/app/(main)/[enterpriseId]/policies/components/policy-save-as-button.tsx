@@ -63,6 +63,7 @@ export default function SaveAsPolicyButton({
             <p>別のポリシー名で保存してください。</p>
           </div>
         );
+        setIsSavingAs(false);
         return;
       }
       await createOrUpdatePolicy({
@@ -97,13 +98,10 @@ export default function SaveAsPolicyButton({
         isSubmitting ||
         !form.getValues("policyDisplayName")
       }
-      className="h-8"
+      className="h-8 w-20"
     >
       {isPending && isSavingAs ? (
-        <>
-          <Loader2 className="mr-2 size-4 animate-spin" />
-          別名保存中...
-        </>
+        <Loader2 className="size-4 animate-spin" />
       ) : (
         "別名保存"
       )}

@@ -25,11 +25,12 @@ import { createOrUpdatePolicy, isPolicyNameUnique } from "../actions/policy";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import CreateNewPolicyLinkButton from "./table/create-new-policy-link-button";
 import SaveAsPolicyButton from "./policy-save-as-button";
+import { formPolicySchema } from "@/app/schemas/policy";
 
 export default function PolicyToolBar() {
   const form = useFormContext<FormPolicy>();
   const [isPending, startTransition] = useTransition();
-  const [isSavingAs, setIsSavingAs] = useState(false);
+  const [isSavingAs, setIsSavingAs] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -38,11 +39,12 @@ export default function PolicyToolBar() {
   let policyIdentifier = param.policyIdentifier ?? "new";
   if (searchPolicyIdentifier) {
     policyIdentifier = searchPolicyIdentifier;
+    setIsSavingAs(false);
   }
   const enterpriseId = param.enterpriseId;
   const policyBasePath = `/${enterpriseId}/policies/${policyIdentifier}`;
   const currentBase = pathname.split(policyBasePath)[1];
-  const { isValidating, isSubmitting, isDirty } = form.formState;
+  const { isValid, isValidating, isSubmitting, isDirty } = form.formState;
 
   const isPolicyNameUniqueCheck = AwesomeDebouncePromise(
     async (policyDisplayName: string) =>
@@ -50,6 +52,7 @@ export default function PolicyToolBar() {
     800
   );
   const handleSave = async (formData: FormPolicy) => {
+    console.log("handleSave", formData);
     startTransition(async () => {
       if (!policyIdentifier) {
         toast.error("ポリシーIDが取得できませんでした。");
@@ -98,13 +101,19 @@ export default function PolicyToolBar() {
   return (
     <form
       onSubmit={form.handleSubmit(handleSave, (errors) => {
-        console.log("Form errors:", errors);
-        toast.error(
-          <div className="space-y-1">
-            <p>入力内容に問題があります</p>
-            <p>フォームを確認してください</p>
-          </div>
-        );
+        // console.log("errors", errors);
+        const data = form.getValues();
+        const parseResult = formPolicySchema.safeParse(data);
+        if (!parseResult.success) {
+          toast.error(
+            <div className="space-y-1">
+              <p>入力内容に問題があります</p>
+              {parseResult.error.errors.map((error) => (
+                <p key={error.message}>{error.message}</p>
+              ))}
+            </div>
+          );
+        }
       })}
       className="h-12 px-4 flex flex-row items-center gap-2 border-b py-2"
     >
@@ -143,18 +152,15 @@ export default function PolicyToolBar() {
       <Button
         disabled={
           isPending ||
-          // !form.formState.isValid || // フォームのバリデーションが成功していない場合はボタンを無効にする(初期状態) 新規作成時でエラーが発生するため、使用せず
+          // !isValid || // フォームのバリデーションが成功していない場合はボタンを無効にする(初期状態) 新規作成時でエラーが発生するため、使用せず
           isValidating || // フォームのバリデーションが実行中の場合はボタンを無効にする
           isSubmitting || // フォームが送信中の場合はボタンを無効にする
           !form.getValues("policyDisplayName") // ポリシー名が空の場合はボタンを無効にする
         }
-        className="h-8"
+        className="h-8 w-20"
       >
         {isPending && !isSavingAs ? (
-          <>
-            <Loader2 className="mr-2 size-4 animate-spin" />
-            保存中...
-          </>
+          <Loader2 className="size-4 animate-spin" />
         ) : (
           "保存"
         )}

@@ -124,7 +124,7 @@ export default function NetworkForm({
             </FormItem>
           )}
         />
-        <FormField
+        {/* <FormField
           control={form.control}
           name="policyData.deviceConnectivityManagement.usbDataAccess"
           render={({ field }) => (
@@ -164,12 +164,12 @@ export default function NetworkForm({
               <FormMessage />
             </FormItem>
           )}
-        />
-        <ProxyForm />
-        <VpnForm />
-        <CertificateForm />
+        /> */}
+        {/* <ProxyForm /> */}
+        {/* <VpnForm /> */}
+        {/* <CertificateForm /> */}
       </div>
-      <WifiTableForm policyIdentifier={policyIdentifier} />
+      {/* <WifiTableForm policyIdentifier={policyIdentifier} /> */}
     </div>
   );
 }

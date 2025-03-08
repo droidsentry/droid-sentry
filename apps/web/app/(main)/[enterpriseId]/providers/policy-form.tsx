@@ -30,19 +30,19 @@ export function PolicyFormProvider({ children }: { children: ReactNode }) {
   const form = useForm<FormPolicy>({
     mode: "onChange",
     resolver: zodResolver(formPolicySchema),
-    defaultValues: defaultGeneralConfig,
-    values: data, // フォームの値を設定
+    defaultValues: data || defaultGeneralConfig,
   });
 
   useEffect(() => {
+    // console.log("useEffect");
     // 新規作成の場合の処理
     if (policyIdentifier === "new") {
-      // form.reset(defaultGeneralConfig);
-      form.reset();
+      form.reset(defaultGeneralConfig);
       return;
     }
     // データ取得成功時
     if (data) {
+      // console.log("data", data);
       form.reset(data);
     }
   }, [policyIdentifier, form, data]);
