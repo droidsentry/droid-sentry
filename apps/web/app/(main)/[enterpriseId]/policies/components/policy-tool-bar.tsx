@@ -44,7 +44,7 @@ export default function PolicyToolBar() {
   const enterpriseId = param.enterpriseId;
   const policyBasePath = `/${enterpriseId}/policies/${policyIdentifier}`;
   const currentBase = pathname.split(policyBasePath)[1];
-  const { isValid, isValidating, isSubmitting, isDirty } = form.formState;
+  const { isValidating, isSubmitting, isDirty } = form.formState;
 
   const isPolicyNameUniqueCheck = AwesomeDebouncePromise(
     async (policyDisplayName: string) =>

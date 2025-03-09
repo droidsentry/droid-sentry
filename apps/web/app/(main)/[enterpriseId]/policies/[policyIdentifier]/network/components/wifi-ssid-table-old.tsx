@@ -252,7 +252,7 @@ const DeleteNetworkAction = React.memo(
   }
 );
 
-export function WifiSsidTable() {
+export function WifiSsidTableOld() {
   const [data, setData] = React.useState<NetworkConfigurations>(wifiSsidData);
   const form = useFormContext<FormPolicy>();
   const [sorting, setSorting] = React.useState<SortingState>([]);
