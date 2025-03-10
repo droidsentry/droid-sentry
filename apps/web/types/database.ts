@@ -892,6 +892,38 @@ export type Database = {
         }
         Relationships: []
       }
+      wifi_network_configurations: {
+        Row: {
+          config: Json | null
+          created_at: string
+          enterprise_id: string
+          updated_at: string
+          wifi_network_configuration_id: string
+        }
+        Insert: {
+          config?: Json | null
+          created_at?: string
+          enterprise_id: string
+          updated_at: string
+          wifi_network_configuration_id?: string
+        }
+        Update: {
+          config?: Json | null
+          created_at?: string
+          enterprise_id?: string
+          updated_at?: string
+          wifi_network_configuration_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wifi_network_configurations_enterprise_id_fkey"
+            columns: ["enterprise_id"]
+            isOneToOne: false
+            referencedRelation: "enterprises"
+            referencedColumns: ["enterprise_id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

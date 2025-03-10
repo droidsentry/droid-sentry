@@ -141,7 +141,7 @@ const WiFiConfigSchema = z
     }
   });
 
-const NetworkConfigurationSchema = z.object({
+export const NetworkConfigurationSchema = z.object({
   GUID: z.string(),
   Name: z.string(),
   Type: z.literal("WiFi"),
@@ -480,7 +480,7 @@ const WifiSsidFormDialog = React.memo(
     const isNoneSecurity = securityType === "None";
     const { isValid } = form.formState;
 
-    const onSubmit = (data: WiFiConfig) => {
+    const handleCreateOrUpdateNetwork = (data: WiFiConfig) => {
       if (mode === "edit" && onUpdate && networkConfiguration) {
         // 編集モードの場合
         onUpdate(networkConfiguration.GUID, data);
@@ -537,20 +537,15 @@ const WifiSsidFormDialog = React.memo(
     }, [form, mode, networkConfiguration, open]);
 
     return (
-      // <Dialog open={open} onOpenChange={handleOpenChange} defaultOpen={true}>
-      //   <DialogTrigger asChild>
-      //     <Button size="sm">
-      //       <PlusIcon className="size-4 mr-2" />
-      //       追加
-      //     </Button>
-      //   </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit, (errors) => {
-              console.log("エラー", errors);
-            })}
-            // className="space-y-8"
+            onSubmit={form.handleSubmit(
+              handleCreateOrUpdateNetwork,
+              (errors) => {
+                console.log("エラー", errors);
+              }
+            )}
           >
             <DialogHeader className="space-y-2">
               <DialogTitle>WiFi SSID設定の追加</DialogTitle>
