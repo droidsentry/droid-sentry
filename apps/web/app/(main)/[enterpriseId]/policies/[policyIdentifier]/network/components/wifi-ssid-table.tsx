@@ -20,6 +20,7 @@ import {
   ChevronRight,
   ChevronsRight,
   ExternalLinkIcon,
+  Loader2,
   MoreHorizontal,
   PlusIcon,
   TrashIcon,
@@ -88,6 +89,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import { z } from "zod";
 import { v7 as uuidv7 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Table as ReactTable } from "@tanstack/react-table";
 import { InfoPopover } from "@/components/info-popover";
@@ -99,130 +101,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-const wifiSeuritySchema = z.enum(["None", "WEP-PSK", "WPA-PSK"]);
-const wifiMacRandomizationModeSchema = z
-  .enum(["Hardware", "Software"])
-  .optional();
-const WiFiConfigSchema = z
-  .object({
-    SSID: z.string().trim().min(1, { message: "SSIDは必須です" }),
-    Security: wifiSeuritySchema,
-    Passphrase: z.string().trim().optional(),
-    AutoConnect: z.boolean(),
-    MACAddressRandomizationMode: wifiMacRandomizationModeSchema,
-  })
-  .superRefine((val, ctx) => {
-    // 親オブジェクトのSecurityの値を取得
-    const { Security, Passphrase } = val;
-
-    // セキュリティがNoneの場合は検証をスキップ
-    if (Security === "None") return;
-
-    // パスワードが未設定の場合
-    if (!Passphrase) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "セキュリティタイプが設定されている場合、パスワードは必須です",
-        path: ["Passphrase"],
-      });
-      return;
-    }
-
-    // パスワードの長さチェック
-    if (Passphrase.length < 8) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message:
-          "セキュリティタイプが設定されている場合、パスワードは8文字以上必要です",
-        path: ["Passphrase"],
-      });
-      return;
-    }
-  });
-
-export const NetworkConfigurationSchema = z.object({
-  GUID: z.string(),
-  Name: z.string(),
-  Type: z.literal("WiFi"),
-  WiFi: WiFiConfigSchema,
-});
-
-type WiFiConfig = z.infer<typeof WiFiConfigSchema>;
-type NetworkConfiguration = z.infer<typeof NetworkConfigurationSchema>;
-
-export type NetworkConfigurations = NetworkConfiguration[];
-
-const wifiSsidData: NetworkConfigurations = [
-  {
-    GUID: "a",
-    Name: "Example A",
-    Type: "WiFi",
-    WiFi: {
-      SSID: "Example A",
-      Security: "None",
-      AutoConnect: true,
-    },
-  },
-  {
-    GUID: "b",
-    Name: "Example B",
-    Type: "WiFi",
-    WiFi: {
-      SSID: "Example B",
-      Security: "WEP-PSK",
-      Passphrase: "1234567890",
-      AutoConnect: true,
-    },
-  },
-  {
-    GUID: "c",
-    Name: "20220228se2",
-    Type: "WiFi",
-    WiFi: {
-      SSID: "20220228se2",
-      Security: "WPA-PSK",
-      Passphrase: "4321098765",
-      AutoConnect: true,
-    },
-  },
-  {
-    GUID: "networkA",
-    Name: "networkA",
-    Type: "WiFi",
-    WiFi: {
-      SSID: "networkA",
-      Security: "WPA-PSK",
-      Passphrase: "pwd1234567",
-      MACAddressRandomizationMode: "Hardware",
-      AutoConnect: true,
-    },
-  },
-  {
-    GUID: "aterm-06a1af-a",
-    Name: "aterm-06a1af-a",
-    Type: "WiFi",
-    WiFi: {
-      SSID: "aterm-06a1af-a",
-      Security: "WPA-PSK",
-      Passphrase: "7175ac05f888b",
-      MACAddressRandomizationMode: undefined,
-      AutoConnect: true,
-    },
-  },
-  {
-    GUID: "SDM-5G",
-    Name: "SDM-5G",
-    Type: "WiFi",
-    WiFi: {
-      SSID: "SDM-5G",
-      Security: "WPA-PSK",
-      Passphrase: "0123456789",
-      MACAddressRandomizationMode: undefined,
-      AutoConnect: false,
-    },
-  },
-];
+import {
+  createOrUpdateNetworkConfigurations,
+  deleteNetworkConfiguration,
+  deleteNetworkConfigurations,
+  getNetworkConfigurations,
+} from "../actions/network";
+import { useParams } from "next/navigation";
+import { RouteParams } from "@/app/types/enterprise";
+import { toast } from "sonner";
+import {
+  NetworkConfiguration,
+  NetworkConfigurations,
+  WiFiConfig,
+} from "@/app/types/policy-network";
+import { NetworkConfigurationSchema } from "@/app/schemas/policy-network";
+import useSWRImmutable from "swr/immutable";
+import LoadingWithinPageSkeleton from "@/app/(main)/[enterpriseId]/components/loading-within-page-sleleton";
 
 export const wifiSsidColumns: ColumnDef<NetworkConfiguration>[] = [
   {
@@ -375,9 +270,6 @@ const DeleteSelectedNetworksButton = ({
   const selectedRows = table.getSelectedRowModel().rows;
   const hasSelectedRows = selectedRows.length > 0;
 
-  // 選択された行からSSID名を取得
-  const selectedSsids = selectedRows.map((row) => row.original.WiFi.SSID);
-
   // 選択された行からGUIDを取得
   const selectedGuids = selectedRows.map((row) => row.original.GUID);
 
@@ -402,18 +294,23 @@ const DeleteSelectedNetworksButton = ({
           <AlertDialogTitle>WiFi設定の一括削除</AlertDialogTitle>
           <AlertDialogDescription>
             {selectedRows.length}件のWiFi設定を削除しようとしています。
-            {selectedSsids.length <= 5 ? (
+            {selectedRows.length <= 5 ? (
               <>
                 <br />
-                {selectedSsids.map((ssid: string) => (
-                  <span key={ssid} className="block">
-                    ・{ssid}
+                {selectedRows.map((row) => (
+                  <span key={row.original.GUID} className="block">
+                    ・{row.original.WiFi.SSID}
                   </span>
                 ))}
               </>
             ) : (
               <span className="block">
-                ・{selectedSsids.slice(0, 3).join(", ")} など
+                ・
+                {selectedRows
+                  .slice(0, 3)
+                  .map((row) => row.original.WiFi.SSID)
+                  .join(", ")}{" "}
+                など
               </span>
             )}
             <br />
@@ -431,12 +328,17 @@ const DeleteSelectedNetworksButton = ({
   );
 };
 
-const defaultValues: WiFiConfig = {
-  SSID: "",
-  Security: "None",
-  Passphrase: "",
-  AutoConnect: true,
-  MACAddressRandomizationMode: undefined,
+const defaultValues: NetworkConfiguration = {
+  GUID: "",
+  Name: "",
+  Type: "WiFi",
+  WiFi: {
+    SSID: "",
+    Security: "None",
+    Passphrase: "",
+    AutoConnect: true,
+    MACAddressRandomizationMode: undefined,
+  },
 };
 
 const WifiSsidFormDialog = React.memo(
@@ -457,62 +359,66 @@ const WifiSsidFormDialog = React.memo(
     mode?: "create" | "edit";
     setDropdownOpen?: (open: boolean) => void;
   }) => {
+    const [isPending, startTransition] = React.useTransition();
     // 編集モードの場合は既存の設定を初期値として使用し、作成モードの場合はデフォルト値を使用
-    const initialValues =
+    const initialValues: NetworkConfiguration =
       mode === "edit" && networkConfiguration
         ? {
-            SSID: networkConfiguration.WiFi.SSID,
-            Security: networkConfiguration.WiFi.Security,
-            Passphrase: networkConfiguration.WiFi.Passphrase || "",
-            AutoConnect: networkConfiguration.WiFi.AutoConnect,
-            MACAddressRandomizationMode:
-              networkConfiguration.WiFi.MACAddressRandomizationMode,
+            GUID: networkConfiguration.GUID,
+            Name: networkConfiguration.Name,
+            Type: networkConfiguration.Type,
+            WiFi: {
+              SSID: networkConfiguration.WiFi.SSID,
+              Security: networkConfiguration.WiFi.Security,
+              Passphrase: networkConfiguration.WiFi.Passphrase || "",
+              AutoConnect: networkConfiguration.WiFi.AutoConnect,
+              MACAddressRandomizationMode:
+                networkConfiguration.WiFi.MACAddressRandomizationMode,
+            },
           }
         : defaultValues;
 
-    const form = useForm<WiFiConfig>({
+    const form = useForm<NetworkConfiguration>({
       mode: "onChange",
-      resolver: zodResolver(WiFiConfigSchema),
+      resolver: zodResolver(NetworkConfigurationSchema),
       defaultValues: initialValues,
     });
 
-    const securityType = form.watch("Security");
+    const securityType = form.watch("WiFi.Security");
     const isNoneSecurity = securityType === "None";
     const { isValid } = form.formState;
 
-    const handleCreateOrUpdateNetwork = (data: WiFiConfig) => {
-      if (mode === "edit" && onUpdate && networkConfiguration) {
-        // 編集モードの場合
-        onUpdate(networkConfiguration.GUID, data);
-      } else if (mode === "create" && onAdd) {
-        // 作成モードの場合
-        const newGuid = uuidv7();
-        const newNetworkConfig: NetworkConfiguration = {
-          GUID: newGuid,
-          Name: data.SSID,
-          Type: "WiFi",
-          WiFi: {
-            SSID: data.SSID,
-            Security: data.Security,
-            Passphrase: data.Passphrase,
-            AutoConnect: data.AutoConnect,
-            MACAddressRandomizationMode: data.MACAddressRandomizationMode,
-          },
-        };
-        onAdd(newNetworkConfig);
-      }
+    const { enterpriseId, policyIdentifier } = useParams<RouteParams>();
 
+    const handleCreateOrUpdateNetwork = (data: NetworkConfiguration) => {
+      const newNetworkConfig: NetworkConfiguration = {
+        GUID: data.GUID || uuidv7(),
+        Name: data.Name || data.WiFi.SSID,
+        Type: "WiFi",
+        WiFi: {
+          SSID: data.WiFi.SSID,
+          Security: data.WiFi.Security,
+          Passphrase: data.WiFi.Passphrase,
+          AutoConnect: data.WiFi.AutoConnect,
+          MACAddressRandomizationMode: data.WiFi.MACAddressRandomizationMode,
+        },
+      };
+      startTransition(async () => {
+        await createOrUpdateNetworkConfigurations(
+          enterpriseId,
+          policyIdentifier,
+          newNetworkConfig
+        )
+          .then(() => {
+            toast.success("ネットワーク設定の作成に成功しました");
+          })
+          .catch(() => {
+            toast.error("ネットワーク設定の作成に失敗しました");
+          });
+      });
       form.reset();
       setOpen(false);
     };
-
-    const handleOpenChange = (newOpen: boolean) => {
-      setOpen(newOpen);
-      if (!newOpen) {
-        form.reset();
-      }
-    };
-
     // ダイアログのタイトルとボタンテキストを設定
     const dialogTitle =
       mode === "edit" ? "WiFi SSID設定の編集" : "WiFi SSID設定の追加";
@@ -526,12 +432,17 @@ const WifiSsidFormDialog = React.memo(
     React.useEffect(() => {
       if (mode === "edit" && networkConfiguration && open) {
         form.reset({
-          SSID: networkConfiguration.WiFi.SSID,
-          Security: networkConfiguration.WiFi.Security,
-          Passphrase: networkConfiguration.WiFi.Passphrase || "",
-          AutoConnect: networkConfiguration.WiFi.AutoConnect,
-          MACAddressRandomizationMode:
-            networkConfiguration.WiFi.MACAddressRandomizationMode,
+          GUID: networkConfiguration.GUID,
+          Name: networkConfiguration.Name,
+          Type: networkConfiguration.Type,
+          WiFi: {
+            SSID: networkConfiguration.WiFi.SSID,
+            Security: networkConfiguration.WiFi.Security,
+            Passphrase: networkConfiguration.WiFi.Passphrase || "",
+            AutoConnect: networkConfiguration.WiFi.AutoConnect,
+            MACAddressRandomizationMode:
+              networkConfiguration.WiFi.MACAddressRandomizationMode,
+          },
         });
       }
     }, [form, mode, networkConfiguration, open]);
@@ -548,17 +459,13 @@ const WifiSsidFormDialog = React.memo(
             )}
           >
             <DialogHeader className="space-y-2">
-              <DialogTitle>WiFi SSID設定の追加</DialogTitle>
-              <DialogDescription>
-                新しいWiFiのSSID設定を追加します。
-                <br />
-                必要な情報を入力してください。
-              </DialogDescription>
+              <DialogTitle>{dialogTitle}</DialogTitle>
+              <DialogDescription>{dialogDescription}</DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4 space-y-2">
               <FormField
                 control={form.control}
-                name="SSID"
+                name="WiFi.SSID"
                 render={({ field }) => (
                   <FormItem className="grid grid-cols-4 items-center gap-4 space-y-0">
                     <FormLabel className="text-right">SSID</FormLabel>
@@ -578,7 +485,7 @@ const WifiSsidFormDialog = React.memo(
 
               <FormField
                 control={form.control}
-                name="Security"
+                name="WiFi.Security"
                 render={({ field }) => (
                   <FormItem className="grid grid-cols-4 items-center gap-4 space-y-0">
                     <FormLabel className="text-right">セキュリティ</FormLabel>
@@ -590,7 +497,7 @@ const WifiSsidFormDialog = React.memo(
                       >
                         <FormItem className="flex items-center space-x-3 space-y-0 h-6">
                           <FormControl>
-                            <RadioGroupItem value="" />
+                            <RadioGroupItem value="None" />
                           </FormControl>
                           <FormLabel className="font-normal">なし</FormLabel>
                         </FormItem>
@@ -615,7 +522,7 @@ const WifiSsidFormDialog = React.memo(
 
               <FormField
                 control={form.control}
-                name="Passphrase"
+                name="WiFi.Passphrase"
                 render={({ field }) => (
                   <FormItem className="grid grid-cols-4 items-center gap-4 space-y-0">
                     <FormLabel className="text-right">パスワード</FormLabel>
@@ -635,7 +542,7 @@ const WifiSsidFormDialog = React.memo(
 
               <FormField
                 control={form.control}
-                name="AutoConnect"
+                name="WiFi.AutoConnect"
                 render={({ field }) => (
                   <FormItem className="grid grid-cols-4 items-center justify-center gap-4 space-y-0">
                     <FormLabel className="text-right">自動接続</FormLabel>
@@ -655,7 +562,7 @@ const WifiSsidFormDialog = React.memo(
               />
               <FormField
                 control={form.control}
-                name="MACAddressRandomizationMode"
+                name="WiFi.MACAddressRandomizationMode"
                 render={({ field }) => (
                   <FormItem className="space-y-0 grid grid-cols-4 items-center gap-4">
                     <div className="flex items-center gap-2">
@@ -780,18 +687,13 @@ const WifiSsidFormDialog = React.memo(
               >
                 キャンセル
               </Button>
-              <Button
-                type="submit"
-                //  disabled={!isValid}
-                className="mb-2"
-              >
-                追加
+              <Button type="submit" disabled={!isValid} className="mb-2">
+                {submitButtonText}
               </Button>
             </DialogFooter>
           </form>
         </Form>
       </DialogContent>
-      // </Dialog>
     );
   }
 );
@@ -824,14 +726,12 @@ const CreateWifiSsidButton = React.memo(
 const EditNetworkAction = React.memo(
   ({
     networkConfiguration,
-    onUpdate,
     dialogOpen,
     setDialogOpen,
     dropdownOpen,
     setDropdownOpen,
   }: {
     networkConfiguration: NetworkConfiguration;
-    onUpdate: (guid: string, updatedConfig: WiFiConfig) => void;
     dialogOpen: boolean;
     setDialogOpen: (open: boolean) => void;
     dropdownOpen: boolean;
@@ -858,7 +758,6 @@ const EditNetworkAction = React.memo(
         >
           <WifiSsidFormDialog
             networkConfiguration={networkConfiguration}
-            onUpdate={onUpdate}
             open={dialogOpen}
             setOpen={setDialogOpen}
             mode="edit"
@@ -870,8 +769,29 @@ const EditNetworkAction = React.memo(
   }
 );
 
-export function WifiSsidTable() {
-  const [data, setData] = React.useState<NetworkConfigurations>(wifiSsidData);
+export function WifiSsidTable({
+  enterpriseId,
+  policyIdentifier,
+  networkConfigurations,
+}: {
+  enterpriseId: string;
+  policyIdentifier: string;
+  networkConfigurations: NetworkConfigurations;
+}) {
+  const key = `/api/devices/${enterpriseId}/${policyIdentifier}`;
+  const { data, error, isLoading, isValidating } =
+    useSWRImmutable<NetworkConfigurations>(
+      key,
+      () => {
+        return getNetworkConfigurations(enterpriseId);
+      },
+      {
+        fallbackData: networkConfigurations,
+      }
+    );
+  if (error) return <div>エラーが発生しました</div>;
+  if (isLoading || isValidating) return <LoadingWithinPageSkeleton />;
+
   const form = useFormContext<FormPolicy>();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -894,9 +814,10 @@ export function WifiSsidTable() {
   // enabledGuidsが変更されたらフォームの値を更新
   React.useEffect(() => {
     if (!enabledGuids) return;
-    const enabledConfigs = data.filter((network) =>
+    const enabledConfigs = data?.filter((network) =>
       enabledGuids?.includes(network.GUID)
     );
+    if (!enabledConfigs) return;
     form.setValue(
       "policyData.openNetworkConfiguration.NetworkConfigurations",
       enabledConfigs
@@ -904,10 +825,18 @@ export function WifiSsidTable() {
   }, [enabledGuids, data]);
 
   // ネットワーク設定を削除するハンドラ
-  const handleDelete = React.useCallback((guid: string) => {
-    setEnabledGuids((prev) => prev?.filter((g) => g !== guid));
-    setData((prev) => prev.filter((config) => config.GUID !== guid));
-  }, []);
+  const handleDelete = React.useCallback(
+    async (guid: string) => {
+      await deleteNetworkConfiguration(enterpriseId, policyIdentifier, guid)
+        .then(() => {
+          toast.success("ネットワーク設定の削除に成功しました");
+        })
+        .catch(() => {
+          toast.error("ネットワーク設定の削除に失敗しました");
+        });
+    },
+    [enterpriseId, policyIdentifier]
+  );
 
   // Switchの切り替え処理
   const handleNetworkToggle = React.useCallback(
@@ -919,23 +848,6 @@ export function WifiSsidTable() {
             : prev.filter((g) => g !== guid)
           : [guid];
       });
-    },
-    []
-  );
-  // ネットワーク設定を更新するハンドラ
-  const handleUpdateNetwork = React.useCallback(
-    (guid: string, updatedConfig: WiFiConfig) => {
-      setData((prev) =>
-        prev.map((config) =>
-          config.GUID === guid
-            ? {
-                ...config,
-                Name: updatedConfig.SSID, // 名前も更新
-                WiFi: updatedConfig,
-              }
-            : config
-        )
-      );
     },
     []
   );
@@ -970,7 +882,6 @@ export function WifiSsidTable() {
                 <DropdownMenuContent align="end">
                   <EditNetworkAction
                     networkConfiguration={networkConfiguration}
-                    onUpdate={handleUpdateNetwork}
                     dialogOpen={dialogOpen}
                     setDialogOpen={setDialogOpen}
                     dropdownOpen={dropdownOpen}
@@ -987,11 +898,11 @@ export function WifiSsidTable() {
         },
       },
     ],
-    [handleDelete, handleNetworkToggle, handleUpdateNetwork, enabledGuids]
+    [handleDelete, handleNetworkToggle, enabledGuids]
   );
 
   const table = useReactTable({
-    data,
+    data: data ?? [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -1015,7 +926,7 @@ export function WifiSsidTable() {
   // 新しいネットワーク設定を追加するハンドラ
   const handleAddNetwork = React.useCallback(
     (networkConfig: NetworkConfiguration) => {
-      setData((prev) => [...prev, networkConfig]);
+      // setData((prev) => [...prev, networkConfig]);
 
       // 追加したネットワークを有効にする
       setEnabledGuids((prev) => {
@@ -1029,17 +940,42 @@ export function WifiSsidTable() {
     []
   );
   // 複数のネットワーク設定を削除するハンドラ
-  const handleDeleteSelected = React.useCallback((guids: string[]) => {
-    // 選択された行のGUIDを使って、データから該当する項目を削除
-    setData((prev) => prev.filter((config) => !guids.includes(config.GUID)));
-    // 有効なネットワークからも削除
-    setEnabledGuids((prev) =>
-      prev ? prev.filter((guid) => !guids.includes(guid)) : []
-    );
+  const handleDeleteSelected = React.useCallback(
+    async (guids: string[]) => {
+      await deleteNetworkConfigurations(enterpriseId, policyIdentifier, guids)
+        .then(() => {
+          toast.success("ネットワーク設定の削除に成功しました");
+        })
+        .catch(() => {
+          toast.error("ネットワーク設定の削除に失敗しました");
+        });
+      // 有効なネットワークからも削除
+      setEnabledGuids((prev) =>
+        prev ? prev.filter((guid) => !guids.includes(guid)) : []
+      );
+      // 選択状態をリセット
+      setRowSelection({});
+    },
+    [enterpriseId, policyIdentifier]
+  );
 
-    // 選択状態をリセット
-    setRowSelection({});
-  }, []);
+  console.log(
+    "現在のポリシーのネットワーク",
+    form.getValues("policyData.openNetworkConfiguration.NetworkConfigurations")
+  );
+
+  const isFormLoading =
+    policyIdentifier !== "new" && // 新規作成時はローディングチェックをスキップ
+    !form.formState.isDirty && // フォームが一度も編集されていない
+    !form.getValues("policyDisplayName");
+
+  if (isFormLoading) {
+    return (
+      <div className="flex items-center justify-center p-4">
+        <Loader2 className="h-6 w-6 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <Card>

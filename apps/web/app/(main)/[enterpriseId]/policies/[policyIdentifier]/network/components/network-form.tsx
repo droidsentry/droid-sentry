@@ -6,27 +6,15 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import { useFormContext } from "react-hook-form";
 
 import { FormPolicy } from "@/app/types/policy";
 // import { usePolicy } from "../../../data/use-policy";
-import { Loader2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import WifiTableForm from "./wifi-table-form";
-import ProxyForm from "./proxy-form";
-import VpnForm from "./vpn-form";
-import CertificateForm from "./certificatef-form";
+import { Loader2 } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 export default function NetworkForm({
   policyIdentifier,
@@ -48,9 +36,11 @@ export default function NetworkForm({
     );
   }
   return (
-    <div className="grid gap-2 grid-cols-1 md:grid-cols-2">
-      <div className="space-y-1">
-        <h2 className="text-lg font-bold">ネットワーク設定</h2>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg font-bold">ネットワーク設定</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-1">
         <FormField
           control={form.control}
           name="policyData.mobileNetworksConfigDisabled"
@@ -168,8 +158,8 @@ export default function NetworkForm({
         {/* <ProxyForm /> */}
         {/* <VpnForm /> */}
         {/* <CertificateForm /> */}
-      </div>
-      {/* <WifiTableForm policyIdentifier={policyIdentifier} /> */}
-    </div>
+        {/* <WifiTableForm policyIdentifier={policyIdentifier} /> */}
+      </CardContent>
+    </Card>
   );
 }
