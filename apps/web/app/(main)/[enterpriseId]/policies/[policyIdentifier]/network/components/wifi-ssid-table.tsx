@@ -102,7 +102,7 @@ import {
 
 const wifiSeuritySchema = z.enum(["None", "WEP-PSK", "WPA-PSK"]);
 const wifiMacRandomizationModeSchema = z
-  .enum(["None", "Hardware", "Software"])
+  .enum(["Hardware", "Software"])
   .optional();
 const WiFiConfigSchema = z
   .object({
@@ -196,6 +196,30 @@ const wifiSsidData: NetworkConfigurations = [
       Passphrase: "pwd1234567",
       MACAddressRandomizationMode: "Hardware",
       AutoConnect: true,
+    },
+  },
+  {
+    GUID: "aterm-06a1af-a",
+    Name: "aterm-06a1af-a",
+    Type: "WiFi",
+    WiFi: {
+      SSID: "aterm-06a1af-a",
+      Security: "WPA-PSK",
+      Passphrase: "7175ac05f888b",
+      MACAddressRandomizationMode: undefined,
+      AutoConnect: true,
+    },
+  },
+  {
+    GUID: "SDM-5G",
+    Name: "SDM-5G",
+    Type: "WiFi",
+    WiFi: {
+      SSID: "SDM-5G",
+      Security: "WPA-PSK",
+      Passphrase: "0123456789",
+      MACAddressRandomizationMode: undefined,
+      AutoConnect: false,
     },
   },
 ];
@@ -412,7 +436,7 @@ const defaultValues: WiFiConfig = {
   Security: "None",
   Passphrase: "",
   AutoConnect: true,
-  MACAddressRandomizationMode: "None",
+  MACAddressRandomizationMode: undefined,
 };
 
 const WifiSsidFormDialog = React.memo(
@@ -442,7 +466,7 @@ const WifiSsidFormDialog = React.memo(
             Passphrase: networkConfiguration.WiFi.Passphrase || "",
             AutoConnect: networkConfiguration.WiFi.AutoConnect,
             MACAddressRandomizationMode:
-              networkConfiguration.WiFi.MACAddressRandomizationMode || "None",
+              networkConfiguration.WiFi.MACAddressRandomizationMode,
           }
         : defaultValues;
 
@@ -507,7 +531,7 @@ const WifiSsidFormDialog = React.memo(
           Passphrase: networkConfiguration.WiFi.Passphrase || "",
           AutoConnect: networkConfiguration.WiFi.AutoConnect,
           MACAddressRandomizationMode:
-            networkConfiguration.WiFi.MACAddressRandomizationMode || "None",
+            networkConfiguration.WiFi.MACAddressRandomizationMode,
         });
       }
     }, [form, mode, networkConfiguration, open]);
@@ -571,7 +595,7 @@ const WifiSsidFormDialog = React.memo(
                       >
                         <FormItem className="flex items-center space-x-3 space-y-0 h-6">
                           <FormControl>
-                            <RadioGroupItem value="None" />
+                            <RadioGroupItem value="" />
                           </FormControl>
                           <FormLabel className="font-normal">なし</FormLabel>
                         </FormItem>
@@ -669,13 +693,15 @@ const WifiSsidFormDialog = React.memo(
                     </div>
                     <FormControl>
                       <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        onValueChange={(value) => {
+                          field.onChange(value === "" ? undefined : value);
+                        }}
+                        defaultValue={field.value || ""}
                         className="flex flex-col space-y-1 col-span-3"
                       >
                         <FormItem className="flex items-center space-x-3 space-y-0 h-6">
                           <FormControl>
-                            <RadioGroupItem value="None" />
+                            <RadioGroupItem value="" />
                           </FormControl>
                           <FormLabel className="font-normal">なし</FormLabel>
                         </FormItem>
@@ -857,19 +883,22 @@ export function WifiSsidTable() {
     []
   );
   const [rowSelection, setRowSelection] = React.useState({});
-  // 有効なネットワークのGUIDを管理するstate
-  const [enabledGuids, setEnabledGuids] = React.useState<string[]>();
-  // このハンドラをメモカすると、Switchが滑らかになる
-  const handleDelete = React.useCallback((guid: string) => {
-    setEnabledGuids((prev) => prev?.filter((g) => g !== guid));
-    setData((prev) => prev.filter((config) => config.GUID !== guid));
-  }, []);
 
+  const [enabledGuids, setEnabledGuids] = React.useState<string[]>();
+
+  // フォームからネットワーク設定を取得し、enabledGuidsに初期値を設定
+  const networkConfigs = form.watch(
+    "policyData.openNetworkConfiguration.NetworkConfigurations"
+  );
+  React.useEffect(() => {
+    if (!enabledGuids && networkConfigs) {
+      const guids = networkConfigs.map((config) => config.GUID);
+      setEnabledGuids(guids);
+    }
+  }, [networkConfigs]);
   // enabledGuidsが変更されたらフォームの値を更新
   React.useEffect(() => {
-    if (!enabledGuids) {
-      return;
-    }
+    if (!enabledGuids) return;
     const enabledConfigs = data.filter((network) =>
       enabledGuids?.includes(network.GUID)
     );
@@ -877,7 +906,13 @@ export function WifiSsidTable() {
       "policyData.openNetworkConfiguration.NetworkConfigurations",
       enabledConfigs
     );
-  }, [enabledGuids, data, form]);
+  }, [enabledGuids, data]);
+
+  // ネットワーク設定を削除するハンドラ
+  const handleDelete = React.useCallback((guid: string) => {
+    setEnabledGuids((prev) => prev?.filter((g) => g !== guid));
+    setData((prev) => prev.filter((config) => config.GUID !== guid));
+  }, []);
 
   // Switchの切り替え処理
   const handleNetworkToggle = React.useCallback(
@@ -957,7 +992,7 @@ export function WifiSsidTable() {
         },
       },
     ],
-    [handleDelete, handleNetworkToggle, handleUpdateNetwork]
+    [handleDelete, handleNetworkToggle, handleUpdateNetwork, enabledGuids]
   );
 
   const table = useReactTable({
@@ -981,7 +1016,7 @@ export function WifiSsidTable() {
       },
     },
   });
-  // console.log("現在のformの値", form.getValues());
+
   // 新しいネットワーク設定を追加するハンドラ
   const handleAddNetwork = React.useCallback(
     (networkConfig: NetworkConfiguration) => {
