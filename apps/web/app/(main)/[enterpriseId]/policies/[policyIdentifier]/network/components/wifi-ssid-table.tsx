@@ -1,70 +1,30 @@
 "use client";
 
-import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
-  VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  Table as ReactTable,
 } from "@tanstack/react-table";
 import {
   ArrowUpDown,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
-  ChevronsRight,
   ExternalLinkIcon,
   Loader2,
   MoreHorizontal,
   PlusIcon,
   TrashIcon,
 } from "lucide-react";
+import * as React from "react";
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Control, useForm, useFormContext } from "react-hook-form";
 import { FormPolicy } from "@/app/types/policy";
-import { Switch } from "@/components/ui/switch";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -76,6 +36,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -85,15 +54,41 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Switch } from "@/components/ui/switch";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Control, useForm, useFormContext } from "react-hook-form";
 
-import { z } from "zod";
-import { v7 as uuidv7 } from "uuid";
-import { v4 as uuidv4 } from "uuid";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Table as ReactTable } from "@tanstack/react-table";
+import LoadingWithinPageSkeleton from "@/app/(main)/[enterpriseId]/components/loading-within-page-sleleton";
+import { NetworkConfigurationSchema } from "@/app/schemas/policy-network";
+import { RouteParams } from "@/app/types/enterprise";
+import {
+  NetworkConfiguration,
+  NetworkConfigurations,
+} from "@/app/types/policy-network";
 import { InfoPopover } from "@/components/info-popover";
-import Link from "next/link";
 import {
   Select,
   SelectContent,
@@ -101,23 +96,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { toast } from "sonner";
+import useSWRImmutable from "swr/immutable";
+import { v7 as uuidv7 } from "uuid";
 import {
   createOrUpdateNetworkConfigurations,
   deleteNetworkConfiguration,
   deleteNetworkConfigurations,
   getNetworkConfigurations,
 } from "../actions/network";
-import { useParams } from "next/navigation";
-import { RouteParams } from "@/app/types/enterprise";
-import { toast } from "sonner";
-import {
-  NetworkConfiguration,
-  NetworkConfigurations,
-  WiFiConfig,
-} from "@/app/types/policy-network";
-import { NetworkConfigurationSchema } from "@/app/schemas/policy-network";
-import useSWRImmutable from "swr/immutable";
-import LoadingWithinPageSkeleton from "@/app/(main)/[enterpriseId]/components/loading-within-page-sleleton";
 
 export const wifiSsidColumns: ColumnDef<NetworkConfiguration>[] = [
   {
@@ -182,44 +173,6 @@ export const wifiSsidColumns: ColumnDef<NetworkConfiguration>[] = [
   },
 ];
 
-export const NetworkConfigSwitch = React.memo(
-  ({
-    control,
-    rowData,
-  }: {
-    control: Control<FormPolicy>;
-    rowData: NetworkConfiguration;
-  }) => (
-    <FormField
-      control={control}
-      name={`policyData.openNetworkConfiguration.NetworkConfigurations`}
-      render={({ field }) => {
-        const isEnabled = (field.value || []).some(
-          (config) => config.GUID === rowData.GUID
-        );
-
-        return (
-          <FormControl>
-            <Switch
-              checked={isEnabled}
-              onCheckedChange={(checked) => {
-                const currentConfigs = field.value || [];
-                const newConfigs = checked
-                  ? [...currentConfigs, rowData]
-                  : currentConfigs.filter(
-                      (config) => config.GUID !== rowData.GUID
-                    );
-
-                field.onChange(newConfigs);
-              }}
-            />
-          </FormControl>
-        );
-      }}
-    />
-  )
-);
-
 // 削除用のアクションコンポーネントを作成
 const DeleteNetworkAction = React.memo(
   ({
@@ -267,19 +220,40 @@ const DeleteNetworkAction = React.memo(
 // 複数選択したSSIDを削除するコンポーネント
 const DeleteSelectedNetworksButton = ({
   table,
-  onDeleteSelected,
+  enterpriseId,
+  policyIdentifier,
 }: {
   table: ReactTable<NetworkConfiguration>;
-  onDeleteSelected: (guids: string[]) => void;
+  enterpriseId: string;
+  policyIdentifier: string;
 }) => {
+  const [open, setOpen] = React.useState(false);
+  const [isPending, startTransition] = React.useTransition();
   const selectedRows = table.getSelectedRowModel().rows;
   const hasSelectedRows = selectedRows.length > 0;
-
   // 選択された行からGUIDを取得
   const selectedGuids = selectedRows.map((row) => row.original.GUID);
 
+  const handleDeleteSelected = async () => {
+    startTransition(async () => {
+      await deleteNetworkConfigurations(
+        enterpriseId,
+        policyIdentifier,
+        selectedGuids
+      )
+        .then(() => {
+          toast.success("ネットワーク設定の削除に成功しました");
+        })
+        .catch(() => {
+          toast.error("ネットワーク設定の削除に失敗しました");
+        });
+      table.resetRowSelection();
+      setOpen(false);
+    });
+  };
+
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button
           variant="outline"
@@ -292,6 +266,7 @@ const DeleteSelectedNetworksButton = ({
           }
         >
           <TrashIcon className="size-4" />
+          <span className="sr-only">削除</span>
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -323,10 +298,15 @@ const DeleteSelectedNetworksButton = ({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>キャンセル</AlertDialogCancel>
-          <AlertDialogAction onClick={() => onDeleteSelected(selectedGuids)}>
-            削除
-          </AlertDialogAction>
+          <AlertDialogCancel type="button">キャンセル</AlertDialogCancel>
+
+          <Button
+            onClick={handleDeleteSelected}
+            type="button"
+            disabled={isPending}
+          >
+            {isPending ? <Loader2 className="size-4 animate-spin" /> : "削除"}
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -346,93 +326,24 @@ const defaultValues: NetworkConfiguration = {
   },
 };
 
-const WifiSsidFormDialog = React.memo(
-  ({
-    networkConfiguration,
-    open,
-    setOpen,
-    mode = "create",
-    setDropdownOpen,
-  }: {
-    networkConfiguration?: NetworkConfiguration;
-    open: boolean;
-    setOpen: (open: boolean) => void;
-    mode?: "create" | "edit";
-    setDropdownOpen?: (open: boolean) => void;
-  }) => {
-    const [isPending, startTransition] = React.useTransition();
-    // 編集モードの場合は既存の設定を初期値として使用し、作成モードの場合はデフォルト値を使用
-    const initialValues: NetworkConfiguration =
-      mode === "edit" && networkConfiguration
-        ? {
-            GUID: networkConfiguration.GUID,
-            Name: networkConfiguration.Name,
-            Type: networkConfiguration.Type,
-            WiFi: {
-              SSID: networkConfiguration.WiFi.SSID,
-              Security: networkConfiguration.WiFi.Security,
-              Passphrase: networkConfiguration.WiFi.Passphrase || "",
-              AutoConnect: networkConfiguration.WiFi.AutoConnect,
-              MACAddressRandomizationMode:
-                networkConfiguration.WiFi.MACAddressRandomizationMode,
-            },
-          }
-        : defaultValues;
-
-    const form = useForm<NetworkConfiguration>({
-      mode: "onChange",
-      resolver: zodResolver(NetworkConfigurationSchema),
-      defaultValues: initialValues,
-    });
-
-    const securityType = form.watch("WiFi.Security");
-    const isNoneSecurity = securityType === "None";
-    const { isValid } = form.formState;
-
-    const { enterpriseId, policyIdentifier } = useParams<RouteParams>();
-
-    const handleCreateOrUpdateNetwork = (data: NetworkConfiguration) => {
-      const newNetworkConfig: NetworkConfiguration = {
-        GUID: data.GUID || uuidv7(),
-        Name: data.Name || data.WiFi.SSID,
-        Type: "WiFi",
-        WiFi: {
-          SSID: data.WiFi.SSID,
-          Security: data.WiFi.Security,
-          Passphrase: data.WiFi.Passphrase,
-          AutoConnect: data.WiFi.AutoConnect,
-          MACAddressRandomizationMode: data.WiFi.MACAddressRandomizationMode,
-        },
-      };
-      startTransition(async () => {
-        await createOrUpdateNetworkConfigurations(
-          enterpriseId,
-          policyIdentifier,
-          newNetworkConfig
-        )
-          .then(() => {
-            toast.success("ネットワーク設定の作成に成功しました");
-          })
-          .catch(() => {
-            toast.error("ネットワーク設定の作成に失敗しました");
-          });
-      });
-      form.reset();
-      setOpen(false);
-    };
-    // ダイアログのタイトルとボタンテキストを設定
-    const dialogTitle =
-      mode === "edit" ? "WiFi SSID設定の編集" : "WiFi SSID設定の追加";
-    const dialogDescription =
-      mode === "edit"
-        ? "WiFiのSSID設定を編集します。"
-        : "新しいWiFiのSSID設定を追加します。";
-    const submitButtonText = mode === "edit" ? "更新" : "追加";
-
-    // useEffectを使用して、編集モードでダイアログが開かれたときにフォームの値を設定
-    React.useEffect(() => {
-      if (mode === "edit" && networkConfiguration && open) {
-        form.reset({
+const WifiSsidFormDialog = ({
+  networkConfiguration,
+  open,
+  setOpen,
+  mode = "create",
+  setDropdownOpen,
+}: {
+  networkConfiguration?: NetworkConfiguration;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  mode?: "create" | "edit";
+  setDropdownOpen?: (open: boolean) => void;
+}) => {
+  const [isPending, startTransition] = React.useTransition();
+  // 編集モードの場合は既存の設定を初期値として使用し、作成モードの場合はデフォルト値を使用
+  const initialValues: NetworkConfiguration =
+    mode === "edit" && networkConfiguration
+      ? {
           GUID: networkConfiguration.GUID,
           Name: networkConfiguration.Name,
           Type: networkConfiguration.Type,
@@ -444,279 +355,346 @@ const WifiSsidFormDialog = React.memo(
             MACAddressRandomizationMode:
               networkConfiguration.WiFi.MACAddressRandomizationMode,
           },
+        }
+      : defaultValues;
+
+  const form = useForm<NetworkConfiguration>({
+    mode: "onChange",
+    resolver: zodResolver(NetworkConfigurationSchema),
+    defaultValues: initialValues,
+  });
+
+  const securityType = form.watch("WiFi.Security");
+  const isNoneSecurity = securityType === "None";
+  const { isValid } = form.formState;
+
+  const { enterpriseId, policyIdentifier } = useParams<RouteParams>();
+
+  const handleCreateOrUpdateNetwork = (data: NetworkConfiguration) => {
+    const newNetworkConfig: NetworkConfiguration = {
+      GUID: data.GUID || uuidv7(),
+      Name: data.Name || data.WiFi.SSID,
+      Type: "WiFi",
+      WiFi: {
+        SSID: data.WiFi.SSID,
+        Security: data.WiFi.Security,
+        Passphrase: data.WiFi.Passphrase,
+        AutoConnect: data.WiFi.AutoConnect,
+        MACAddressRandomizationMode: data.WiFi.MACAddressRandomizationMode,
+      },
+    };
+    startTransition(async () => {
+      await createOrUpdateNetworkConfigurations(
+        enterpriseId,
+        policyIdentifier,
+        newNetworkConfig
+      )
+        .then(() => {
+          toast.success("ネットワーク設定の作成に成功しました");
+        })
+        .catch((error) => {
+          // console.error(error);
+          toast.error(error.message);
         });
-      }
-    }, [form, mode, networkConfiguration, open]);
+    });
 
-    return (
-      <DialogContent className="sm:max-w-[600px]">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(
-              handleCreateOrUpdateNetwork,
-              (errors) => {
-                console.log("エラー", errors);
-              }
-            )}
-          >
-            <DialogHeader className="space-y-2">
-              <DialogTitle>{dialogTitle}</DialogTitle>
-              <DialogDescription>{dialogDescription}</DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4 space-y-2">
-              <FormField
-                control={form.control}
-                name="WiFi.SSID"
-                render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4 space-y-0">
-                    <FormLabel className="text-right">SSID</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        autoComplete="off"
-                        placeholder="SSIDを入力してください"
-                        {...field}
-                        className="col-span-3 m-0"
-                      />
-                    </FormControl>
-                    <FormMessage className="col-start-2 col-span-3" />
-                  </FormItem>
-                )}
-              />
+    form.reset();
+    setOpen(false);
+  };
+  // ダイアログのタイトルとボタンテキストを設定
+  const dialogTitle =
+    mode === "edit" ? "WiFi SSID設定の編集" : "WiFi SSID設定の追加";
+  const dialogDescription =
+    mode === "edit"
+      ? "WiFiのSSID設定を編集します。"
+      : "新しいWiFiのSSID設定を追加します。";
+  const submitButtonText = mode === "edit" ? "更新" : "追加";
 
-              <FormField
-                control={form.control}
-                name="WiFi.Security"
-                render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4 space-y-0">
-                    <FormLabel className="text-right">セキュリティ</FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="flex flex-col space-y-1 col-span-3"
-                      >
-                        <FormItem className="flex items-center space-x-3 space-y-0 h-6">
-                          <FormControl>
-                            <RadioGroupItem value="None" />
-                          </FormControl>
-                          <FormLabel className="font-normal">なし</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0 h-6">
-                          <FormControl>
-                            <RadioGroupItem value="WEP-PSK" />
-                          </FormControl>
-                          <FormLabel className="font-normal">WEP-PSK</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0 h-6">
-                          <FormControl>
-                            <RadioGroupItem value="WPA-PSK" />
-                          </FormControl>
-                          <FormLabel className="font-normal">WPA-PSK</FormLabel>
-                        </FormItem>
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+  // useEffectを使用して、編集モードでダイアログが開かれたときにフォームの値を設定
+  React.useEffect(() => {
+    if (mode === "edit" && networkConfiguration && open) {
+      form.reset({
+        GUID: networkConfiguration.GUID,
+        Name: networkConfiguration.Name,
+        Type: networkConfiguration.Type,
+        WiFi: {
+          SSID: networkConfiguration.WiFi.SSID,
+          Security: networkConfiguration.WiFi.Security,
+          Passphrase: networkConfiguration.WiFi.Passphrase || "",
+          AutoConnect: networkConfiguration.WiFi.AutoConnect,
+          MACAddressRandomizationMode:
+            networkConfiguration.WiFi.MACAddressRandomizationMode,
+        },
+      });
+    }
+  }, [form, mode, networkConfiguration, open]);
+  return (
+    <DialogContent className="sm:max-w-[600px]">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(handleCreateOrUpdateNetwork, (errors) => {
+            console.log("エラー", errors);
+          })}
+        >
+          <DialogHeader className="space-y-2">
+            <DialogTitle>{dialogTitle}</DialogTitle>
+            <DialogDescription>{dialogDescription}</DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4 space-y-2">
+            <FormField
+              control={form.control}
+              name="WiFi.SSID"
+              render={({ field }) => (
+                <FormItem className="grid grid-cols-4 items-center gap-4 space-y-0">
+                  <FormLabel className="text-right">SSID</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      autoComplete="off"
+                      placeholder="SSIDを入力してください"
+                      {...field}
+                      className="col-span-3 m-0"
+                    />
+                  </FormControl>
+                  <FormMessage className="col-start-2 col-span-3" />
+                </FormItem>
+              )}
+            />
 
-              <FormField
-                control={form.control}
-                name="WiFi.Passphrase"
-                render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4 space-y-0">
-                    <FormLabel className="text-right">パスワード</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        autoComplete="new-password"
-                        disabled={isNoneSecurity}
-                        {...field}
-                        className="col-span-3 m-0"
-                      />
-                    </FormControl>
-                    <FormMessage className="col-start-2 col-span-3" />
-                  </FormItem>
-                )}
-              />
+            <FormField
+              control={form.control}
+              name="WiFi.Security"
+              render={({ field }) => (
+                <FormItem className="grid grid-cols-4 items-center gap-4 space-y-0">
+                  <FormLabel className="text-right">セキュリティ</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex flex-col space-y-1 col-span-3"
+                    >
+                      <FormItem className="flex items-center space-x-3 space-y-0 h-6">
+                        <FormControl>
+                          <RadioGroupItem value="None" />
+                        </FormControl>
+                        <FormLabel className="font-normal">なし</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0 h-6">
+                        <FormControl>
+                          <RadioGroupItem value="WEP-PSK" />
+                        </FormControl>
+                        <FormLabel className="font-normal">WEP-PSK</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0 h-6">
+                        <FormControl>
+                          <RadioGroupItem value="WPA-PSK" />
+                        </FormControl>
+                        <FormLabel className="font-normal">WPA-PSK</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <FormField
-                control={form.control}
-                name="WiFi.AutoConnect"
-                render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center justify-center gap-4 space-y-0">
-                    <FormLabel className="text-right">自動接続</FormLabel>
-                    <FormControl>
-                      <Switch
-                        id="autoConnect"
-                        className=" self-center"
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormLabel className="font-normal text-start">
-                      {field.value ? "有効" : "無効"}
+            <FormField
+              control={form.control}
+              name="WiFi.Passphrase"
+              render={({ field }) => (
+                <FormItem className="grid grid-cols-4 items-center gap-4 space-y-0">
+                  <FormLabel className="text-right">パスワード</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      autoComplete="new-password"
+                      disabled={isNoneSecurity}
+                      {...field}
+                      className="col-span-3 m-0"
+                    />
+                  </FormControl>
+                  <FormMessage className="col-start-2 col-span-3" />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="WiFi.AutoConnect"
+              render={({ field }) => (
+                <FormItem className="grid grid-cols-4 items-center justify-center gap-4 space-y-0">
+                  <FormLabel className="text-right">自動接続</FormLabel>
+                  <FormControl>
+                    <Switch
+                      id="autoConnect"
+                      className=" self-center"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormLabel className="font-normal text-start">
+                    {field.value ? "有効" : "無効"}
+                  </FormLabel>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="WiFi.MACAddressRandomizationMode"
+              render={({ field }) => (
+                <FormItem className="space-y-0 grid grid-cols-4 items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <FormLabel className="text-right leading-relaxed">
+                      MACアドレス
+                      <br />
+                      ランダム化
                     </FormLabel>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="WiFi.MACAddressRandomizationMode"
-                render={({ field }) => (
-                  <FormItem className="space-y-0 grid grid-cols-4 items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <FormLabel className="text-right leading-relaxed">
-                        MACアドレス
-                        <br />
-                        ランダム化
-                      </FormLabel>
-                      <InfoPopover
-                        content={
-                          <div>
-                            <p>
-                              MACアドレスランダム化は、Wi-Fiネットワークに接続する際のプライバシー保護機能です。
-                            </p>
-                            <p className="mt-2">
-                              ハードウェアとソフトウェアのオプションはAndroid
-                              13以降で利用可能です。
-                            </p>
-                            <Link
-                              href="https://source.android.com/docs/core/connect/wifi-mac-randomization-behavior?hl=ja#types"
-                              target="_blank"
-                              className="text-primary flex items-center gap-1 hover:underline"
-                            >
-                              詳しくはこちら
-                              <ExternalLinkIcon className="size-4" />
-                            </Link>
-                          </div>
-                        }
-                      />
-                    </div>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={(value) => {
-                          field.onChange(value === "" ? undefined : value);
-                        }}
-                        defaultValue={field.value || ""}
-                        className="flex flex-col space-y-1 col-span-3"
-                      >
-                        <FormItem className="flex items-center space-x-3 space-y-0 h-6">
-                          <FormControl>
-                            <RadioGroupItem value="" />
-                          </FormControl>
-                          <FormLabel className="font-normal">なし</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0 h-6">
-                          <FormControl>
-                            <RadioGroupItem value="Hardware" />
-                          </FormControl>
-                          <div className="flex items-center gap-2">
-                            <FormLabel className="font-normal">
-                              ハードウェア
-                            </FormLabel>
-                            <InfoPopover
-                              content={
-                                <div>
-                                  <p>
-                                    ネットワークに接続する際、工場出荷時のMACアドレスを使用します。
-                                  </p>
-                                  <Link
-                                    href="https://source.android.com/docs/core/connect/wifi-mac-randomization-behavior?hl=ja#types"
-                                    target="_blank"
-                                    className="text-primary flex items-center gap-1 hover:underline"
-                                  >
-                                    詳しくはこちら
-                                    <ExternalLinkIcon className="size-4" />
-                                  </Link>
-                                </div>
-                              }
-                            />
-                          </div>
-                          <span className="pl-3 text-muted-foreground">
-                            Android 13 以降
-                          </span>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0 h-6">
-                          <FormControl>
-                            <RadioGroupItem value="Software" />
-                          </FormControl>
-                          <div className="flex items-center gap-2">
-                            <FormLabel className="font-normal">
-                              自動設定
-                            </FormLabel>
-                            <InfoPopover
-                              content={
-                                <div>
-                                  <p>
-                                    Wi-FiフレームワークがMACアドレスをランダムに設定します。ネットワークに接続する際、永続的または非永続的にランダムに生成されたMACアドレスのいずれかになります。
-                                  </p>
-                                  <Link
-                                    href="https://source.android.com/docs/core/connect/wifi-mac-randomization-behavior?hl=ja"
-                                    target="_blank"
-                                    className="text-primary flex items-center gap-1 hover:underline"
-                                  >
-                                    MAC アドレス ランダム化の動作
-                                    <ExternalLinkIcon className="size-4" />
-                                  </Link>
-                                </div>
-                              }
-                            />
-                          </div>
-                          <span className="pl-3 text-muted-foreground">
-                            Android 13 以降
-                          </span>
-                        </FormItem>
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <DialogFooter className="">
-              <Button
-                variant="outline"
-                type="button"
-                onClick={() => {
-                  setDropdownOpen?.(false);
-                  setOpen(false);
-                  form.reset();
-                }}
-                className="mb-2"
-              >
-                キャンセル
-              </Button>
-              <Button type="submit" disabled={!isValid} className="mb-2">
-                {submitButtonText}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
-    );
-  }
-);
+                    <InfoPopover
+                      content={
+                        <div>
+                          <p>
+                            MACアドレスランダム化は、Wi-Fiネットワークに接続する際のプライバシー保護機能です。
+                          </p>
+                          <p className="mt-2">
+                            ハードウェアとソフトウェアのオプションはAndroid
+                            13以降で利用可能です。
+                          </p>
+                          <Link
+                            href="https://source.android.com/docs/core/connect/wifi-mac-randomization-behavior?hl=ja#types"
+                            target="_blank"
+                            className="text-primary flex items-center gap-1 hover:underline"
+                          >
+                            詳しくはこちら
+                            <ExternalLinkIcon className="size-4" />
+                          </Link>
+                        </div>
+                      }
+                    />
+                  </div>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={(value) => {
+                        field.onChange(value === "" ? undefined : value);
+                      }}
+                      defaultValue={field.value || ""}
+                      className="flex flex-col space-y-1 col-span-3"
+                    >
+                      <FormItem className="flex items-center space-x-3 space-y-0 h-6">
+                        <FormControl>
+                          <RadioGroupItem value="" />
+                        </FormControl>
+                        <FormLabel className="font-normal">なし</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0 h-6">
+                        <FormControl>
+                          <RadioGroupItem value="Hardware" />
+                        </FormControl>
+                        <div className="flex items-center gap-2">
+                          <FormLabel className="font-normal">
+                            ハードウェア
+                          </FormLabel>
+                          <InfoPopover
+                            content={
+                              <div>
+                                <p>
+                                  ネットワークに接続する際、工場出荷時のMACアドレスを使用します。
+                                </p>
+                                <Link
+                                  href="https://source.android.com/docs/core/connect/wifi-mac-randomization-behavior?hl=ja#types"
+                                  target="_blank"
+                                  className="text-primary flex items-center gap-1 hover:underline"
+                                >
+                                  詳しくはこちら
+                                  <ExternalLinkIcon className="size-4" />
+                                </Link>
+                              </div>
+                            }
+                          />
+                        </div>
+                        <span className="pl-3 text-muted-foreground">
+                          Android 13 以降
+                        </span>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0 h-6">
+                        <FormControl>
+                          <RadioGroupItem value="Software" />
+                        </FormControl>
+                        <div className="flex items-center gap-2">
+                          <FormLabel className="font-normal">
+                            自動設定
+                          </FormLabel>
+                          <InfoPopover
+                            content={
+                              <div>
+                                <p>
+                                  Wi-FiフレームワークがMACアドレスをランダムに設定します。ネットワークに接続する際、永続的または非永続的にランダムに生成されたMACアドレスのいずれかになります。
+                                </p>
+                                <Link
+                                  href="https://source.android.com/docs/core/connect/wifi-mac-randomization-behavior?hl=ja"
+                                  target="_blank"
+                                  className="text-primary flex items-center gap-1 hover:underline"
+                                >
+                                  MAC アドレス ランダム化の動作
+                                  <ExternalLinkIcon className="size-4" />
+                                </Link>
+                              </div>
+                            }
+                          />
+                        </div>
+                        <span className="pl-3 text-muted-foreground">
+                          Android 13 以降
+                        </span>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <DialogFooter className="">
+            <Button
+              variant="outline"
+              type="button"
+              onClick={() => {
+                setDropdownOpen?.(false);
+                setOpen(false);
+                form.reset();
+              }}
+              className="mb-2"
+            >
+              キャンセル
+            </Button>
+            <Button type="submit" disabled={!isValid} className="mb-2">
+              {submitButtonText}
+            </Button>
+          </DialogFooter>
+        </form>
+      </Form>
+    </DialogContent>
+  );
+};
 
 // 追加ボタンコンポーネント
-const CreateWifiSsidButton = React.memo(
-  ({ onAdd }: { onAdd: (networkConfig: NetworkConfiguration) => void }) => {
-    const [open, setOpen] = React.useState(false);
-
-    return (
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button size="sm">
-            <PlusIcon className="size-4 mr-2" />
-            追加
-          </Button>
-        </DialogTrigger>
-        <WifiSsidFormDialog open={open} setOpen={setOpen} mode="create" />
-      </Dialog>
-    );
-  }
-);
+function CreateWifiSsidButton({
+  table,
+}: {
+  table: ReactTable<NetworkConfiguration>;
+}) {
+  const [open, setOpen] = React.useState(false);
+  // const maxSsids = table.getFilteredRowModel().rows.length
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="sm">
+          <PlusIcon className="size-4 mr-2" />
+          追加
+        </Button>
+      </DialogTrigger>
+      <WifiSsidFormDialog open={open} setOpen={setOpen} mode="create" />
+    </Dialog>
+  );
+}
 
 // 編集ボタンコンポーネント
 const EditNetworkAction = React.memo(
@@ -770,8 +748,9 @@ function SwitchCell({
   const form = useFormContext<FormPolicy>();
   const networkConfigPath =
     "policyData.openNetworkConfiguration.NetworkConfigurations";
-  const currentActiveNetworkConfigurations = form.watch(networkConfigPath);
-  const currentActiveGuids = currentActiveNetworkConfigurations.map(
+  const currentActiveNetworkConfigurations =
+    form.watch(networkConfigPath) ?? [];
+  const currentActiveGuids = currentActiveNetworkConfigurations?.map(
     (config) => config.GUID
   );
   const GUID = networkConfiguration.GUID;
@@ -810,7 +789,7 @@ export function WifiSsidTable({
   policyIdentifier: string;
   networkConfigurations: NetworkConfigurations;
 }) {
-  const key = `/api/devices/${enterpriseId}/${policyIdentifier}`;
+  const key = `/api/devices/${enterpriseId}/wifi-ssid`;
   const { data, error, isLoading, isValidating } =
     useSWRImmutable<NetworkConfigurations>(
       key,
@@ -831,8 +810,6 @@ export function WifiSsidTable({
   );
   const [rowSelection, setRowSelection] = React.useState({});
 
-  const [enabledGuids, setEnabledGuids] = React.useState<string[]>();
-
   // ネットワーク設定を削除するハンドラ
   const handleDelete = React.useCallback(
     async (guid: string) => {
@@ -845,20 +822,6 @@ export function WifiSsidTable({
         });
     },
     [enterpriseId, policyIdentifier]
-  );
-
-  // Switchの切り替え処理
-  const handleNetworkToggle = React.useCallback(
-    (guid: string, enabled: boolean) => {
-      setEnabledGuids((prev) => {
-        return prev
-          ? enabled
-            ? [...prev, guid]
-            : prev.filter((g) => g !== guid)
-          : [guid];
-      });
-    },
-    []
   );
 
   const columns: ColumnDef<NetworkConfiguration>[] = React.useMemo(
@@ -900,7 +863,7 @@ export function WifiSsidTable({
         },
       },
     ],
-    [handleDelete, handleNetworkToggle, enabledGuids]
+    [handleDelete]
   );
 
   const table = useReactTable({
@@ -924,42 +887,6 @@ export function WifiSsidTable({
       },
     },
   });
-
-  // 新しいネットワーク設定を追加するハンドラ
-  const handleAddNetwork = React.useCallback(
-    (networkConfig: NetworkConfiguration) => {
-      // setData((prev) => [...prev, networkConfig]);
-
-      // 追加したネットワークを有効にする
-      setEnabledGuids((prev) => {
-        const newGuids = prev ? [...prev] : [];
-        if (!newGuids.includes(networkConfig.GUID)) {
-          newGuids.push(networkConfig.GUID);
-        }
-        return newGuids;
-      });
-    },
-    []
-  );
-  // 複数のネットワーク設定を削除するハンドラ
-  const handleDeleteSelected = React.useCallback(
-    async (guids: string[]) => {
-      await deleteNetworkConfigurations(enterpriseId, policyIdentifier, guids)
-        .then(() => {
-          toast.success("ネットワーク設定の削除に成功しました");
-        })
-        .catch(() => {
-          toast.error("ネットワーク設定の削除に失敗しました");
-        });
-      // 有効なネットワークからも削除
-      setEnabledGuids((prev) =>
-        prev ? prev.filter((guid) => !guids.includes(guid)) : []
-      );
-      // 選択状態をリセット
-      setRowSelection({});
-    },
-    [enterpriseId, policyIdentifier]
-  );
 
   const isFormLoading =
     policyIdentifier !== "new" && // 新規作成時はローディングチェックをスキップ
@@ -997,9 +924,10 @@ export function WifiSsidTable({
           <span className="flex-1" />
           <DeleteSelectedNetworksButton
             table={table}
-            onDeleteSelected={handleDeleteSelected}
+            enterpriseId={enterpriseId}
+            policyIdentifier={policyIdentifier}
           />
-          <CreateWifiSsidButton onAdd={handleAddNetwork} />
+          <CreateWifiSsidButton table={table} />
         </div>
         <div className="rounded-md border">
           <Table>

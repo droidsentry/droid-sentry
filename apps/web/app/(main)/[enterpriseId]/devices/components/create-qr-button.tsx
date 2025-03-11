@@ -14,25 +14,30 @@ import {
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import { useParams } from "next/navigation";
+import { toast } from "sonner";
 
 export default function CreateQrButton() {
   const [qrCode, setQrCode] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
   const params = useParams();
   const enterpriseId = params.enterpriseId as string;
 
   const onClick = async () => {
     setQrCode(null);
-    const qrData = await createEnrollmentToken(enterpriseId);
-    console.log("qrData", qrData);
-    if (qrData) {
-      setQrCode(qrData);
-      // setQrCode(`http://192.168.10.117:3000/api/emm/qr?parent=${parent}`);
-      // setQrCode(`https://enterprise.google.com/android/enroll?et=${qrData}`);
-    }
+    await createEnrollmentToken(enterpriseId)
+      .then((qrData) => {
+        setQrCode(qrData);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      })
+      .finally(() => {
+        setIsOpen(false);
+      });
   };
   return (
     <div>
-      <Dialog>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button
             variant="outline"
@@ -43,22 +48,23 @@ export default function CreateQrButton() {
             <QrCodeIcon />
           </Button>
         </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
+        <DialogContent className="aspect-square ">
+          <DialogHeader className="relative">
             <DialogTitle>QRコード</DialogTitle>
-            <DialogDescription className="m-auto p-3">
-              {qrCode ? (
-                <QRCodeSVG
-                  className="max-h-full max-w-full size-full"
-                  bgColor="transparent"
-                  fgColor=" hsl(var(--primary))"
-                  value={qrCode}
-                  size={300}
-                />
-              ) : (
-                <Loader2Icon className="size-20 animate-spin" />
-              )}
-            </DialogDescription>
+            <DialogDescription className="m-auto p-3 "></DialogDescription>
+            {qrCode ? (
+              <QRCodeSVG
+                className="max-h-full max-w-full size-full"
+                bgColor="transparent"
+                fgColor=" hsl(var(--primary))"
+                value={qrCode}
+                size={300}
+              />
+            ) : (
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <Loader2Icon className="size-20 animate-spin " />
+              </div>
+            )}
           </DialogHeader>
         </DialogContent>
       </Dialog>

@@ -691,6 +691,45 @@ export type Database = {
           },
         ]
       }
+      service_limits: {
+        Row: {
+          created_at: string
+          max_app_configs_per_app: number
+          max_devices_kitting_per_user: number
+          max_managed_apps_per_user: number
+          max_policies_per_user: number
+          max_projects_per_user: number
+          max_ssids_per_user: number
+          max_total_users: number
+          service_limit_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          max_app_configs_per_app: number
+          max_devices_kitting_per_user: number
+          max_managed_apps_per_user: number
+          max_policies_per_user: number
+          max_projects_per_user: number
+          max_ssids_per_user: number
+          max_total_users: number
+          service_limit_id?: string
+          updated_at: string
+        }
+        Update: {
+          created_at?: string
+          max_app_configs_per_app?: number
+          max_devices_kitting_per_user?: number
+          max_managed_apps_per_user?: number
+          max_policies_per_user?: number
+          max_projects_per_user?: number
+          max_ssids_per_user?: number
+          max_total_users?: number
+          service_limit_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       subscription_plans: {
         Row: {
           created_at: string
@@ -894,21 +933,21 @@ export type Database = {
       }
       wifi_network_configurations: {
         Row: {
-          config: Json | null
+          config: Json
           created_at: string
           enterprise_id: string
           updated_at: string
           wifi_network_configuration_id: string
         }
         Insert: {
-          config?: Json | null
+          config: Json
           created_at?: string
           enterprise_id: string
           updated_at: string
           wifi_network_configuration_id?: string
         }
         Update: {
-          config?: Json | null
+          config?: Json
           created_at?: string
           enterprise_id?: string
           updated_at?: string

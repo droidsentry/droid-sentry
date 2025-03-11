@@ -33,8 +33,6 @@ export default function DeleteSelectedPoliciesButton<
         return row.original.policyIdentifier;
       });
     startTransition(async () => {
-      // return console.log("deletePolicyNameList", deletePolicyNameList);
-      // return console.log("enterpriseId", enterpriseId);
       await deleteSelectedPolicies(enterpriseId, deletePolicyIdentifierList)
         .then(() => {
           toast.success("ポリシーを削除しました。");

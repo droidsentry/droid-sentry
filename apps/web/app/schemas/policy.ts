@@ -269,7 +269,9 @@ export const networkConfigurationSchema = z.object({
   Type: z.literal("WiFi"),
   WiFi: wifiConfigSchema,
 });
-export const networkConfigurationsSchema = z.array(networkConfigurationSchema);
+export const networkConfigurationsSchema = z
+  .array(networkConfigurationSchema)
+  .optional();
 export const openNetworkConfigurationSchema = z
   .object({
     NetworkConfigurations: networkConfigurationsSchema,

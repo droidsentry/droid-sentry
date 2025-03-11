@@ -38,7 +38,7 @@ export default function SaveAsPolicyButton({
   const isPolicyNameUniqueCheck = AwesomeDebouncePromise(
     async (policyDisplayName: string) =>
       await isPolicyNameUnique(enterpriseId, policyDisplayName),
-    800
+    1
   );
 
   // 別名保存の処理
@@ -46,6 +46,8 @@ export default function SaveAsPolicyButton({
     // 現在のフォームデータを取得
     const currentFormData = form.getValues();
     const newPolicyName = currentFormData.policyDisplayName;
+
+    await isPolicyNameUniqueCheck(newPolicyName);
 
     // 新しい名前でフォームデータを更新
     const newFormData = {

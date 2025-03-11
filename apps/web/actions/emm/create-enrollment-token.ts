@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { createAndroidManagementClient } from "./client";
+import { checkServiceLimit } from "@/lib/service";
 
 /**
  * エンロールメントトークンを作成
@@ -19,29 +20,30 @@ export const createEnrollmentToken = async (enterpriseId: string) => {
   if (!user) {
     throw new Error("User not found");
   }
+
+  // サービス上限を確認する
+  await checkServiceLimit(enterpriseId, "max_devices_kitting_per_user");
+
   const androidmanagement = await createAndroidManagementClient();
   const { data } = await androidmanagement.enterprises.enrollmentTokens
     .create({
       parent,
       requestBody: {
-        // request body parameters
-        additionalData: "登録トークンに関連付けられた任意のデータ",
+        // additionalData: "登録トークンに関連付けられた任意のデータ",
         allowPersonalUsage: "ALLOW_PERSONAL_USAGE_UNSPECIFIED",
         //   "duration": "my_duration",
-        //   "expirationTimestamp": "my_expirationTimestamp",
-        //   "name": "my_name",
         oneTimeOnly: false,
         policyName: `${parent}/policies/default`,
-        //   "qrCode": "my_qrCode",
-        //   "user": {},
-        //   "value": "my_value"
       },
     })
     .catch((error) => {
       console.error("Error creating enrollment token", error.message);
       throw new Error(error.message);
     });
-  console.log("enrollment token data", data);
-  // return data.value;
+  // console.log("enrollment token data", data);
+  if (!data.qrCode) {
+    throw new Error("QRコードが生成されませんでした");
+  }
+
   return data.qrCode;
 };

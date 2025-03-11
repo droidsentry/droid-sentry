@@ -6,7 +6,14 @@ import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
 import { NetworkConfiguration } from "@/app/types/policy-network";
 import { NetworkConfigurationSchema } from "@/app/schemas/policy-network";
+import { checkServiceLimit } from "@/lib/service";
 
+/**
+ * ネットワーク設定を作成または更新する
+ * @param enterpriseId 企業ID
+ * @param policyIdentifier ポリシーID
+ * @param networkConfiguration ネットワーク設定
+ */
 export const createOrUpdateNetworkConfigurations = async (
   enterpriseId: string,
   policyIdentifier: string,
@@ -25,7 +32,10 @@ export const createOrUpdateNetworkConfigurations = async (
     throw new Error("ネットワーク設定の形式が正しくありません");
   }
 
-  const { data, error } = await supabase
+  // サービス上限を確認する
+  await checkServiceLimit(enterpriseId, "max_ssids_per_user");
+
+  const { error } = await supabase
     .from("wifi_network_configurations")
     .upsert(
       {
