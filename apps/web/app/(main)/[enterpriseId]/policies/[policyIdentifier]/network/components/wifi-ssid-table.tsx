@@ -225,12 +225,14 @@ const DeleteNetworkAction = React.memo(
   ({
     networkConfiguration,
     onDelete,
+    setDropdownOpen,
   }: {
     networkConfiguration: NetworkConfiguration;
     onDelete: (guid: string) => void;
+    setDropdownOpen: (open: boolean) => void;
   }) => {
     return (
-      <AlertDialog>
+      <AlertDialog onOpenChange={(open) => !open && setDropdownOpen(false)}>
         <AlertDialogTrigger asChild>
           <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
             削除
@@ -246,9 +248,12 @@ const DeleteNetworkAction = React.memo(
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>キャンセル</AlertDialogCancel>
+            <AlertDialogCancel type="button">キャンセル</AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => onDelete(networkConfiguration.GUID)}
+              type="button"
+              onClick={() => {
+                onDelete(networkConfiguration.GUID);
+              }}
             >
               削除
             </AlertDialogAction>
@@ -344,16 +349,12 @@ const defaultValues: NetworkConfiguration = {
 const WifiSsidFormDialog = React.memo(
   ({
     networkConfiguration,
-    onAdd,
-    onUpdate,
     open,
     setOpen,
     mode = "create",
     setDropdownOpen,
   }: {
     networkConfiguration?: NetworkConfiguration;
-    onAdd?: (networkConfig: NetworkConfiguration) => void;
-    onUpdate?: (guid: string, updatedConfig: WiFiConfig) => void;
     open: boolean;
     setOpen: (open: boolean) => void;
     mode?: "create" | "edit";
@@ -711,12 +712,7 @@ const CreateWifiSsidButton = React.memo(
             追加
           </Button>
         </DialogTrigger>
-        <WifiSsidFormDialog
-          onAdd={onAdd}
-          open={open}
-          setOpen={setOpen}
-          mode="create"
-        />
+        <WifiSsidFormDialog open={open} setOpen={setOpen} mode="create" />
       </Dialog>
     );
   }
@@ -728,13 +724,11 @@ const EditNetworkAction = React.memo(
     networkConfiguration,
     dialogOpen,
     setDialogOpen,
-    dropdownOpen,
     setDropdownOpen,
   }: {
     networkConfiguration: NetworkConfiguration;
     dialogOpen: boolean;
     setDialogOpen: (open: boolean) => void;
-    dropdownOpen: boolean;
     setDropdownOpen: (open: boolean) => void;
   }) => {
     // const [open, setOpen] = React.useState(false);
@@ -744,7 +738,6 @@ const EditNetworkAction = React.memo(
           onSelect={(e) => {
             e.preventDefault();
             setDialogOpen(true);
-            // setDropdownOpen(false);
           }}
         >
           編集
@@ -768,6 +761,45 @@ const EditNetworkAction = React.memo(
     );
   }
 );
+
+function SwitchCell({
+  networkConfiguration,
+}: {
+  networkConfiguration: NetworkConfiguration;
+}) {
+  const form = useFormContext<FormPolicy>();
+  const networkConfigPath =
+    "policyData.openNetworkConfiguration.NetworkConfigurations";
+  const currentActiveNetworkConfigurations = form.watch(networkConfigPath);
+  const currentActiveGuids = currentActiveNetworkConfigurations.map(
+    (config) => config.GUID
+  );
+  const GUID = networkConfiguration.GUID;
+  const isEnabled = currentActiveGuids?.includes(GUID);
+
+  return (
+    <div className="flex items-center gap-4">
+      <Switch
+        checked={isEnabled}
+        onCheckedChange={(checked) => {
+          return currentActiveGuids
+            ? checked
+              ? form.setValue(networkConfigPath, [
+                  ...currentActiveNetworkConfigurations,
+                  networkConfiguration,
+                ])
+              : form.setValue(
+                  networkConfigPath,
+                  currentActiveNetworkConfigurations.filter(
+                    (config) => config.GUID !== GUID
+                  )
+                )
+            : form.setValue(networkConfigPath, [networkConfiguration]);
+        }}
+      />
+    </div>
+  );
+}
 
 export function WifiSsidTable({
   enterpriseId,
@@ -801,29 +833,6 @@ export function WifiSsidTable({
 
   const [enabledGuids, setEnabledGuids] = React.useState<string[]>();
 
-  // フォームからネットワーク設定を取得し、enabledGuidsに初期値を設定
-  const networkConfigs = form.watch(
-    "policyData.openNetworkConfiguration.NetworkConfigurations"
-  );
-  React.useEffect(() => {
-    if (!enabledGuids && networkConfigs) {
-      const guids = networkConfigs.map((config) => config.GUID);
-      setEnabledGuids(guids);
-    }
-  }, [networkConfigs]);
-  // enabledGuidsが変更されたらフォームの値を更新
-  React.useEffect(() => {
-    if (!enabledGuids) return;
-    const enabledConfigs = data?.filter((network) =>
-      enabledGuids?.includes(network.GUID)
-    );
-    if (!enabledConfigs) return;
-    form.setValue(
-      "policyData.openNetworkConfiguration.NetworkConfigurations",
-      enabledConfigs
-    );
-  }, [enabledGuids, data]);
-
   // ネットワーク設定を削除するハンドラ
   const handleDelete = React.useCallback(
     async (guid: string) => {
@@ -852,7 +861,7 @@ export function WifiSsidTable({
     []
   );
 
-  const columns = React.useMemo(
+  const columns: ColumnDef<NetworkConfiguration>[] = React.useMemo(
     () => [
       ...wifiSsidColumns,
       {
@@ -860,18 +869,11 @@ export function WifiSsidTable({
         header: "設定",
         cell: ({ row }) => {
           const networkConfiguration = row.original;
-          const GUID = networkConfiguration.GUID;
-          const isEnabled = enabledGuids?.includes(GUID);
           const [dropdownOpen, setDropdownOpen] = React.useState(false);
           const [dialogOpen, setDialogOpen] = React.useState(false);
           return (
             <div className="flex items-center gap-4">
-              <Switch
-                checked={isEnabled}
-                onCheckedChange={(checked) =>
-                  handleNetworkToggle(GUID, checked)
-                }
-              />
+              <SwitchCell networkConfiguration={networkConfiguration} />
               <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="h-8 w-8 p-0" type="button">
@@ -884,12 +886,12 @@ export function WifiSsidTable({
                     networkConfiguration={networkConfiguration}
                     dialogOpen={dialogOpen}
                     setDialogOpen={setDialogOpen}
-                    dropdownOpen={dropdownOpen}
                     setDropdownOpen={setDropdownOpen}
                   />
                   <DeleteNetworkAction
                     networkConfiguration={networkConfiguration}
                     onDelete={handleDelete}
+                    setDropdownOpen={setDropdownOpen}
                   />
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -957,11 +959,6 @@ export function WifiSsidTable({
       setRowSelection({});
     },
     [enterpriseId, policyIdentifier]
-  );
-
-  console.log(
-    "現在のポリシーのネットワーク",
-    form.getValues("policyData.openNetworkConfiguration.NetworkConfigurations")
   );
 
   const isFormLoading =

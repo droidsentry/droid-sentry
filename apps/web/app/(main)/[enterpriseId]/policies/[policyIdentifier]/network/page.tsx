@@ -3,7 +3,7 @@ import NetworkForm from "./components/network-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { WifiSsidTable } from "./components/wifi-ssid-table";
 import WifiTableForm from "./components/wifi-table-form";
-import { WifiSsidTableOld } from "./components/wifi-ssid-table-old";
+
 import { getNetworkConfigurations } from "./actions/network";
 
 export default async function Page({
