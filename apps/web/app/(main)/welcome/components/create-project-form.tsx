@@ -78,10 +78,14 @@ export default function CreateProjectForm({
     };
 
     startTransition(async () => {
-      await createProject(submitData).then(async (project) => {
-        toast.success("プロジェクトが作成されました");
-        await getSignUpUrl(project.project_id, url, project.project_name);
-      });
+      await createProject(submitData)
+        .then(async (project) => {
+          toast.success("プロジェクトが作成されました");
+          await getSignUpUrl(project.project_id, url, project.project_name);
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
     });
   };
 
@@ -106,8 +110,8 @@ export default function CreateProjectForm({
 
   return (
     <Card className="max-w-2/3 rounded-xl border-0 p-4 sm:p-6 bg-transparent shadow-none">
-      <CardHeader className="text-center">
-        <Rocket className="mx-auto size-12 text-blue-400 dark:text-primary" />
+      <CardHeader className="text-center ">
+        <Rocket className="mx-auto size-12 text-blue-400 dark:text-primary mb-4" />
         <CardTitle className="text-3xl font-bold">{title}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">

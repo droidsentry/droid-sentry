@@ -15,23 +15,34 @@ type ServiceLimitConfig = {
     table: "policies";
     errorMessage: string;
   };
+  max_projects_per_user: {
+    table: "projects";
+    errorMessage: string;
+  };
   // 必要に応じて他の制限を追加
 };
 
 type ServiceLimitKey = keyof ServiceLimitConfig;
 
-const SERVICE_LIMIT_CONFIG: ServiceLimitConfig = {
+export const SERVICE_LIMIT_CONFIG: ServiceLimitConfig = {
   max_ssids_per_user: {
     table: "wifi_network_configurations",
-    errorMessage: "SSIDの上限数に達しました",
+    errorMessage: "SSIDの上限数に達しました。",
   },
   max_devices_kitting_per_user: {
     table: "devices",
-    errorMessage: "デバイスの上限数に達しました",
+    errorMessage:
+      "デバイスの利用上限数に達しました。ベータ版では最大５台まで管理することができます。",
   },
   max_policies_per_user: {
     table: "policies",
-    errorMessage: "ポリシーの上限数に達しました",
+    errorMessage:
+      "ポリシーの利用上限数に達しました。ベータ版では最大100つまで作成することができます。",
+  },
+  max_projects_per_user: {
+    table: "projects",
+    errorMessage:
+      "プロジェクトの利用上限数に達しました。ベータ版は最大３つまで作成することができます。",
   },
 } as const;
 
@@ -40,7 +51,9 @@ const SERVICE_LIMIT_CONFIG: ServiceLimitConfig = {
  * @param limitKey サービス上限の検索キー
  * @returns サービス上限の値
  */
-async function getServiceLimit(limitKey: ServiceLimitKey): Promise<number> {
+export async function getServiceLimit(
+  limitKey: ServiceLimitKey
+): Promise<number> {
   const supabase = await createClient();
 
   switch (limitKey) {
@@ -81,6 +94,19 @@ async function getServiceLimit(limitKey: ServiceLimitKey): Promise<number> {
 
       return data.max_policies_per_user;
     }
+    case "max_projects_per_user": {
+      const { data, error } = await supabase
+        .from("service_limits")
+        .select("max_projects_per_user")
+        .single();
+
+      if (error)
+        throw new Error("プロジェクトのサービス上限の取得に失敗しました");
+      if (!data?.max_projects_per_user)
+        throw new Error("プロジェクトのサービス上限が設定されていません");
+
+      return data.max_projects_per_user;
+    }
 
     default: {
       throw new Error("未対応のサービス上限タイプです");
@@ -114,7 +140,7 @@ export async function checkServiceLimit(
   // サービス上限を取得して確認する
   const limit = await getServiceLimit(limitKey);
 
-  if (limit === currentCount) {
+  if (currentCount && currentCount >= limit) {
     throw new Error(config.errorMessage);
   }
 

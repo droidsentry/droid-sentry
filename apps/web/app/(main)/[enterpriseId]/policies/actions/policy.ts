@@ -78,7 +78,9 @@ export const createOrUpdatePolicy = async ({
   }
 
   // サービス上限を確認する
-  await checkServiceLimit(enterpriseId, "max_policies_per_user");
+  if (policyIdentifier === "new") {
+    await checkServiceLimit(enterpriseId, "max_policies_per_user");
+  }
 
   const { policyDisplayName, policyData } = result.data;
   // ポリシーを作成

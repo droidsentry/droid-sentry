@@ -8,31 +8,39 @@ import { toast } from "sonner";
 import { createOrUpdatePolicy, isPolicyNameUnique } from "../actions/policy";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import { UseFormReturn } from "react-hook-form";
-import { Dispatch, SetStateAction, TransitionStartFunction } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  TransitionStartFunction,
+  useTransition,
+} from "react";
 
 interface SaveAsPolicyButtonProps {
   form: UseFormReturn<FormPolicy>;
-  isPending: boolean;
   isSavingAs: boolean;
+  isSavePending: boolean;
+  isSaveAsPending: boolean;
+  startTransitionSaveAs: TransitionStartFunction;
   setIsSavingAs: Dispatch<SetStateAction<boolean>>;
   isValidating: boolean;
   isSubmitting: boolean;
   enterpriseId: string;
   currentBase: string;
-  startTransition: TransitionStartFunction;
   router: AppRouterInstance;
 }
 
 export default function SaveAsPolicyButton({
   form,
-  isPending,
   isSavingAs,
+  isSavePending,
+  isSaveAsPending,
+  startTransitionSaveAs,
   setIsSavingAs,
   isValidating,
   isSubmitting,
   enterpriseId,
   currentBase,
-  startTransition,
+
   router,
 }: SaveAsPolicyButtonProps) {
   const isPolicyNameUniqueCheck = AwesomeDebouncePromise(
@@ -47,15 +55,13 @@ export default function SaveAsPolicyButton({
     const currentFormData = form.getValues();
     const newPolicyName = currentFormData.policyDisplayName;
 
-    await isPolicyNameUniqueCheck(newPolicyName);
-
     // 新しい名前でフォームデータを更新
     const newFormData = {
       ...currentFormData,
       policyDisplayName: newPolicyName,
     };
-    setIsSavingAs(true);
-    startTransition(async () => {
+    startTransitionSaveAs(async () => {
+      await isPolicyNameUniqueCheck(newPolicyName);
       // 名前の重複チェック
       const isUnique = await isPolicyNameUniqueCheck(newPolicyName);
       if (!isUnique) {
@@ -65,7 +71,7 @@ export default function SaveAsPolicyButton({
             <p>別のポリシー名で保存してください。</p>
           </div>
         );
-        setIsSavingAs(false);
+        setIsSavingAs(true);
         return;
       }
       await createOrUpdatePolicy({
@@ -75,19 +81,20 @@ export default function SaveAsPolicyButton({
       })
         .then((savedPolicyIdentifier) => {
           toast.success("ポリシーを別名で保存しました。");
+          setIsSavingAs(true);
           router.push(
             `/${enterpriseId}/policies/${savedPolicyIdentifier}/${currentBase}`
           );
         })
         .catch((error) => {
-          toast.error("ポリシーを保存できませんでした。");
-          console.error(error);
+          toast.error(error.message);
         })
         .finally(() => {
-          setIsSavingAs(false);
+          setIsSavingAs(true);
         });
     });
   };
+  console.log(isSavingAs);
 
   return (
     <Button
@@ -95,14 +102,15 @@ export default function SaveAsPolicyButton({
       type="button"
       onClick={handleSaveAs}
       disabled={
-        isPending ||
+        isSavePending ||
+        isSaveAsPending ||
         isValidating ||
         isSubmitting ||
         !form.getValues("policyDisplayName")
       }
       className="h-8 w-20"
     >
-      {isPending && isSavingAs ? (
+      {isSaveAsPending && isSavingAs ? (
         <Loader2 className="size-4 animate-spin" />
       ) : (
         "別名保存"

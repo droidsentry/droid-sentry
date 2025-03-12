@@ -39,6 +39,9 @@ export default function DeleteSelectedPoliciesButton<
         })
         .catch((error) => {
           toast.error(error.message);
+        })
+        .finally(() => {
+          table.resetRowSelection();
         });
     });
   };

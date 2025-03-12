@@ -3,6 +3,7 @@
 import { onboardingSchema } from "@/app/schemas/onboarding-schema";
 import { createClient } from "@/lib/supabase/server";
 import { z } from "zod";
+import { checkProjectLimit } from "./service";
 
 type FormData = z.infer<typeof onboardingSchema>;
 
@@ -28,6 +29,8 @@ export const createProject = async (data: FormData) => {
   if (!user) {
     throw new Error("ユーザー情報が取得できませんでした");
   }
+
+  await checkProjectLimit();
 
   // プロジェクトの作成
   const currentIsoTimestamp = new Date().toISOString();

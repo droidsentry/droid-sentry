@@ -19,5 +19,4 @@ export const deleteProject = async (projectId: string) => {
     console.error("Error deleting project:", error);
     throw new Error("Error deleting project");
   }
-  // revalidatePath("/dashboard"); //
 };
