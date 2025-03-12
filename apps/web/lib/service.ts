@@ -1,22 +1,42 @@
 import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "./supabase/admin";
 
+/**
+ * サービス上限の設定
+ * エラーコードはE1001から始まる
+ * エラーメッセージはエラーコードに対応するメッセージを設定する
+ * E1xxx: サービス制限エラー
+ * E2xxx: 認証・権限エラー
+ * E3xxx: データベースエラー
+ * E4xxx: 入力検証エラー
+ * E5xxx: 外部サービス連携エラー
+ */
 type ServiceLimitConfig = {
-  max_ssids_per_user: {
-    table: "wifi_network_configurations";
-    errorMessage: string;
-  };
-  max_devices_kitting_per_user: {
-    table: "devices";
-    errorMessage: string;
-  };
-  max_policies_per_user: {
-    table: "policies";
+  max_total_users: {
+    table: "users";
+    errorCode: "E1001";
     errorMessage: string;
   };
   max_projects_per_user: {
     table: "projects";
+    errorCode: "E1002";
+    errorMessage: string;
+  };
+  max_devices_kitting_per_user: {
+    table: "devices";
+    errorCode: "E1003";
+    errorMessage: string;
+  };
+  max_policies_per_user: {
+    table: "policies";
+    errorCode: "E1004";
+    errorMessage: string;
+  };
+  max_ssids_per_user: {
+    table: "wifi_network_configurations";
+    errorCode: "E1005";
     errorMessage: string;
   };
   // 必要に応じて他の制限を追加
@@ -25,24 +45,33 @@ type ServiceLimitConfig = {
 type ServiceLimitKey = keyof ServiceLimitConfig;
 
 export const SERVICE_LIMIT_CONFIG: ServiceLimitConfig = {
-  max_ssids_per_user: {
-    table: "wifi_network_configurations",
-    errorMessage: "SSIDの上限数に達しました。",
+  max_total_users: {
+    table: "users",
+    errorCode: "E1001",
+    errorMessage: "ユーザーの利用上限数に達しました。",
+  },
+  max_projects_per_user: {
+    table: "projects",
+    errorCode: "E1002",
+    errorMessage:
+      "プロジェクトの利用上限数に達しました。ベータ版は最大３つまで作成することができます。",
   },
   max_devices_kitting_per_user: {
     table: "devices",
+    errorCode: "E1003",
     errorMessage:
       "デバイスの利用上限数に達しました。ベータ版では最大５台まで管理することができます。",
   },
   max_policies_per_user: {
     table: "policies",
+    errorCode: "E1004",
     errorMessage:
       "ポリシーの利用上限数に達しました。ベータ版では最大100つまで作成することができます。",
   },
-  max_projects_per_user: {
-    table: "projects",
-    errorMessage:
-      "プロジェクトの利用上限数に達しました。ベータ版は最大３つまで作成することができます。",
+  max_ssids_per_user: {
+    table: "wifi_network_configurations",
+    errorCode: "E1005",
+    errorMessage: "SSIDの上限数に達しました。",
   },
 } as const;
 
@@ -55,6 +84,7 @@ export async function getServiceLimit(
   limitKey: ServiceLimitKey
 ): Promise<number> {
   const supabase = await createClient();
+  const supabaseAdmin = createAdminClient();
 
   switch (limitKey) {
     case "max_ssids_per_user": {
@@ -106,6 +136,28 @@ export async function getServiceLimit(
         throw new Error("プロジェクトのサービス上限が設定されていません");
 
       return data.max_projects_per_user;
+    }
+    case "max_total_users": {
+      const { data, error } = await supabaseAdmin
+        .from("service_limits")
+        .select("max_total_users")
+        .single();
+
+      if (error) throw new Error("ユーザーのサービス上限の取得に失敗しました");
+      if (!data?.max_total_users)
+        throw new Error("ユーザーのサービス上限が設定されていません");
+
+      const { count: totalUsers, error: totalUsersError } = await supabaseAdmin
+        .from("users")
+        .select("*", { count: "exact", head: true });
+
+      if (totalUsersError)
+        throw new Error("ユーザーの総数の取得に失敗しました");
+
+      if (totalUsers && totalUsers >= data.max_total_users) {
+        throw new Error(SERVICE_LIMIT_CONFIG.max_total_users.errorCode);
+      }
+      return data.max_total_users;
     }
 
     default: {

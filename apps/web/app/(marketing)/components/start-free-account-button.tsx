@@ -17,7 +17,7 @@ export default async function StartFreeAccountButton({
       )}
       asChild
     >
-      <Link href="/" replace>
+      <Link href="/sign-up" replace>
         <span className="text-base ">{t("startFreeAccount")}</span>
       </Link>
     </Button>

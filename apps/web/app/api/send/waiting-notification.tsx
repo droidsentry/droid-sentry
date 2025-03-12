@@ -15,27 +15,26 @@ import {
 } from "@react-email/components";
 import { tailwindReactEmailConfig } from "./lib/tailwind-config";
 
-interface DroidSentryInviteUserEmailProps {
+interface DroidSentryWaitingNotificationEmailProps {
   username: string;
   projectName: string;
-  invitedByEmail: string;
-  inviteLink: string;
+  queuePosition: string;
+  estimatedTime: string;
   ip_address: string;
   createdAt: string;
   location: string;
 }
 
-export const DroidSentryInviteUserEmail = ({
+export const DroidSentryWaitingNotificationEmail = ({
   username,
   projectName,
-  invitedByEmail,
-  inviteLink,
+  queuePosition,
+  estimatedTime,
   ip_address,
   createdAt,
   location,
-}: DroidSentryInviteUserEmailProps) => {
-  const previewText = `${projectName}に${username}さんのメールアドレスが登録されました。これは、メールアドレスが登録されたことをお知らせする自動通知です。 `;
-
+}: DroidSentryWaitingNotificationEmailProps) => {
+  const previewText = `${projectName}に登録されている${username}さんのウェイティングリスト登録が完了しました。これは、ウェイティングリスト登録をお知らせする自動通知です。`;
   return (
     <Html>
       <Head />
@@ -53,33 +52,19 @@ export const DroidSentryInviteUserEmail = ({
               />
             </Section>
             <Heading className="text-2xl font-bold text-center text-gray-900 mb-6">
-              メールアドレス認証のお知らせ
+              順番待ちリストへの登録完了
             </Heading>
             <Text className="text-gray-700 text-lg font-medium mb-2">
               {username} 様
             </Text>
-            <Text className="text-gray-700 text-lg mb-4">
-              DroidSentryをご利用いただきありがとうございます。
+            <Text className="text-gray-700 text-base mb-4">
+              {projectName}の順番待ちリストへの登録が完了しました。
             </Text>
+
             <Text className="text-gray-600 text-base leading-relaxed mb-6">
-              <strong className="text-gray-800">{username}</strong> (
-              <Link
-                href={`mailto:${invitedByEmail}`}
-                className="text-blue-600 no-underline"
-              >
-                {invitedByEmail}
-              </Link>
-              )
-              のメールアドレスを認証するため、以下のボタンをクリックしてください。
+              順番が来ましたら、改めてご連絡いたします。
+              しばらくお待ちいただきますようお願い申し上げます。
             </Text>
-            <Section className="text-center my-8">
-              <Button
-                className="bg-gray-800 rounded-xl text-white text-base font-medium no-underline text-center px-8 py-4"
-                href={inviteLink}
-              >
-                メールアドレスを認証する
-              </Button>
-            </Section>
             <Hr className="border border-solid border-gray-200 my-8 w-full" />
             <Text className="text-zinc-500 text-sm leading-relaxed">
               <strong>このメールに心当たりは、ありませんか？</strong>
@@ -99,15 +84,14 @@ export const DroidSentryInviteUserEmail = ({
   );
 };
 
-DroidSentryInviteUserEmail.PreviewProps = {
-  username: "{{ .Data.username }}",
+DroidSentryWaitingNotificationEmail.PreviewProps = {
+  username: "TEST",
   projectName: "DroidSentry",
-  invitedByEmail: "{{ .Data.email }}",
-  inviteLink:
-    "{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=email&next={{ .RedirectTo }}",
-  ip_address: "{{ .Data.ip_address }}",
-  createdAt: "{{ .Data.created_at }}",
-  location: "{{ .Data.location }}",
-} as DroidSentryInviteUserEmailProps;
+  queuePosition: "1",
+  estimatedTime: "10分",
+  ip_address: "192.168.1.1",
+  createdAt: "2021-01-01 12:00:00",
+  location: "Tokyo, Japan",
+} as DroidSentryWaitingNotificationEmailProps;
 
-export default DroidSentryInviteUserEmail;
+export default DroidSentryWaitingNotificationEmail;

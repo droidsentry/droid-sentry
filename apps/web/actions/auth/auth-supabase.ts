@@ -26,6 +26,8 @@ import {
   PasswordReset,
   PasswordResetVerify,
 } from "@/app/types/auth";
+import { checkTotalUserLimit } from "../emm/service";
+import AwesomeDebouncePromise from "awesome-debounce-promise";
 
 export const signUpNewUser = async (formData: SignUp) => {
   const baseUrl = getBaseURL();
@@ -34,6 +36,9 @@ export const signUpNewUser = async (formData: SignUp) => {
     console.error(result.error);
     throw new Error("フォームデータの検証に失敗しました");
   }
+
+  await checkTotalUserLimit();
+
   const { username, email, password } = formData;
   // フォームデータの検証に成功した場合, Supabase にユーザー登録を行う
   const supabaseAdmin = createAdminClient();

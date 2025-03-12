@@ -14,6 +14,13 @@
       "invalidEmail": "Please enter a valid email address.",
       "tooSmallPassword": "Please set a password with at least {minimum} characters.",
       "customInvalidPassword": "Please set a password with at least 8 characters, including uppercase, lowercase, numbers, and symbols."
+    },
+    "errors": {
+      "E1001": "Maximum number of users reached.",
+      "E1002": "Maximum number of projects reached. Beta version allows up to 3 projects.",
+      "E1003": "Maximum number of devices reached. Beta version allows management of up to 5 devices.",
+      "E1004": "Maximum number of policies reached. Beta version allows up to 100 policies.",
+      "E1005": "Maximum number of SSIDs reached."
     }
   }
 }

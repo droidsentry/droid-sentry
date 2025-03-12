@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import DiscordSingInButton from "../components/discord-sing-in_button";
-import { GitHubLoginButton } from "../components/github-login-button";
+import { GitHubSignInButton } from "../components/github-login-button";
 import GoogleSingInButton from "../components/google-sing-in-button";
 import SingleWelcome from "../images/single-welcome.webp";
 import { SignInForm } from "./components/sign-in-form";
@@ -39,7 +39,7 @@ export default async function Page() {
 
       <div className="basis-1/3 lg:basis-2/6 flex justify-center items-center pl-4 pr-4 lg:pr-10 xl:pr-24 2xl:pr-40">
         <div className="flex flex-col gap-2 w-[300px] sm:w-[400px] md:w-[450px] lg:w-auto xl:w-full">
-          <GitHubLoginButton />
+          <GitHubSignInButton />
           <GoogleSingInButton />
           <DiscordSingInButton />
           <div className="w-full flex items-center gap-4 my-4">

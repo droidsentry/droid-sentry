@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { SiGithub } from "@icons-pack/react-simple-icons";
 import SubmitButton from "./submit-button";
 
-export function GitHubLoginButton({ className }: { className?: string }) {
+export function GitHubSignInButton({ className }: { className?: string }) {
   return (
     <form action={signInWithGithub}>
       <SubmitButton className={cn(className)}>

@@ -31,7 +31,6 @@ export const signInSchema = z.object({
 export const signUpSchema = z.object({
   username: z
     .string()
-    .trim() // 先頭と末尾の空白を削除
     .min(4, "ユーザー名は4文字以上で設定してください")
     .regex(
       /^[a-zA-Z0-9_-]+$/,
@@ -46,8 +45,11 @@ export const signUpSchema = z.object({
 export const extendedSignUpSchema = signUpSchema.extend({
   username: z
     .string()
-    .trim()
     .min(1, "ユーザー名を入力してください")
+    .regex(
+      /^[a-zA-Z0-9_-]+$/,
+      "ユーザー名には英数字、アンダースコア(_)、ハイフン(-)のみ使用できます"
+    )
     .refine(
       AwesomeDebouncePromise(
         async (userName) => await isUserNameUnique(userName),
