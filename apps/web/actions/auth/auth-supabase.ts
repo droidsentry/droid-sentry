@@ -18,16 +18,15 @@ import {
   signInSchema,
   signUpSchema,
 } from "@/app/schemas/auth";
-import { getBaseURL } from "@/lib/base-url/client";
 import {
-  SignUp,
-  SignIn,
-  PasswordUpdate,
   PasswordReset,
   PasswordResetVerify,
+  PasswordUpdate,
+  SignIn,
+  SignUp,
 } from "@/app/types/auth";
-import { checkTotalUserLimit } from "../emm/service";
-import AwesomeDebouncePromise from "awesome-debounce-promise";
+import { getBaseURL } from "@/lib/base-url/client";
+import { checkTotalUserLimit } from "@/lib/service";
 
 export const signUpNewUser = async (formData: SignUp) => {
   const baseUrl = getBaseURL();
@@ -65,12 +64,6 @@ export const signUpNewUser = async (formData: SignUp) => {
 
   console.error(error?.message);
   if (!user || error) {
-    // すでに登録されているユーザーの場合は、確認メールを送信した旨を表示するページにリダイレクトする
-    if (error?.code === "user_already_exists") {
-      // "user_already_exists"を使用してダミーの36文字のIDを作成。
-      const dummyId = crypto.randomUUID().replace(/-/g, "").slice(0, 36);
-      redirect(`/sign-up/verify-email-address?id=${dummyId}`);
-    }
     const errorCode = error?.code as SupabaseAuthErrorCode;
     throw new Error(await authErrorMessage(errorCode));
   }

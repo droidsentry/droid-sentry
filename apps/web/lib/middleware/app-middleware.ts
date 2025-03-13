@@ -24,6 +24,7 @@ const guestRoutes = [
   "/sign-up/verify-email-address",
   "/password-reset",
   "/password-reset/verify",
+  "/waiting",
 ];
 
 export default async function AppMiddleware(
@@ -43,6 +44,8 @@ export default async function AppMiddleware(
   const isPrivateRoute = !isPublicRoute && !isGuestRoute;
   // ユーザーがプロジェクトを作成しているかどうかを確認
   const hasProject = user?.user_metadata?.has_created_project;
+  // ユーザーがサインアップした時点で最大ユーザー数に達しているかどうかを確認　。超えていない場合はtrue
+  const isTotalUserLimit = user?.app_metadata?.is_total_user_limit;
 
   // // ユーザーが所属する組織があるかどうかを確認
   // const hasOrganization = user?.app_metadata?.organization;
@@ -50,7 +53,7 @@ export default async function AppMiddleware(
   // const hasProfile = user?.app_metadata?.hasProfile;
 
   // ゲスト専用ルートにサインイン済みのユーザーがアクセスしようとした場合、emmページにリダイレクト
-  if (isGuestRoute && signedIn) {
+  if (isGuestRoute && signedIn && isTotalUserLimit) {
     return NextResponse.redirect(new URL(`/projects`, request.url));
   }
 
@@ -60,6 +63,10 @@ export default async function AppMiddleware(
       return NextResponse.redirect(
         new URL(`/sign-in?from=${path}`, request.url)
       );
+    }
+    // 最大ユーザー数に達している場合、サインアップページにリダイレクト
+    if (!isTotalUserLimit && path !== `/waiting`) {
+      return NextResponse.redirect(new URL("/waiting", request.url));
     }
     // プロジェクト作成チェック（/welcome以外のプライベートルートの場合のみ）
     if (!hasProject && path !== `/welcome`) {

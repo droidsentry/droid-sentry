@@ -20,9 +20,9 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
-import DiscordSingInButton from "../../components/discord-sing-in_button";
-import { GitHubSignInButton } from "../../components/github-login-button";
-import GoogleSingInButton from "../../components/google-sing-in-button";
+import DiscordSingButton from "../../components/discord-sing-button";
+import { GitHubSignButton } from "../../components/github-login-button";
+import GoogleSingButton from "../../components/google-sing-in-button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { passwordResetSchema } from "@/app/schemas/auth";
 import { PasswordReset, SignIn } from "@/app/types/auth";
@@ -99,9 +99,9 @@ export default function PasswordResetForm() {
           または、別の方法でサインインしてください。
         </CardDescription>
         <div className="flex flex-col gap-2 pb-4">
-          <GitHubSignInButton className="w-full" />
-          <GoogleSingInButton className="w-full" />
-          <DiscordSingInButton className="w-full" />
+          <GitHubSignButton className="w-full" />
+          <GoogleSingButton className="w-full" />
+          <DiscordSingButton className="w-full" />
           <Button variant="outline" className="w-full">
             認証コードをメールに送信
           </Button>
@@ -109,7 +109,7 @@ export default function PasswordResetForm() {
         <Button
           variant="ghost"
           className="w-full"
-          onClick={() => window.history.back()}
+          onClick={() => router.back()}
         >
           戻る
         </Button>

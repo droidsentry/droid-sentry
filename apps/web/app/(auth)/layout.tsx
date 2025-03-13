@@ -21,9 +21,9 @@ export default function RootLayout({
       <main className="flex-1 z-40">
         <SignInProvider>{children}</SignInProvider>
       </main>
-      <div className="absolute bottom-0 left-0 w-full">
+      {/* <div className="absolute bottom-0 left-0 w-full">
         <WaveAnimation />
-      </div>
+      </div> */}
       <div className="fixed bottom-4 right-5 z-50">
         <ModeToggle />
       </div>

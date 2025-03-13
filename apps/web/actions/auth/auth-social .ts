@@ -4,7 +4,7 @@ import { getBaseURL } from "@/lib/base-url/client";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
-export const signInWithGithub = async () => {
+export const signWithGithub = async () => {
   const baseUrl = getBaseURL();
   const supabase = await createClient();
   const { data } = await supabase.auth.signInWithOAuth({
@@ -19,7 +19,7 @@ export const signInWithGithub = async () => {
   }
 };
 
-export const signInWithGoogle = async () => {
+export const signWithGoogle = async () => {
   const baseUrl = getBaseURL();
   const supabase = await createClient();
   const { data } = await supabase.auth.signInWithOAuth({
@@ -34,7 +34,7 @@ export const signInWithGoogle = async () => {
   }
 };
 
-export const signInWithDiscord = async () => {
+export const signWithDiscord = async () => {
   const baseUrl = getBaseURL();
   const supabase = await createClient();
   const { data } = await supabase.auth.signInWithOAuth({

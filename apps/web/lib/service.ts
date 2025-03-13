@@ -154,7 +154,8 @@ export async function getServiceLimit(
       if (totalUsersError)
         throw new Error("ユーザーの総数の取得に失敗しました");
 
-      if (totalUsers && totalUsers >= data.max_total_users) {
+      if (totalUsers && totalUsers > data.max_total_users) {
+        console.log(totalUsers, data.max_total_users);
         throw new Error(SERVICE_LIMIT_CONFIG.max_total_users.errorCode);
       }
       return data.max_total_users;
@@ -201,3 +202,13 @@ export async function checkServiceLimit(
     limit,
   };
 }
+/**
+ * ユーザー総数上限チェック
+ * @returns 現在の利用状況とサービス上限
+ * @throws エラーメッセージ
+ */
+export const checkTotalUserLimit = async () => {
+  const limitKey = "max_total_users";
+  await getServiceLimit(limitKey);
+  return;
+};

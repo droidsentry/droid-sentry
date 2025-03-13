@@ -41,13 +41,3 @@ export const checkProjectLimit = async () => {
     limit,
   };
 };
-/**
- * ユーザー総数上限チェック
- * @returns 現在の利用状況とサービス上限
- * @throws エラーメッセージ
- */
-export const checkTotalUserLimit = async () => {
-  const limitKey = "max_total_users";
-  await getServiceLimit(limitKey);
-  return;
-};

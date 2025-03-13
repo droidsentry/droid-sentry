@@ -31,7 +31,7 @@ export const signInSchema = z.object({
 export const signUpSchema = z.object({
   username: z
     .string()
-    .min(4, "ユーザー名は4文字以上で設定してください")
+    .min(1, "ユーザー名を入力してください")
     .regex(
       /^[a-zA-Z0-9_-]+$/,
       "ユーザー名には英数字、アンダースコア(_)、ハイフン(-)のみ使用できます"
@@ -58,5 +58,16 @@ export const extendedSignUpSchema = signUpSchema.extend({
       {
         message: "このユーザー名は既に使用されています",
       }
+    ),
+});
+
+export const waitingSchema = z.object({
+  email: emailSchema,
+  username: z
+    .string()
+    .min(1, "ユーザー名を入力してください")
+    .regex(
+      /^[a-zA-Z0-9_-]+$/,
+      "ユーザー名には英数字、アンダースコア(_)、ハイフン(-)のみ使用できます"
     ),
 });

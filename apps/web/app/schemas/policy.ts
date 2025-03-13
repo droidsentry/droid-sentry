@@ -281,7 +281,7 @@ export const openNetworkConfigurationSchema = z
 
 export const policySchema = z
   .object({
-    screenCaptureDisabled: z.boolean().default(false).optional(),
+    screenCaptureDisabled: z.boolean(),
     adjustVolumeDisabled: z.boolean().default(false).optional(),
     factoryResetDisabled: z.boolean().default(false).optional(),
     cameraDisabled: z.boolean().default(false).optional(),
@@ -321,7 +321,7 @@ export const policySchema = z
     displaySettings: DisplaySettingsPolicySchema.optional(),
     shareLocationDisabled: z.boolean().default(false).optional(),
     passwordPolicies: z.array(passwordPoliciesSchema).optional(),
-    mobileNetworksConfigDisabled: z.boolean().default(false).optional(),
+    mobileNetworksConfigDisabled: z.boolean().nullable().optional(),
     dataRoamingDisabled: z.boolean().default(false).optional(),
     networkResetDisabled: z.boolean().default(false).optional(),
     openNetworkConfiguration: openNetworkConfigurationSchema,

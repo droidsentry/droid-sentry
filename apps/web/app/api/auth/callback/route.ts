@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createTrialSubscription } from "../confirm/lib/create-trial-subscription";
+import { checkTotalUserLimit } from "@/lib/service";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { checkAndUpdateUserLimit } from "../lib/user-management";
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
@@ -19,16 +22,18 @@ export async function GET(request: NextRequest) {
       error,
     } = await supabase.auth.exchangeCodeForSession(code);
 
-    // エラーが発生した場合、ホームページにリダイレクト
-    if (error) {
-      console.error(error.message);
-      return NextResponse.redirect(new URL("/auth-error", request.url));
-    }
     // ユーザー情報を取得
     const userId = user?.id;
     // console.log("userId", userId);
     if (!userId) {
       throw new Error("ユーザーIDが取得できません");
+    }
+    await checkAndUpdateUserLimit(user);
+
+    // エラーが発生した場合、ホームページにリダイレクト
+    if (error) {
+      console.error(error.message);
+      return NextResponse.redirect(new URL("/auth-error", request.url));
     }
 
     // ユーザーがサブスクリプションを作成しているかどうかを確認
