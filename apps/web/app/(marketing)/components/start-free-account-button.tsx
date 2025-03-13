@@ -19,7 +19,6 @@ export default async function StartFreeAccountButton({
       url = "/waiting";
       return;
     }
-    toast.error(error.message);
   });
 
   return (
