@@ -84,7 +84,7 @@ export default function WaitingForm() {
               <CardDescription className="lg:text-lg">
                 空き枠ができた際にメールでお知らせしてもよろしいでしょうか？
               </CardDescription>
-              <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-4 mt-4">
                 <FormField
                   control={form.control}
                   name="username"

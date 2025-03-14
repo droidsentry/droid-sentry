@@ -3,8 +3,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { createAndroidManagementClient } from "./client";
-import { encryptData } from "./crypto";
+import { createAndroidManagementClient } from "../../lib/emm/client";
+import { encryptEMMProject } from "../../lib/emm/project";
 
 /**
  *　サインアップURLを取得する
@@ -45,7 +45,11 @@ export const getSignUpUrl = async (
 
   // URLを暗号化してCookieに保存
   const cookieStore = await cookies();
-  const encryptedUrl = encryptData({ name: data.name, projectId, projectName }); // セキュリティのため暗号化
+  const encryptedUrl = encryptEMMProject({
+    name: data.name,
+    projectId,
+    projectName,
+  }); // セキュリティのため暗号化
   // console.log("暗号化:", encryptedUrl);
 
   cookieStore.set("emm_signup_object", encryptedUrl, {
@@ -55,7 +59,7 @@ export const getSignUpUrl = async (
     maxAge: 3600, // 1時間で有効期限切れ
     path: "/",
   });
-  const encryptedData = cookieStore.get("emm_signup_object");
+  // const encryptedData = cookieStore.get("emm_signup_object");
   // console.log("encryptedData", encryptedData);
   redirect(data.url);
 };

@@ -1,6 +1,6 @@
 "use server";
 
-import { createAndroidManagementClient } from "@/actions/emm/client";
+import { createAndroidManagementClient } from "@/lib/emm/client";
 import { DeviceLostModeSchema } from "@/app/schemas/devices";
 import { DeviceLostMode } from "@/app/types/device";
 import { createClient } from "@/lib/supabase/server";

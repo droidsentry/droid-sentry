@@ -1,6 +1,6 @@
 "use client";
 
-import { resetPassword } from "@/actions/auth/auth-supabase";
+import { resetPassword } from "@/actions/auth/supabase";
 import { Button } from "@/components/ui/button";
 import {
   Card,

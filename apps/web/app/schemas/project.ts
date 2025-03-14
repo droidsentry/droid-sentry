@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const onboardingSchema = z.object({
+export const projectSchema = z.object({
   projectName: z
     // 記号は許容しない
     .string()

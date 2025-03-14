@@ -1,20 +1,17 @@
 "use server";
 
-import { onboardingSchema } from "@/app/schemas/onboarding-schema";
+import { projectSchema } from "@/app/schemas/project";
+import { Project } from "@/app/types/project";
 import { createClient } from "@/lib/supabase/server";
-import { z } from "zod";
 import { checkProjectLimit } from "./service";
-
-type FormData = z.infer<typeof onboardingSchema>;
 
 /**
  * プロジェクトの作成
  * @param data
  * @returns project
  */
-export const createProject = async (data: FormData) => {
-  // console.log("createProject", data);
-  const parsedData = await onboardingSchema.safeParseAsync(data);
+export const createProject = async (data: Project) => {
+  const parsedData = await projectSchema.safeParseAsync(data);
   if (parsedData.success === false) {
     console.error(parsedData.error);
     throw new Error("フォームデータの検証に失敗しました");
@@ -25,7 +22,7 @@ export const createProject = async (data: FormData) => {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  // console.log(authUser);
+
   if (!user) {
     throw new Error("ユーザー情報が取得できませんでした");
   }

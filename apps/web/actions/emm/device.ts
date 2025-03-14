@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { createAndroidManagementClient } from "./client";
+import { createAndroidManagementClient } from "../../lib/emm/client";
 import { checkServiceLimit } from "@/lib/service";
 
 /**
@@ -11,7 +11,9 @@ import { checkServiceLimit } from "@/lib/service";
  * 参考ドキュメント：https://developers.google.com/android/management/reference/rest/v1/enterprises.enrollmentTokens?hl=ja
  *
  */
-export const createEnrollmentToken = async (enterpriseId: string) => {
+export const createDeviceEnrollmentTokenWithQRCode = async (
+  enterpriseId: string
+) => {
   const parent = `enterprises/${enterpriseId}`;
   const supabase = await createClient();
   const {

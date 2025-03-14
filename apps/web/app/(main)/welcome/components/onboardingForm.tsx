@@ -1,6 +1,6 @@
 "use client";
 
-import { createProject } from "@/actions/emm/projects";
+import { createProject } from "@/actions/emm/project";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,18 +26,17 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { onboardingSchema } from "../../../schemas/onboarding-schema";
 import { toast } from "sonner";
-import { getSignUpUrl } from "@/actions/emm/signup-url";
+import { getSignUpUrl } from "@/actions/emm/enterprise";
 import { getBaseURL } from "@/lib/base-url/client";
-
-type FormData = z.infer<typeof onboardingSchema>;
+import { projectSchema } from "@/app/schemas/project";
+import { Project } from "@/app/types/project";
 
 export default function OnboardingForm() {
   const [progress, setProgress] = useState(0);
   const form = useForm({
     mode: "onChange",
-    resolver: zodResolver(onboardingSchema),
+    resolver: zodResolver(projectSchema),
     defaultValues: {
       projectName: "",
       organizationName: "",
@@ -47,7 +46,7 @@ export default function OnboardingForm() {
   const [currentUrl, setCurrentUrl] = useState<string>();
   const url = getBaseURL(currentUrl);
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: Project) => {
     await createProject(data).then(async (project) => {
       toast.success("プロジェクトが作成されました");
       await getSignUpUrl(project.project_id, url, project.project_name);

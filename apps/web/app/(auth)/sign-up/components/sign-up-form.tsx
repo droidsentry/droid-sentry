@@ -1,6 +1,6 @@
 "use client";
 
-import { signUpNewUser } from "@/actions/auth/auth-supabase";
+import { signUpNewUser } from "@/actions/auth/supabase";
 import { Button } from "@/components/ui/button";
 import {
   Card,

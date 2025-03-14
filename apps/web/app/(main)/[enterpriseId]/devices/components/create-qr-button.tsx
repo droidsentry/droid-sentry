@@ -1,6 +1,6 @@
 "use client";
 
-import { createEnrollmentToken } from "@/actions/emm/create-enrollment-token";
+import { createDeviceEnrollmentTokenWithQRCode } from "@/actions/emm/device";
 import { Button } from "@/components/ui/button";
 import { Loader2Icon, QrCodeIcon } from "lucide-react";
 import {
@@ -24,7 +24,7 @@ export default function CreateQrButton() {
 
   const onClick = async () => {
     setQrCode(null);
-    await createEnrollmentToken(enterpriseId)
+    await createDeviceEnrollmentTokenWithQRCode(enterpriseId)
       .then((qrData) => {
         setQrCode(qrData);
       })

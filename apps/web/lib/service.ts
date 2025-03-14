@@ -154,8 +154,8 @@ export async function getServiceLimit(
       if (totalUsersError)
         throw new Error("ユーザーの総数の取得に失敗しました");
 
-      if (totalUsers && totalUsers > data.max_total_users) {
-        console.log(totalUsers, data.max_total_users);
+      if (totalUsers && totalUsers >= data.max_total_users) {
+        // console.log(totalUsers, data.max_total_users);
         throw new Error(SERVICE_LIMIT_CONFIG.max_total_users.errorCode);
       }
       return data.max_total_users;

@@ -1,6 +1,6 @@
 import "server-only";
 
-import { createAndroidManagementClient } from "@/actions/emm/client";
+import { createAndroidManagementClient } from "@/lib/emm/client";
 import { saveDeviceStatus } from "@/app/api/emm/pubsub/lib/data/save-device";
 
 /**

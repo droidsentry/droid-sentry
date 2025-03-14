@@ -1,6 +1,6 @@
 "use server";
 
-import { createAndroidManagementClient } from "@/actions/emm/client";
+import { createAndroidManagementClient } from "@/lib/emm/client";
 import {
   AndroidManagementPolicy,
   ListPoliciesResponse,

@@ -1,6 +1,6 @@
 "use server";
 
-import { createAndroidManagementClient } from "@/actions/emm/client";
+import { createAndroidManagementClient } from "@/lib/emm/client";
 import { DeviceResetPasswordSchema } from "@/app/schemas/devices";
 import { DeviceResetPassword } from "@/app/types/device";
 import { createClient } from "@/lib/supabase/server";

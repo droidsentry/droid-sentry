@@ -1,6 +1,6 @@
 "use client";
 
-import { getSignUpUrl } from "@/actions/emm/signup-url";
+import { getSignUpUrl } from "@/actions/emm/enterprise";
 import { ProjectWithEnterpriseRelation } from "@/app/types/project";
 import { getBaseURL } from "@/lib/base-url/client";
 import {

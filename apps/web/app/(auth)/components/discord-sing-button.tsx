@@ -1,6 +1,6 @@
 "use client";
 
-import { signWithDiscord } from "@/actions/auth/auth-social ";
+import { signWithDiscord } from "@/actions/auth/supabase";
 import { cn } from "@/lib/utils";
 import { SiDiscord } from "@icons-pack/react-simple-icons";
 import SubmitButton from "./submit-button";

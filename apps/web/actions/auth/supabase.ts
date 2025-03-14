@@ -1,15 +1,10 @@
 "use server";
 
 import { SupabaseAuthErrorCode } from "@/lib/supabase/supabase-error-code-ja";
-
 import { getUserContextData } from "@/lib/context/user-context";
-
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
-
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
-
 import { authErrorMessage } from "@/app/(auth)/lib/displayAuthError";
 import {
   passwordResetSchema,
@@ -27,6 +22,7 @@ import {
 } from "@/app/types/auth";
 import { getBaseURL } from "@/lib/base-url/client";
 import { checkTotalUserLimit } from "@/lib/service";
+import { redirect } from "next/navigation";
 
 export const signUpNewUser = async (formData: SignUp) => {
   const baseUrl = getBaseURL();
@@ -296,3 +292,54 @@ export async function updatePassword(formData: PasswordUpdate) {
     throw new Error(await authErrorMessage(errorCode));
   }
 }
+
+export const signWithGithub = async () => {
+  const baseUrl = getBaseURL();
+  const supabase = await createClient();
+  const { data } = await supabase.auth.signInWithOAuth({
+    provider: "github",
+    options: {
+      redirectTo: `${baseUrl}/api/auth/callback`,
+    },
+  });
+
+  if (data.url) {
+    redirect(data.url);
+  }
+};
+
+export const signWithGoogle = async () => {
+  const baseUrl = getBaseURL();
+  const supabase = await createClient();
+  const { data } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${baseUrl}/api/auth/callback`,
+    },
+  });
+
+  if (data.url) {
+    redirect(data.url);
+  }
+};
+
+export const signWithDiscord = async () => {
+  const baseUrl = getBaseURL();
+  const supabase = await createClient();
+  const { data } = await supabase.auth.signInWithOAuth({
+    provider: "discord",
+    options: {
+      redirectTo: `${baseUrl}/api/auth/callback`,
+    },
+  });
+
+  if (data.url) {
+    redirect(data.url);
+  }
+};
+
+export const signOut = async () => {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  redirect("/");
+};

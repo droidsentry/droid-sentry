@@ -1,6 +1,6 @@
 "use client";
 
-import { updatePassword } from "@/actions/auth/auth-supabase";
+import { updatePassword } from "@/actions/auth/supabase";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";

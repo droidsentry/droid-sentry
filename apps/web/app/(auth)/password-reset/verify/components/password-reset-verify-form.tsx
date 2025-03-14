@@ -1,6 +1,6 @@
 "use client";
 
-import { resetPasswordVerify } from "@/actions/auth/auth-supabase";
+import { resetPasswordVerify } from "@/actions/auth/supabase";
 import { passwordResetVerifySchema } from "@/app/schemas/auth";
 import { PasswordResetVerify, SignIn } from "@/app/types/auth";
 

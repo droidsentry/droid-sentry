@@ -1,6 +1,6 @@
 "use server";
 
-import { createAndroidManagementClient } from "@/actions/emm/client";
+import { createAndroidManagementClient } from "@/lib/emm/client";
 import { formPolicySchema } from "@/app/schemas/policy";
 import { AndroidManagementPolicy, FormPolicy } from "@/app/types/policy";
 import { checkServiceLimit } from "@/lib/service";

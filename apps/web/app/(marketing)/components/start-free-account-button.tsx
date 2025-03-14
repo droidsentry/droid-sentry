@@ -3,7 +3,6 @@ import { checkTotalUserLimit } from "@/lib/service";
 import { cn } from "@/lib/utils";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
-import { toast } from "sonner";
 
 export default async function StartFreeAccountButton({
   className,
@@ -12,11 +11,11 @@ export default async function StartFreeAccountButton({
 }) {
   const t = await getTranslations("marketing");
 
-  let url = "/sign-up";
+  let signUpUrl = "/sign-up";
   await checkTotalUserLimit().catch((error) => {
     const errorCode = error.message;
     if (errorCode === "E1001") {
-      url = "/waiting";
+      signUpUrl = "/waiting";
       return;
     }
   });
@@ -29,7 +28,7 @@ export default async function StartFreeAccountButton({
       )}
       asChild
     >
-      <Link href={url}>
+      <Link href={signUpUrl}>
         <span className="text-base ">{t("startFreeAccount")}</span>
       </Link>
     </Button>

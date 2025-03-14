@@ -1,16 +1,24 @@
+import "server-only";
+
 import { createCipheriv, createDecipheriv, randomBytes } from "crypto";
+import { z } from "zod";
 
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY!; // 32バイトの鍵が必要
 const ALGORITHM = "aes-256-gcm"; // 暗号化アルゴリズム
 
-// 暗号化するデータの型定義
-interface SignupData {
-  name: string;
-  projectId: string;
-  projectName: string;
-}
+const encryptedProjectSchema = z.object({
+  name: z.string(),
+  projectId: z.string(),
+  projectName: z.string(),
+});
+type EncryptedProject = z.infer<typeof encryptedProjectSchema>;
 
-export function encryptData(data: SignupData): string {
+/**
+ * データを暗号化する
+ * @param data 暗号化するデータ
+ * @returns 暗号化されたデータ
+ */
+export function encryptEMMProject(data: EncryptedProject): string {
   // オブジェクトをJSON文字列に変換
   const jsonString = JSON.stringify(data);
 
@@ -35,7 +43,7 @@ export function encryptData(data: SignupData): string {
   return iv.toString("hex") + ":" + authTag.toString("hex") + ":" + encrypted;
 }
 
-export function decryptData(encryptedData: string): SignupData {
+export function decryptEMMProject(encryptedData: string): EncryptedProject {
   // 1. 暗号文の分解
   const [ivHex, authTagHex, encryptedText] = encryptedData.split(":");
 
@@ -52,6 +60,9 @@ export function decryptData(encryptedData: string): SignupData {
   let decrypted = decipher.update(encryptedText, "hex", "utf8"); // 暗号文を復号
   decrypted += decipher.final("utf8"); // 最後のブロックを復号
 
-  // JSON文字列をオブジェクトに戻す
-  return JSON.parse(decrypted) as SignupData;
+  // 5. 復号したデータをオブジェクトに戻す
+  const changedObj = JSON.parse(decrypted);
+  const parsed = encryptedProjectSchema.parse(changedObj);
+
+  return parsed;
 }

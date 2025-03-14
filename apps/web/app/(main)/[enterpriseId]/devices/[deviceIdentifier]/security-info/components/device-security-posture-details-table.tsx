@@ -20,7 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
-import { securityRisk } from "@/lib/device";
+import { securityRisk } from "@/data/emm/device";
 import useSWRImmutable from "swr/immutable";
 import { getHardwareInfo } from "../../actions/device";
 

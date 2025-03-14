@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     }
     //
     const isProd = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
-    const emailDomain = process.env.RESEND_Email_ADDRESS_DOMAIN;
+    const emailDomain = process.env.RESEND_EMAIL_ADDRESS_DOMAIN;
     const from = isProd
       ? `【${projectName}】 <noreply@${emailDomain}>`
       : `【${projectName} DEV】 <noreply@${emailDomain}>`;

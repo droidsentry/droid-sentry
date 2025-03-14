@@ -1,7 +1,7 @@
 import { isStrongPassword } from "validator";
 import { z } from "zod";
 import { emailSchema } from "./devices";
-import { isUserNameUnique } from "@/actions/auth/sign-up";
+import { isUserNameUnique } from "@/actions/auth/user";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 
 const passwordSchema = z

@@ -1,7 +1,7 @@
 "use client";
 
-import { createProject } from "@/actions/emm/projects";
-import { getSignUpUrl } from "@/actions/emm/signup-url";
+import { createProject } from "@/actions/emm/project";
+import { getSignUpUrl } from "@/actions/emm/enterprise";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -27,12 +27,10 @@ import Link from "next/link";
 import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { onboardingSchema } from "../../../schemas/onboarding-schema";
 import { toast } from "sonner";
 import { getBaseURL } from "@/lib/base-url/client";
-
-type FormData = z.infer<typeof onboardingSchema>;
-
+import { projectSchema } from "@/app/schemas/project";
+import { Project } from "@/app/types/project";
 interface CreateProjectFormProps {
   title?: string;
   description?: string;
@@ -57,8 +55,8 @@ export default function CreateProjectForm({
     mode: "onChange",
     resolver: zodResolver(
       agreeToTermsButton
-        ? onboardingSchema
-        : onboardingSchema.omit({ agreeToTerms: true })
+        ? projectSchema
+        : projectSchema.omit({ agreeToTerms: true })
     ),
     defaultValues: {
       projectName: "",
@@ -70,7 +68,7 @@ export default function CreateProjectForm({
   const [currentUrl, setCurrentUrl] = useState<string>();
   const url = getBaseURL(currentUrl);
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: Project) => {
     // agreeToTermsButtonがfalseの場合、サーバーアクション用にデータを加工
     const submitData = {
       ...data,
