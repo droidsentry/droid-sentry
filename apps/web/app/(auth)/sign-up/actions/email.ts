@@ -13,6 +13,7 @@ export const sendWaitingNotification = async (userData: Waiting) => {
       console.error(result.error);
       throw new Error("フォームデータの検証に失敗しました");
     }
+
     const baseUrl = getBaseURL();
     const userContextData = await getUserContextData();
     const now = formatToJapaneseDateTime();

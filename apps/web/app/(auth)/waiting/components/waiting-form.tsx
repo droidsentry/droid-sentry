@@ -47,8 +47,8 @@ export default function WaitingForm() {
   const handleWaiting = async (data: Waiting) => {
     startTransition(async () => {
       await sendWaitingNotification(data)
-        .then((id) => {
-          toast.success("サインアップ登録が完了しました。");
+        .then(() => {
+          toast.success("登録が完了しました。");
           setIsVerified(false);
         })
         .catch((error) => {
