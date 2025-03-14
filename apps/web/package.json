@@ -21,7 +21,10 @@
     "check-types": "tsc --noEmit",
     "dev-env-pull": "vercel env pull --environment=development",
     "prod-env-pull": "vercel env pull --environment=production check-prod.env",
-    "analyze": "ANALYZE=true pnpm build"
+    "analyze": "ANALYZE=true pnpm build",
+    "supabase:dev-login": "pnpm dlx supabase link --project-ref ucgynnprncfbtojqvmzm",
+    "supabase-login": "pnpm dlx supabase link",
+    "supabase-status": "pnpm dlx supabase status"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

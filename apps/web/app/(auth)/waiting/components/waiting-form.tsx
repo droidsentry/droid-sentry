@@ -30,7 +30,6 @@ import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { sendWaitingNotification } from "./actions";
 import WaitingVerifyCard from "./waiting-verify-card";
-import { UserMetadata } from "@supabase/supabase-js";
 
 export default function WaitingForm({
   username,

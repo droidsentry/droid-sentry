@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { createClient } from "@/lib/supabase/server";
 import OnboardingForm from "./components/onboarding-form";
 import { checkTotalUserLimit } from "@/lib/service";
