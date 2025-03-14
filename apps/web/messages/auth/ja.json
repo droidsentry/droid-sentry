@@ -2,7 +2,25 @@
   "auth": {
     "signIn": {
       "signIn": "サインイン",
-      "signingIn": "サインイン中..."
+      "signingIn": "サインイン中...",
+      "tooSmallEmailOrUsername": "メールアドレスまたはユーザー名を入力してください",
+      "tooBigEmailOrUsername": "最大{maximum}文字までです。",
+      "tooSmallPassword": "最小{minimum}文字以上で設定してください",
+      "customInvalidPassword": "大文字、小文字、数字、記号を含む8文字以上で設定してください"
+    },
+    "passwordReset": {
+      "tooSmallEmail": "メールアドレスを入力してください。",
+      "tooBigEmail": "最大{maximum}文字までです。",
+      "invalidEmail": "メールアドレスの形式で入力してください。",
+      "tooSmallPassword": "最小{minimum}文字以上で設定してください",
+      "customInvalidPassword": "大文字、小文字、数字、記号を含む8文字以上で設定してください"
+    },
+    "errors": {
+      "E1001": "ユーザーの利用上限数に達しました。",
+      "E1002": "プロジェクトの利用上限数に達しました。ベータ版は最大３つまで作成することができます。",
+      "E1003": "デバイスの利用上限数に達しました。ベータ版では最大５台まで管理することができます。",
+      "E1004": "ポリシーの利用上限数に達しました。ベータ版では最大100つまで作成することができます。",
+      "E1005": "SSIDの上限数に達しました。"
     }
   }
 }

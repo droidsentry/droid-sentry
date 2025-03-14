@@ -1,13 +1,11 @@
 "use server";
 
-import { createAndroidManagementClient } from "@/actions/emm/client";
+import { createAndroidManagementClient } from "@/lib/emm/client";
+import { DeviceResetPasswordSchema } from "@/app/schemas/devices";
+import { DeviceResetPassword } from "@/app/types/device";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
-import { selectDevicesTableFields } from "../data/select-device-fields";
-import { passwordUpdateSchema } from "@/app/schema/auth";
-import { DeviceResetPasswordSchema } from "@/app/schema/devices";
-import { DeviceResetPassword } from "@/app/types/device";
 
 const resetPassword = async ({
   newPassword,
@@ -65,13 +63,13 @@ const resetPassword = async ({
  * @param enterpriseId
  * @returns
  */
-export const resetPasswordDevice = async ({
+export const resetPasswordDevices = async ({
   formData,
-  deviceIdentifier,
+  deviceIdentifiers,
   enterpriseId,
 }: {
   formData: DeviceResetPassword;
-  deviceIdentifier: string;
+  deviceIdentifiers: string[];
   enterpriseId: string;
 }) => {
   const supabase = await createClient();
@@ -87,9 +85,17 @@ export const resetPasswordDevice = async ({
   }
   const { password: newPassword } = parsedPassword.data;
 
-  await resetPassword({ newPassword, deviceIdentifier, enterpriseId }).then(
-    () => {
-      revalidatePath(`/${enterpriseId}/devices`);
-    }
+  await Promise.all(
+    deviceIdentifiers.map(async (deviceIdentifier) => {
+      await resetPassword({
+        newPassword,
+        deviceIdentifier,
+        enterpriseId,
+      }).catch((error) => {
+        console.error("Error reset password", error.message);
+        throw new Error(error.message);
+      });
+    })
   );
+  revalidatePath(`/${enterpriseId}/devices`);
 };

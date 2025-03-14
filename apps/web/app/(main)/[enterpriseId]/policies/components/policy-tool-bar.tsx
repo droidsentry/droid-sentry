@@ -9,24 +9,30 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
+import { Loader2, PlusIcon } from "lucide-react";
 
+import { RouteParams } from "@/app/types/enterprise";
 import {
   useParams,
   usePathname,
   useRouter,
   useSearchParams,
 } from "next/navigation";
-import { useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
-import { createOrUpdatePolicy } from "../actions/policy";
-import { RouteParams } from "@/app/types/enterprise";
-import { formPolicySchema } from "@/app/schema/policy";
+import { createOrUpdatePolicy, isPolicyNameUnique } from "../actions/policy";
+import AwesomeDebouncePromise from "awesome-debounce-promise";
+import CreateNewPolicyLinkButton from "./table/create-new-policy-link-button";
+import SaveAsPolicyButton from "./policy-save-as-button";
+import { formPolicySchema } from "@/app/schemas/policy";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function PolicyToolBar() {
   const form = useFormContext<FormPolicy>();
-  const [isPending, startTransition] = useTransition();
+  const [isSavePending, startTransitionSave] = useTransition();
+  const [isSaveAsPending, startTransitionSaveAs] = useTransition();
+  const [isSavingAs, setIsSavingAs] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -36,47 +42,91 @@ export default function PolicyToolBar() {
   if (searchPolicyIdentifier) {
     policyIdentifier = searchPolicyIdentifier;
   }
+
   const enterpriseId = param.enterpriseId;
-
   const policyBasePath = `/${enterpriseId}/policies/${policyIdentifier}`;
-  const currentBase = pathname.split(policyBasePath)[1]; //device-general, device-security, etc.
+  const currentBase = pathname.split(policyBasePath)[1];
+  const { isValidating, isSubmitting, isDirty } = form.formState;
 
-  const handleSave = async (data: FormPolicy) => {
-    startTransition(async () => {
+  const handleSave = async (formData: FormPolicy) => {
+    startTransitionSave(async () => {
       if (!policyIdentifier) {
         toast.error("ポリシーIDが取得できませんでした。");
         return;
       }
-      if (!data.policyDisplayName) {
-        toast.error("ポリシー名を設定してください。");
-        return;
+      const policyDisplayName = formData.policyDisplayName;
+      if (policyIdentifier === "new") {
+        const isUnique = await isPolicyNameUnique(
+          enterpriseId,
+          policyDisplayName
+        );
+        if (!isUnique) {
+          toast.error(
+            <div className="space-y-1">
+              <p>ポリシー名が重複しています。</p>
+              <p>別のポリシー名で保存してください。</p>
+            </div>
+          );
+          return;
+        }
       }
-      const policyDisplayName = data.policyDisplayName;
-      const parsed = formPolicySchema.parse(data);
-      const savedPolicyIdentifier = await createOrUpdatePolicy({
+      await createOrUpdatePolicy({
         enterpriseId,
         policyIdentifier,
-        policyDisplayName,
-        requestBody: parsed.policyData,
-      });
-      router.push(
-        `/${enterpriseId}/policies/${savedPolicyIdentifier}/${currentBase}`
-      );
+        formData,
+      })
+        .then((savedPolicyIdentifier) => {
+          toast.success("ポリシーを保存しました。");
+          router.push(
+            `/${enterpriseId}/policies/${savedPolicyIdentifier}/${currentBase}`
+          );
+        })
+        .catch((error) => {
+          toast.error(error.message);
+          // console.error(error);
+        });
     });
   };
+  useEffect(() => {
+    if (policyIdentifier !== "new") {
+      setIsSavingAs(true);
+    }
+  }, []);
 
   const isLoading =
     policyIdentifier !== "new" && // 新規作成時はローディングチェックをスキップ
-    !form.formState.isDirty && // フォームが一度も編集されていない
+    !isDirty && // フォームが一度も編集されていない
     !form.getValues("policyDisplayName");
 
   if (isLoading) {
-    return null;
+    return (
+      <div className="h-12 px-4 flex flex-row items-center gap-2 border-b py-2">
+        <Skeleton className="h-8 w-[200px]" />
+        <span className="flex-1" />
+        <Skeleton className="h-8 w-20" />
+        <Skeleton className="h-8 w-20" />
+        <Skeleton className="h-8 w-20" />
+      </div>
+    );
   }
 
   return (
     <form
-      onSubmit={form.handleSubmit(handleSave)}
+      onSubmit={form.handleSubmit(handleSave, (errors) => {
+        // console.log("errors", errors);
+        const data = form.getValues();
+        const parseResult = formPolicySchema.safeParse(data);
+        if (!parseResult.success) {
+          toast.error(
+            <div className="space-y-1">
+              <p>入力内容に問題があります</p>
+              {parseResult.error.errors.map((error) => (
+                <p key={error.message}>{error.message}</p>
+              ))}
+            </div>
+          );
+        }
+      })}
       className="h-12 px-4 flex flex-row items-center gap-2 border-b py-2"
     >
       <span className="text-sm">ポリシー名：</span>
@@ -98,19 +148,32 @@ export default function PolicyToolBar() {
         )}
       />
       <span className="flex-1" />
+      <CreateNewPolicyLinkButton enterpriseId={enterpriseId} name="新規作成" />
+      <SaveAsPolicyButton
+        form={form}
+        isSavingAs={isSavingAs}
+        isSavePending={isSavePending}
+        isSaveAsPending={isSaveAsPending}
+        startTransitionSaveAs={startTransitionSaveAs}
+        setIsSavingAs={setIsSavingAs}
+        isValidating={isValidating}
+        isSubmitting={isSubmitting}
+        enterpriseId={enterpriseId}
+        currentBase={currentBase}
+        router={router}
+      />
       <Button
-        disabled={isPending || !form.formState.isValid}
-        className="h-8"
-        variant="outline"
+        disabled={
+          isSavePending ||
+          isSaveAsPending ||
+          // !isValid || // フォームのバリデーションが成功していない場合はボタンを無効にする(初期状態) 新規作成時でエラーが発生するため、使用せず
+          isValidating || // フォームのバリデーションが実行中の場合はボタンを無効にする
+          isSubmitting || // フォームが送信中の場合はボタンを無効にする
+          !form.getValues("policyDisplayName") // ポリシー名が空の場合はボタンを無効にする
+        }
+        className="h-8 w-20"
       >
-        {isPending ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            保存中...
-          </>
-        ) : (
-          "保存"
-        )}
+        {isSavePending ? <Loader2 className="size-4 animate-spin" /> : "保存"}
       </Button>
     </form>
   );

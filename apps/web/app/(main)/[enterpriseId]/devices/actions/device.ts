@@ -1,10 +1,9 @@
 "use server";
 
-import { createAndroidManagementClient } from "@/actions/emm/client";
 import { createClient } from "@/lib/supabase/server";
-import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
 import { selectDevicesTableFields } from "../data/select-device-fields";
+import { syncDeviceInfo } from "../lib/device";
 
 type getDevicesDataProps = {
   enterpriseId: string;
@@ -52,33 +51,12 @@ export const syncDeviceInfoFromDB = async ({
   deviceIdentifier: string;
   enterpriseId: string;
 }) => {
-  const androidmanagement = await createAndroidManagementClient();
-  const name = `enterprises/${enterpriseId}/devices/${deviceIdentifier}`;
-  await androidmanagement.enterprises.devices
-    .get({
-      name,
-    })
-    .then(async (response) => {
-      const supabase = await createClient();
-      const { error } = await supabase
-        .from("devices")
-        .update({ device_data: response.data as Json })
-        .match({
-          enterprise_id: enterpriseId,
-          device_identifier: deviceIdentifier,
-        });
-      if (error) {
-        throw new Error("Failed to update device in database");
-      }
-    })
-    .catch((error) => {
-      // 404エラーの場合は、デバイスが存在しないか、デバイスが削除された可能性がある
-      if (error.response.status === 404) {
-        console.error(error.message);
-        throw error.message;
-      }
-      throw new Error("Failed to fetch device from Google EMM");
-    });
-
-  revalidatePath(`/${enterpriseId}/devices`);
+  const supabase = await createClient();
+  const { data: user } = await supabase.auth.getUser();
+  if (!user) {
+    throw new Error("User not found");
+  }
+  await syncDeviceInfo(enterpriseId, deviceIdentifier).then(() => {
+    revalidatePath(`/${enterpriseId}/devices`);
+  });
 };

@@ -9,9 +9,10 @@ import {
 import { getPolicyDisplayName } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/actions/policy";
 import { getHardwareStatus } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/hardware-info/data/hardware-status";
 import {
+  DeviceLostModeSchema,
   DeviceResetPasswordSchema,
   DevicesTableSchema,
-} from "../schema/devices";
+} from "../schemas/devices";
 
 export type AndroidManagementDevice = androidmanagement_v1.Schema$Device;
 export type ListDevicesResponse =
@@ -49,3 +50,4 @@ export type ChartType = {
 export type DeviceOperation = androidmanagement_v1.Schema$Operation;
 
 export type DeviceResetPassword = z.infer<typeof DeviceResetPasswordSchema>;
+export type DeviceLostMode = z.infer<typeof DeviceLostModeSchema>;

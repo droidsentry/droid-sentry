@@ -8,6 +8,7 @@ import { notificationType } from "../../route";
 import { BatchUsageLogEvents } from "@/app/api/types/event";
 import { saveUsageLogs } from "./save-usage-logs";
 import { saveDeviceInfoSubscriptions } from "./save-device-info-subscriptions";
+import { syncDeviceInfo } from "@/app/(main)/[enterpriseId]/devices/lib/device";
 // import { saveDeviceInfoSubscriptions } from "./save-device-info-subscriptions";
 
 export const dispatchDeviceEvent = async ({
@@ -52,6 +53,7 @@ export const dispatchDeviceEvent = async ({
         operationName,
         devicesOperationData: data as DeviceOperation,
       });
+      await syncDeviceInfo(enterpriseId, deviceIdentifier); //紛失モード時のデータ取得に使用
       break;
 
     case "USAGE_LOGS":

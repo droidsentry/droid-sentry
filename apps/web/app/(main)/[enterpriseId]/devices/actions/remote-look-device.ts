@@ -1,6 +1,6 @@
 "use server";
 
-import { createAndroidManagementClient } from "@/actions/emm/client";
+import { createAndroidManagementClient } from "@/lib/emm/client";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
@@ -57,11 +57,11 @@ const remoteLook = async ({
  * @param enterpriseId
  * @returns
  */
-export const remoteLookDevice = async ({
-  deviceIdentifier,
+export const remoteLookDevices = async ({
+  deviceIdentifiers,
   enterpriseId,
 }: {
-  deviceIdentifier: string;
+  deviceIdentifiers: string[];
   enterpriseId: string;
 }) => {
   const supabase = await createClient();
@@ -69,7 +69,14 @@ export const remoteLookDevice = async ({
   if (!user) {
     throw new Error("User not found");
   }
-  await remoteLook({ deviceIdentifier, enterpriseId }).then(() => {
-    revalidatePath(`/${enterpriseId}/devices`);
-  });
+  // Promise.all()を使用して、すべての非同期処理の完了を待機
+  await Promise.all(
+    deviceIdentifiers.map(async (deviceIdentifier) => {
+      await remoteLook({ deviceIdentifier, enterpriseId }).catch((error) => {
+        console.error("Error remote look device", error.message);
+        throw new Error(error.message);
+      });
+    })
+  );
+  revalidatePath(`/${enterpriseId}/devices`);
 };

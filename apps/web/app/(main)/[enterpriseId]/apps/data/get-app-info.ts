@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { createAndroidManagementClient } from "../../../../../actions/emm/client";
+import { createAndroidManagementClient } from "../../../../../lib/emm/client";
 import { saveApp } from "../actions/apps";
 import { revalidatePath } from "next/cache";
 

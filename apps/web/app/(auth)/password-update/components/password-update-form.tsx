@@ -1,13 +1,13 @@
 "use client";
 
-import { updatePassword } from "@/actions/auth/auth-supabase";
+import { updatePassword } from "@/actions/auth/supabase";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { passwordUpdateSchema } from "@/app/schema/auth";
+import { passwordUpdateSchema } from "@/app/schemas/auth";
 import { PasswordUpdate } from "@/app/types/auth";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";

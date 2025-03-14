@@ -49,33 +49,40 @@ export default function AppRestrictionZone({
     });
   };
   return (
-    <div className="absolute size-full mx-2 my-3">
-      <ScrollArea className=" rounded-lg h-full">
-        <div className="m-4">
-          <div className="flex flex-wrap gap-2">
-            {sortedPolicyApps.map((policyApp) => (
-              <div key={policyApp.appId} className="relative group">
-                <div className="relative border rounded-md size-14 overflow-hidden " />
-                <Image
-                  key={policyApp.appId}
-                  src={policyApp.iconUrl}
-                  alt={policyApp.title}
-                  fill
-                  sizes="60px"
-                />
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  className="absolute -top-4 -right-4 size-6 opacity-0 group-hover:opacity-100 rounded-full m-1 z-10"
-                  onClick={() => handleRemoveApp(policyApp.packageName)}
-                >
-                  <CircleX className="text-muted-foreground " />
-                </Button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </ScrollArea>
+    <div className="relative size-full">
+      <div className="absolute size-full">
+        <ScrollArea className="rounded-lg h-full">
+          {sortedPolicyApps.length === 0 ? (
+            <span className="text-muted-foreground font-mono text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full">
+              アプリケーションをドロップしてください
+            </span>
+          ) : (
+            <div className="flex gap-2 flex-wrap pt-3">
+              {sortedPolicyApps.map((policyApp) => (
+                <div className="relative group" key={policyApp.appId}>
+                  <div className="relative size-10 border rounded-md overflow-hidden">
+                    <Image
+                      key={policyApp.appId}
+                      src={policyApp.iconUrl}
+                      alt={policyApp.title}
+                      fill
+                      sizes="56px"
+                    />
+                  </div>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="absolute -top-4 -right-4 size-6 opacity-0 group-hover:opacity-100 rounded-full m-1 z-50"
+                    onClick={() => handleRemoveApp(policyApp.packageName)}
+                  >
+                    <CircleX className="text-muted-foreground " />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </ScrollArea>
+      </div>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { Table } from "@tanstack/react-table";
 import { Loader2Icon, Trash2Icon } from "lucide-react";
 import { useTransition } from "react";
 import { toast } from "sonner";
-import { deleteSelectedDevices } from "../data/delete-devices";
+import { deleteSelectedDevices } from "../actions/delete-selected-devices";
 import { DeviceTableType } from "@/app/types/device";
 import { RouteParams } from "@/app/types/enterprise";
 import { useParams } from "next/navigation";

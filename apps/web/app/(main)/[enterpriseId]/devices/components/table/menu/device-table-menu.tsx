@@ -31,16 +31,20 @@ import { syncDeviceInfoFromDB } from "../../../actions/device";
 import DevicePasswordResetAlertDialog from "./device-password-reset-alert-dialog";
 import DeviceRebootAlertDialog from "./device-reboot-alert-dialog";
 import DeviceRemoteLookAlertDialog from "./device-remote-look-alert-dialog";
-import DeviceResetAlertDialog from "./device-reset-alert-dialog";
+import DeviceResetAlertDialog from "../../dialog/device-reset-alert-dialog";
 import DeviceStartLostModeAlertDialog from "./device-start-lost-mood-alert-dialog";
 import DeviceStopLostModeAlertDialog from "./device-stop-lost-mood-alert-dialog";
 
 interface DataTableMenuProps {
   row: Row<DeviceTableType>;
+  deviceIdentifier: string;
 }
 
-export default function DeviceTableMenu({ row }: DataTableMenuProps) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+export default function DeviceTableMenu({
+  row,
+  deviceIdentifier,
+}: DataTableMenuProps) {
+  const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
   const [isRemoteLookDialogOpen, setIsRemoteLookDialogOpen] = useState(false);
   const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] =
     useState(false);
@@ -55,7 +59,6 @@ export default function DeviceTableMenu({ row }: DataTableMenuProps) {
   const [isLostMode, setIsLostMode] = useState(currentLostMode);
   const params = useParams<RouteParams>();
   const enterpriseId = params.enterpriseId;
-  const deviceIdentifier = row.original.deviceIdentifier;
   const router = useRouter();
 
   const handleDeviceInfo = async () => {
@@ -74,10 +77,14 @@ export default function DeviceTableMenu({ row }: DataTableMenuProps) {
     await syncDeviceInfoFromDB({
       deviceIdentifier,
       enterpriseId,
-    }).catch((error) => {
-      toast.error("デバイス情報の取得に失敗しました。");
-      console.error("デバイス情報の取得に失敗しました。", error);
-    });
+    })
+      .then(() => {
+        toast.success("デバイス情報を更新しました。");
+      })
+      .catch((error) => {
+        toast.error("デバイス情報の取得に失敗しました。");
+        console.error("デバイス情報の取得に失敗しました。", error);
+      });
   };
 
   return (
@@ -129,7 +136,7 @@ export default function DeviceTableMenu({ row }: DataTableMenuProps) {
               <span>紛失モード</span>
             </DropdownMenuItem>
           )}
-          <DropdownMenuItem onClick={() => setIsDialogOpen(true)}>
+          <DropdownMenuItem onClick={() => setIsResetDialogOpen(true)}>
             <Ban className="mr-4 size-4" />
             <span className="text-red-500">端末初期化</span>
           </DropdownMenuItem>
@@ -139,25 +146,25 @@ export default function DeviceTableMenu({ row }: DataTableMenuProps) {
         isRemoteLookDialogOpen={isRemoteLookDialogOpen}
         setIsRemoteLookDialogOpen={setIsRemoteLookDialogOpen}
         enterpriseId={enterpriseId}
-        deviceIdentifier={deviceIdentifier}
+        deviceIdentifiers={[deviceIdentifier]}
       />
       <DevicePasswordResetAlertDialog
         isPasswordResetDialogOpen={isPasswordResetDialogOpen}
         setIsPasswordResetDialogOpen={setIsPasswordResetDialogOpen}
         enterpriseId={enterpriseId}
-        deviceIdentifier={deviceIdentifier}
+        deviceIdentifiers={[deviceIdentifier]}
       />
       <DeviceRebootAlertDialog
         isRebootDialogOpen={isRebootDialogOpen}
         setIsRebootDialogOpen={setIsRebootDialogOpen}
         enterpriseId={enterpriseId}
-        deviceIdentifier={deviceIdentifier}
+        deviceIdentifiers={[deviceIdentifier]}
       />
       <DeviceResetAlertDialog
-        isDialogOpen={isDialogOpen}
-        setIsDialogOpen={setIsDialogOpen}
+        isResetDialogOpen={isResetDialogOpen}
+        setIsResetDialogOpen={setIsResetDialogOpen}
         enterpriseId={enterpriseId}
-        deviceIdentifier={deviceIdentifier}
+        deviceIdentifiers={[deviceIdentifier]}
       />
       <DeviceStartLostModeAlertDialog
         isStartLostModeDialogOpen={isStartLostModeDialogOpen}

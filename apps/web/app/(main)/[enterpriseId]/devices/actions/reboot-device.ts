@@ -1,6 +1,6 @@
 "use server";
 
-import { createAndroidManagementClient } from "@/actions/emm/client";
+import { createAndroidManagementClient } from "@/lib/emm/client";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
@@ -57,11 +57,11 @@ const reboot = async ({
  * @param enterpriseId
  * @returns
  */
-export const rebootDevice = async ({
-  deviceIdentifier,
+export const rebootDevices = async ({
+  deviceIdentifiers,
   enterpriseId,
 }: {
-  deviceIdentifier: string;
+  deviceIdentifiers: string[];
   enterpriseId: string;
 }) => {
   const supabase = await createClient();
@@ -69,7 +69,13 @@ export const rebootDevice = async ({
   if (!user) {
     throw new Error("User not found");
   }
-  await reboot({ deviceIdentifier, enterpriseId }).then(() => {
-    revalidatePath(`/${enterpriseId}/devices`);
-  });
+  await Promise.all(
+    deviceIdentifiers.map(async (deviceIdentifier) => {
+      await reboot({ deviceIdentifier, enterpriseId }).catch((error) => {
+        console.error("Error reboot device", error.message);
+        throw new Error(error.message);
+      });
+    })
+  );
+  revalidatePath(`/${enterpriseId}/devices`);
 };

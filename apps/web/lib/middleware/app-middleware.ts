@@ -12,6 +12,7 @@ const publicRoutes = [
   "/api/auth/callback",
   "/api/auth/confirm",
   "/api/auth/route",
+  "/waiting",
 ];
 
 // ゲスト専用ルート(ログインしている人はアクセスできない)
@@ -42,7 +43,10 @@ export default async function AppMiddleware(
   // パスがプライベートルートかどうかを確認.プライベートルートであれば、true.
   const isPrivateRoute = !isPublicRoute && !isGuestRoute;
   // ユーザーがプロジェクトを作成しているかどうかを確認
-  const hasProject = user?.user_metadata?.has_created_project;
+  const isOnboardingCompleted = user?.user_metadata?.is_onboarding_completed;
+  // // ユーザーがサインアップした時点で最大ユーザー数に達しているかどうかを確認　。超えていない場合はtrue
+  // const hasPassedUserLimitCheck =
+  //   user?.app_metadata?.has_passed_user_limit_check;
 
   // // ユーザーが所属する組織があるかどうかを確認
   // const hasOrganization = user?.app_metadata?.organization;
@@ -61,8 +65,12 @@ export default async function AppMiddleware(
         new URL(`/sign-in?from=${path}`, request.url)
       );
     }
+    // 最大ユーザー数に達している場合、サインアップページにリダイレクト
+    // if (!hasPassedUserLimitCheck && path !== `/waiting`) {
+    //   return NextResponse.redirect(new URL("/waiting", request.url));
+    // }
     // プロジェクト作成チェック（/welcome以外のプライベートルートの場合のみ）
-    if (!hasProject && path !== `/welcome`) {
+    if (!isOnboardingCompleted && path !== `/welcome`) {
       return NextResponse.redirect(new URL("/welcome", request.url));
     }
 

@@ -1,13 +1,22 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import DiscordSingInButton from "../components/discord-sing-in_button";
-import { GitHubLoginButton } from "../components/github-login-button";
-import GoogleSingInButton from "../components/google-sing-in-button";
+import DiscordSingButton from "../components/discord-sing-button";
+import { GitHubSignButton } from "../components/github-login-button";
+import GoogleSingButton from "../components/google-sing-in-button";
 import SingleWelcome from "../images/single-welcome.webp";
 import { SignInForm } from "./components/sign-in-form";
+import { checkTotalUserLimit } from "@/lib/service";
 
 export default async function Page() {
+  let signUpUrl = "/sign-up";
+  await checkTotalUserLimit().catch((error) => {
+    const errorCode = error.message;
+    if (errorCode === "E1001") {
+      signUpUrl = "/waiting";
+      return;
+    }
+  });
   return (
     <div className="flex flex-col-reverse lg:flex-row mt-20 sm:mt-10 pb-5 sm:pb-20 md:pb-52 lg:pb-60 xl:pb-10 2XL:pb-0 gap-20 md:gap-10 xl:gap-0">
       <div className="basis-1/3 lg:basis-4/6 flex items-center justify-center pl-8 md:pl-40 xl:pl-20 pr-8">
@@ -39,9 +48,9 @@ export default async function Page() {
 
       <div className="basis-1/3 lg:basis-2/6 flex justify-center items-center pl-4 pr-4 lg:pr-10 xl:pr-24 2xl:pr-40">
         <div className="flex flex-col gap-2 w-[300px] sm:w-[400px] md:w-[450px] lg:w-auto xl:w-full">
-          <GitHubLoginButton />
-          <GoogleSingInButton />
-          <DiscordSingInButton />
+          <GitHubSignButton />
+          <GoogleSingButton />
+          <DiscordSingButton />
           <div className="w-full flex items-center gap-4 my-4">
             <div className="flex-grow border-t text-muted-foreground"></div>
             <span className="text-muted-foreground">or</span>
@@ -56,7 +65,7 @@ export default async function Page() {
               </div>
               <Button variant="link" className="relative" asChild>
                 <Link
-                  href="/sign-up"
+                  href={signUpUrl}
                   className="text-xs font-bold absolute top-0 right-0"
                 >
                   アカウントを新規作成する

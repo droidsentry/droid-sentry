@@ -5,7 +5,7 @@ export const devicesTableColumnList: TableColumnDefinition[] = [
     accessorKey: "deviceDisplayName",
     title: "端末名",
     minSize: 200,
-    size: 250,
+    size: 200,
   },
   {
     accessorKey: "policyDisplayName",
@@ -13,10 +13,10 @@ export const devicesTableColumnList: TableColumnDefinition[] = [
     minSize: 200,
     size: 200,
   },
-  // {
-  //   accessorKey: "state",
-  //   title: "State",
-  //   minSize: 100,
-  //   size: 150,
-  // },
+  {
+    accessorKey: "deviceIdentifier",
+    title: "デバイスID",
+    minSize: 200,
+    size: 200,
+  },
 ];

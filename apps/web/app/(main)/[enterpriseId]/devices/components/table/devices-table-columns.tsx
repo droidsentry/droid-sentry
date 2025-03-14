@@ -67,30 +67,6 @@ export const deviceColumns: ColumnDef<DeviceTableType>[] = [
     },
   },
   // {
-  //   accessorKey: "enrollmentTokenName",
-  //   id: "識別 ID",
-  //   minSize: 250,
-  //   size: 300,
-  //   header: ({ column }) => {
-  //     return (
-  //       <div className="flex items-center justify-center">
-  //         <Button
-  //           variant="ghost"
-  //           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //         >
-  //           {column.id}
-  //           <ArrowUpDown className="ml-2 h-4 w-4" />
-  //         </Button>
-  //       </div>
-  //     );
-  //   },
-  //   cell: ({ row, column }) => (
-  //     <div className="truncate" title={row.getValue(column.id)}>
-  //       {row.getValue(column.id)}
-  //     </div>
-  //   ),
-  // },
-  // {
   //   accessorKey: "appliedPolicyVersion",
   //   id: "ポリシー バージョン",
   //   minSize: 225,
@@ -174,9 +150,11 @@ export const deviceColumns: ColumnDef<DeviceTableType>[] = [
       );
     },
     cell: ({ row }) => {
+      const deviceIdentifier = row.original.deviceIdentifier;
+      if (!deviceIdentifier) return null;
       return (
         <div className="flex items-center justify-center m-1">
-          <DeviceTableMenu row={row} />
+          <DeviceTableMenu row={row} deviceIdentifier={deviceIdentifier} />
         </div>
       );
     },

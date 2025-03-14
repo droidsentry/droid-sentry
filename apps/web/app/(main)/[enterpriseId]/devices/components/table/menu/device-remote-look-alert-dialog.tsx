@@ -11,30 +11,35 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { remoteLookDevice } from "../../../actions/remote-look-device";
+import { remoteLookDevices } from "../../../actions/remote-look-device";
+import { Table } from "@tanstack/react-table";
 
-export default function DeviceRemoteLookAlertDialog({
-  isRemoteLookDialogOpen,
-  setIsRemoteLookDialogOpen,
-  enterpriseId,
-  deviceIdentifier,
-}: {
+interface DeviceRemoteLookAlertDialogProps<TData> {
   isRemoteLookDialogOpen: boolean;
   setIsRemoteLookDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   enterpriseId: string | null;
-  deviceIdentifier: string | null;
-}) {
+  deviceIdentifiers: string[];
+  table?: Table<TData>;
+}
+export default function DeviceRemoteLookAlertDialog<TData>({
+  isRemoteLookDialogOpen,
+  setIsRemoteLookDialogOpen,
+  enterpriseId,
+  deviceIdentifiers,
+  table,
+}: DeviceRemoteLookAlertDialogProps<TData>) {
   const handleRemoteLookDevice = async () => {
-    if (!enterpriseId || !deviceIdentifier) {
+    if (!enterpriseId || !deviceIdentifiers) {
       toast.error("デバイスのロックに失敗しました。");
       return;
     }
-    await remoteLookDevice({
-      deviceIdentifier,
+    await remoteLookDevices({
+      deviceIdentifiers,
       enterpriseId,
     })
       .then(() => {
         toast.success("デバイスをロックしました。");
+        table?.resetRowSelection();
       })
       .catch((error) => {
         toast.error("デバイスのロックに失敗しました。");

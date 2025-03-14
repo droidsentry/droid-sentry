@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/table";
 
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
-import { deviceManagementMode, deviceOwnership } from "@/lib/device";
+import { deviceManagementMode, deviceOwnership } from "@/data/emm/device";
 import useSWR from "swr";
 import { deviceStates } from "../../../data/data";
 import { getHardwareInfo } from "../../actions/device";

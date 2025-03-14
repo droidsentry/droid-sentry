@@ -4,7 +4,6 @@ import { AndroidManagementDevice } from "@/app/types/device";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { Json } from "@/types/database";
-import { request } from "http";
 
 /**
  * デバイスデータから不要なイベントデータを除外
@@ -21,6 +20,7 @@ export const prepareDeviceData = (device: AndroidManagementDevice) => {
 
 /** この関数は試作中
  * PubSubからの通知で1端末のデータを保存する関数
+ * デバイス一覧でも使用するため、必ず認証確認を実施したのち使用すること。
  */
 export const saveDeviceStatus = async ({
   enterpriseId,
@@ -40,7 +40,7 @@ export const saveDeviceStatus = async ({
     ? appliedPolicyName.split(`enterprises/${enterpriseId}/policies/`)[1] ||
       null
     : null;
-  console.log("policyIdentifier", policyIdentifier);
+  // console.log("policyIdentifier", policyIdentifier);
 
   const policyName = device.policyName;
   const requestedPolicyIdentifier = policyName?.includes(
@@ -48,7 +48,7 @@ export const saveDeviceStatus = async ({
   )
     ? policyName.split(`enterprises/${enterpriseId}/policies/`)[1] || null
     : null;
-  console.log("requestedPolicyIdentifier", requestedPolicyIdentifier);
+  // console.log("requestedPolicyIdentifier", requestedPolicyIdentifier);
   try {
     // devicesテーブルに記録するデータ
     const deviceData = {

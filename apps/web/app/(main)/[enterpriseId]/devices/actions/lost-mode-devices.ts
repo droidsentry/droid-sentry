@@ -1,45 +1,60 @@
 "use server";
 
-import { createAndroidManagementClient } from "@/actions/emm/client";
+import { createAndroidManagementClient } from "@/lib/emm/client";
+import { DeviceLostModeSchema } from "@/app/schemas/devices";
+import { DeviceLostMode } from "@/app/types/device";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
+import { revalidatePath } from "next/cache";
 /**
  * 選択したデバイスをロストモードにする
  * @param deviceNames
  * @returns
  */
-export const startLostModeSelectedDevice = async (
+export const startLostMode = async (
   enterpriseId: string,
-  deviceIdentifier: string
+  deviceIdentifier: string,
+  formData: DeviceLostMode
 ) => {
   const name = `enterprises/${enterpriseId}/devices/${deviceIdentifier}`;
   const androidmanagement = await createAndroidManagementClient();
+  const {
+    lostOrganization,
+    lostMessage,
+    lostPhoneNumber,
+    lostEmailAddress,
+    lostStreetAddress,
+  } = formData;
   const requestBody = {
     type: "START_LOST_MODE",
     startLostModeParams: {
       lostOrganization: {
-        defaultMessage: "test 会社",
+        defaultMessage: lostOrganization,
         localizedMessages: {
-          "ja-JP": "test 会社",
+          "ja-JP": lostOrganization,
+          "en-US": lostOrganization,
         },
       },
       lostMessage: {
-        defaultMessage: "端末が紛失しました。連絡お願いします。",
+        defaultMessage: lostMessage,
         localizedMessages: {
-          "ja-JP": "端末が紛失しました。連絡お願いします。",
+          "ja-JP": lostMessage,
+          "en-US": lostMessage,
         },
       },
       lostPhoneNumber: {
-        defaultMessage: "09037549016",
+        defaultMessage: lostPhoneNumber,
         localizedMessages: {
-          "ja-JP": "09037549016",
+          "ja-JP": lostPhoneNumber,
+          "en-US": lostPhoneNumber,
         },
       },
-      lostEmailAddress: "t3kuboki@gmail.com",
+      lostEmailAddress: lostEmailAddress,
       lostStreetAddress: {
-        defaultMessage: "東京都渋谷区渋谷1-1-1",
+        defaultMessage: lostStreetAddress,
         localizedMessages: {
-          "ja-JP": "東京都渋谷区渋谷1-1-1",
+          "ja-JP": lostStreetAddress,
+          "en-US": lostStreetAddress,
         },
       },
     },
@@ -81,8 +96,31 @@ export const startLostModeSelectedDevice = async (
   });
 };
 
+export const startLostModeSelectedDevice = async (
+  enterpriseId: string,
+  deviceIdentifier: string,
+  formData: DeviceLostMode
+) => {
+  const supabase = await createClient();
+  const { data: user } = await supabase.auth.getUser();
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const parsedFormData = await DeviceLostModeSchema.safeParseAsync(formData);
+  if (parsedFormData.success === false) {
+    throw new Error("Invalid form data");
+  }
+
+  await startLostMode(enterpriseId, deviceIdentifier, parsedFormData.data).then(
+    () => {
+      revalidatePath(`/${enterpriseId}/devices`);
+    }
+  );
+};
+
 /**
- * 選択したデバイスをロストモードにする
+ * 選択したデバイスのロストモードを解除する
  * @param
  * @returns
  */

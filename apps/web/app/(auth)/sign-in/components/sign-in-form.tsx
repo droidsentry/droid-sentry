@@ -13,7 +13,7 @@ import { Loader2 } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import PasswordWithResetForm from "../../components/password-with-reset-form";
 
-import { signInWithEmailOrUsername } from "@/actions/auth/auth-supabase";
+import { signInWithEmailOrUsername } from "@/actions/auth/supabase";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
@@ -45,7 +45,7 @@ export function SignInForm() {
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
       <FormField
         control={form.control}
-        name="emailOrUserName"
+        name="emailOrUsername"
         render={({ field }) => (
           <FormItem>
             <FormLabel>

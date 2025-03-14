@@ -63,7 +63,7 @@ export default function ManagementAppsTable<TData>({
     },
     initialState: {
       pagination: {
-        pageSize: 100, // デフォルトのページサイズ
+        pageSize: 10, // デフォルトのページサイズ
       },
       columnVisibility: {
         // デフォルトで非表示

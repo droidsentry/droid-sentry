@@ -1,8 +1,6 @@
 "use client";
 
-import { FormPolicy } from "@/app/types/policy";
 import { ReactNode, createContext, useContext, useState } from "react";
-import { useFormContext } from "react-hook-form";
 // インストールタイプの定数定義
 const INSTALL_TYPES = [
   "PREINSTALLED",
@@ -89,7 +87,6 @@ export function AppRestrictionProvider({ children }: { children: ReactNode }) {
   // フィルターされたアプリケーションのステータスを管理
   const [filteredPolicyAppStatus, setFilteredPolicyAppStatus] =
     useState<PolicyAppStatus>("ALL");
-  const form = useFormContext<FormPolicy>();
 
   return (
     <Context.Provider

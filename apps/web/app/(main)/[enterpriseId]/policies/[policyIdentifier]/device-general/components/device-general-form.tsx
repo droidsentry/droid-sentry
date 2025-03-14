@@ -13,7 +13,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useFormContext } from "react-hook-form";
 
 import { FormPolicy } from "@/app/types/policy";
-// import { usePolicy } from "../../../data/use-policy";
 import { Loader2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -23,6 +22,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import DeviceGeneralDisplaySettingsForm from "./device-general-display-settings-form";
+import DeviceGeneralSystemUpdateForm from "./device-general-system-update-form";
 
 export default function DeviceGeneralForm({
   policyIdentifier,
@@ -43,6 +46,7 @@ export default function DeviceGeneralForm({
       </div>
     );
   }
+
   return (
     <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
       <FormField
@@ -112,6 +116,95 @@ export default function DeviceGeneralForm({
       />
       <FormField
         control={form.control}
+        name="policyData.smsDisabled"
+        render={({ field }) => (
+          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
+            <div className="space-y-1 leading-none">
+              <FormLabel className="text-base">SMSの無効化</FormLabel>
+              <FormDescription>
+                SMSの送信、受信ができなくなります。
+              </FormDescription>
+            </div>
+            <FormControl>
+              <Switch
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                className=""
+              />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name="policyData.mountPhysicalMediaDisabled"
+        render={({ field }) => (
+          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
+            <div className="space-y-1 leading-none">
+              <FormLabel className="text-base">
+                外部ストレージのマウントを無効化
+              </FormLabel>
+              <FormDescription>
+                外部ストレージのマウントができなくなります。
+              </FormDescription>
+            </div>
+            <FormControl>
+              <Switch
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                className=""
+              />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="policyData.cellBroadcastsConfigDisabled"
+        render={({ field }) => (
+          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
+            <div className="space-y-1 leading-none">
+              <FormLabel className="text-base">
+                緊急速報メールの無効化
+              </FormLabel>
+              <FormDescription>
+                緊急速報メールの受信ができなくなります。
+              </FormDescription>
+            </div>
+            <FormControl>
+              <Switch
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                className=""
+              />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="policyData.outgoingBeamDisabled"
+        render={({ field }) => (
+          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
+            <div className="space-y-1 leading-none">
+              <FormLabel className="text-base">Androidビームの無効化</FormLabel>
+              <FormDescription>
+                Androidビームが使用できなくなります。
+              </FormDescription>
+            </div>
+            <FormControl>
+              <Switch
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                className=""
+              />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
         name="policyData.factoryResetDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
@@ -120,6 +213,48 @@ export default function DeviceGeneralForm({
               <FormDescription>
                 設定からの「全データを消去」ができなくなります。
               </FormDescription>
+            </div>
+            <FormControl>
+              <Switch
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                className=""
+              />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="policyData.modifyAccountsDisabled"
+        render={({ field }) => (
+          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
+            <div className="space-y-1 leading-none">
+              <FormLabel className="text-base">
+                アカウント追加・削除設定の無効化
+              </FormLabel>
+              <FormDescription>
+                アカウント追加・削除設定ができなくなります。
+              </FormDescription>
+            </div>
+            <FormControl>
+              <Switch
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                className=""
+              />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="policyData.outgoingCallsDisabled"
+        render={({ field }) => (
+          <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
+            <div className="space-y-1 leading-none">
+              <FormLabel className="text-base">電話発信の無効化</FormLabel>
+              <FormDescription>電話発信ができなくなります。</FormDescription>
             </div>
             <FormControl>
               <Switch
@@ -176,6 +311,175 @@ export default function DeviceGeneralForm({
           </FormItem>
         )}
       />
+      <FormField
+        control={form.control}
+        name="policyData.cameraAccess"
+        render={({ field }) => (
+          <FormItem className="flex flex-col rounded-md border p-4 gap-2">
+            <FormLabel>カメラ設定</FormLabel>
+            <Select
+              onValueChange={field.onChange}
+              defaultValue={field.value ?? "CAMERA_ACCESS_UNSPECIFIED"}
+              value={field.value ?? "CAMERA_ACCESS_UNSPECIFIED"}
+            >
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder="カメラ設定" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                <SelectItem value="CAMERA_ACCESS_UNSPECIFIED">
+                  設定なし
+                </SelectItem>
+                <SelectItem value="CAMERA_ACCESS_USER_CHOICE">
+                  カメラ使用許可
+                </SelectItem>
+                <SelectItem value="CAMERA_ACCESS_DISABLED">
+                  カメラ使用禁止
+                </SelectItem>
+                <SelectItem value="CAMERA_ACCESS_ENFORCED">
+                  アプリのカメラ使用を強制的に有効
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            <FormDescription>
+              {field.value === "CAMERA_ACCESS_UNSPECIFIED" &&
+                "デフォルト設定：すべてのカメラが使用可能です。Android 12以降では、ユーザーがカメラアクセスの切り替えボタンを使用できます。"}
+              {field.value === "CAMERA_ACCESS_USER_CHOICE" &&
+                "すべてのカメラが使用可能です。Android 12以降では、ユーザーがカメラアクセスの切り替えボタンを使用できます。"}
+              {field.value === "CAMERA_ACCESS_DISABLED" &&
+                "カメラ使用を禁止します。完全管理対象デバイスではデバイス全体に適用され、仕事用プロファイルではプロファイル内のみに適用されます。仕事用プロファイルでは、プロファイル外のアプリには影響しません。"}
+              {field.value === "CAMERA_ACCESS_ENFORCED" &&
+                "カメラ使用を強制的に有効にします。Android 12以降の完全管理対象デバイスでは、ユーザーによるカメラアクセスの切り替えができなくなります。その他のデバイスでは「カメラ使用許可」と同じ動作になります。"}
+            </FormDescription>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <div className="space-y-2 border rounded-lg p-4">
+        <h2 className="text-lg font-bold">ユーザー設定</h2>
+        <FormField
+          control={form.control}
+          name="policyData.addUserDisabled"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
+              <div className="space-y-1 leading-none">
+                <FormLabel className="text-base">
+                  新しいユーザーとプロファイルの追加
+                </FormLabel>
+                <FormDescription>
+                  新しいユーザーとプロファイルの追加を無効化します。
+                  デバイスオーナーで管理されているデバイスは、デフォルトでユーザーはユーザーの追加や削除ができません。
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  className=""
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="policyData.removeUserDisabled"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
+              <div className="space-y-1 leading-none">
+                <FormLabel className="text-base">
+                  ユーザー削除を無効化
+                </FormLabel>
+                <FormDescription>
+                  デバイスに追加されているユーザーの削除を無効化します。
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  className=""
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+      </div>
+      <DeviceGeneralDisplaySettingsForm />
+
+      <div className="space-y-2 border rounded-lg p-4">
+        <h2 className="text-lg font-bold">位置情報共有を無効化</h2>
+        <FormField
+          control={form.control}
+          name="policyData.shareLocationDisabled"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
+              <div className="space-y-1 leading-none">
+                <FormLabel className="text-base">
+                  位置情報共有の無効化
+                </FormLabel>
+                <FormDescription>
+                  現在地の共有が無効になります。
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  className=""
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="policyData.locationMode"
+          render={({ field }) => (
+            <FormItem className="flex flex-col rounded-md border p-4 gap-2">
+              <FormLabel>位置情報の検出設定</FormLabel>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value ?? "LOCATION_MODE_UNSPECIFIED"}
+                value={field.value ?? "LOCATION_MODE_UNSPECIFIED"}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="位置情報の検出設定" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="LOCATION_MODE_UNSPECIFIED">
+                    設定なし
+                  </SelectItem>
+                  <SelectItem value="LOCATION_USER_CHOICE">
+                    ユーザーの選択を許可
+                  </SelectItem>
+                  <SelectItem value="LOCATION_ENFORCED">
+                    位置情報検出を強制的に有効
+                  </SelectItem>
+                  <SelectItem value="LOCATION_UNSPECIFIED">
+                    位置情報検出を強制的に無効
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <FormDescription>
+                {field.value === "LOCATION_MODE_UNSPECIFIED" &&
+                  "デフォルトとして「ユーザーの選択を許可」が設定されます。"}
+                {field.value === "LOCATION_USER_CHOICE" &&
+                  "ユーザーが位置情報の検出を選択できるようになります。"}
+                {field.value === "LOCATION_ENFORCED" &&
+                  "位置情報検出を強制的に有効にします。"}
+                {field.value === "LOCATION_UNSPECIFIED" &&
+                  "位置情報検出を強制的に無効にします。"}
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+      {/* <DeviceGeneralSystemUpdateForm /> */}
     </div>
   );
 }
