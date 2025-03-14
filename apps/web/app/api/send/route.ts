@@ -7,12 +7,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
-    console.log("send waiting notification");
-    console.log(request);
-    console.log(request.body);
-    // リクエストボディからデータを取得
     const body = await request.json();
-    console.log(body);
     const {
       username,
       projectName = AppConfig.title,
@@ -35,7 +30,6 @@ export async function POST(request: Request) {
     const from = isProd
       ? `【${projectName}】 <noreply@${emailDomain}>`
       : `【${projectName} DEV】 <noreply@${emailDomain}>`;
-    console.log(from);
 
     // メール送信
     const { data, error } = await resend.emails.send({

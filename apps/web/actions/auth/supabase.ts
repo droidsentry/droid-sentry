@@ -64,22 +64,22 @@ export const signUpNewUser = async (formData: SignUp) => {
     throw new Error(await authErrorMessage(errorCode));
   }
 
-  const currentIsoTimestamp = new Date().toISOString();
-  const { error: dbError } = await supabaseAdmin.from("users").insert([
-    {
-      user_id: user.id,
-      email,
-      username,
-      updated_at: currentIsoTimestamp,
-    },
-  ]);
-  if (dbError && dbError.code !== "23505") {
-    console.error(dbError.message);
-    // 23505 はすでにユーザー名が登録されている場合のエラーコード
-    throw new Error(
-      "サインアップ登録は完了しましたが、ユーザー名の登録に失敗しました。ログインする際はユーザー名とパスワードでログインできません。"
-    );
-  }
+  // const currentIsoTimestamp = new Date().toISOString();
+  // const { error: dbError } = await supabaseAdmin.from("users").insert([
+  //   {
+  //     user_id: user.id,
+  //     email,
+  //     username,
+  //     updated_at: currentIsoTimestamp,
+  //   },
+  // ]);
+  // if (dbError && dbError.code !== "23505") {
+  //   console.error(dbError.message);
+  //   // 23505 はすでにユーザー名が登録されている場合のエラーコード
+  //   throw new Error(
+  //     "サインアップ登録は完了しましたが、ユーザー名の登録に失敗しました。ログインする際はユーザー名とパスワードでログインできません。"
+  //   );
+  // }
   return user.id;
 };
 

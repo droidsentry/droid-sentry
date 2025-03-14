@@ -1,14 +1,9 @@
 "use client";
 
-import { createProject } from "@/actions/emm/project";
+import { extendedOnboardingUserSchema } from "@/app/schemas/project";
+import { OnboardingUser } from "@/app/types/project";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -19,82 +14,71 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, Rocket } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { toast } from "sonner";
-import { getSignUpUrl } from "@/actions/emm/enterprise";
-import { getBaseURL } from "@/lib/base-url/client";
-import { projectSchema } from "@/app/schemas/project";
-import { Project } from "@/app/types/project";
+import { registerOnboardingUser } from "../actions";
 
-export default function OnboardingForm() {
-  const [progress, setProgress] = useState(0);
+export default function OnboardingForm({
+  username,
+  email,
+}: {
+  username: string;
+  email: string;
+}) {
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const form = useForm({
     mode: "onChange",
-    resolver: zodResolver(projectSchema),
+    resolver: zodResolver(extendedOnboardingUserSchema),
     defaultValues: {
-      projectName: "",
-      organizationName: "",
+      username: username || "",
+      email: email || "",
       agreeToTerms: false,
     },
   });
-  const [currentUrl, setCurrentUrl] = useState<string>();
-  const url = getBaseURL(currentUrl);
-
-  const onSubmit = async (data: Project) => {
-    await createProject(data).then(async (project) => {
-      toast.success("プロジェクトが作成されました");
-      await getSignUpUrl(project.project_id, url, project.project_name);
+  const onSubmit = async (data: OnboardingUser) => {
+    startTransition(async () => {
+      await registerOnboardingUser(data)
+        .then((res) => {
+          toast.success("登録が完了しました。次にプロジェクトを作成します。");
+          router.push("/projects/new");
+        })
+        .catch((err) => {
+          toast.error(err.message);
+        });
     });
   };
-
-  // フォームの状態が変更されるたびにprogressを更新
-  useEffect(() => {
-    setCurrentUrl(window.location.origin);
-    const subscription = form.watch((values) => {
-      let completedFields = 0;
-      if (values.projectName) completedFields++;
-      if (values.organizationName) completedFields++;
-      if (values.agreeToTerms) completedFields++;
-
-      const newProgress = (completedFields / 3) * 100;
-      setProgress(newProgress);
-    });
-
-    // クリーンアップ関数を返す
-    return () => subscription.unsubscribe();
-  }, [form]);
 
   return (
     <Card className="max-w-2/3 rounded-xl border-0 p-4 sm:p-6 bg-transparent shadow-none">
       <CardHeader className="text-center">
-        <Rocket className="mx-auto size-12 text-blue-400 dark:text-primary" />
+        <Rocket className="mx-auto size-12 text-blue-400 dark:text-primary mb-4" />
         <CardTitle className="text-3xl font-bold">ようこそ！</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Progress value={progress} className="w-full" />
         <p className="text-center text-muted-foreground tracking-wide">
-          まずはプロジェクト名と組織名を入力し、
+          事前に登録したユーザー名を確認し、
           <br />
-          利用規約に同意してください。
+          利用規約に同意してください
         </p>
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="projectName"
+              name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>プロジェクト名</FormLabel>
+                  <FormLabel>ユーザー名</FormLabel>
                   <FormControl>
                     <Input
                       autoComplete="off"
-                      placeholder="任意のプロジェクト名"
+                      placeholder="任意のユーザー名"
                       {...field}
                     />
                   </FormControl>
@@ -104,14 +88,15 @@ export default function OnboardingForm() {
             />
             <FormField
               control={form.control}
-              name="organizationName"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>組織名</FormLabel>
+                  <FormLabel>メールアドレス</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={true}
                       autoComplete="off"
-                      placeholder="任意の組織名"
+                      placeholder="任意のメールアドレス"
                       {...field}
                     />
                   </FormControl>
@@ -150,33 +135,25 @@ export default function OnboardingForm() {
             />
             <Button
               disabled={
+                isPending ||
                 !form.formState.isValid ||
                 form.formState.isSubmitting ||
                 form.formState.isValidating
               }
               className="w-full font-bold"
             >
-              {form.formState.isSubmitting ? (
+              {isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   登録中...
                 </>
               ) : (
-                <>使用を開始する</>
+                <>ユーザー名を登録する</>
               )}
             </Button>
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex flex-col space-y-4">
-        {/* <Button
-          variant="link"
-          className="text-sm text-muted-foreground"
-          asChild
-        >
-          <Link href="/projects">スキップして続行</Link>
-        </Button> */}
-      </CardFooter>
     </Card>
   );
 }

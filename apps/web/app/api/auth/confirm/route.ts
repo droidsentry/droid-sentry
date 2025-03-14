@@ -34,25 +34,6 @@ export async function GET(request: NextRequest) {
     }
     await checkAndUpdateUserLimit(user);
 
-    /**
-     * 確認メール使用した情報を削除
-     *  */
-    const currentMetadata = user.user_metadata || {};
-    console.log("currentMetadata", currentMetadata);
-    /**
-     * currentMetadata {
-  created_at: '2025/03/13 19:08:02（木）',
-  email: 't5kuboki@gmail.com',
-  email_verified: true,
-  ip_address: '::1',
-  location: 'unknown',
-  phone_verified: false,
-  sub: '575ba5b9-cb9f-48d9-958a-430f2df94741',
-  username: 't5kuboki'
-}
-     */
-    const { ip_address, location, created_at, ...cleanedMetadata } =
-      currentMetadata;
     const supabaseAdmin = createAdminClient();
     await supabaseAdmin.auth.admin.updateUserById(userId, {
       user_metadata: {
@@ -63,14 +44,15 @@ export async function GET(request: NextRequest) {
     });
 
     // ユーザーがサブスクリプションを作成しているかどうかを確認
-    const hasSubscriptionId = user?.user_metadata?.stripe_customer_id;
-    if (!hasSubscriptionId) {
-      await createTrialSubscription(userId).then(() => {
-        return redirect(next);
-      });
-    } else {
-      return redirect(next);
-    }
+    // const hasSubscriptionId = user?.user_metadata?.stripe_customer_id;
+    // if (!hasSubscriptionId) {
+    //   await createTrialSubscription(userId).then(() => {
+    //     return redirect(next);
+    //   });
+    // } else {
+    //   return redirect(next);
+    // }
+    return redirect(next);
   }
   redirect("/error");
 }

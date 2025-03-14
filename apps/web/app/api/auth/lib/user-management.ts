@@ -1,3 +1,5 @@
+import "server-only";
+
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkTotalUserLimit } from "@/lib/service";
 import { User } from "@supabase/supabase-js";
@@ -9,15 +11,18 @@ import { User } from "@supabase/supabase-js";
  */
 export async function checkAndUpdateUserLimit(user: User): Promise<void> {
   const userId = user.id;
-  const isTotalUserLimit = user?.app_metadata?.is_total_user_limit;
+  const hasPassedUserLimitCheck =
+    user?.app_metadata?.has_passed_user_limit_check;
   const supabaseAdmin = createAdminClient();
 
-  if (!isTotalUserLimit) {
+  console.log("hasPassedUserLimitCheck", hasPassedUserLimitCheck);
+
+  if (!hasPassedUserLimitCheck) {
     await checkTotalUserLimit()
       .then(async () => {
         await supabaseAdmin.auth.admin.updateUserById(userId, {
           app_metadata: {
-            is_total_user_limit: true,
+            has_passed_user_limit_check: true,
           },
         });
       })
@@ -26,7 +31,7 @@ export async function checkAndUpdateUserLimit(user: User): Promise<void> {
         if (errorMessage === "E1001") {
           await supabaseAdmin.auth.admin.updateUserById(userId, {
             app_metadata: {
-              is_total_user_limit: false,
+              has_passed_user_limit_check: false,
             },
           });
         }

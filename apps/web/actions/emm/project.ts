@@ -57,16 +57,6 @@ export const createProject = async (data: Project) => {
     console.error("プロジェクトユーザー紐付けエラー:", managementError);
     throw new Error("プロジェクトとユーザーの紐付けに失敗しました");
   }
-  // userメタデータにプロジェクト作成フラグを立てる
-  const { error: metadataError } = await supabase.auth.updateUser({
-    data: {
-      // has_created_project: false,
-      has_created_project: true,
-    },
-  });
-  if (metadataError) {
-    console.error("メタデータ更新エラー:", metadataError);
-    throw new Error("メタデータの更新に失敗しました");
-  }
+
   return project;
 };

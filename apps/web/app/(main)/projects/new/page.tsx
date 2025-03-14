@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 
-import CreateProjectForm from "../../welcome/components/create-project-form";
+import CreateProjectForm from "./create-project-form";
 
 export default function Page() {
   return (
@@ -11,7 +11,6 @@ export default function Page() {
           description="新しいプロジェクトの詳細を入力してください"
           submitButtonText="プロジェクトを作成"
           agreeToTermsButton={false}
-          showSkipButton={false}
         />
       </div>
     </div>

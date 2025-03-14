@@ -28,7 +28,6 @@ export async function GET(request: NextRequest) {
     if (!userId) {
       throw new Error("ユーザーIDが取得できません");
     }
-    await checkAndUpdateUserLimit(user);
 
     // エラーが発生した場合、ホームページにリダイレクト
     if (error) {
@@ -36,16 +35,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL("/auth-error", request.url));
     }
 
-    // ユーザーがサブスクリプションを作成しているかどうかを確認
-    const hasSubscriptionId = user?.user_metadata?.stripe_customer_id;
-    // console.log("hasSubscriptionId", hasSubscriptionId);
-    if (!hasSubscriptionId) {
-      // awaitを使用して非同期処理の完了を待つ
-      await createTrialSubscription(userId);
-      return NextResponse.redirect(new URL("/projects", request.url));
-    } else {
-      return NextResponse.redirect(new URL("/projects", request.url));
-    }
+    return NextResponse.redirect(new URL("/projects", request.url));
   }
   return NextResponse.redirect(new URL("/auth-error", request.url));
 }

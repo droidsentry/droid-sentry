@@ -28,10 +28,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { sendWaitingNotification } from "../../sign-up/actions/email";
+import { sendWaitingNotification } from "./actions";
 import WaitingVerifyCard from "./waiting-verify-card";
+import { UserMetadata } from "@supabase/supabase-js";
 
-export default function WaitingForm() {
+export default function WaitingForm({
+  username,
+  email,
+}: {
+  username?: string;
+  email?: string;
+}) {
   const [isVerified, setIsVerified] = useState(true);
   const [isPending, startTransition] = useTransition();
 
@@ -39,8 +46,8 @@ export default function WaitingForm() {
     mode: "onChange",
     resolver: zodResolver(waitingSchema),
     defaultValues: {
-      username: process.env.NEXT_PUBLIC_DEV_USERNAME ?? "",
-      email: process.env.NEXT_PUBLIC_DEV_EMAIL ?? "",
+      username: username || process.env.NEXT_PUBLIC_DEV_USERNAME || "",
+      email: email || process.env.NEXT_PUBLIC_DEV_EMAIL || "",
     },
   });
 
@@ -48,7 +55,11 @@ export default function WaitingForm() {
     startTransition(async () => {
       await sendWaitingNotification(data)
         .then(() => {
-          toast.success("登録が完了しました。");
+          let message = "登録が完了しました。";
+          if (!isVerified) {
+            message = "再度、メールを送信しました。";
+          }
+          toast.success(message);
           setIsVerified(false);
         })
         .catch((error) => {

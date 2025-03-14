@@ -909,6 +909,7 @@ export type Database = {
       }
       users: {
         Row: {
+          agree_to_terms: boolean
           created_at: string
           email: string
           updated_at: string
@@ -916,6 +917,7 @@ export type Database = {
           username: string
         }
         Insert: {
+          agree_to_terms?: boolean
           created_at?: string
           email: string
           updated_at: string
@@ -923,6 +925,7 @@ export type Database = {
           username: string
         }
         Update: {
+          agree_to_terms?: boolean
           created_at?: string
           email?: string
           updated_at?: string

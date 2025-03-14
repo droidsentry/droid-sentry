@@ -35,20 +35,16 @@ interface CreateProjectFormProps {
   title?: string;
   description?: string;
   submitButtonText?: string;
-  skipButtonText?: string;
-  skipButtonHref?: string;
   agreeToTermsButton?: boolean;
-  showSkipButton?: boolean;
+  isProgress?: boolean;
 }
 
 export default function CreateProjectForm({
   title = "",
   description = "",
   submitButtonText = "",
-  skipButtonText = "",
-  skipButtonHref = "",
   agreeToTermsButton = true,
-  showSkipButton = true,
+  isProgress = true,
 }: CreateProjectFormProps) {
   const [progress, setProgress] = useState(0);
   const form = useForm({
@@ -86,7 +82,6 @@ export default function CreateProjectForm({
         });
     });
   };
-
   // フォームの状態が変更されるたびにprogressを更新
   useEffect(() => {
     setCurrentUrl(window.location.origin);
@@ -113,7 +108,7 @@ export default function CreateProjectForm({
         <CardTitle className="text-3xl font-bold">{title}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Progress value={progress} className="w-full" />
+        {isProgress && <Progress value={progress} className="w-full" />}
         <p className="text-center text-muted-foreground tracking-wide">
           {description}
         </p>
@@ -206,17 +201,6 @@ export default function CreateProjectForm({
           </form>
         </Form>
       </CardContent>
-      {showSkipButton && (
-        <CardFooter className="flex flex-col space-y-4">
-          <Button
-            variant="link"
-            className="text-sm text-muted-foreground"
-            asChild
-          >
-            <Link href={skipButtonHref}>{skipButtonText}</Link>
-          </Button>
-        </CardFooter>
-      )}
     </Card>
   );
 }
