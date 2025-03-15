@@ -142,6 +142,7 @@ export async function getServiceLimit(
         .from("service_limits")
         .select("max_total_users")
         .single();
+      // console.log("max_total_users", data);
 
       if (error) throw new Error("ユーザーのサービス上限の取得に失敗しました");
       if (!data?.max_total_users)

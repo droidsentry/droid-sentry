@@ -13,8 +13,7 @@ export default function QRWidget() {
 
   // const mapId =
   //   resolvedTheme === "dark" ? "f047192c34e3c28f" : "da5fe562756ecf19";
-  const mapId =
-    resolvedTheme === "dark" ? "24e3e46b0e6c0c77" : "24e3e46b0e6c0c77";
+  const mapId = process.env.NEXT_PUBLIC_GOOGLE_MAP_ID;
 
   return (
     <div className="absolute inset-0">
