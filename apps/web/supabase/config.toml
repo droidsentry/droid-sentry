@@ -162,7 +162,7 @@ max_frequency = "1s"
 host = "smtp.resend.com"
 port = 465
 user = "resend"
-pass = "env(SUPABASE_LOCAL_SMTP_RESEND_API_KEY)"
+pass = "env(RESEND_API_KEY)"
 admin_email = "noreply@droidsentry.email"
 sender_name = "DroidSentry DEV"
 # gmail smtp
