@@ -7,23 +7,23 @@
  */
 export const getBaseURL = (parentUrl?: string) => {
   const isProd = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
-  console.log("isProd", isProd);
+  // console.log("isProd", isProd);
   const isPreview = process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
-  console.log("isPreview", isPreview);
+  // console.log("isPreview", isPreview);
   const projectProductionUrl =
     process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL;
-  console.log("projectProductionUrl", projectProductionUrl);
+  // console.log("projectProductionUrl", projectProductionUrl);
   const vercelBranchUrl = process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL;
-  console.log("vercelBranchUrl", vercelBranchUrl);
+  // console.log("vercelBranchUrl", vercelBranchUrl);
   const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL;
-  console.log("vercelUrl", vercelUrl);
+  // console.log("vercelUrl", vercelUrl);
 
   const url = isProd
     ? projectProductionUrl
     : isPreview
       ? vercelBranchUrl
       : vercelUrl;
-  console.log("url", url);
+  // console.log("url", url);
 
   return url
     ? `https://${url}`
