@@ -310,6 +310,7 @@ export const signWithGithub = async () => {
 
 export const signWithGoogle = async () => {
   const baseUrl = getBaseURL();
+  console.log("baseUrl", baseUrl);
   const supabase = await createClient();
   const { data } = await supabase.auth.signInWithOAuth({
     provider: "google",
