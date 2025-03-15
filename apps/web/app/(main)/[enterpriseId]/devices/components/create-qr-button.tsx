@@ -32,7 +32,7 @@ export default function CreateQrButton() {
         toast.error(error.message);
       })
       .finally(() => {
-        setIsOpen(false);
+        // setIsOpen(false);
       });
   };
   return (

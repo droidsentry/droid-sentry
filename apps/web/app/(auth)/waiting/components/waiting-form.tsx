@@ -20,16 +20,15 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import BusinessmanBowing from "./images/businessman_bowing.png";
-
+import BusinessmanBowing from "../images/businessman_bowing.png";
 import { waitingSchema } from "@/app/schemas/auth";
 import { Waiting } from "@/app/types/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { sendWaitingNotification } from "./actions";
 import WaitingVerifyCard from "./waiting-verify-card";
+import { sendWaitingNotification } from "../actions";
 
 export default function WaitingForm({
   username,

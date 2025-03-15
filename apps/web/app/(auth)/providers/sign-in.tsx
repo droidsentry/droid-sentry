@@ -15,7 +15,7 @@ import {
 
 export type SignIn = z.infer<typeof signInSchema>;
 
-export function SignInProvider({ children }: { children: ReactNode }) {
+export function SignInFormProvider({ children }: { children: ReactNode }) {
   const t = useTranslations("auth.signIn");
   const form = useForm({
     mode: "onChange",

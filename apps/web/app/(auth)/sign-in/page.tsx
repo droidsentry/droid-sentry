@@ -10,13 +10,16 @@ import { checkTotalUserLimit } from "@/lib/service";
 
 export default async function Page() {
   let signUpUrl = "/sign-up";
+
   await checkTotalUserLimit().catch((error) => {
     const errorCode = error.message;
+
     if (errorCode === "E1001") {
       signUpUrl = "/waiting";
       return;
     }
   });
+
   return (
     <div className="flex flex-col-reverse lg:flex-row mt-20 sm:mt-10 pb-5 sm:pb-20 md:pb-52 lg:pb-60 xl:pb-10 2XL:pb-0 gap-20 md:gap-10 xl:gap-0">
       <div className="basis-1/3 lg:basis-4/6 flex items-center justify-center pl-8 md:pl-40 xl:pl-20 pr-8">
