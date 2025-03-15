@@ -1,5 +1,5 @@
-import { createAndroidManagementClient } from "@/actions/emm/client";
-import { decryptData } from "@/actions/emm/crypto";
+import { createAndroidManagementClient } from "@/lib/emm/client";
+import { decryptEMMProject } from "@/lib/emm/project";
 import { createDefaultPolicy } from "@/actions/emm/policy";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
       projectId,
       name: signupUrlName,
       projectName,
-    } = decryptData(encryptedData.value);
+    } = decryptEMMProject(encryptedData.value);
     //Cookieを削除
     cookieStore.delete("emm_signup_object");
 

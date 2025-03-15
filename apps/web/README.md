@@ -137,3 +137,7 @@ pnpm dlx supabase db push
 vercel env pull --environment=preview
 vercel env pull --environment=development
 ```
+
+```bash
+pnpm install @react-email/tailwind --filter=web
+```

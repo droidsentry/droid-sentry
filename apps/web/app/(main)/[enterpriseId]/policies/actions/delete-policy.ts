@@ -1,6 +1,6 @@
 "use server";
 
-import { createAndroidManagementClient } from "@/actions/emm/client";
+import { createAndroidManagementClient } from "@/lib/emm/client";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
@@ -118,6 +118,7 @@ async function updateDevicePolicyToDefault({
         .from("devices")
         .update({
           policy_identifier: "default",
+          requested_policy_identifier: "default",
           updated_at: new Date().toISOString(),
           device_data: res.data as Json,
         })
@@ -179,6 +180,8 @@ async function deletePolicyFromGoogleAndDB(
   });
   if (error) {
     console.error(error);
+    console.error("policyIdentifier", policyIdentifier);
+
     throw new Error("Failed to delete policy from Supabase");
   }
 }

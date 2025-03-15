@@ -1,5 +1,5 @@
 {
-  "name": "droid-sentry",
+  "name": "web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -19,9 +19,12 @@
     "ngrok": "pnpm dlx ngrok http 3000",
     "knip": "knip",
     "check-types": "tsc --noEmit",
-    "env-pull": "vercel env pull --environment=development",
+    "dev-env-pull": "vercel env pull --environment=development",
     "prod-env-pull": "vercel env pull --environment=production check-prod.env",
-    "analyze": "ANALYZE=true pnpm build"
+    "analyze": "ANALYZE=true pnpm build",
+    "supabase:dev-login": "pnpm dlx supabase link --project-ref ucgynnprncfbtojqvmzm",
+    "supabase-login": "pnpm dlx supabase link",
+    "supabase-status": "pnpm dlx supabase status"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -52,6 +55,8 @@
     "@radix-ui/react-toast": "^1.2.2",
     "@radix-ui/react-toggle": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.1.6",
+    "@react-email/components": "0.0.25",
+    "@react-email/tailwind": "^1.0.4",
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.45.4",
     "@tailwindcss/typography": "^0.5.15",
@@ -60,6 +65,7 @@
     "@types/validator": "^13.12.2",
     "@vercel/functions": "^2.0.0",
     "@vis.gl/react-google-maps": "^1.4.2",
+    "awesome-debounce-promise": "^2.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.0",
@@ -67,6 +73,7 @@
     "google-auth-library": "^9.15.0",
     "googleapis": "^144.0.0",
     "input-otp": "^1.2.4",
+    "install": "^0.13.0",
     "lucide-react": "^0.469.0",
     "negotiator": "^1.0.0",
     "next": "15.1.3",
@@ -78,8 +85,10 @@
     "qrcode.react": "^4.1.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-email": "3.0.1",
     "react-hook-form": "^7.53.0",
     "recharts": "^2.15.1",
+    "resend": "^4.1.2",
     "server-only": "^0.0.1",
     "sonner": "^1.7.0",
     "stripe": "^17.5.0",

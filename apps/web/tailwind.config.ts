@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { usageExperienceAnimations } from "./css/usage-experience-animations";
 
 const {
   default: flattenColorPalette,
@@ -88,29 +89,14 @@ const config: Config = {
             opacity: "0",
           },
         },
+        ...usageExperienceAnimations.keyframes,
       },
       animation: {
         "caret-blink": "caret-blink 1.25s ease-out infinite",
+        ...usageExperienceAnimations.animation,
       },
     },
   },
-  plugins: [
-    require("tailwindcss-animate"),
-    require("@tailwindcss/typography"),
-    // https://ui.aceternity.com/components/signup-form　　にあるものを参考にしています。
-    addVariablesForColors,
-  ],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 };
 export default config;
-
-// https://ui.aceternity.com/components/signup-form　　にあるものを参考にしています。
-function addVariablesForColors({ addBase, theme }: any) {
-  let allColors = flattenColorPalette(theme("colors"));
-  let newVars = Object.fromEntries(
-    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
-  );
-
-  addBase({
-    ":root": newVars,
-  });
-}

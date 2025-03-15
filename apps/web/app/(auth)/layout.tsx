@@ -2,7 +2,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 import type { Metadata } from "next";
 import Header from "./components/header";
 import WaveAnimation from "./components/wave-animation";
-import { UserProvider } from "./providers/user";
+import { SignInFormProvider } from "./providers/sign-in";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,15 +15,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden ">
+    // <div className="min-h-screen flex flex-col relative overflow-hidden ">
+    <div className="container mx-auto px-4 md:px-6 xl:px-[70px] flex flex-col">
       <Header className="z-50" />
-
       <main className="flex-1 z-40">
-        <UserProvider>{children}</UserProvider>
+        <SignInFormProvider>{children}</SignInFormProvider>
       </main>
-      <div className="absolute bottom-0 left-0 w-full">
+      {/* <div className="absolute bottom-0 left-0 w-full">
         <WaveAnimation />
-      </div>
+      </div> */}
       <div className="fixed bottom-4 right-5 z-50">
         <ModeToggle />
       </div>

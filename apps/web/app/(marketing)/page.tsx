@@ -4,7 +4,7 @@ import PCConsoleAppsManagement from "./components/pc-console-apps-management";
 import PhoneManagement from "./components/phone-management";
 import UseCase from "./components/use-case";
 import TechnologyStack from "./components/technology-stack";
-import FreeTrail from "./components/free-trail";
+import FreeTrailSection from "./components/free-trail-section";
 
 export default async function () {
   return (
@@ -16,7 +16,7 @@ export default async function () {
         <UseCase />
         <TechnologyStack />
       </div>
-      <FreeTrail />
+      <FreeTrailSection />
     </>
   );
 }

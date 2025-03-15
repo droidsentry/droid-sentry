@@ -1,3 +1,5 @@
+"use client";
+
 import { Table } from "@tanstack/react-table";
 import {
   ChevronLeft,
@@ -15,6 +17,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback } from "react";
 
 interface TablePaginationProps<TData> {
   table: Table<TData>;
@@ -25,6 +29,19 @@ export function TablePagination<TData>({
   className,
   table,
 }: TablePaginationProps<TData>) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
+
   return (
     <div className={cn("flex items-center justify-between px-2", className)}>
       <div className="flex-1 text-sm text-muted-foreground">
@@ -38,13 +55,16 @@ export function TablePagination<TData>({
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
               table.setPageSize(Number(value));
+              router.push(
+                pathname + "?" + createQueryString("pageSize", value)
+              );
             }}
           >
             <SelectTrigger className="h-8 w-[70px]">
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
-              {[10, 100, 500, 1000].map((pageSize) => (
+              {[2, 10, 100, 500, 1000].map((pageSize) => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
                 </SelectItem>
@@ -78,7 +98,14 @@ export function TablePagination<TData>({
           <Button
             variant="outline"
             className="size-8 p-0"
-            onClick={() => table.nextPage()}
+            onClick={() => {
+              const currentPageSize = table.getState().pagination.pageSize;
+              const nextPage = table.getState().pagination.pageIndex + 2; // 次のページのインデックス
+              table.nextPage();
+              // router.push(
+              //   pathname + "?" + createQueryString("page", nextPage.toString())
+              // );
+            }}
             disabled={!table.getCanNextPage()}
           >
             <span className="sr-only">次のページ</span>

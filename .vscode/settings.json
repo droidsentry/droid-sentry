@@ -1,5 +1,13 @@
 {
-  "cSpell.words": ["Baseband", "blueline", "DOCOMO", "YBQL"],
+  "cSpell.words": [
+    "Baseband",
+    "blueline",
+    "DOCOMO",
+    "Guids",
+    "qrcode",
+    "ssids",
+    "YBQL"
+  ],
   "i18n-ally.localesPaths": ["./apps/web/messages/marketing"],
   "i18n-ally.keystyle": "nested"
 }

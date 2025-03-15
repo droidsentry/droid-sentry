@@ -22,19 +22,34 @@ import { cn } from "@/lib/utils";
 import { SiAndroid } from "@icons-pack/react-simple-icons";
 import ProjectDeleteButton from "./project-delete-button";
 import { useProject } from "./project-provider";
+import { useRouter } from "next/navigation";
+import { checkProjectLimit } from "@/actions/emm/service";
+import { toast } from "sonner";
+import { useTransition } from "react";
 
 interface ProjectCardProps {
   className?: string;
 }
 
 export default function ProjectsCard({ className }: ProjectCardProps) {
-  const {
-    projects,
-    handleProjectDelete,
-    handleGetSignUpUrl,
-    isPending,
-    pendingProjectId,
-  } = useProject();
+  const router = useRouter();
+  const [isCreateProjectPending, startCreateProjectTransition] =
+    useTransition();
+  const { projects, handleGetSignUpUrl, isPending, pendingProjectId } =
+    useProject();
+
+  const handleCreateProject = async () => {
+    startCreateProjectTransition(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+      await checkProjectLimit()
+        .then((res) => {
+          router.push("/projects/new");
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
+    });
+  };
 
   return (
     <div
@@ -97,12 +112,26 @@ export default function ProjectsCard({ className }: ProjectCardProps) {
           </div>
         );
       })}
-      <Card className="flex h-60 items-center justify-center hover:bg-accent hover:border-accent-foreground duration-300 relative">
-        <Link href="/projects/new">
+      <Card
+        className={cn(
+          "flex h-60 items-center justify-center  relative",
+          !isCreateProjectPending &&
+            "hover:bg-accent hover:border-accent-foreground duration-300"
+        )}
+      >
+        <button onClick={handleCreateProject} disabled={isCreateProjectPending}>
           <span className="absolute inset-0" />
           <span className="sr-only">プロジェクト画面に遷移する</span>
-          <Plus className="text-muted-foreground size-10 " />
-        </Link>
+
+          {!isCreateProjectPending && (
+            <Plus className="text-muted-foreground size-10 " />
+          )}
+        </button>
+        {isCreateProjectPending && (
+          <div className="absolute inset-0 z-20 flex items-center justify-center">
+            <Loader2 className="animate-spin text-muted-foreground size-12" />
+          </div>
+        )}
       </Card>
     </div>
   );

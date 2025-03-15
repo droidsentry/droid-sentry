@@ -4,7 +4,7 @@ import { AndroidManagementPolicy } from "@/app/types/policy";
 import { defaultPolicyRequestBody } from "@/data/default-policy-request-body";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
-import { createAndroidManagementClient } from "./client";
+import { createAndroidManagementClient } from "../../lib/emm/client";
 
 export const createDefaultPolicy = async (enterpriseId: string) => {
   // ユーザー認証

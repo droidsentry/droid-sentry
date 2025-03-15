@@ -1,4 +1,4 @@
-import PasswordResetVerifyForm from "./components/password-reset-verify-form";
+import PasswordResetVerifyForm from "./password-reset-verify-form";
 
 export default function Page() {
   return (

@@ -4,12 +4,21 @@ import {
   formPolicySchema,
   policySchema,
   policyTableSchema,
-} from "../schema/policy";
+} from "../schemas/policy";
 import { getPolicyApps } from "../(main)/[enterpriseId]/policies/[policyIdentifier]/application/components/data/get-policy-apps";
 import { getPolicyList } from "../(main)/[enterpriseId]/devices/actions/policy";
 
 export type AndroidManagementPolicy = androidmanagement_v1.Schema$Policy;
 export type ApplicationPolicy = androidmanagement_v1.Schema$ApplicationPolicy;
+export type DisplaySettingsPolicy = androidmanagement_v1.Schema$DisplaySettings;
+export type ScreenBrightnessSettings =
+  androidmanagement_v1.Schema$ScreenBrightnessSettings;
+export type ScreenTimeoutSettings =
+  androidmanagement_v1.Schema$ScreenTimeoutSettings;
+export type PasswordRequirements =
+  androidmanagement_v1.Schema$PasswordRequirements;
+export type DeviceConnectivityManagement =
+  androidmanagement_v1.Schema$DeviceConnectivityManagement;
 
 export type ListPoliciesResponse =
   androidmanagement_v1.Schema$ListPoliciesResponse;

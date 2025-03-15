@@ -24,15 +24,6 @@ interface DroidSentryInviteUserEmailProps {
   location: string;
 }
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "";
-
-const host =
-  process.env.NODE_ENV === "production" //本番環境にデプロイされていれば、本番とみなす
-    ? "https://sample-site-pearl.vercel.app/" // 本番環境の URL
-    : "http://localhost:3000";
-
 export const DroidSentryInviteUserEmail = ({
   username,
   projectName,

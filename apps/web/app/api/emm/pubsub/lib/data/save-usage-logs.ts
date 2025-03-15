@@ -4,6 +4,13 @@ import { BatchUsageLogEvents } from "@/app/api/types/event";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { Json } from "@/types/database";
 
+/**
+ * デバイスの使用ログを保存する
+ * @param pubsubMessageId
+ * @param devicesOperationData
+ * usageLogEventsのデータはオプジェクトが配列で返ってくる可能性があるため、
+ * オブジェクトごとにデータを保存する。
+ */
 export const saveUsageLogs = async ({
   pubsubMessageId,
   devicesOperationData,
@@ -22,7 +29,6 @@ export const saveUsageLogs = async ({
         throw new Error(`Invalid usage log event data.
           ${JSON.stringify(usageLogEvent)}`);
       }
-
       return {
         pubsub_message_id: pubsubMessageId,
         usage_log_event_time: eventTime,

@@ -1,19 +1,30 @@
 import { RouteParams } from "@/app/types/enterprise";
-import AppRestriction from "./components/app-restriction";
-import { getPolicyApps } from "../chrome-browser/data/get-policy-apps";
+import NetworkForm from "./components/network-form";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { WifiSsidTable } from "./components/wifi-ssid-table";
+import WifiTableForm from "./components/wifi-table-form";
+
+import { getNetworkConfigurations } from "./actions/network";
 
 export default async function Page({
   params,
 }: {
   params: Promise<RouteParams>;
 }) {
-  const enterpriseId = (await params).enterpriseId;
   const policyIdentifier = (await params).policyIdentifier;
-  const policyApps = await getPolicyApps(enterpriseId);
+  const enterpriseId = (await params).enterpriseId;
+  const networkConfigurations = await getNetworkConfigurations(enterpriseId);
+
   return (
-    <AppRestriction
-      policyApps={policyApps}
-      policyIdentifier={policyIdentifier}
-    />
+    <ScrollArea className="h-full w-full p-2">
+      <div className="grid gap-2 grid-cols-1 md:grid-cols-2">
+        <NetworkForm policyIdentifier={policyIdentifier} />
+        <WifiSsidTable
+          enterpriseId={enterpriseId}
+          policyIdentifier={policyIdentifier}
+          networkConfigurations={networkConfigurations}
+        />
+      </div>
+    </ScrollArea>
   );
 }

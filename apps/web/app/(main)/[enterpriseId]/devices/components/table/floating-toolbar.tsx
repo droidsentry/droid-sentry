@@ -7,6 +7,7 @@ import DeleteSelectedDevicesButton from "../delete-selected-devices-button";
 import CloseFloatingToolbarButton from "./close-floating-toolber-button";
 import { Separator } from "@/components/ui/separator";
 import AssortCommandsMenuButton from "./assort-commands-menu-button";
+import { DeviceTableType } from "@/app/types/device";
 
 interface FloatingToolbarProps<TData> {
   className?: string;
@@ -19,6 +20,13 @@ export default function FloatingToolbar<TData>({
   const isSelected = table.getFilteredSelectedRowModel().rows.length > 0;
   const filteredSelectedDevices =
     table.getFilteredSelectedRowModel().rows.length;
+  const deviceIdentifiers = table
+    .getSelectedRowModel()
+    .rows.map((row) => {
+      const deviceData = row.original as DeviceTableType;
+      return deviceData.deviceIdentifier;
+    })
+    .filter((identifier): identifier is string => Boolean(identifier));
 
   return (
     <div
@@ -32,7 +40,11 @@ export default function FloatingToolbar<TData>({
         <Separator orientation="vertical" className="h-8 mx-1" />
         <DeleteSelectedDevicesButton table={table} isSelected={isSelected} />
         <ChangePolicyButton table={table} isSelected={isSelected} />
-        <AssortCommandsMenuButton table={table} isSelected={isSelected} />
+        <AssortCommandsMenuButton
+          deviceIdentifiers={deviceIdentifiers}
+          isSelected={isSelected}
+          table={table}
+        />
         <Separator orientation="vertical" className="h-8 mx-1" />
         <CloseFloatingToolbarButton table={table} isSelected={isSelected} />
       </div>

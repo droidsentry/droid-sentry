@@ -691,6 +691,45 @@ export type Database = {
           },
         ]
       }
+      service_limits: {
+        Row: {
+          created_at: string
+          max_app_configs_per_app: number
+          max_devices_kitting_per_user: number
+          max_managed_apps_per_user: number
+          max_policies_per_user: number
+          max_projects_per_user: number
+          max_ssids_per_user: number
+          max_total_users: number
+          service_limit_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          max_app_configs_per_app: number
+          max_devices_kitting_per_user: number
+          max_managed_apps_per_user: number
+          max_policies_per_user: number
+          max_projects_per_user: number
+          max_ssids_per_user: number
+          max_total_users: number
+          service_limit_id?: string
+          updated_at: string
+        }
+        Update: {
+          created_at?: string
+          max_app_configs_per_app?: number
+          max_devices_kitting_per_user?: number
+          max_managed_apps_per_user?: number
+          max_policies_per_user?: number
+          max_projects_per_user?: number
+          max_ssids_per_user?: number
+          max_total_users?: number
+          service_limit_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       subscription_plans: {
         Row: {
           created_at: string
@@ -870,6 +909,7 @@ export type Database = {
       }
       users: {
         Row: {
+          agree_to_terms: boolean
           created_at: string
           email: string
           updated_at: string
@@ -877,6 +917,7 @@ export type Database = {
           username: string
         }
         Insert: {
+          agree_to_terms?: boolean
           created_at?: string
           email: string
           updated_at: string
@@ -884,6 +925,7 @@ export type Database = {
           username: string
         }
         Update: {
+          agree_to_terms?: boolean
           created_at?: string
           email?: string
           updated_at?: string
@@ -891,6 +933,65 @@ export type Database = {
           username?: string
         }
         Relationships: []
+      }
+      waiting_users: {
+        Row: {
+          created_at: string
+          email: string
+          status: string
+          updated_at: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          status: string
+          updated_at: string
+          user_id?: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      wifi_network_configurations: {
+        Row: {
+          config: Json
+          created_at: string
+          enterprise_id: string
+          updated_at: string
+          wifi_network_configuration_id: string
+        }
+        Insert: {
+          config: Json
+          created_at?: string
+          enterprise_id: string
+          updated_at: string
+          wifi_network_configuration_id?: string
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          enterprise_id?: string
+          updated_at?: string
+          wifi_network_configuration_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wifi_network_configurations_enterprise_id_fkey"
+            columns: ["enterprise_id"]
+            isOneToOne: false
+            referencedRelation: "enterprises"
+            referencedColumns: ["enterprise_id"]
+          },
+        ]
       }
     }
     Views: {

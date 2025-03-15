@@ -18,7 +18,7 @@ import { DataTableColumnHeader } from "../../../../projects/components/table/dat
 import { generateSortFilterColumnsHeader } from "../../../../projects/components/table/generate-sort-filter-columns-header";
 import { selectColumn } from "../../../../projects/components/table/select-column";
 import DataTableColumnState from "./data-table-column-state";
-import DataTableMenu from "./data-table-menu";
+import DeviceTableMenu from "./menu/device-table-menu";
 
 export const deviceColumns: ColumnDef<DeviceTableType>[] = [
   selectColumn<DeviceTableType>(),
@@ -66,30 +66,6 @@ export const deviceColumns: ColumnDef<DeviceTableType>[] = [
       return value.includes(row.getValue(id));
     },
   },
-  // {
-  //   accessorKey: "enrollmentTokenName",
-  //   id: "識別 ID",
-  //   minSize: 250,
-  //   size: 300,
-  //   header: ({ column }) => {
-  //     return (
-  //       <div className="flex items-center justify-center">
-  //         <Button
-  //           variant="ghost"
-  //           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //         >
-  //           {column.id}
-  //           <ArrowUpDown className="ml-2 h-4 w-4" />
-  //         </Button>
-  //       </div>
-  //     );
-  //   },
-  //   cell: ({ row, column }) => (
-  //     <div className="truncate" title={row.getValue(column.id)}>
-  //       {row.getValue(column.id)}
-  //     </div>
-  //   ),
-  // },
   // {
   //   accessorKey: "appliedPolicyVersion",
   //   id: "ポリシー バージョン",
@@ -166,7 +142,7 @@ export const deviceColumns: ColumnDef<DeviceTableType>[] = [
       return (
         <div className="flex items-center justify-center">
           <Button variant="ghost" size="icon">
-            <PlusIcon className="h-4 w-4" />
+            <PlusIcon className="size-4" />
             <span className="sr-only">メニューを開く</span>
           </Button>
           <div title="メニュー" />
@@ -174,9 +150,11 @@ export const deviceColumns: ColumnDef<DeviceTableType>[] = [
       );
     },
     cell: ({ row }) => {
+      const deviceIdentifier = row.original.deviceIdentifier;
+      if (!deviceIdentifier) return null;
       return (
-        <div className="flex items-center justify-center">
-          <DataTableMenu row={row} />
+        <div className="flex items-center justify-center m-1">
+          <DeviceTableMenu row={row} deviceIdentifier={deviceIdentifier} />
         </div>
       );
     },

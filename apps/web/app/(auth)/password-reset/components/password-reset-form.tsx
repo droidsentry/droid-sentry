@@ -1,7 +1,6 @@
 "use client";
 
-import { resetPassword } from "@/actions/auth/auth-supabase";
-
+import { resetPassword } from "@/actions/auth/supabase";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,25 +9,36 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { FormControl, FormField, FormItem } from "@/components/ui/form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
-import { useFormContext } from "react-hook-form";
-import { z } from "zod";
-import DiscordSingInButton from "../../components/discord-sing-in_button";
-import { GitHubLoginButton } from "../../components/github-login-button";
-import GoogleSingInButton from "../../components/google-sing-in-button";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { emailOrUsernameSchema } from "@/app/schema/auth";
-
-type FormData = z.infer<typeof emailOrUsernameSchema>;
+import { useForm, useFormContext } from "react-hook-form";
+import { toast } from "sonner";
+import DiscordSingButton from "../../components/discord-sing-button";
+import { GitHubSignButton } from "../../components/github-login-button";
+import GoogleSingButton from "../../components/google-sing-in-button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { passwordResetSchema } from "@/app/schemas/auth";
+import { PasswordReset, SignIn } from "@/app/types/auth";
 
 export default function PasswordResetForm() {
-  const form = useFormContext<FormData>();
+  const emailOrUsername = useFormContext<SignIn>().getValues("emailOrUsername");
+  const form = useForm({
+    mode: "onChange",
+    resolver: zodResolver(passwordResetSchema),
+    defaultValues: {
+      email: emailOrUsername,
+    },
+  });
   const router = useRouter();
-  const onSubmit = async (data: FormData) => {
-    await resetPassword(data.emailOrUserName)
+  const onSubmit = async (formData: PasswordReset) => {
+    await resetPassword(formData)
       .then(() => {
         toast.success("パスワードリセットのメールを送信しました。");
         router.push("/password-reset/verify");
@@ -49,7 +59,7 @@ export default function PasswordResetForm() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 pb-2">
           <FormField
             control={form.control}
-            name="emailOrUserName"
+            name="email"
             render={({ field }) => (
               <FormItem className="pb-2">
                 <FormControl>
@@ -62,6 +72,7 @@ export default function PasswordResetForm() {
                     {...field}
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -88,9 +99,9 @@ export default function PasswordResetForm() {
           または、別の方法でサインインしてください。
         </CardDescription>
         <div className="flex flex-col gap-2 pb-4">
-          <GitHubLoginButton className="w-full" />
-          <GoogleSingInButton className="w-full" />
-          <DiscordSingInButton className="w-full" />
+          <GitHubSignButton className="w-full" />
+          <GoogleSingButton className="w-full" />
+          <DiscordSingButton className="w-full" />
           <Button variant="outline" className="w-full">
             認証コードをメールに送信
           </Button>
@@ -98,7 +109,7 @@ export default function PasswordResetForm() {
         <Button
           variant="ghost"
           className="w-full"
-          onClick={() => window.history.back()}
+          onClick={() => router.back()}
         >
           戻る
         </Button>

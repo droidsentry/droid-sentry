@@ -8,24 +8,26 @@
 export const getBaseURL = (parentUrl?: string) => {
   const isProd = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
   // console.log("isProd", isProd);
+  const isPreview = process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
+  // console.log("isPreview", isPreview);
+  const projectProductionUrl =
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL;
+  // console.log("projectProductionUrl", projectProductionUrl);
+  const vercelBranchUrl = process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL;
+  // console.log("vercelBranchUrl", vercelBranchUrl);
+  const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL;
+  // console.log("vercelUrl", vercelUrl);
 
-  // 本番環境の場合
-  if (isProd) {
-    const prodUrl = process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL; //ex: my-site.com
-    // console.log("prodUrl", prodUrl);
-    const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL; // ex: my-site.vercel.app
-    // console.log("vercelUrl", vercelUrl);
-    return prodUrl
-      ? `https://${prodUrl}`
-      : vercelUrl
-        ? `https://${vercelUrl}`
-        : `http://localhost:${process.env.PORT || 3000}`;
-  }
-  // 開発環境でparentFrameUrlが提供されている場合
-  if (parentUrl) {
-    return parentUrl; // ex: https://xxxx.ngrok-free.app
-  }
+  const url = isProd
+    ? projectProductionUrl
+    : isPreview
+      ? vercelBranchUrl
+      : vercelUrl;
+  // console.log("url", url);
 
-  // 開発環境 URL
-  return `http://localhost:${process.env.PORT || 3000}`;
+  return url
+    ? `https://${url}`
+    : parentUrl
+      ? parentUrl
+      : `http://localhost:${process.env.PORT || 3000}`;
 };

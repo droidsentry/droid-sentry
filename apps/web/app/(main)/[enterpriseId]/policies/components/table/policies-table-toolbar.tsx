@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import SyncPoliciesButton from "../sync-policies-button";
-import CreatePolicyButton from "./create-policy-button";
+import CreateNewPolicyLinkButton from "./create-new-policy-link-button";
 import DeleteSelectedPoliciesButton from "./delete-selected-policies-button";
 import { PolicyTableType } from "@/app/types/policy";
 import DateTableColumnAllResizer from "../../../devices/components/table/data-table-column-all-resizer";
@@ -59,7 +59,7 @@ export function PoliciesTableToolbar<TData extends PolicyTableType>({
           </Button>
         )}
       </div>
-      <CreatePolicyButton />
+      <CreateNewPolicyLinkButton enterpriseId={enterpriseId} />
       <DeleteSelectedPoliciesButton table={table} />
 
       <SyncPoliciesButton enterpriseId={enterpriseId} />

@@ -1,6 +1,5 @@
 "use client";
 
-import { useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   FormControl,
@@ -11,31 +10,24 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
+import { useFormContext } from "react-hook-form";
 import PasswordWithResetForm from "../../components/password-with-reset-form";
 
+import { signInWithEmailOrUsername } from "@/actions/auth/supabase";
 import { useRouter, useSearchParams } from "next/navigation";
-import { toast } from "sonner";
 import { useTransition } from "react";
-import { signInWithEmailOrUsername } from "@/actions/auth/auth-supabase";
-import { signInFormSchema } from "@/app/schema/auth";
-
-const schema = signInFormSchema;
-
-type FormData = {
-  emailOrUserName: string;
-  password: string;
-};
+import { toast } from "sonner";
+import { SignIn } from "../../../types/auth";
 
 export function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const returnUrl = searchParams.get("from");
   const [isLoading, startTransition] = useTransition();
-  const form = useFormContext<FormData>();
-  const onSubmit = async (formData: FormData) => {
-    const parsedFormData = schema.parse(formData); //型にbrandメソッドを使って"SignIn"という名前があるため、zodのスキーマを使ってデータをパースする
+  const form = useFormContext<SignIn>();
+  const onSubmit = async (formData: SignIn) => {
     startTransition(async () => {
-      await signInWithEmailOrUsername(parsedFormData)
+      await signInWithEmailOrUsername(formData)
         .then(() => {
           if (returnUrl) {
             router.push(returnUrl);
@@ -53,7 +45,7 @@ export function SignInForm() {
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
       <FormField
         control={form.control}
-        name="emailOrUserName"
+        name="emailOrUsername"
         render={({ field }) => (
           <FormItem>
             <FormLabel>
