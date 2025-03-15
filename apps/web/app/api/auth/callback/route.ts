@@ -21,7 +21,7 @@ import { NextRequest, NextResponse } from "next/server";
 //   return NextResponse.redirect(new URL("/auth-error", request.url));
 // }
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
   // console.log("code", code);
@@ -31,7 +31,7 @@ export async function GET(request: Request) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      return NextResponse.redirect(new URL("/projects", request.url));
+      return NextResponse.redirect(`${origin}/projects`);
     }
   }
   return NextResponse.redirect(`${origin}/auth/auth-error`);
