@@ -2,11 +2,10 @@
 
 import { waitingSchema } from "@/app/schemas/auth";
 import { Waiting } from "@/app/types/auth";
-import { getBaseURL } from "@/lib/base-url/client";
+import { getBaseURL } from "@/lib/base-url";
 import { getUserContextData } from "@/lib/context/user-context";
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { createClient } from "@/lib/supabase/server";
 
 const DUPLICATE_ERROR_CODE = "23505";
 

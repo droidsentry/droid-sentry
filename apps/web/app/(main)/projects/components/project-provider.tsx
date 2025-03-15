@@ -2,7 +2,6 @@
 
 import { getSignUpUrl } from "@/actions/emm/enterprise";
 import { ProjectWithEnterpriseRelation } from "@/app/types/project";
-import { getBaseURL } from "@/lib/base-url/client";
 import {
   ReactNode,
   createContext,
@@ -36,12 +35,11 @@ export function ProjectProvider({
 
   const [isPending, startTransition] = useTransition();
   const [pendingProjectId, setPendingProjectId] = useState<string | null>(null);
-  const url = getBaseURL(currentUrl);
 
   const handleGetSignUpUrl = (projectId: string, projectName: string) => {
     setPendingProjectId(projectId);
     startTransition(async () => {
-      await getSignUpUrl(projectId, url, projectName);
+      await getSignUpUrl({ projectId, currentUrl, projectName });
       setPendingProjectId(null);
     });
   };

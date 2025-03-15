@@ -20,7 +20,7 @@ import {
   SignIn,
   SignUp,
 } from "@/app/types/auth";
-import { getBaseURL } from "@/lib/base-url/client";
+import { getBaseURL } from "@/lib/base-url";
 import { checkTotalUserLimit } from "@/lib/service";
 import { redirect } from "next/navigation";
 

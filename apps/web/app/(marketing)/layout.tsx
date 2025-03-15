@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { AppConfig } from "@/app.config";
 import { ModeToggle } from "@/components/mode-toggle";
-import { getBaseURL } from "@/lib/base-url/client";
+import { getBaseURL } from "@/lib/base-url";
 import Footer from "./components/footer";
 import Header from "./components/header";
 

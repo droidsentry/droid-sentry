@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAndroidManagementClient } from "../../../../../lib/emm/client";
 import { IframeType } from "@/app/types/apps";
+import { getBaseURL } from "@/lib/base-url";
 
 /**
  * Android Management API
@@ -15,11 +16,11 @@ import { IframeType } from "@/app/types/apps";
 export const getWebToken = async ({
   enterpriseId,
   tokenType,
-  parentFrameUrl,
+  currentUrl,
 }: {
   enterpriseId: string;
   tokenType: IframeType;
-  parentFrameUrl: string;
+  currentUrl?: string;
 }) => {
   // 認証
   const supabase = await createClient();
@@ -29,6 +30,7 @@ export const getWebToken = async ({
   if (!user) {
     throw new Error("User not found");
   }
+  const parentFrameUrl = getBaseURL(currentUrl);
 
   // トークンタイプに基づいて iframeFeatures を設定
   const iframeFeatures = (() => {

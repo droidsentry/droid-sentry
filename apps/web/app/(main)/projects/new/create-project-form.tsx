@@ -1,15 +1,11 @@
 "use client";
 
-import { createProject } from "@/actions/emm/project";
 import { getSignUpUrl } from "@/actions/emm/enterprise";
+import { createProject } from "@/actions/emm/project";
+import { projectSchema } from "@/app/schemas/project";
+import { Project } from "@/app/types/project";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -26,11 +22,7 @@ import { Loader2, Rocket } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { toast } from "sonner";
-import { getBaseURL } from "@/lib/base-url/client";
-import { projectSchema } from "@/app/schemas/project";
-import { Project } from "@/app/types/project";
 interface CreateProjectFormProps {
   title?: string;
   description?: string;
@@ -61,8 +53,7 @@ export default function CreateProjectForm({
     },
   });
   const [isPending, startTransition] = useTransition();
-  const [currentUrl, setCurrentUrl] = useState<string>();
-  const url = getBaseURL(currentUrl);
+  const [currentUrl, setCurrentUrl] = useState<string>("");
 
   const onSubmit = async (data: Project) => {
     // agreeToTermsButtonがfalseの場合、サーバーアクション用にデータを加工
@@ -75,7 +66,9 @@ export default function CreateProjectForm({
       await createProject(submitData)
         .then(async (project) => {
           toast.success("プロジェクトが作成されました");
-          await getSignUpUrl(project.project_id, url, project.project_name);
+          const projectId = project.project_id;
+          const projectName = project.project_name;
+          await getSignUpUrl({ projectId, currentUrl, projectName });
         })
         .catch((error) => {
           toast.error(error.message);

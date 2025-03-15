@@ -1,3 +1,5 @@
+import "server-only";
+
 /**
  * ベースURLを取得
  * @param parentUrl 親フレームURL (開発環境でのみ使用)
@@ -30,4 +32,29 @@ export const getBaseURL = (parentUrl?: string) => {
     : parentUrl
       ? parentUrl
       : `http://localhost:${process.env.PORT || 3000}`;
+};
+
+/**
+ * ベースURLを取得
+ * @param parentUrl? 親フレームURL
+ * @returns ベースURL
+ */
+export const getPubsubEndpointBaseUrl = () => {
+  const isProd = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
+  const isPreview = process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
+
+  const projectProductionUrl =
+    process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL;
+  const vercelBranchUrl = process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL;
+  const devUrl = process.env.GCP_PUBSUB_DEV_PUSH_ENDPOINT;
+
+  const url = isProd
+    ? projectProductionUrl
+    : isPreview
+      ? vercelBranchUrl
+      : devUrl;
+
+  return url
+    ? `https://${url}`
+    : `http://localhost:${process.env.PORT || 3000}`;
 };

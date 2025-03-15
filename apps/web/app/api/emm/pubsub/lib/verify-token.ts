@@ -2,7 +2,7 @@ import "server-only";
 
 import { OAuth2Client } from "google-auth-library";
 import { headers } from "next/headers";
-import { getBaseSubscriptionURL } from "@/lib/base-url/server";
+import { getPubsubEndpointBaseUrl } from "@/lib/base-url";
 
 /**
  * Pub/Subのトークンを検証する
@@ -16,8 +16,8 @@ export async function verifyPubSubToken() {
   if (scheme !== "Bearer" || !token) {
     throw new Error("Invalid authorization header format");
   }
-  const baseSubscriptionURL = getBaseSubscriptionURL();
-  const audience = `${baseSubscriptionURL}/api/emm/pubsub`;
+  const pubsubEndpointBaseUrl = getPubsubEndpointBaseUrl();
+  const audience = `${pubsubEndpointBaseUrl}/api/emm/pubsub`;
 
   // OAuth2クライアントの初期化
   const authClient = new OAuth2Client();

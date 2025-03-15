@@ -5,17 +5,22 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createAndroidManagementClient } from "../../lib/emm/client";
 import { encryptEMMProject } from "../../lib/emm/project";
+import { getBaseURL } from "@/lib/base-url";
 
 /**
  *　サインアップURLを取得する
  * @param projectId ProjectテーブルのテーブルID
  * @param url リダイレクト先のURL　例: `${process.env.HOST}/api/emm/callback`　※https必須
  */
-export const getSignUpUrl = async (
-  projectId: string,
-  url: string,
-  projectName: string
-) => {
+export const getSignUpUrl = async ({
+  projectId,
+  projectName,
+  currentUrl,
+}: {
+  projectId: string;
+  projectName: string;
+  currentUrl: string;
+}) => {
   const supabase = await createClient();
   const {
     data: { user },
@@ -23,6 +28,7 @@ export const getSignUpUrl = async (
   if (!user) {
     throw new Error("User not found");
   }
+  const url = getBaseURL(currentUrl);
   const androidmanagement = await createAndroidManagementClient();
   const { data } = await androidmanagement.signupUrls
     .create({
