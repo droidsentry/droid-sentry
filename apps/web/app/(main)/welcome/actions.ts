@@ -4,6 +4,7 @@ import { createTrialSubscription } from "@/app/api/auth/confirm/lib/create-trial
 import { OnboardingUserSchema } from "@/app/schemas/project";
 import { OnboardingUser } from "@/app/types/project";
 import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
 
 export async function registerOnboardingUser(data: OnboardingUser) {
   const supabase = await createClient();
@@ -39,6 +40,8 @@ export async function registerOnboardingUser(data: OnboardingUser) {
       agree_to_terms: agreeToTerms,
     },
   ]);
+  revalidatePath("/");
+  revalidatePath("/welcome");
 
   if (dbError) {
     console.error(dbError.message);

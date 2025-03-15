@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import StartFreeAccountButton from "./start-free-account-button";
 import UsageExperience from "./usage-experience";
 
-export default function FreeTrail() {
+export default function FreeTrailSection() {
   const t = useTranslations("marketing.freeTrial");
   return (
     <section className="py-[34px] md:py-10 bg-muted/50 mt-10 mb-0">

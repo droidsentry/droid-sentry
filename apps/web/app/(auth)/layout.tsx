@@ -2,7 +2,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 import type { Metadata } from "next";
 import Header from "./components/header";
 import WaveAnimation from "./components/wave-animation";
-import { SignInProvider } from "./providers/sign-in";
+import { SignInFormProvider } from "./providers/sign-in";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,7 +19,7 @@ export default function RootLayout({
     <div className="container mx-auto px-4 md:px-6 xl:px-[70px] flex flex-col">
       <Header className="z-50" />
       <main className="flex-1 z-40">
-        <SignInProvider>{children}</SignInProvider>
+        <SignInFormProvider>{children}</SignInFormProvider>
       </main>
       {/* <div className="absolute bottom-0 left-0 w-full">
         <WaveAnimation />
