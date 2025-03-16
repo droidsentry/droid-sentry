@@ -35,9 +35,8 @@ export const getBaseURL = (parentUrl?: string) => {
 };
 
 /**
- * ベースURLを取得
- * @param parentUrl? 親フレームURL
- * @returns ベースURL
+ * Pub/SubエンドポイントのベースURLを取得
+ * @returns Pub/SubエンドポイントのベースURL
  */
 export const getPubsubEndpointBaseUrl = () => {
   const isProd = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
