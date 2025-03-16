@@ -16,34 +16,34 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { resetDevices } from "../../actions/reset-devices";
 import { Table } from "@tanstack/react-table";
+import { DeviceTableType } from "@/app/types/device";
 
-interface DeviceResetAlertDialogProps<TData> {
+interface ResetAlertDialogProps<TData> {
   isResetDialogOpen: boolean;
   setIsResetDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   enterpriseId: string | null;
-  deviceIdentifiers: string[];
+  devices: DeviceTableType[];
   table?: Table<TData>;
 }
-export default function DeviceResetAlertDialog<TData>({
+export default function ResetAlertDialog<TData>({
   isResetDialogOpen,
   setIsResetDialogOpen,
   enterpriseId,
-  deviceIdentifiers,
+  devices,
   table,
-}: DeviceResetAlertDialogProps<TData>) {
+}: ResetAlertDialogProps<TData>) {
   const [initializationOption, setInitializationOption] = useState(
     "WIPE_DATA_FLAG_UNSPECIFIED"
   );
   const handleDeviceDelete = async () => {
-    console.log("deviceIdentifiers", deviceIdentifiers);
-    if (!enterpriseId || !deviceIdentifiers) {
+    if (!enterpriseId) {
       toast.error("端末初期化に失敗しました。");
       return;
     }
     toast.info("端末初期化中...");
     await resetDevices({
       enterpriseId,
-      deviceIdentifiers,
+      devices,
       wipeDataFlags: [initializationOption],
     })
       .then(() => {

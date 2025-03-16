@@ -5,7 +5,7 @@ import { Loader2Icon } from "lucide-react";
 import useSWR from "swr";
 import { appsColumns } from "../../components/table/apps-columns";
 import AppsTable from "../../components/table/apps-table";
-import { getApps } from "../../actions/fetch-enterprise-apps";
+import { getApps } from "../../actions/get-app";
 
 export default function WebAppsContent({
   data,

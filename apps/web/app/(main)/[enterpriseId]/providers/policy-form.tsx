@@ -9,7 +9,7 @@ import { FormPolicy } from "@/app/types/policy";
 import { Form } from "@/components/ui/form";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
-import { defaultGeneralConfig } from "../policies/[policyIdentifier]/device-general/data/default-general-config";
+import { defaultGeneralConfig } from "../policies/[policyId]/device-general/data/default-general-config";
 import { getPolicyData } from "../policies/actions/get-policy";
 import { formPolicySchema } from "@/app/schemas/policy";
 

@@ -14,10 +14,10 @@ import { saveDeviceStatus } from "@/app/api/emm/pubsub/lib/data/save-device";
  */
 export const syncDeviceInfo = async (
   enterpriseId: string,
-  deviceIdentifier: string
+  deviceId: string
 ) => {
   const androidmanagement = await createAndroidManagementClient();
-  const name = `enterprises/${enterpriseId}/devices/${deviceIdentifier}`;
+  const name = `enterprises/${enterpriseId}/devices/${deviceId}`;
   await androidmanagement.enterprises.devices
     .get({
       name,
@@ -25,7 +25,7 @@ export const syncDeviceInfo = async (
     .then(async (response) => {
       await saveDeviceStatus({
         enterpriseId,
-        deviceIdentifier,
+        deviceId,
         device: response.data,
       });
     })

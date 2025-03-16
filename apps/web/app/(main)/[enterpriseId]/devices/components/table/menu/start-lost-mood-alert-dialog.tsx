@@ -26,18 +26,18 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
-import { DeviceLostMode } from "@/app/types/device";
+import { DeviceLostMode, DeviceTableType } from "@/app/types/device";
 
-export default function DeviceStartLostModeAlertDialog({
+export default function StartLostModeAlertDialog({
   isStartLostModeDialogOpen,
   setIsStartLostModeDialogOpen,
   enterpriseId,
-  deviceIdentifier,
+  devices,
 }: {
   isStartLostModeDialogOpen: boolean;
   setIsStartLostModeDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   enterpriseId: string | null;
-  deviceIdentifier: string | null;
+  devices: DeviceTableType[];
 }) {
   const form = useForm({
     mode: "onChange",
@@ -52,11 +52,11 @@ export default function DeviceStartLostModeAlertDialog({
   });
 
   const handleStartLostMode = async (formData: DeviceLostMode) => {
-    if (!enterpriseId || !deviceIdentifier) {
+    if (!enterpriseId) {
       toast.error("紛失モードに失敗しました。");
       return;
     }
-    await startLostModeSelectedDevice(enterpriseId, deviceIdentifier, formData)
+    await startLostModeSelectedDevice(enterpriseId, devices, formData)
       .then(() => {
         toast.success("紛失モードを有効にしました");
         // setIsLostMode(true);

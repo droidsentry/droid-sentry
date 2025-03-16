@@ -1,6 +1,6 @@
 export type RouteParams = {
   enterpriseId: string;
-  deviceIdentifier: string;
+  deviceId: string;
   category: string;
-  policyIdentifier: string;
+  policyId: string;
 };

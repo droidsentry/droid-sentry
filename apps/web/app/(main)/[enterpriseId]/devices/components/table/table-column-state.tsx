@@ -2,7 +2,7 @@ import { ColumnDef, Row } from "@tanstack/react-table";
 import { deviceStates } from "../../data/data";
 import { HelpCircle } from "lucide-react";
 
-interface DataTableColumnStateProps<TData> {
+interface TableColumnStateProps<TData> {
   row: Row<TData>;
   column: ColumnDef<TData>;
 }
@@ -12,10 +12,10 @@ interface DataTableColumnStateProps<TData> {
  * @param row - デバイスの行データ
  * @returns
  */
-export default function DataTableColumnState<TData>({
+export default function TableColumnState<TData>({
   row,
   column,
-}: DataTableColumnStateProps<TData>) {
+}: TableColumnStateProps<TData>) {
   const state = deviceStates.find((state) => {
     return state.value === row.getValue(column.id ?? "");
   });

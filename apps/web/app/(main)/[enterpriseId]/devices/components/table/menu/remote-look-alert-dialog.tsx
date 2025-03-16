@@ -13,28 +13,29 @@ import {
 import { toast } from "sonner";
 import { remoteLookDevices } from "../../../actions/remote-look-device";
 import { Table } from "@tanstack/react-table";
+import { DeviceTableType } from "@/app/types/device";
 
-interface DeviceRemoteLookAlertDialogProps<TData> {
+interface RemoteLookAlertDialogProps<TData> {
   isRemoteLookDialogOpen: boolean;
   setIsRemoteLookDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   enterpriseId: string | null;
-  deviceIdentifiers: string[];
+  devices: DeviceTableType[];
   table?: Table<TData>;
 }
-export default function DeviceRemoteLookAlertDialog<TData>({
+export default function RemoteLookAlertDialog<TData>({
   isRemoteLookDialogOpen,
   setIsRemoteLookDialogOpen,
   enterpriseId,
-  deviceIdentifiers,
+  devices,
   table,
-}: DeviceRemoteLookAlertDialogProps<TData>) {
+}: RemoteLookAlertDialogProps<TData>) {
   const handleRemoteLookDevice = async () => {
-    if (!enterpriseId || !deviceIdentifiers) {
+    if (!enterpriseId) {
       toast.error("デバイスのロックに失敗しました。");
       return;
     }
     await remoteLookDevices({
-      deviceIdentifiers,
+      devices,
       enterpriseId,
     })
       .then(() => {

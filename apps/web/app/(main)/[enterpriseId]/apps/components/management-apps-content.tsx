@@ -3,7 +3,7 @@
 import { AppsTableType } from "@/app/types/apps";
 import { Loader2Icon } from "lucide-react";
 import useSWR from "swr";
-import { getApps } from "../actions/fetch-enterprise-apps";
+import { getApps } from "../actions/get-app";
 import { ManagementAppsColumns } from "./table/management-apps/management-apps-columns";
 import ManagementAppsTable from "./table/management-apps/management-apps-table";
 

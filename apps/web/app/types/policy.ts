@@ -5,7 +5,7 @@ import {
   policySchema,
   policyTableSchema,
 } from "../schemas/policy";
-import { getPolicyApps } from "../(main)/[enterpriseId]/policies/[policyIdentifier]/application/components/data/get-policy-apps";
+import { getPolicyApps } from "../(main)/[enterpriseId]/policies/[policyId]/application/components/data/get-policy-apps";
 import { getPolicyList } from "../(main)/[enterpriseId]/devices/actions/policy";
 
 export type AndroidManagementPolicy = androidmanagement_v1.Schema$Policy;

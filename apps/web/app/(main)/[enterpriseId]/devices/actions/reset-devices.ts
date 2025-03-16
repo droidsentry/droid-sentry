@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { deleteManagedDevices } from "../lib/delete-device";
+import { DeviceTableType } from "@/app/types/device";
 
 /**
  * 選択したデバイスを削除
@@ -11,11 +12,11 @@ import { deleteManagedDevices } from "../lib/delete-device";
  */
 export const resetDevices = async ({
   enterpriseId,
-  deviceIdentifiers,
+  devices,
   wipeDataFlags,
 }: {
   enterpriseId: string;
-  deviceIdentifiers: string[];
+  devices: DeviceTableType[];
   wipeDataFlags: string[];
 }) => {
   const supabase = await createClient();
@@ -27,7 +28,7 @@ export const resetDevices = async ({
   // Google EMM APIでデバイスを削除
   await deleteManagedDevices({
     enterpriseId,
-    deviceIdentifiers,
+    devices,
     wipeDataFlags,
   }).catch((error) => {
     console.error("Error Delete device:", error.message);

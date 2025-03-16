@@ -6,12 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
-import {
-  ZodTooBigIssue,
-  ZodTooSmallIssue,
-  ZodIssueOptionalMessage,
-  z,
-} from "zod";
+import { z } from "zod";
 
 export type SignIn = z.infer<typeof signInSchema>;
 

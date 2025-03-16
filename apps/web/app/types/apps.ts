@@ -4,13 +4,13 @@ import { AppsTableSchema, AppTypeSchema } from "../schemas/apps";
 
 export type AppsTableType = z.infer<typeof AppsTableSchema>;
 
-export type AppData = androidmanagement_v1.Schema$Application;
+export type AppDetails = androidmanagement_v1.Schema$Application;
 
 export type AppType = z.infer<typeof AppTypeSchema>;
 
 export type SheetAppInfo = {
   appId: string;
-  appData: AppData;
+  appDetails: AppDetails;
   appType: string;
 };
 

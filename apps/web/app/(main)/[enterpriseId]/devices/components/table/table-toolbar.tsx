@@ -12,19 +12,19 @@ import { cn } from "@/lib/utils";
 import { deviceStates } from "../../data/data";
 import CreateQrButton from "../create-qr-button";
 import SyncDevicesButton from "../sync-devices-button";
-import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { TableFacetedFilter } from "./table-faceted-filter";
 
-interface DataTableToolbarProps<TData> {
+interface TableToolbarProps<TData> {
   table: Table<TData>;
   className?: string;
   enterpriseId: string;
 }
 
-export function DataTableToolbar<TData>({
+export function TableToolbar<TData>({
   table,
   className,
   enterpriseId,
-}: DataTableToolbarProps<TData>) {
+}: TableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const isSelected = table.getFilteredSelectedRowModel().rows.length > 0;
 
@@ -48,7 +48,7 @@ export function DataTableToolbar<TData>({
             className="h-8 w-[150px] lg:w-[250px]"
           /> */}
           {table.getColumn("ステータス") && (
-            <DataTableFacetedFilter
+            <TableFacetedFilter
               column={table.getColumn("ステータス")}
               title="ステータス"
               options={deviceStates}
@@ -72,7 +72,6 @@ export function DataTableToolbar<TData>({
             </Button>
           )}
         </div>
-        {/* <DateTableColumnAllResizer table={table} /> */}
         <CreateQrButton />
         <SyncDevicesButton enterpriseId={enterpriseId} />
         {/* <DataTableViewOptions table={table} /> */}

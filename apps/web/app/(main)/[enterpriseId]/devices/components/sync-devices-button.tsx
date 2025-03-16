@@ -14,9 +14,7 @@ export default function SyncDevicesButton({
   const [isPending, startTransition] = useTransition();
   const handleClick = async () => {
     startTransition(async () => {
-      const data = await syncDevicesWithGoogle(enterpriseId);
-      // mutate(key, data, false);
-      // console.log("Devices data", data);
+      await syncDevicesWithGoogle(enterpriseId);
     });
   };
 

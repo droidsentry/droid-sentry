@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import useSWR from "swr";
 import { getDevicesData } from "../actions/device";
 import DeviceTable from "./table/device-table";
-import { deviceColumns } from "./table/devices-table-columns";
+import { deviceColumns } from "./table/table-columns";
 
 export default function DevicesContent({
   data,
@@ -20,17 +20,13 @@ export default function DevicesContent({
   const {
     data: devices,
     error,
-    // isLoading,
     mutate,
-    isValidating,
   } = useSWR<DeviceTableType[]>(
     key,
     () => {
-      // console.log("run");
       return getDevicesData({ enterpriseId });
     },
     {
-      // suspense: true,
       fallbackData: data,
       // dedupingInterval: 3600000, // enterpriseIdが同じ場合は1時間、関数を実行しない
       revalidateOnFocus: false, // タブ移動しても関数を実行しない
@@ -85,17 +81,7 @@ export default function DevicesContent({
       )
       .subscribe();
 
-    // 60分後にunsubscribeするタイマーを設定
-    const timer = setTimeout(
-      () => {
-        enterpriseDevices.unsubscribe();
-        console.log("60分経過: リアルタイム購読を解除しました");
-      },
-      60 * 60 * 1000
-    ); // 60分 = 60 * 60 * 1000ミリ秒
-
     return () => {
-      clearTimeout(timer); // コンポーネントのアンマウント時にタイマーをクリア
       enterpriseDevices.unsubscribe();
     };
   }, [enterpriseId, mutate]);

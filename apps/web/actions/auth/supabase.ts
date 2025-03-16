@@ -1,11 +1,13 @@
 "use server";
 
-import { SupabaseAuthErrorCode } from "@/lib/supabase/supabase-error-code-ja";
+import {
+  getSupabaseAuthErrorMessage,
+  SupabaseAuthErrorCode,
+} from "@/lib/supabase/supabase-error-code-ja";
 import { getUserContextData } from "@/lib/context/user-context";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
-import { authErrorMessage } from "@/app/(auth)/lib/displayAuthError";
 import {
   passwordResetSchema,
   passwordResetVerifySchema,
@@ -343,4 +345,19 @@ export const signOut = async () => {
   const supabase = await createClient();
   await supabase.auth.signOut();
   redirect("/");
+};
+
+export const authErrorMessage = async (
+  errorCode: SupabaseAuthErrorCode
+): Promise<string> => {
+  const errorMessage = await getSupabaseAuthErrorMessage(errorCode);
+  if (errorMessage) {
+    return errorMessage;
+  } else {
+    return `
+      未知のエラーが発生しました。
+      システム管理者に連絡してください。
+      code: ${errorCode}
+      日時: ${formatToJapaneseDateTime()}`;
+  }
 };

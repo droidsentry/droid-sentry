@@ -35,19 +35,15 @@ export default function DeleteSelectedDevicesButton<TData>({
   const enterpriseId = params.enterpriseId;
   const [isPending, startTransition] = useTransition();
   const handleDeleteApps = async () => {
-    const deviceIdentifiers = table
+    const devices = table
       .getSelectedRowModel()
-      .rows.map((row) => {
-        const deviceData = row.original as DeviceTableType;
-        return deviceData.deviceIdentifier;
-      })
-      .filter((identifier): identifier is string => Boolean(identifier));
+      .rows.map((row) => row.original as DeviceTableType);
 
     startTransition(async () => {
       toast.info("デバイスを削除中...");
       await deleteSelectedDevices({
         enterpriseId,
-        deviceIdentifiers,
+        devices,
         wipeDataFlags: ["WIPE_DATA_FLAG_UNSPECIFIED"],
       })
         .then(async () => {

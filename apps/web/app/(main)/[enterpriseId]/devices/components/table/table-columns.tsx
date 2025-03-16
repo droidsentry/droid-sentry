@@ -17,8 +17,8 @@ import { DeviceTableType } from "@/app/types/device";
 import { DataTableColumnHeader } from "../../../../projects/components/table/data-table-column-header";
 import { generateSortFilterColumnsHeader } from "../../../../projects/components/table/generate-sort-filter-columns-header";
 import { selectColumn } from "../../../../projects/components/table/select-column";
-import DataTableColumnState from "./data-table-column-state";
-import DeviceTableMenu from "./menu/device-table-menu";
+import DataTableColumnState from "./table-column-state";
+import DeviceTableMenu from "./table-menu";
 
 export const deviceColumns: ColumnDef<DeviceTableType>[] = [
   selectColumn<DeviceTableType>(),
@@ -150,11 +150,11 @@ export const deviceColumns: ColumnDef<DeviceTableType>[] = [
       );
     },
     cell: ({ row }) => {
-      const deviceIdentifier = row.original.deviceIdentifier;
-      if (!deviceIdentifier) return null;
+      const device = row.original;
+      if (!device) return null;
       return (
         <div className="flex items-center justify-center m-1">
-          <DeviceTableMenu row={row} deviceIdentifier={deviceIdentifier} />
+          <DeviceTableMenu device={device} />
         </div>
       );
     },

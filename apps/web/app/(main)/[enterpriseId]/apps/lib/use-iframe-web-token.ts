@@ -3,7 +3,7 @@
 import useSWR from "swr";
 
 import { IframeType } from "@/app/types/apps";
-import { getWebToken } from "../actions/get-web-token";
+import { getIframeWebToken } from "../../actions/get-iframe-web-token";
 
 /**
  * Android Management APIのWeb Tokenを取得
@@ -11,7 +11,7 @@ import { getWebToken } from "../actions/get-web-token";
  * @param tokenType　iframeの種類
  * @returns
  */
-export function useWebToken(
+export function useIframeWebToken(
   enterpriseId: string,
   tokenType: IframeType,
   currentUrl?: string
@@ -19,7 +19,7 @@ export function useWebToken(
   const key = `/api/apps/${enterpriseId}/iframe/${tokenType}`;
   const { data, error, isLoading, mutate } = useSWR(
     currentUrl ? key : null,
-    () => getWebToken({ enterpriseId, tokenType, currentUrl }),
+    () => getIframeWebToken({ enterpriseId, tokenType, currentUrl }),
     {
       dedupingInterval: 3600000, // 1時間、関数を実行しない
       revalidateOnFocus: false, // タブ移動しても関数を実行しない　//iframeの操作も検知されるため、追加

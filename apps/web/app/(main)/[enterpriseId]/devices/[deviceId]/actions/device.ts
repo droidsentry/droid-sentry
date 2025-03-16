@@ -5,10 +5,10 @@ import { createClient } from "@/lib/supabase/server";
 
 export const getHardwareInfo = async ({
   enterpriseId,
-  deviceIdentifier,
+  deviceId,
 }: {
   enterpriseId: string;
-  deviceIdentifier: string;
+  deviceId: string;
 }) => {
   // 5秒待ってからデータを返す
   // await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -23,12 +23,12 @@ export const getHardwareInfo = async ({
     .from("devices")
     .select(
       `
-      device:device_data
+      deviceDetails:device_details
       `
     )
     .match({
       enterprise_id: enterpriseId,
-      device_identifier: deviceIdentifier,
+      device_identifier: deviceId,
     })
     .single();
 

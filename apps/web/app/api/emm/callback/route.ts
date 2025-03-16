@@ -1,6 +1,6 @@
 import { createAndroidManagementClient } from "@/lib/emm/client";
 import { decryptEMMProject } from "@/lib/emm/project";
-import { createDefaultPolicy } from "@/actions/emm/policy";
+import { createDefaultPolicy } from "@/app/api/emm/callback/policy";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { cookies } from "next/headers";

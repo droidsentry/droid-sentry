@@ -10,7 +10,7 @@ import {
   useState,
   useTransition,
 } from "react";
-import { getSheetAppInfo } from "../apps/actions/get-app-info";
+import { getAppDatailInfo } from "../apps/actions/get-app";
 import AppSheet from "./components/app-sheet";
 
 type ContextType = {
@@ -32,7 +32,7 @@ export function AppsInfoSheetProvider({ children }: { children: ReactNode }) {
     const fetchData = async () => {
       if (!appId) return null;
       startTransition(async () => {
-        const appInfo = await getSheetAppInfo(appId);
+        const appInfo = await getAppDatailInfo(appId);
         //5秒待機
         // await new Promise((resolve) => setTimeout(resolve, 5000));
         setAppInfo(appInfo);

@@ -12,22 +12,23 @@ import {
 import { useState } from "react";
 
 import { Table } from "@tanstack/react-table";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
+import { DeviceTableType } from "@/app/types/device";
 import { RouteParams } from "@/app/types/enterprise";
-import DeviceResetAlertDialog from "../dialog/device-reset-alert-dialog";
-import DeviceRemoteLookAlertDialog from "./menu/device-remote-look-alert-dialog";
-import DevicePasswordResetAlertDialog from "./menu/device-password-reset-alert-dialog";
-import DeviceRebootAlertDialog from "./menu/device-reboot-alert-dialog";
+import ResetAlertDialog from "../dialog/device-reset-alert-dialog";
+import PasswordResetAlertDialog from "./menu/password-reset-alert-dialog";
+import RebootAlertDialog from "./menu/reboot-alert-dialog";
+import RemoteLookAlertDialog from "./menu/remote-look-alert-dialog";
 
 interface AssortCommandsMenuButtonProps<TData> {
-  deviceIdentifiers: string[];
+  devices: DeviceTableType[];
   isSelected: boolean;
   table?: Table<TData>;
 }
 
 export default function AssortCommandsMenuButton<TData>({
-  deviceIdentifiers,
+  devices,
   isSelected,
   table,
 }: AssortCommandsMenuButtonProps<TData>) {
@@ -42,7 +43,7 @@ export default function AssortCommandsMenuButton<TData>({
   return (
     <div>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+        <DropdownMenuTrigger asChild disabled={!isSelected}>
           <Button variant="ghost" size="icon">
             <EllipsisIcon className="size-4" />
             <span className="sr-only">メニューを開く</span>
@@ -67,32 +68,32 @@ export default function AssortCommandsMenuButton<TData>({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <DeviceRemoteLookAlertDialog
+      <RemoteLookAlertDialog
         isRemoteLookDialogOpen={isRemoteLookDialogOpen}
         setIsRemoteLookDialogOpen={setIsRemoteLookDialogOpen}
         enterpriseId={enterpriseId}
-        deviceIdentifiers={deviceIdentifiers}
+        devices={devices}
         table={table}
       />
-      <DevicePasswordResetAlertDialog
+      <PasswordResetAlertDialog
         isPasswordResetDialogOpen={isPasswordResetDialogOpen}
         setIsPasswordResetDialogOpen={setIsPasswordResetDialogOpen}
         enterpriseId={enterpriseId}
-        deviceIdentifiers={deviceIdentifiers}
+        devices={devices}
         table={table}
       />
-      <DeviceRebootAlertDialog
+      <RebootAlertDialog
         isRebootDialogOpen={isRebootDialogOpen}
         setIsRebootDialogOpen={setIsRebootDialogOpen}
         enterpriseId={enterpriseId}
-        deviceIdentifiers={deviceIdentifiers}
+        devices={devices}
         table={table}
       />
-      <DeviceResetAlertDialog
+      <ResetAlertDialog
         isResetDialogOpen={isResetDialogOpen}
         setIsResetDialogOpen={setIsResetDialogOpen}
         enterpriseId={enterpriseId}
-        deviceIdentifiers={deviceIdentifiers}
+        devices={devices}
         table={table}
       />
     </div>

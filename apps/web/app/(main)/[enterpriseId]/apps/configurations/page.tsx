@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import AppConfigurationsIframe from "./components/app-configurations-iframe";
 import AppConfigurationsContent from "./components/app-configurations-content";
 import { RouteParams } from "@/app/types/enterprise";
-import { getApps } from "../actions/fetch-enterprise-apps";
+import { getApps } from "../actions/get-app";
 
 export default async function Page({
   params,

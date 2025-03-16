@@ -1,28 +1,26 @@
 import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
-import { androidmanagement_v1 } from "googleapis";
 import { Json } from "@/types/database";
 import { selectAppFields } from "../data/select-app-fields";
-
-type AppData = androidmanagement_v1.Schema$Application;
+import { AppDetails } from "@/app/types/apps";
 
 // DBにアプリの情報を保存する
 export const saveApp = async ({
-  appData,
+  appDetails,
   enterpriseId,
   appType,
 }: {
-  appData: AppData;
+  appDetails: AppDetails;
   enterpriseId: string;
   appType: string;
 }) => {
-  if (!appData.name) {
+  if (!appDetails.name) {
     throw new Error("App name is required");
   }
   const supabase = await createClient();
   // IDを取得する際に、RLSにより認証を行っている
-  const packageName = appData.name.split(
+  const packageName = appDetails.name.split(
     `enterprises/${enterpriseId}/applications/`
   )[1];
 
@@ -33,7 +31,7 @@ export const saveApp = async ({
         package_name: packageName,
         enterprise_id: enterpriseId,
         app_type: appType,
-        app_data: appData as Json,
+        app_details: appDetails as Json,
         updated_at: new Date().toISOString(),
       },
       { onConflict: "enterprise_id, package_name" }

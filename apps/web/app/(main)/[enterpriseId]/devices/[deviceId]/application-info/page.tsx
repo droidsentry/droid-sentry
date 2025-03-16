@@ -7,11 +7,11 @@ export default async function Page({
 }: {
   params: Promise<RouteParams>;
 }) {
-  const { enterpriseId, deviceIdentifier } = await params;
+  const { enterpriseId, deviceId } = await params;
   // デバイスの情報を取得
   const deviceApplicationSource = await getDeviceApplicationInfo({
     enterpriseId,
-    deviceIdentifier,
+    deviceId,
   });
   console.log("deviceApplicationSource", deviceApplicationSource);
 

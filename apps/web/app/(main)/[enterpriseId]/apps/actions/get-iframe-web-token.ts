@@ -13,7 +13,7 @@ import { getBaseURL } from "@/lib/base-url";
  * APIドキュメント: https://developers.google.com/android/management/reference/rest/v1/enterprises.webTokens/create?hl=ja
  * ライブラリドキュメント: https://googleapis.dev/nodejs/googleapis/latest/androidmanagement/classes/Resource$Enterprises$Webtokens.html#create
  */
-export const getWebToken = async ({
+export const getIframeWebToken = async ({
   enterpriseId,
   tokenType,
   currentUrl,

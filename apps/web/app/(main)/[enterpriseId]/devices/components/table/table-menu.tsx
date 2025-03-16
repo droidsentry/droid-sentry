@@ -27,23 +27,25 @@ import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { RouteParams } from "@/app/types/enterprise";
-import { syncDeviceInfoFromDB } from "../../../actions/device";
-import DevicePasswordResetAlertDialog from "./device-password-reset-alert-dialog";
-import DeviceRebootAlertDialog from "./device-reboot-alert-dialog";
-import DeviceRemoteLookAlertDialog from "./device-remote-look-alert-dialog";
-import DeviceResetAlertDialog from "../../dialog/device-reset-alert-dialog";
-import DeviceStartLostModeAlertDialog from "./device-start-lost-mood-alert-dialog";
-import DeviceStopLostModeAlertDialog from "./device-stop-lost-mood-alert-dialog";
+import { syncDeviceInfoFromDB } from "../../actions/device";
+import DevicePasswordResetAlertDialog from "./menu/password-reset-alert-dialog";
+import DeviceRebootAlertDialog from "./menu/reboot-alert-dialog";
+import DeviceRemoteLookAlertDialog from "./menu/remote-look-alert-dialog";
+import DeviceResetAlertDialog from "../dialog/device-reset-alert-dialog";
+import DeviceStartLostModeAlertDialog from "./menu/start-lost-mood-alert-dialog";
+import DeviceStopLostModeAlertDialog from "./menu/stop-lost-mood-alert-dialog";
+import RemoteLookAlertDialog from "./menu/remote-look-alert-dialog";
+import PasswordResetAlertDialog from "./menu/password-reset-alert-dialog";
+import RebootAlertDialog from "./menu/reboot-alert-dialog";
+import ResetAlertDialog from "../dialog/device-reset-alert-dialog";
+import StartLostModeAlertDialog from "./menu/start-lost-mood-alert-dialog";
+import StopLostModeAlertDialog from "./menu/stop-lost-mood-alert-dialog";
 
-interface DataTableMenuProps {
-  row: Row<DeviceTableType>;
-  deviceIdentifier: string;
+interface TableMenuProps {
+  device: DeviceTableType;
 }
 
-export default function DeviceTableMenu({
-  row,
-  deviceIdentifier,
-}: DataTableMenuProps) {
+export default function DeviceTableMenu({ device }: TableMenuProps) {
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
   const [isRemoteLookDialogOpen, setIsRemoteLookDialogOpen] = useState(false);
   const [isPasswordResetDialogOpen, setIsPasswordResetDialogOpen] =
@@ -54,28 +56,28 @@ export default function DeviceTableMenu({
   const [isStopLostModeDialogOpen, setIsStopLostModeDialogOpen] =
     useState(false);
 
-  const currentLostMode = row.original.appliedState === "LOST";
+  const currentLostMode = device.appliedState === "LOST";
 
   const [isLostMode, setIsLostMode] = useState(currentLostMode);
   const params = useParams<RouteParams>();
   const enterpriseId = params.enterpriseId;
   const router = useRouter();
-
+  const { deviceId } = device;
   const handleDeviceInfo = async () => {
-    if (!enterpriseId || !deviceIdentifier) {
+    if (!enterpriseId) {
       toast.error("デバイス情報は確認できません。");
       return;
     }
-    router.push(`/${enterpriseId}/devices/${deviceIdentifier}/base-info`);
+    router.push(`/${enterpriseId}/devices/${deviceId}/base-info`);
   };
 
   const handleSyncDeviceInfo = async () => {
-    if (!enterpriseId || !deviceIdentifier) {
+    if (!enterpriseId) {
       toast.error("デバイス情報の取得に失敗しました。");
       return;
     }
     await syncDeviceInfoFromDB({
-      deviceIdentifier,
+      deviceId,
       enterpriseId,
     })
       .then(() => {
@@ -142,41 +144,41 @@ export default function DeviceTableMenu({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <DeviceRemoteLookAlertDialog
+      <RemoteLookAlertDialog
         isRemoteLookDialogOpen={isRemoteLookDialogOpen}
         setIsRemoteLookDialogOpen={setIsRemoteLookDialogOpen}
         enterpriseId={enterpriseId}
-        deviceIdentifiers={[deviceIdentifier]}
+        devices={[device]}
       />
-      <DevicePasswordResetAlertDialog
+      <PasswordResetAlertDialog
         isPasswordResetDialogOpen={isPasswordResetDialogOpen}
         setIsPasswordResetDialogOpen={setIsPasswordResetDialogOpen}
         enterpriseId={enterpriseId}
-        deviceIdentifiers={[deviceIdentifier]}
+        devices={[device]}
       />
-      <DeviceRebootAlertDialog
+      <RebootAlertDialog
         isRebootDialogOpen={isRebootDialogOpen}
         setIsRebootDialogOpen={setIsRebootDialogOpen}
         enterpriseId={enterpriseId}
-        deviceIdentifiers={[deviceIdentifier]}
+        devices={[device]}
       />
-      <DeviceResetAlertDialog
+      <ResetAlertDialog
         isResetDialogOpen={isResetDialogOpen}
         setIsResetDialogOpen={setIsResetDialogOpen}
         enterpriseId={enterpriseId}
-        deviceIdentifiers={[deviceIdentifier]}
+        devices={[device]}
       />
-      <DeviceStartLostModeAlertDialog
+      <StartLostModeAlertDialog
         isStartLostModeDialogOpen={isStartLostModeDialogOpen}
         setIsStartLostModeDialogOpen={setIsStartLostModeDialogOpen}
         enterpriseId={enterpriseId}
-        deviceIdentifier={deviceIdentifier}
+        devices={[device]}
       />
-      <DeviceStopLostModeAlertDialog
+      <StopLostModeAlertDialog
         isStopLostModeDialogOpen={isStopLostModeDialogOpen}
         setIsStopLostModeDialogOpen={setIsStopLostModeDialogOpen}
         enterpriseId={enterpriseId}
-        deviceIdentifier={deviceIdentifier}
+        devices={[device]}
       />
     </div>
   );

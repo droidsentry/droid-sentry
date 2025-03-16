@@ -35,7 +35,7 @@ export const createDeviceEnrollmentTokenWithQRCode = async (
         allowPersonalUsage: "ALLOW_PERSONAL_USAGE_UNSPECIFIED",
         //   "duration": "my_duration",
         oneTimeOnly: false,
-        policyName: `${parent}/policies/default`,
+        // policyName: `${parent}/policies/default`,
       },
     })
     .catch((error) => {

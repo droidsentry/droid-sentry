@@ -1,7 +1,7 @@
 "use client";
 
-import { appsColumns } from "../../components/table/apps-columns";
-import AppsTable from "../../components/table/apps-table";
+import { appsColumns } from "../components/table/apps-columns";
+import AppsTable from "../components/table/apps-table";
 
 export default function CustomAppsContent() {
   // const pathname = usePathname();

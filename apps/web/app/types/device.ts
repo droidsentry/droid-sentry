@@ -5,19 +5,22 @@ import {
   getDeviceApplicationInfo,
   getDevicePolicyInfo,
   getHardwareInfo,
-} from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/actions/device";
-import { getPolicyDisplayName } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/actions/policy";
-import { getHardwareStatus } from "../(main)/[enterpriseId]/devices/[deviceIdentifier]/hardware-info/data/hardware-status";
+} from "../(main)/[enterpriseId]/devices/[deviceId]/actions/device";
+import { getPolicyDisplayName } from "../(main)/[enterpriseId]/devices/[deviceId]/actions/policy";
+import { getHardwareStatus } from "../(main)/[enterpriseId]/devices/[deviceId]/hardware-info/data/hardware-status";
 import {
   DeviceLostModeSchema,
   DeviceResetPasswordSchema,
-  DevicesTableSchema,
 } from "../schemas/devices";
+import { getDevicesData } from "../(main)/[enterpriseId]/devices/actions/device";
 
 export type AndroidManagementDevice = androidmanagement_v1.Schema$Device;
 export type ListDevicesResponse =
   androidmanagement_v1.Schema$ListDevicesResponse;
-export type DeviceTableType = z.infer<typeof DevicesTableSchema>;
+
+export type DeviceTableType = Awaited<
+  ReturnType<typeof getDevicesData>
+>[number];
 
 export type DisplaysType = androidmanagement_v1.Schema$Display;
 export type HardwareInfoType = androidmanagement_v1.Schema$HardwareInfo;

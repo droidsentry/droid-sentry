@@ -2,7 +2,7 @@ import { AppType } from "@/app/types/apps";
 import { toast } from "sonner";
 import AppSonner from "../components/table/app-sonner";
 import { CONFIGURATIONS_IFRAME_CONFIG } from "../data/app-iframe-config";
-import { getAppData } from "../data/get-app-info";
+import { getAndSaveAppDetailForGoogle } from "../actions/get-app";
 
 type SelectEvent = {
   action: "selected";
@@ -82,13 +82,13 @@ export const initializeConfigurationsIframe = ({
     const handleProductSelect = async (event: SelectEvent) => {
       if (event.action === "selected") {
         try {
-          const data = await getAppData({
+          const data = await getAndSaveAppDetailForGoogle({
             enterpriseId,
             packageName: event.packageName,
             appType,
             pathname,
           });
-          toast.success(<AppSonner appData={data} />);
+          toast.success(<AppSonner appDetail={data} />);
         } catch (error) {
           toast.error("アプリデータの取得に失敗しました" + error);
           onError?.(error);

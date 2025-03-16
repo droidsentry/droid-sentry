@@ -12,24 +12,25 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import { stopLostModeSelectedDevice } from "../../../actions/lost-mode-devices";
+import { DeviceTableType } from "@/app/types/device";
 
-export default function DeviceStopLostModeAlertDialog({
+export default function StopLostModeAlertDialog({
   isStopLostModeDialogOpen,
   setIsStopLostModeDialogOpen,
   enterpriseId,
-  deviceIdentifier,
+  devices,
 }: {
   isStopLostModeDialogOpen: boolean;
   setIsStopLostModeDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   enterpriseId: string | null;
-  deviceIdentifier: string | null;
+  devices: DeviceTableType[];
 }) {
   const handleStopLostMode = async () => {
-    if (!enterpriseId || !deviceIdentifier) {
+    if (!enterpriseId) {
       toast.error("紛失モードの解除に失敗しました。");
       return;
     }
-    await stopLostModeSelectedDevice(enterpriseId, deviceIdentifier)
+    await stopLostModeSelectedDevice(enterpriseId, devices)
       .then(() => {
         toast.success("紛失モードを解除しました");
       })

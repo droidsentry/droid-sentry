@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import VerifyCard from "./components/verify-card";
+import VerifyCard from "./verify-card";
 
 export default function Page() {
   return (

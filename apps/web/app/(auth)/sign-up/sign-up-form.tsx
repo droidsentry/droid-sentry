@@ -21,16 +21,16 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import PasswordForm from "../../components/password-form";
+import PasswordForm from "../components/password-form";
 
 import { extendedSignUpSchema } from "@/app/schemas/auth";
 import { SignUp } from "@/app/types/auth";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import DiscordSingButton from "../../components/discord-sing-button";
-import { GitHubSignButton } from "../../components/github-login-button";
-import GoogleSingButton from "../../components/google-sing-in-button";
+import DiscordSingButton from "../components/discord-sing-button";
+import { GitHubSignButton } from "../components/github-login-button";
+import GoogleSingButton from "../components/google-sing-in-button";
 
 export default function SignUpForm() {
   const t = useTranslations("auth.errors");

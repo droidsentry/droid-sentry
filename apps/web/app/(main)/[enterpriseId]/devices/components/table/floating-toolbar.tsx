@@ -20,13 +20,9 @@ export default function FloatingToolbar<TData>({
   const isSelected = table.getFilteredSelectedRowModel().rows.length > 0;
   const filteredSelectedDevices =
     table.getFilteredSelectedRowModel().rows.length;
-  const deviceIdentifiers = table
+  const devices = table
     .getSelectedRowModel()
-    .rows.map((row) => {
-      const deviceData = row.original as DeviceTableType;
-      return deviceData.deviceIdentifier;
-    })
-    .filter((identifier): identifier is string => Boolean(identifier));
+    .rows.map((row) => row.original as DeviceTableType);
 
   return (
     <div
@@ -41,7 +37,7 @@ export default function FloatingToolbar<TData>({
         <DeleteSelectedDevicesButton table={table} isSelected={isSelected} />
         <ChangePolicyButton table={table} isSelected={isSelected} />
         <AssortCommandsMenuButton
-          deviceIdentifiers={deviceIdentifiers}
+          devices={devices}
           isSelected={isSelected}
           table={table}
         />

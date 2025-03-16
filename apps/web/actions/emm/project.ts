@@ -29,14 +29,11 @@ export const createProject = async (data: Project) => {
 
   await checkProjectLimit();
 
-  // プロジェクトの作成
-  const currentIsoTimestamp = new Date().toISOString();
   const { data: project, error: projectError } = await supabase
     .from("projects")
     .insert({
       project_name: projectName,
       organization_name: organizationName,
-      updated_at: currentIsoTimestamp,
     })
     .select()
     .single();
@@ -51,7 +48,6 @@ export const createProject = async (data: Project) => {
       project_id: project.project_id,
       user_id: user.id,
       role: "OWNER",
-      updated_at: currentIsoTimestamp,
     });
   if (managementError) {
     console.error("プロジェクトユーザー紐付けエラー:", managementError);

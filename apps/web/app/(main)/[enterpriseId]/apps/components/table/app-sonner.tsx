@@ -4,14 +4,14 @@ import { ExternalLinkIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function AppSonner({ appData }: { appData: AppsTableType }) {
+export default function AppSonner({ appDetail }: { appDetail: AppsTableType }) {
   return (
     <div className="flex flex-row">
       <div className="flex items-center justify-center">
         <div className="aspect-square overflow-hidden border-2 rounded-lg">
           <Image
-            src={appData.iconUrl ?? ""}
-            alt={appData.title ?? ""}
+            src={appDetail.iconUrl ?? ""}
+            alt={appDetail.title ?? ""}
             height={80}
             width={80}
           />
@@ -20,12 +20,12 @@ export default function AppSonner({ appData }: { appData: AppsTableType }) {
       <div className="flex flex-col ml-4 space-y-1">
         <div>選択したアプリの情報を取得しました。</div>
         <div className="text-sm text-muted-foreground">
-          アプリ名：{appData.title ?? ""}
+          アプリ名：{appDetail.title ?? ""}
         </div>
-        {appData.distributionChannel === "PUBLIC_GOOGLE_HOSTED" && (
+        {appDetail.distributionChannel === "PUBLIC_GOOGLE_HOSTED" && (
           <div className="flex justify-end">
             <Button variant="outline" className="text-xs px-3 h-8" asChild>
-              <Link href={appData.playStoreUrl} target="_blank">
+              <Link href={appDetail.playStoreUrl} target="_blank">
                 <ExternalLinkIcon className="size-4 ml-2" />
                 Play Storeで確認する
               </Link>

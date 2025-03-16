@@ -13,28 +13,29 @@ import {
 import { toast } from "sonner";
 import { rebootDevices } from "../../../actions/reboot-device";
 import { Table } from "@tanstack/react-table";
+import { DeviceTableType } from "@/app/types/device";
 
-interface DeviceRebootAlertDialogProps<TData> {
+interface RebootAlertDialogProps<TData> {
   isRebootDialogOpen: boolean;
   setIsRebootDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   enterpriseId: string | null;
-  deviceIdentifiers: string[];
+  devices: DeviceTableType[];
   table?: Table<TData>;
 }
-export default function DeviceRebootAlertDialog<TData>({
+export default function RebootAlertDialog<TData>({
   isRebootDialogOpen,
   setIsRebootDialogOpen,
   enterpriseId,
-  deviceIdentifiers,
+  devices,
   table,
-}: DeviceRebootAlertDialogProps<TData>) {
+}: RebootAlertDialogProps<TData>) {
   const handleRemoteLookDevice = async () => {
-    if (!enterpriseId || !deviceIdentifiers) {
+    if (!enterpriseId) {
       toast.error("端末再起動に失敗しました。");
       return;
     }
     await rebootDevices({
-      deviceIdentifiers,
+      devices,
       enterpriseId,
     })
       .then(() => {

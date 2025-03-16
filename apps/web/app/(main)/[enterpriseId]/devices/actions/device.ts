@@ -25,7 +25,6 @@ export const getDevicesData = async ({
   const supabase = await createClient();
   const { data: devices, error } = await supabase
     .from("devices")
-    // .select("*")
     .select(selectDevicesTableFields)
     .eq("enterprise_id", enterpriseId)
     .order("updated_at", { ascending: false })
@@ -45,10 +44,10 @@ export const getDevicesData = async ({
 };
 
 export const syncDeviceInfoFromDB = async ({
-  deviceIdentifier,
+  deviceId,
   enterpriseId,
 }: {
-  deviceIdentifier: string;
+  deviceId: string;
   enterpriseId: string;
 }) => {
   const supabase = await createClient();
@@ -56,7 +55,7 @@ export const syncDeviceInfoFromDB = async ({
   if (!user) {
     throw new Error("User not found");
   }
-  await syncDeviceInfo(enterpriseId, deviceIdentifier).then(() => {
+  await syncDeviceInfo(enterpriseId, deviceId).then(() => {
     revalidatePath(`/${enterpriseId}/devices`);
   });
 };
