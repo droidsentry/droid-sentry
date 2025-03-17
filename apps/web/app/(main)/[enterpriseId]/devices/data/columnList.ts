@@ -1,4 +1,4 @@
-import { TableColumnDefinition } from "../../../projects/types/column";
+import { TableColumnDefinition } from "@/app/(main)/components/table/generate-sort-filter-columns-header";
 
 export const devicesTableColumnList: TableColumnDefinition[] = [
   {

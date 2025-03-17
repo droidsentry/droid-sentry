@@ -2,18 +2,13 @@
 
 import { FormPolicy } from "@/app/types/policy";
 import { Button } from "@/components/ui/button";
+import AwesomeDebouncePromise from "awesome-debounce-promise";
 import { Loader2 } from "lucide-react";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { Dispatch, SetStateAction, TransitionStartFunction } from "react";
+import { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 import { createOrUpdatePolicy, isPolicyNameUnique } from "../actions/policy";
-import AwesomeDebouncePromise from "awesome-debounce-promise";
-import { UseFormReturn } from "react-hook-form";
-import {
-  Dispatch,
-  SetStateAction,
-  TransitionStartFunction,
-  useTransition,
-} from "react";
 
 interface SaveAsPolicyButtonProps {
   form: UseFormReturn<FormPolicy>;
@@ -76,7 +71,7 @@ export default function SaveAsPolicyButton({
       }
       await createOrUpdatePolicy({
         enterpriseId,
-        policyIdentifier: "new", // 新規ポリシーとして保存
+        policyId: "new", // 新規ポリシーとして保存
         formData: newFormData,
       })
         .then((savedPolicyIdentifier) => {

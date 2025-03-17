@@ -1,5 +1,5 @@
 import { getBaseURL } from "@/lib/base-url";
-import { getPrices } from "./actions/stripe";
+import { getPrices } from "../actions";
 import MainSubscriptionsCard from "./components/main-subscriptions-card";
 import OptionSubscriptionsCard from "./components/option-subscriptions-card";
 

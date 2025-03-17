@@ -76,7 +76,8 @@ export const startLostMode = async (
   const { data: operationData, error } = await supabase
     .from("device_operations")
     .insert({
-      device_uuid: deviceId,
+      enterprise_id: enterpriseId,
+      device_id: deviceId,
       operation_type: type,
       operation_name: operationName,
       operation_request_data: requestBody,
@@ -94,7 +95,7 @@ export const startLostMode = async (
       updated_at: new Date().toISOString(),
     })
     .match({
-      enterprise_Id: enterpriseId,
+      enterprise_id: enterpriseId,
       device_id: deviceId,
     });
 };
@@ -154,7 +155,8 @@ export const stopLostMode = async (
   await supabase
     .from("device_operations")
     .insert({
-      device_uuid: deviceId,
+      enterprise_id: enterpriseId,
+      device_id: deviceId,
       operation_type: type,
       operation_name: operationName,
       operation_request_data: requestBody,

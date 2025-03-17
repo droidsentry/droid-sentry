@@ -12,14 +12,9 @@ export async function GET(request: NextRequest) {
 
   try {
     const supabase = await createClient();
-    // const { data: user, error: userError } = await supabase.auth.getUser();
-    // if (userError) {
-    //   return new NextResponse("User not found", { status: 404 });
-    // }
-
     const { data, error } = await supabase
       .from("apps")
-      .select("app_data")
+      .select("appDatails:app_details")
       .eq("app_id", appId)
       .single();
 
@@ -27,12 +22,9 @@ export async function GET(request: NextRequest) {
       return new NextResponse("App not found", { status: 404 });
     }
 
-    const jsonString = JSON.stringify(data.app_data, null, 2);
+    const jsonString = JSON.stringify(data.appDatails, null, 2);
     const date = formatToJapaneseDateTime(new Date(), "yyyy_MMdd_HHmmss");
-
-    console.log("date", date);
-    const fileName = `${appId}_appData_${date}.json`;
-
+    const fileName = `${appId}_appDetails_${date}.json`;
     const headers = new Headers({
       "Content-Type": "application/json",
       "Content-Disposition": `attachment; filename="${fileName}"`,

@@ -1,6 +1,6 @@
 "use server";
 
-import { createTrialSubscription } from "@/app/api/auth/confirm/lib/create-trial-subscription";
+import { createTrialSubscription } from "@/app/(main)/welcome/lib/create-trial-subscription";
 import { OnboardingUserSchema } from "@/app/schemas/project";
 import { OnboardingUser } from "@/app/types/project";
 import { createClient } from "@/lib/supabase/server";

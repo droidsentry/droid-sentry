@@ -108,7 +108,7 @@ import {
   deleteNetworkConfiguration,
   deleteNetworkConfigurations,
   getNetworkConfigurations,
-} from "../actions/network";
+} from "../actions";
 
 export const wifiSsidColumns: ColumnDef<NetworkConfiguration>[] = [
   {
@@ -221,11 +221,11 @@ const DeleteNetworkAction = React.memo(
 const DeleteSelectedNetworksButton = ({
   table,
   enterpriseId,
-  policyIdentifier,
+  policyId,
 }: {
   table: ReactTable<NetworkConfiguration>;
   enterpriseId: string;
-  policyIdentifier: string;
+  policyId: string;
 }) => {
   const [open, setOpen] = React.useState(false);
   const [isPending, startTransition] = React.useTransition();
@@ -236,11 +236,7 @@ const DeleteSelectedNetworksButton = ({
 
   const handleDeleteSelected = async () => {
     startTransition(async () => {
-      await deleteNetworkConfigurations(
-        enterpriseId,
-        policyIdentifier,
-        selectedGuids
-      )
+      await deleteNetworkConfigurations(enterpriseId, policyId, selectedGuids)
         .then(() => {
           toast.success("ネットワーク設定の削除に成功しました");
         })
@@ -368,7 +364,7 @@ const WifiSsidFormDialog = ({
   const isNoneSecurity = securityType === "None";
   const { isValid } = form.formState;
 
-  const { enterpriseId, policyIdentifier } = useParams<RouteParams>();
+  const { enterpriseId, policyId } = useParams<RouteParams>();
 
   const handleCreateOrUpdateNetwork = (data: NetworkConfiguration) => {
     const newNetworkConfig: NetworkConfiguration = {
@@ -386,7 +382,7 @@ const WifiSsidFormDialog = ({
     startTransition(async () => {
       await createOrUpdateNetworkConfigurations(
         enterpriseId,
-        policyIdentifier,
+        policyId,
         newNetworkConfig
       )
         .then(() => {
@@ -782,11 +778,11 @@ function SwitchCell({
 
 export function WifiSsidTable({
   enterpriseId,
-  policyIdentifier,
+  policyId,
   networkConfigurations,
 }: {
   enterpriseId: string;
-  policyIdentifier: string;
+  policyId: string;
   networkConfigurations: NetworkConfigurations;
 }) {
   const key = `/api/devices/${enterpriseId}/wifi-ssid`;
@@ -813,7 +809,7 @@ export function WifiSsidTable({
   // ネットワーク設定を削除するハンドラ
   const handleDelete = React.useCallback(
     async (guid: string) => {
-      await deleteNetworkConfiguration(enterpriseId, policyIdentifier, guid)
+      await deleteNetworkConfiguration(enterpriseId, policyId, guid)
         .then(() => {
           toast.success("ネットワーク設定の削除に成功しました");
         })
@@ -821,7 +817,7 @@ export function WifiSsidTable({
           toast.error("ネットワーク設定の削除に失敗しました");
         });
     },
-    [enterpriseId, policyIdentifier]
+    [enterpriseId, policyId]
   );
 
   const columns: ColumnDef<NetworkConfiguration>[] = React.useMemo(
@@ -889,7 +885,7 @@ export function WifiSsidTable({
   });
 
   const isFormLoading =
-    policyIdentifier !== "new" && // 新規作成時はローディングチェックをスキップ
+    policyId !== "new" && // 新規作成時はローディングチェックをスキップ
     !form.formState.isDirty && // フォームが一度も編集されていない
     !form.getValues("policyDisplayName");
 
@@ -925,7 +921,7 @@ export function WifiSsidTable({
           <DeleteSelectedNetworksButton
             table={table}
             enterpriseId={enterpriseId}
-            policyIdentifier={policyIdentifier}
+            policyId={policyId}
           />
           <CreateWifiSsidButton table={table} />
         </div>

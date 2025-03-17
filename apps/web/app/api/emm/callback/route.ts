@@ -1,6 +1,6 @@
 import { createAndroidManagementClient } from "@/lib/emm/client";
 import { decryptEMMProject } from "@/lib/emm/project";
-import { createDefaultPolicy } from "@/app/api/emm/callback/policy";
+import { createDefaultPolicy } from "@/app/api/emm/callback/create-or-updata-policy";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { cookies } from "next/headers";
@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
       .upsert(
         {
           enterprise_id: enterpriseId,
-          enterprise_data: enterpriseData as Json,
+          enterprise_details: enterpriseData as Json,
           updated_at: new Date().toISOString(),
           // 既存のエンタープライズがある場合は owner_id を変更しない
           ...(existingEnterprise ? {} : { owner_id: user.id }),
@@ -107,11 +107,11 @@ export async function GET(request: NextRequest) {
 
     // 応答文を　enterprise_settings_historyテーブルに保存
     const { error: enterpriseHistoryError } = await supabase
-      .from("enterprises_histories")
+      .from("enterprise_history")
       .insert({
         enterprise_id: enterpriseId,
-        enterprise_request_data: requestBody,
-        enterprise_response_data: enterpriseData as Json,
+        request_details: requestBody,
+        response_details: enterpriseData as Json,
       });
     if (enterpriseHistoryError) {
       console.error(

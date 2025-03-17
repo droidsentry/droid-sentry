@@ -9,19 +9,24 @@ import { FormPolicy } from "@/app/types/policy";
 import { Form } from "@/components/ui/form";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
-import { defaultGeneralConfig } from "../policies/[policyId]/device-general/data/default-general-config";
 import { getPolicyData } from "../policies/actions/get-policy";
 import { formPolicySchema } from "@/app/schemas/policy";
+import { defaultPolicyRequestBody } from "@/data/default-policy-request-body";
+
+export const defaultGeneralConfig: FormPolicy = {
+  policyData: defaultPolicyRequestBody,
+  policyDisplayName: "", // ポリシー名
+};
 
 export function PolicyFormProvider({ children }: { children: ReactNode }) {
   const params = useParams<RouteParams>();
   const enterpriseId = params.enterpriseId;
-  const policyIdentifier = params.policyIdentifier ?? "new";
+  const policyId = params.policyId ?? "new";
 
-  const key = `/api/policy/${policyIdentifier}`;
+  const key = `/api/policy/${policyId}`;
   const { data } = useSWR<FormPolicy>(
-    policyIdentifier === "new" ? null : key, // policyIdがnewの場合はnullを返す fetchしない
-    () => getPolicyData(enterpriseId, policyIdentifier),
+    policyId === "new" ? null : key, // policyIdがnewの場合はnullを返す fetchしない
+    () => getPolicyData(enterpriseId, policyId),
     {
       revalidateOnFocus: false, // タブ移動しても関数を実行しない
     }
@@ -36,7 +41,7 @@ export function PolicyFormProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     // console.log("useEffect");
     // 新規作成の場合の処理
-    if (policyIdentifier === "new") {
+    if (policyId === "new") {
       form.reset(defaultGeneralConfig);
       return;
     }
@@ -45,7 +50,7 @@ export function PolicyFormProvider({ children }: { children: ReactNode }) {
       // console.log("data", data);
       form.reset(data);
     }
-  }, [policyIdentifier, form, data]);
+  }, [policyId, form, data]);
 
   return <Form {...form}>{children}</Form>;
 }

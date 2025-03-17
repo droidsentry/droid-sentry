@@ -1,7 +1,7 @@
 import "server-only";
 
 import { createAndroidManagementClient } from "@/lib/emm/client";
-import { saveDeviceStatus } from "@/app/api/emm/pubsub/lib/data/save-device";
+import { saveDeviceStatus } from "@/app/api/emm/pubsub/lib/save-device";
 
 /**
  * デバイス情報を同期する

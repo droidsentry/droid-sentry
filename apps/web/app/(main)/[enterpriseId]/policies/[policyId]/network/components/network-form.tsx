@@ -16,15 +16,11 @@ import { Switch } from "@/components/ui/switch";
 import { Loader2 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
-export default function NetworkForm({
-  policyIdentifier,
-}: {
-  policyIdentifier: string;
-}) {
+export default function NetworkForm({ policyId }: { policyId: string }) {
   const form = useFormContext<FormPolicy>();
 
   const isLoading =
-    policyIdentifier !== "new" && // 新規作成時はローディングチェックをスキップ
+    policyId !== "new" && // 新規作成時はローディングチェックをスキップ
     !form.formState.isDirty && // フォームが一度も編集されていない
     !form.getValues("policyDisplayName");
 
@@ -158,7 +154,7 @@ export default function NetworkForm({
         {/* <ProxyForm /> */}
         {/* <VpnForm /> */}
         {/* <CertificateForm /> */}
-        {/* <WifiTableForm policyIdentifier={policyIdentifier} /> */}
+        {/* <WifiTableForm policyId={policyId} /> */}
       </CardContent>
     </Card>
   );

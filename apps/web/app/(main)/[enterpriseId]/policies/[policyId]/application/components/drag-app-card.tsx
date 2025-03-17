@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { GripVerticalIcon } from "lucide-react";
-import AppLibraryTitle from "./app-library-title";
+import AppLibraryTitle from "./library-title";
 
 export default function DragAppCard({
   className,

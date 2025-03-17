@@ -7,11 +7,11 @@ import { deviceInfoNavigationItems } from "../data/navigation";
 
 export default function DeviceDetailInfoTopBar({
   enterpriseId,
-  deviceIdentifier,
+  deviceId,
   className,
 }: {
   enterpriseId: string;
-  deviceIdentifier: string;
+  deviceId: string;
   className?: string;
 }) {
   const pathname = usePathname();
@@ -23,7 +23,7 @@ export default function DeviceDetailInfoTopBar({
       )}
     >
       {deviceInfoNavigationItems.map((item) => {
-        const href = `/${enterpriseId}/devices/${deviceIdentifier}/${item.url}`;
+        const href = `/${enterpriseId}/devices/${deviceId}/${item.url}`;
         const isActive = pathname === href;
 
         return (

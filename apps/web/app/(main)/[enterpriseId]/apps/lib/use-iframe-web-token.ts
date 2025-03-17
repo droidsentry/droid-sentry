@@ -3,7 +3,7 @@
 import useSWR from "swr";
 
 import { IframeType } from "@/app/types/apps";
-import { getIframeWebToken } from "../../actions/get-iframe-web-token";
+import { getIframeWebToken } from "../actions/get-iframe-web-token";
 
 /**
  * Android Management APIのWeb Tokenを取得

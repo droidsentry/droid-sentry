@@ -26,15 +26,15 @@ import { getHardwareInfo } from "../../actions/device";
 
 export default function DeviceSecurityPostureDetailsTable({
   enterpriseId,
-  deviceIdentifier,
+  deviceId,
 }: {
   enterpriseId: string;
-  deviceIdentifier: string;
+  deviceId: string;
 }) {
-  const key = `/api/devices/${enterpriseId}/${deviceIdentifier}`;
+  const key = `/api/devices/${enterpriseId}/${deviceId}`;
   const { data, error, isLoading, isValidating } =
     useSWRImmutable<HardwareInfoSourceType>(key, () => {
-      return getHardwareInfo({ enterpriseId, deviceIdentifier });
+      return getHardwareInfo({ enterpriseId, deviceId });
     });
   if (error) return <div>エラーが発生しました</div>;
   if (isLoading || isValidating) return <LoadingWithinPageSkeleton />;

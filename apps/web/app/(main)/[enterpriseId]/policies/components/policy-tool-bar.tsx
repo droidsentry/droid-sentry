@@ -36,26 +36,26 @@ export default function PolicyToolBar() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const searchPolicyIdentifier = searchParams.get("id");
+  const searchPolicyId = searchParams.get("id");
   const param = useParams<RouteParams>();
-  let policyIdentifier = param.policyIdentifier ?? "new";
-  if (searchPolicyIdentifier) {
-    policyIdentifier = searchPolicyIdentifier;
+  let policyId = param.policyId ?? "new";
+  if (searchPolicyId) {
+    policyId = searchPolicyId;
   }
 
   const enterpriseId = param.enterpriseId;
-  const policyBasePath = `/${enterpriseId}/policies/${policyIdentifier}`;
+  const policyBasePath = `/${enterpriseId}/policies/${policyId}`;
   const currentBase = pathname.split(policyBasePath)[1];
   const { isValidating, isSubmitting, isDirty } = form.formState;
 
   const handleSave = async (formData: FormPolicy) => {
     startTransitionSave(async () => {
-      if (!policyIdentifier) {
+      if (!policyId) {
         toast.error("ポリシーIDが取得できませんでした。");
         return;
       }
       const policyDisplayName = formData.policyDisplayName;
-      if (policyIdentifier === "new") {
+      if (policyId === "new") {
         const isUnique = await isPolicyNameUnique(
           enterpriseId,
           policyDisplayName
@@ -72,13 +72,13 @@ export default function PolicyToolBar() {
       }
       await createOrUpdatePolicy({
         enterpriseId,
-        policyIdentifier,
+        policyId,
         formData,
       })
-        .then((savedPolicyIdentifier) => {
+        .then((savedPolicyId) => {
           toast.success("ポリシーを保存しました。");
           router.push(
-            `/${enterpriseId}/policies/${savedPolicyIdentifier}/${currentBase}`
+            `/${enterpriseId}/policies/${savedPolicyId}/${currentBase}`
           );
         })
         .catch((error) => {
@@ -88,13 +88,13 @@ export default function PolicyToolBar() {
     });
   };
   useEffect(() => {
-    if (policyIdentifier !== "new") {
+    if (policyId !== "new") {
       setIsSavingAs(true);
     }
   }, []);
 
   const isLoading =
-    policyIdentifier !== "new" && // 新規作成時はローディングチェックをスキップ
+    policyId !== "new" && // 新規作成時はローディングチェックをスキップ
     !isDirty && // フォームが一度も編集されていない
     !form.getValues("policyDisplayName");
 

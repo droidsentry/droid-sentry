@@ -3,10 +3,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { CircleX } from "lucide-react";
-import {
-  RestrictedAppKey,
-  useAppRestriction,
-} from "./app-restriction-provider";
+import { RestrictedAppKey, useAppRestriction } from "./restriction-provider";
 
 export default function AppRestrictionZone({
   policyApps,

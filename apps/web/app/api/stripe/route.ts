@@ -1,6 +1,9 @@
 import { NextRequest } from "next/server";
-import { StripeCustomerMetadata } from "../types/stripe";
 import { stripe } from "@/lib/stripe";
+
+export type StripeCustomerMetadata = {
+  appUserId?: string;
+};
 
 export async function POST(request: NextRequest) {
   const sig = request.headers.get("stripe-signature");
@@ -46,24 +49,24 @@ export async function POST(request: NextRequest) {
           expand: ["line_items"],
         }
       );
-      console.log("sessionWithLineItems", sessionWithLineItems);
+      // console.log("sessionWithLineItems", sessionWithLineItems);
       const lineItems = sessionWithLineItems.line_items;
       const planId = lineItems?.data[0].price?.id;
       metadata = await getMetadataByStripeCustomerId(object.customer as string);
 
-      if (metadata) {
-        if (object.mode === "subscription") {
-          // サブスクリプション開始時の処理
-          console.log("サブスクリプション開始時の処理");
-          console.log("planId", planId);
-          console.log("metadata", metadata);
-        } else {
-          // サブスクリプション以外の決済完了時の処理
-          console.log("サブスクリプション以外の決済完了時の処理");
-          console.log("planId", planId);
-          console.log("metadata", metadata);
-        }
-      }
+      // if (metadata) {
+      //   if (object.mode === "subscription") {
+      //     // サブスクリプション開始時の処理
+      //     console.log("サブスクリプション開始時の処理");
+      //     console.log("planId", planId);
+      //     console.log("metadata", metadata);
+      //   } else {
+      //     // サブスクリプション以外の決済完了時の処理
+      //     console.log("サブスクリプション以外の決済完了時の処理");
+      //     console.log("planId", planId);
+      //     console.log("metadata", metadata);
+      //   }
+      // }
       break;
     case "customer.subscription.updated":
       const customerSubscriptionUpdated = event.data.object;

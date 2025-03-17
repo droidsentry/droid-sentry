@@ -1,17 +1,17 @@
 import { RouteParams } from "@/app/types/enterprise";
 import { getDevicePolicyInfo } from "../actions/device";
-import { DevicePolicyInfoTable } from "./components/device-policy-info-table";
+import { DevicePolicyInfoTable } from "./device-policy-info-table";
 
 export default async function Page({
   params,
 }: {
   params: Promise<RouteParams>;
 }) {
-  const { enterpriseId, deviceIdentifier } = await params;
+  const { enterpriseId, deviceId } = await params;
   // デバイスの情報を取得
   const deviceSource = await getDevicePolicyInfo({
     enterpriseId,
-    deviceIdentifier,
+    deviceId,
   });
 
   return (

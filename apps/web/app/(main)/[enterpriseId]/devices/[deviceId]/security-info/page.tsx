@@ -8,47 +8,14 @@ export default async function Page({
 }: {
   params: Promise<RouteParams>;
 }) {
-  const { enterpriseId, deviceIdentifier } = await params;
+  const { enterpriseId, deviceId } = await params;
   return (
     <div className="mx-1.5 grid grid-cols-1 md:grid-cols-2 gap-2">
-      <DeviceSecurityTable
-        enterpriseId={enterpriseId}
-        deviceIdentifier={deviceIdentifier}
-      />
+      <DeviceSecurityTable enterpriseId={enterpriseId} deviceId={deviceId} />
       <DeviceSecurityPostureDetailsTable
         enterpriseId={enterpriseId}
-        deviceIdentifier={deviceIdentifier}
+        deviceId={deviceId}
       />
     </div>
   );
 }
-
-const securityInfoData = {
-  // deviceSettings: {
-  //   isEncrypted: true,
-  //   encryptionStatus: "ACTIVE_PER_USER",
-  //   verifyAppsEnabled: true,
-  //   unknownSourcesEnabled: true,
-  // },
-  securityPosture: {
-    devicePosture: "POTENTIALLY_COMPROMISED",
-    postureDetails: [
-      {
-        advice: [
-          {
-            defaultMessage: "The user should lock their device's bootloader.",
-          },
-        ],
-        securityRisk: "UNKNOWN_OS",
-      },
-      {
-        securityRisk: "HARDWARE_BACKED_EVALUATION_FAILED",
-      },
-    ],
-  },
-  appliedPasswordPolicies: [],
-  commonCriteriaModeInfo: {
-    commonCriteriaModeStatus: "COMMON_CRITERIA_MODE_DISABLED",
-    policySignatureVerificationStatus: "POLICY_SIGNATURE_VERIFICATION_DISABLED",
-  },
-};

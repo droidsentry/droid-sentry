@@ -4,7 +4,6 @@ import { FormPolicy } from "@/app/types/policy";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useFormContext } from "react-hook-form";
 
 export default function CreateNewPolicyLinkButton({

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useAppRestriction } from "./app-restriction-provider";
+import { useAppRestriction } from "./restriction-provider";
 import { cn } from "@/lib/utils";
 
 export default function AppRestrictionToolBar({

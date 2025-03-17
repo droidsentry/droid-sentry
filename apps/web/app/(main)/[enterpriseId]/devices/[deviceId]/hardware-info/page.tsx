@@ -8,7 +8,7 @@ import { HardwareTemperaturesAverageChart } from "./components/charts/hardware-t
 import DisplaysTable from "./components/displays-table";
 import HardwareInfoTable from "./components/hardware-info-table";
 import { getHardwareInfo } from "../actions/device";
-import { getHardwareStatus } from "./data/hardware-status";
+import { getHardwareStatus } from "./hardware-status";
 import { HardwareFanSpeedsChart } from "./components/charts/hardware-fan-speeds-chart";
 
 export default async function Page({
@@ -16,14 +16,14 @@ export default async function Page({
 }: {
   params: Promise<RouteParams>;
 }) {
-  const { enterpriseId, deviceIdentifier } = await params;
+  const { enterpriseId, deviceId } = await params;
   const deviceSource = await getHardwareInfo({
     enterpriseId,
-    deviceIdentifier,
+    deviceId,
   });
   const hardwareStatusSource = await getHardwareStatus({
     enterpriseId,
-    deviceIdentifier,
+    deviceId,
   });
   return (
     <div className="mx-1.5 grid grid-cols-1 md:grid-cols-2 gap-2">

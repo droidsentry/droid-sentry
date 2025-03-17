@@ -5,35 +5,16 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-import { ChevronDown, MenuIcon } from "lucide-react";
-
-import {
-  FilePlusIcon,
-  HistoryIcon,
-  LayoutListIcon,
-  MapPinnedIcon,
-  SearchIcon,
-  HardDriveIcon,
-  ClipboardListIcon,
-  ShieldCheckIcon,
-  WifiHighIcon,
-  KeyRoundIcon,
-  FileIcon,
-} from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { SiAndroid } from "@icons-pack/react-simple-icons";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { deviceInfoNavigationItems } from "../data/navigation";
@@ -41,10 +22,10 @@ import { deviceInfoNavigationItems } from "../data/navigation";
 export default function MableDeviceDetailInfoTopBar({
   className,
   enterpriseId,
-  deviceIdentifier,
+  deviceId,
 }: {
   enterpriseId: string;
-  deviceIdentifier: string;
+  deviceId: string;
   className?: string;
 }) {
   const pathname = usePathname();
@@ -72,7 +53,7 @@ export default function MableDeviceDetailInfoTopBar({
         <DropdownMenuContent>
           <SidebarMenu className="my-2">
             {deviceInfoNavigationItems.map((navigationItems) => {
-              const fullPath = `/${enterpriseId}/devices/${deviceIdentifier}/${navigationItems.url}`;
+              const fullPath = `/${enterpriseId}/devices/${deviceId}/${navigationItems.url}`;
               const isActive = pathname === fullPath;
 
               return (

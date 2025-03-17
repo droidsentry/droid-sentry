@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { useDndMonitor, useDraggable } from "@dnd-kit/core";
 import { GripVerticalIcon } from "lucide-react";
 import { useState } from "react";
-import { useAppRestriction } from "./app-restriction-provider";
+import { useAppRestriction } from "./restriction-provider";
 
 export default function Draggable({
   children,

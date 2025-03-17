@@ -1,7 +1,7 @@
 import { RouteParams } from "@/app/types/enterprise";
-import { getPolicyApps } from "../chrome-browser/data/get-policy-apps";
-import AppRestriction from "./components/app-restriction";
-import { AppRestrictionProvider } from "./components/app-restriction-provider";
+import AppRestriction from "./components/restriction";
+import { AppRestrictionProvider } from "./components/restriction-provider";
+import { getPolicyApps } from "./get-policy-apps";
 
 export default async function Page({
   params,
@@ -9,15 +9,12 @@ export default async function Page({
   params: Promise<RouteParams>;
 }) {
   const enterpriseId = (await params).enterpriseId;
-  const policyIdentifier = (await params).policyIdentifier;
+  const policyId = (await params).policyId;
   const policyApps = await getPolicyApps(enterpriseId);
   return (
     <div className="h-full pb-2">
       <AppRestrictionProvider>
-        <AppRestriction
-          policyApps={policyApps}
-          policyIdentifier={policyIdentifier}
-        />
+        <AppRestriction policyApps={policyApps} policyId={policyId} />
       </AppRestrictionProvider>
     </div>
   );

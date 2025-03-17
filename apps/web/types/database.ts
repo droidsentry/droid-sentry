@@ -73,7 +73,7 @@ export type Database = {
           {
             foreignKeyName: "application_reports_device_uuid_fkey"
             columns: ["device_uuid"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "devices"
             referencedColumns: ["id"]
           },
@@ -186,42 +186,45 @@ export type Database = {
           completed_at: string | null
           created_at: string
           created_by_user_id: string | null
-          device_uuid: string
+          device_id: string
+          enterprise_id: string
           operation_id: string
           operation_name: string | null
           operation_request_data: Json | null
           operation_response_data: Json
-          operation_type: string
+          operation_type: string | null
         }
         Insert: {
           completed_at?: string | null
           created_at?: string
           created_by_user_id?: string | null
-          device_uuid: string
+          device_id: string
+          enterprise_id: string
           operation_id?: string
           operation_name?: string | null
           operation_request_data?: Json | null
           operation_response_data: Json
-          operation_type: string
+          operation_type?: string | null
         }
         Update: {
           completed_at?: string | null
           created_at?: string
           created_by_user_id?: string | null
-          device_uuid?: string
+          device_id?: string
+          enterprise_id?: string
           operation_id?: string
           operation_name?: string | null
           operation_request_data?: Json | null
           operation_response_data?: Json
-          operation_type?: string
+          operation_type?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "device_operations_device_uuid_fkey"
-            columns: ["device_uuid"]
+            foreignKeyName: "device_operations_enterprise_device_fkey"
+            columns: ["enterprise_id", "device_id"]
             isOneToOne: false
             referencedRelation: "devices"
-            referencedColumns: ["id"]
+            referencedColumns: ["enterprise_id", "device_id"]
           },
         ]
       }
@@ -328,6 +331,41 @@ export type Database = {
           },
         ]
       }
+      enterprise_history: {
+        Row: {
+          created_at: string
+          created_by_user_id: string | null
+          enterprise_history_id: string
+          enterprise_id: string
+          request_details: Json
+          response_details: Json
+        }
+        Insert: {
+          created_at?: string
+          created_by_user_id?: string | null
+          enterprise_history_id?: string
+          enterprise_id: string
+          request_details: Json
+          response_details: Json
+        }
+        Update: {
+          created_at?: string
+          created_by_user_id?: string | null
+          enterprise_history_id?: string
+          enterprise_id?: string
+          request_details?: Json
+          response_details?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enterprise_history_enterprise_id_fkey"
+            columns: ["enterprise_id"]
+            isOneToOne: false
+            referencedRelation: "enterprises"
+            referencedColumns: ["enterprise_id"]
+          },
+        ]
+      }
       enterprises: {
         Row: {
           created_at: string
@@ -357,41 +395,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "subscriptions"
             referencedColumns: ["owner_id"]
-          },
-        ]
-      }
-      enterprises_histories: {
-        Row: {
-          created_at: string
-          created_by_user_id: string | null
-          enterprise_id: string
-          enterprise_request_data: Json
-          enterprise_response_data: Json
-          enterprises_history_id: string
-        }
-        Insert: {
-          created_at?: string
-          created_by_user_id?: string | null
-          enterprise_id: string
-          enterprise_request_data: Json
-          enterprise_response_data: Json
-          enterprises_history_id?: string
-        }
-        Update: {
-          created_at?: string
-          created_by_user_id?: string | null
-          enterprise_id?: string
-          enterprise_request_data?: Json
-          enterprise_response_data?: Json
-          enterprises_history_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "enterprises_histories_enterprise_id_fkey"
-            columns: ["enterprise_id"]
-            isOneToOne: false
-            referencedRelation: "enterprises"
-            referencedColumns: ["enterprise_id"]
           },
         ]
       }
@@ -833,6 +836,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "usage_log_events_enterprise_id_device_id_fkey"
+            columns: ["enterprise_id", "device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["enterprise_id", "device_id"]
+          },
+          {
             foreignKeyName: "usage_log_events_message_id_fkey"
             columns: ["message_id"]
             isOneToOne: false
@@ -984,6 +994,17 @@ export type Database = {
         Returns: string
       }
       insert_or_upsert_devices_data: {
+        Args: {
+          devices: Json[]
+          device_hardware_metrics: Json[]
+          device_memory_events: Json[]
+          device_power_events: Json[]
+          device_application_reports: Json[]
+          device_history: Json[]
+        }
+        Returns: undefined
+      }
+      insert_or_upsert_devices_data_old: {
         Args: {
           devices: Json[]
           application_reports: Json[]

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import NavigationBar from "../components/projects/navigation-bar";
+import NavigationBar from "../components/navigation-bar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { cookies } from "next/headers";
 import { GapiIframesProvider } from "./providers/gapi-iframes";

@@ -10,7 +10,7 @@ import {
   useState,
   useTransition,
 } from "react";
-import { deleteProject } from "../actions/projects";
+import { deleteProject } from "../actions";
 
 type ContextType = {
   projects: ProjectWithEnterpriseRelation[];

@@ -28,7 +28,7 @@ export const getHardwareInfo = async ({
     )
     .match({
       enterprise_id: enterpriseId,
-      device_identifier: deviceId,
+      device_id: deviceId,
     })
     .single();
 
@@ -37,17 +37,17 @@ export const getHardwareInfo = async ({
     return null;
   }
 
-  const deviceSource = data.device as AndroidManagementDevice;
+  const deviceSource = data.deviceDetails as AndroidManagementDevice;
 
   return deviceSource;
 };
 
 export const getDevicePolicyInfo = async ({
   enterpriseId,
-  deviceIdentifier,
+  deviceId,
 }: {
   enterpriseId: string;
-  deviceIdentifier: string;
+  deviceId: string;
 }) => {
   // 5秒待ってからデータを返す
   // await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -62,18 +62,18 @@ export const getDevicePolicyInfo = async ({
     .from("devices")
     .select(
       `
-      device:device_data,
-      currentPolicy:policies!devices_policy_reference_fkey(
+      device:device_details,
+      ...policies!devices_policy_id_fkey(
         policyDisplayName:policy_display_name
         ),
-      requestedPolicy:policies!devices_enterprise_id_requested_policy_identifier_fkey(
+      ...policies!devices_requested_policy_id_fkey(
         requestedPolicyDisplayName:policy_display_name
         )
       `
     )
     .match({
       enterprise_id: enterpriseId,
-      device_identifier: deviceIdentifier,
+      device_id: deviceId,
     })
     .single();
 
@@ -87,10 +87,10 @@ export const getDevicePolicyInfo = async ({
 
 export const getDeviceApplicationInfo = async ({
   enterpriseId,
-  deviceIdentifier,
+  deviceId,
 }: {
   enterpriseId: string;
-  deviceIdentifier: string;
+  deviceId: string;
 }) => {
   // 5秒待ってからデータを返す
   // await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -102,20 +102,20 @@ export const getDeviceApplicationInfo = async ({
     throw new Error("ユーザーが見つかりません");
   }
   const { data, error } = await supabase
-    .from("application_reports")
+    .from("device_application_reports")
     .select(
       `
       ...devices(
-        device_data->>lastStatusReportTime
+        device_details->>lastStatusReportTime
       ),
-      applicationReportDate:application_report_data,
+      applicationReportDate:report_data,
       createdAt:created_at,
       updatedAt:updated_at
       `
     )
     .match({
       enterprise_id: enterpriseId,
-      device_identifier: deviceIdentifier,
+      device_id: deviceId,
     })
     .single();
 

@@ -1,6 +1,6 @@
 import { ProjectProvider } from "./components/project-provider";
 import ProjectCard from "./components/projects-card";
-import { getProjects } from "./data/projects";
+import { getProjects } from "./lib/projects";
 
 export default async function Page() {
   const projectsData = await getProjects();

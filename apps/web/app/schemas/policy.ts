@@ -1,17 +1,13 @@
 import { z } from "zod";
 import {
   AndroidManagementPolicy,
-  PolicyApps,
-  Policy,
-  FormPolicy,
-  ScreenBrightnessSettings,
-  ScreenTimeoutSettings,
+  DeviceConnectivityManagement,
   DisplaySettingsPolicy,
   PasswordRequirements,
-  DeviceConnectivityManagement,
+  PolicyApps,
+  ScreenBrightnessSettings,
+  ScreenTimeoutSettings,
 } from "../types/policy";
-import AwesomeDebouncePromise from "awesome-debounce-promise";
-import { isPolicyNameUnique } from "../(main)/[enterpriseId]/policies/actions/policy";
 
 export type PolicyZodType = z.ZodType<AndroidManagementPolicy>;
 
@@ -341,15 +337,6 @@ export const formPolicySchema = z.object({
     .trim()
     .min(1, "ポリシー名を入力してください。")
     .default(""),
-});
-
-export const policyTableSchema = z.object({
-  enterpriseId: z.string(),
-  policyIdentifier: z.string(),
-  policyDisplayName: z.string(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-  version: z.string(),
 });
 
 /**

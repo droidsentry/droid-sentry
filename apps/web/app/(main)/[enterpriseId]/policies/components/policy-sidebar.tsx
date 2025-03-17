@@ -94,8 +94,7 @@ export function PolicySidebar({ className }: { className?: string }) {
   const searchParams = useSearchParams();
   const searchPolicyIdentifier = searchParams.get("id");
   const param = useParams<RouteParams>();
-  const policyIdentifier =
-    searchPolicyIdentifier ?? param.policyIdentifier ?? "new";
+  const policyIdentifier = searchPolicyIdentifier ?? param.policyId ?? "new";
   const enterpriseId = param.enterpriseId;
   const policyListPath = `/${enterpriseId}/policies`;
   const policyBasePath = `/${enterpriseId}/policies/${policyIdentifier}`;

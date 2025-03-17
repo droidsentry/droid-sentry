@@ -20,20 +20,18 @@ export default function DeleteSelectedPoliciesButton<
   const { enterpriseId } = usePoliciesTable();
 
   const handleDeletePolicies = async () => {
-    const deletePolicyIdentifierList = table
-      .getSelectedRowModel()
-      .rows.map((row) => {
-        const policyIdentifier = row.original.policyIdentifier;
+    const deletePolicyIdList = table.getSelectedRowModel().rows.map((row) => {
+      const { policyId, isDefault } = row.original;
 
-        if (policyIdentifier === "default") {
-          alert(
-            "デフォルトポリシーは削除できません。デフォルトポリシー以外を削除します。"
-          );
-        }
-        return row.original.policyIdentifier;
-      });
+      if (isDefault) {
+        toast.error(
+          "デフォルトポリシーは削除できません。デフォルトポリシー以外を削除します。"
+        );
+      }
+      return policyId;
+    });
     startTransition(async () => {
-      await deleteSelectedPolicies(enterpriseId, deletePolicyIdentifierList)
+      await deleteSelectedPolicies(enterpriseId, deletePolicyIdList)
         .then(() => {
           toast.success("ポリシーを削除しました。");
         })

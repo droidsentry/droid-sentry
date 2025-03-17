@@ -7,7 +7,7 @@ import {
   getHardwareInfo,
 } from "../(main)/[enterpriseId]/devices/[deviceId]/actions/device";
 import { getPolicyDisplayName } from "../(main)/[enterpriseId]/devices/[deviceId]/actions/policy";
-import { getHardwareStatus } from "../(main)/[enterpriseId]/devices/[deviceId]/hardware-info/data/hardware-status";
+import { getHardwareStatus } from "../(main)/[enterpriseId]/devices/[deviceId]/hardware-info/hardware-status";
 import {
   DeviceLostModeSchema,
   DeviceResetPasswordSchema,

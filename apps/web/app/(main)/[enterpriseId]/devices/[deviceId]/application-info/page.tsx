@@ -1,6 +1,6 @@
 import { RouteParams } from "@/app/types/enterprise";
 import { getDeviceApplicationInfo } from "../actions/device";
-import { DeviceApplicationInfoTable } from "./components/device-application-info-table";
+import { DeviceApplicationInfoTable } from "./device-application-info-table";
 
 export default async function Page({
   params,

@@ -3,7 +3,7 @@
 import HeaderLogoButton from "@/components/header-logo-button";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import UserMenu from "../../components/projects/user-menu";
+import UserMenu from "../../components/user-menu";
 import ProjectLinkButton from "./project-link-button";
 
 export function ProjectsSidebar({ className }: { className?: string }) {

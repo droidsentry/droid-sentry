@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import OnboardingForm from "./components/onboarding-form";
+import OnboardingForm from "./onboarding-form";
 import { checkTotalUserLimit } from "@/lib/service";
 import { redirect } from "next/navigation";
 

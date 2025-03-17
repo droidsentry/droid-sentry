@@ -24,20 +24,20 @@ const savePoliciesToDB = async (
     .map((policy) => {
       const currentPolicyName = policy.name;
       if (!currentPolicyName) return;
-      const policyIdentifier = currentPolicyName.split(
+      const policyId = currentPolicyName.split(
         `enterprises/${enterpriseId}/policies/`
       )[1];
       return {
+        policy_id: policyId,
         enterprise_id: enterpriseId,
-        policy_identifier: policyIdentifier,
-        policy_data: policy as Json,
+        policy_details: policy as Json,
         updated_at: new Date().toISOString(),
       };
     })
     .filter((policy) => policy !== undefined);
 
   const { error } = await supabase.from("policies").upsert(policiesList, {
-    onConflict: "enterprise_id,policy_identifier",
+    onConflict: "policy_id",
   });
 
   if (error) {

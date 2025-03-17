@@ -3,36 +3,19 @@ import { sendDiscordWebhookMessage } from "@/lib/webhook/discord";
 import { Json } from "@/types/database";
 import { NextResponse } from "next/server";
 
-import { BatchUsageLogEvents } from "../../types/event";
+import {
+  BatchUsageLogEvents,
+  NotificationType,
+  PubSubMessage,
+} from "../../../types/pubsub";
 import { createCommandDescription } from "./lib/command";
-import { dispatchDeviceEvent } from "./lib/data/device-event";
+import { dispatchDeviceEvent } from "./lib/device-event";
 import { createStatusReportDescription } from "./lib/status-report";
 import { createUsageLogsDescription } from "./lib/usage-logs";
 import { verifyPubSubToken } from "./lib/verify-token";
 import { AndroidManagementDevice, DeviceOperation } from "@/app/types/device";
-import { savePubSubLogs } from "./lib/data/save-pubsub-logs";
-
-// Pub/Subメッセージの型定義
-export interface PubSubMessage {
-  message: {
-    data: string;
-    attributes: {
-      notificationType: string;
-    };
-    messageId: string;
-    message_id: string;
-    publishTime: string;
-    publish_time: string;
-    orderingKey?: string;
-  };
-  subscription: string;
-}
-export type notificationType =
-  | "COMMAND" //デバイス コマンドが完了すると送信される通知。
-  | "USAGE_LOGS" //デバイスが BatchUsageLogEvents を送信したときに送信される通知。
-  | "STATUS_REPORT" //デバイスがステータス レポートを発行したときに送信される通知。
-  | "ENROLLMENT" //デバイスが登録されたときに送信される通知。
-  | "test"; //enterpriseIdの作成、更新の際、テスト用で送信される通知
+import { savePubSubLogs } from "./lib/save-pubsub-logs";
+import { sendWebhookMessage } from "./lib/send-webhoook";
 
 /**
  * Pub/Subのメッセージを受信する
@@ -54,6 +37,7 @@ export async function POST(request: Request) {
 
     // リクエストボディの基本的なバリデーション
     if (!body?.message?.data) {
+      console.log("body", body);
       throw new Error("Invalid message format: missing required fields");
     }
 
@@ -66,14 +50,9 @@ export async function POST(request: Request) {
       console.error("Base64 decode or JSON parse error:", error);
       throw new Error("Failed to decode message data");
     }
-
-    const isProd = process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
-    const contentTitle = isProd ? "" : "【開発環境】";
-    const supabase = createAdminClient();
-
+    //pubsub_message_logsにデータを保存
     await savePubSubLogs({ body, pubsubData: data });
 
-    // デバイス名の取得ロジックをマッピングオブジェクトで単純化
     const deviceNameExtractors = {
       COMMAND: (data: DeviceOperation) =>
         data.name?.split("/operations/")[0] ?? null,
@@ -81,18 +60,14 @@ export async function POST(request: Request) {
       STATUS_REPORT: (data: AndroidManagementDevice) => data.name,
       ENROLLMENT: (data: AndroidManagementDevice) => data.name,
       test: () => {
-        sendDiscordWebhookMessage(
-          `${contentTitle}Pub/Subメッセージを受信しました`,
-          "test",
-          "任意のEnterpriseでPubSubの設定を検知しました。"
-        );
+        sendWebhookMessage("test");
         return null;
       },
     } as const;
 
     // デバイス名の取得とバリデーション
     const notificationType = body.message.attributes
-      .notificationType as notificationType;
+      .notificationType as NotificationType;
     const deviceName = deviceNameExtractors[notificationType]?.(data);
     const operationName =
       notificationType === "COMMAND"
@@ -100,49 +75,51 @@ export async function POST(request: Request) {
         : undefined;
 
     let enterpriseId: string | null = null;
-    let deviceIdentifier: string | null = null;
+    let deviceId: string | null = null;
 
     if (deviceName) {
-      // enterprises/の後ろの文字列を取得
       const enterpriseParts = deviceName.split("enterprises/")[1] ?? null;
       if (enterpriseParts) {
-        // 最初の/までの文字列をenterpriseIdとして取得
         enterpriseId = enterpriseParts.split("/")[0];
-        // devices/の後ろの文字列をdeviceIdentifierとして取得
-        deviceIdentifier = deviceName.split("/devices/")[1];
+        deviceId = deviceName.split("/devices/")[1];
       }
     } else {
       // nullのまま処理を続行するとエラーが発生するため、警告を出力して処理を続行
       console.warn("Failed to parse device name:", deviceName);
     }
 
-    const pubsubMessageId = body.message.messageId;
+    const messageId = body.message.messageId;
     //pubsub_logsにデータを保存
+    const supabase = createAdminClient();
     const { error } = await supabase.from("pubsub_messages").insert({
-      pubsub_message_id: pubsubMessageId,
+      message_id: messageId,
       enterprise_id: enterpriseId,
-      device_identifier: deviceIdentifier,
+      device_id: deviceId,
       notification_type: notificationType,
-      pubsub_message_data: data as Json,
-      pubsub_message_attributes_data: body.message.attributes,
+      message: data as Json,
+      message_attributes: body.message.attributes,
       publish_time: body.message.publishTime,
     });
-    if (error) throw error;
-    if (!enterpriseId || !deviceIdentifier) {
+    if (error) {
+      console.error(error);
+      throw new Error("Failed to save pubsub message to database");
+    }
+
+    if (!enterpriseId || !deviceId) {
       if (notificationType === "test") {
         return NextResponse.json({ status: 200 });
       }
-      throw new Error("enterpriseId or deviceIdentifier is null");
+      throw new Error("enterpriseId or deviceId is null");
     }
 
     //タイプ別に他のテーブルにも保存する
     const deviceData = await dispatchDeviceEvent({
       enterpriseId,
-      deviceIdentifier,
+      deviceId,
       notificationType,
       data: data as Json,
       operationName,
-      pubsubMessageId,
+      messageId,
     });
 
     let description = "";
@@ -154,7 +131,7 @@ export async function POST(request: Request) {
     ) {
       description = await createStatusReportDescription({
         enterpriseId,
-        deviceIdentifier,
+        deviceId,
         deviceData: deviceData as AndroidManagementDevice,
       });
     }
@@ -163,34 +140,28 @@ export async function POST(request: Request) {
     if (notificationType === "COMMAND") {
       description = await createCommandDescription({
         enterpriseId,
-        deviceIdentifier,
+        deviceId,
         operationDate: data as DeviceOperation,
       });
     }
     if (notificationType === "USAGE_LOGS") {
       description = await createUsageLogsDescription({
         enterpriseId,
-        deviceIdentifier,
+        deviceId,
         usageLogDate: data as BatchUsageLogEvents,
       });
     }
-
-    await sendDiscordWebhookMessage(
-      `${contentTitle}Pub/Subメッセージを受信しました`,
-      notificationType,
-      description
-    );
-    // DB
+    sendWebhookMessage(notificationType, description);
 
     // 成功レスポンス(ステータスコード200)を返す
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error: unknown) {
     console.error("エラー:", error);
-    await sendDiscordWebhookMessage(
-      "Pub/Subメッセージのデータ処理に失敗しました。",
-      "ERROR",
-      error instanceof Error ? error.message : "不明なエラーが発生しました"
-    );
+    const title = "Pub/Subメッセージのデータ処理に失敗しました。";
+    const description =
+      error instanceof Error ? error.message : "不明なエラーが発生しました";
+    sendWebhookMessage("ERROR", description, title);
+
     // 500を返すとPub/Subがメッセージを再試行するため202を返す。最適化の可能性あり。
     return NextResponse.json(
       { error: "データ処理に失敗しました。" },

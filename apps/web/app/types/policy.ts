@@ -1,12 +1,9 @@
 import { androidmanagement_v1 } from "googleapis";
 import { z } from "zod";
-import {
-  formPolicySchema,
-  policySchema,
-  policyTableSchema,
-} from "../schemas/policy";
-import { getPolicyApps } from "../(main)/[enterpriseId]/policies/[policyId]/application/components/data/get-policy-apps";
+import { formPolicySchema, policySchema } from "../schemas/policy";
+import { getPolicyApps } from "../(main)/[enterpriseId]/policies/[policyId]/application/get-policy-apps";
 import { getPolicyList } from "../(main)/[enterpriseId]/devices/actions/policy";
+import { getPolicies } from "../(main)/[enterpriseId]/policies/actions/policy";
 
 export type AndroidManagementPolicy = androidmanagement_v1.Schema$Policy;
 export type ApplicationPolicy = androidmanagement_v1.Schema$ApplicationPolicy;
@@ -23,7 +20,7 @@ export type DeviceConnectivityManagement =
 export type ListPoliciesResponse =
   androidmanagement_v1.Schema$ListPoliciesResponse;
 
-export type PolicyTableType = z.infer<typeof policyTableSchema>;
+export type PolicyTableType = Awaited<ReturnType<typeof getPolicies>>[number];
 
 export type Policy = z.infer<typeof policySchema>;
 export type FormPolicy = z.infer<typeof formPolicySchema>;

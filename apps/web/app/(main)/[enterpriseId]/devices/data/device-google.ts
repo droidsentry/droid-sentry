@@ -9,13 +9,14 @@ import {
   AndroidManagementDevice,
   ListDevicesResponse,
 } from "@/app/types/device";
-import { prepareDeviceData } from "@/app/api/emm/pubsub/lib/data/save-device";
+import { prepareDeviceData } from "@/app/api/emm/pubsub/lib/save-device";
 
 type ResolvedDeviceData = {
   enterprise_id: string;
-  device_identifier: string | null;
-  policy_identifier: string | null;
-  device_data: AndroidManagementDevice;
+  device_id: string | null;
+  policy_id: string | null;
+  requested_policy_id: string | null;
+  device_details: AndroidManagementDevice;
   updated_at: string;
 };
 
@@ -36,22 +37,31 @@ const saveDevices = async (
       const policyName = device.policyName;
       const deviceName = device.name;
       if (!deviceName || !policyName) return;
-      const policyIdentifier = policyName.includes(
+      const appliedPolicyName = device.appliedPolicyName;
+      const policyId = appliedPolicyName?.includes(
         `enterprises/${enterpriseId}/policies/`
       )
-        ? (policyName.split(`enterprises/${enterpriseId}/policies/`)[1] ?? null)
+        ? appliedPolicyName.split(`enterprises/${enterpriseId}/policies/`)[1] ||
+          null
         : null;
 
-      const deviceIdentifier = deviceName.includes(
+      const requestedPolicyId = policyName?.includes(
+        `enterprises/${enterpriseId}/policies/`
+      )
+        ? policyName.split(`enterprises/${enterpriseId}/policies/`)[1] || null
+        : null;
+
+      const deviceId = deviceName.includes(
         `enterprises/${enterpriseId}/devices/`
       )
         ? (deviceName.split(`enterprises/${enterpriseId}/devices/`)[1] ?? null)
         : null;
       return {
         enterprise_id: enterpriseId,
-        device_identifier: deviceIdentifier,
-        policy_identifier: policyIdentifier,
-        device_data: device,
+        device_id: deviceId,
+        policy_id: policyId,
+        requested_policy_id: requestedPolicyId,
+        device_details: prepareDeviceData(device),
         updated_at: new Date().toISOString(),
       };
     })
@@ -59,7 +69,7 @@ const saveDevices = async (
 
   // upsertする共通データを作成
   const createBaseDeviceData = (device: ResolvedDeviceData) => ({
-    device_identifier: device.device_identifier,
+    device_id: device.device_id,
     enterprise_id: device.enterprise_id,
     updated_at: device.updated_at,
   });
@@ -69,31 +79,22 @@ const saveDevices = async (
     const baseData = createBaseDeviceData(device);
     return {
       ...baseData,
-      policy_identifier: device.policy_identifier,
-      device_data: prepareDeviceData(device.device_data) as Json,
-    };
-  });
-  // device_displaysテーブルに記録するデータ
-  const upsertDeviceDisplays = devicesList.map((device) => {
-    return {
-      enterprise_id: device.enterprise_id,
-      device_identifier: device.device_identifier,
-      last_status_report_time: device.device_data.lastStatusReportTime ?? "",
-      displays: device.device_data.displays as Json[],
+      policy_id: device.policy_id,
+      requested_policy_id: device.requested_policy_id,
+      device_details: device.device_details as Json,
     };
   });
   // device_hardware_statusテーブルに記録するデータ
   const upsertDeviceHardwareStatusList = devicesList
     .map((device) => {
       return (
-        device.device_data.hardwareStatusSamples
+        device.device_details.hardwareStatusSamples
           ?.map((hardwareStatus) => {
             if (!hardwareStatus.createTime) return;
             return {
-              enterprise_id: device.enterprise_id,
-              device_identifier: device.device_identifier,
-              create_time: hardwareStatus.createTime,
-              hardware_status: hardwareStatus as Json,
+              device_id: device.device_id,
+              matrics_at: hardwareStatus.createTime,
+              matrics: hardwareStatus as Json,
             };
           })
           .filter((hardwareStatus) => hardwareStatus !== undefined) ?? []
@@ -101,45 +102,15 @@ const saveDevices = async (
     })
     .flat();
 
-  // device_metricsテーブルに記録するデータ
-  const upsertDeviceMetricsList = devicesList
-    .map((device) => {
-      return (
-        device.device_data.hardwareStatusSamples
-          ?.map((hardwareStatus) => {
-            if (!hardwareStatus.createTime) return;
-            return {
-              enterprise_id: enterpriseId,
-              device_identifier: device.device_identifier,
-              create_time: hardwareStatus.createTime,
-              battery_temperatures: hardwareStatus.batteryTemperatures ?? null,
-              cpu_temperatures: hardwareStatus.cpuTemperatures ?? null,
-              gpu_temperatures: hardwareStatus.gpuTemperatures ?? null,
-              skin_temperatures: hardwareStatus.skinTemperatures ?? null,
-              cpu_usages: hardwareStatus.cpuUsages ?? null,
-              fan_speeds: hardwareStatus.fanSpeeds ?? null,
-            };
-          })
-          .filter((hardwareStatus) => hardwareStatus !== undefined) ?? []
-      );
-    })
-    .flat();
-
-  // メモリデータの作成
-  // const upsertMemoryEvents = devicesList.map((device) => ({
-  //   ...createBaseDeviceData(device),
-  //   memory_event_data: (device.device_data.memoryEvents as Json) ?? [],
-  // }));
   const upsertMemoryEvents = devicesList
     .map((device) => {
       return (
-        device.device_data.memoryEvents
+        device.device_details.memoryEvents
           ?.map((memoryEvent) => {
             if (!memoryEvent.createTime || !memoryEvent.eventType) return;
             return {
-              enterprise_id: enterpriseId,
-              device_identifier: device.device_identifier,
-              create_time: memoryEvent.createTime,
+              device_id: device.device_id,
+              matrics_at: memoryEvent.createTime,
               event_type: memoryEvent.eventType,
               byte_count: memoryEvent.byteCount ?? null,
             };
@@ -149,33 +120,42 @@ const saveDevices = async (
     })
     .flat();
   // デバイスの電源管理データの作成
-  const upsertPowerManagementEvents = devicesList.map((device) => ({
-    ...createBaseDeviceData(device),
-    power_management_event_data:
-      (device.device_data.powerManagementEvents as Json) ?? [],
-  }));
+  const powerEventList = devicesList
+    .map((device) => {
+      return (
+        device.device_details.powerManagementEvents
+          ?.map((powerEvent) => {
+            if (!powerEvent.createTime || !powerEvent.eventType) return;
+            return {
+              device_id: device.device_id,
+              matrics_at: powerEvent.createTime,
+              event_type: powerEvent.eventType,
+              battery_level: powerEvent.batteryLevel ?? null,
+            };
+          })
+          .filter((powerEvent) => powerEvent !== undefined) ?? []
+      );
+    })
+    .flat();
+
   // アプリケーションデータの作成
   const upsertApplicationReports = devicesList.map((device) => ({
     ...createBaseDeviceData(device),
-    application_report_data:
-      (device.device_data.applicationReports as Json) ?? [],
+    report_data: (device.device_details.applicationReports as Json) ?? [],
   }));
   // device_historiesテーブルに記録するデータ
   const upsertDeviceHistoryData = devicesList.map((device) => ({
-    enterprise_id: device.enterprise_id,
-    device_identifier: device.device_identifier,
-    device_response_data: (device.device_data as Json) ?? [],
+    device_id: device.device_id,
+    device_response_data: (device.device_details as Json) ?? [],
   }));
 
   const { error } = await supabase.rpc("insert_or_upsert_devices_data", {
     devices: upsertDevices,
-    application_reports: upsertApplicationReports,
-    memory_events: upsertMemoryEvents,
-    power_management_events: upsertPowerManagementEvents,
-    device_histories: upsertDeviceHistoryData,
-    device_displays: upsertDeviceDisplays,
-    device_hardware_status: upsertDeviceHardwareStatusList,
-    device_metrics: upsertDeviceMetricsList,
+    device_hardware_metrics: upsertDeviceHardwareStatusList,
+    device_memory_events: upsertMemoryEvents,
+    device_power_events: powerEventList,
+    device_application_reports: upsertApplicationReports,
+    device_history: upsertDeviceHistoryData,
   });
 
   if (error) {

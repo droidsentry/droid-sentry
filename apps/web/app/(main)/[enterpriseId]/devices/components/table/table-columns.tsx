@@ -14,9 +14,9 @@ import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
 import { devicesTableColumnList } from "../../data/columnList";
 
 import { DeviceTableType } from "@/app/types/device";
-import { DataTableColumnHeader } from "../../../../projects/components/table/data-table-column-header";
-import { generateSortFilterColumnsHeader } from "../../../../projects/components/table/generate-sort-filter-columns-header";
-import { selectColumn } from "../../../../projects/components/table/select-column";
+import { DataTableColumnHeader } from "../../../../components/table/column-header";
+import { generateSortFilterColumnsHeader } from "../../../../components/table/generate-sort-filter-columns-header";
+import { selectColumn } from "../../../../components/table/select-column";
 import DataTableColumnState from "./table-column-state";
 import DeviceTableMenu from "./table-menu";
 

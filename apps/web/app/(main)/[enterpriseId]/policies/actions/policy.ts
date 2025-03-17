@@ -11,6 +11,7 @@ import { v7 as uuidv7 } from "uuid";
 
 /**
  * ポリシー名が重複しているかどうかを確認
+ * @param enterpriseId
  * @param policyDisplayName
  * @returns
  */
@@ -45,11 +46,11 @@ export const isPolicyNameUnique = async (
  */
 export const createOrUpdatePolicy = async ({
   enterpriseId,
-  policyIdentifier,
+  policyId,
   formData,
 }: {
   enterpriseId: string;
-  policyIdentifier: string;
+  policyId: string;
   formData: FormPolicy;
 }) => {
   // ユーザー認証
@@ -61,7 +62,7 @@ export const createOrUpdatePolicy = async ({
     throw new Error("ユーザーが見つかりません");
   }
   // 新規作成時のみポリシー名の重複チェック
-  if (policyIdentifier === "new") {
+  if (policyId === "new") {
     const isUnique = await isPolicyNameUnique(
       enterpriseId,
       formData.policyDisplayName
@@ -78,22 +79,22 @@ export const createOrUpdatePolicy = async ({
   }
 
   // サービス上限を確認する
-  if (policyIdentifier === "new") {
+  if (policyId === "new") {
     await checkServiceLimit(enterpriseId, "max_policies_per_user");
   }
 
   const { policyDisplayName, policyData } = result.data;
   // ポリシーを作成
   const androidmanagement = await createAndroidManagementClient();
-  if (policyIdentifier === "new") {
-    policyIdentifier = uuidv7();
+  if (policyId === "new") {
+    policyId = uuidv7();
   }
   const requestBody: AndroidManagementPolicy = policyData;
 
   const enterpriseName = `enterprises/${enterpriseId}`;
   const { data } = await androidmanagement.enterprises.policies
     .patch({
-      name: `${enterpriseName}/policies/${policyIdentifier}`,
+      name: `${enterpriseName}/policies/${policyId}`,
       requestBody: requestBody,
     })
     .catch((error) => {
@@ -106,17 +107,17 @@ export const createOrUpdatePolicy = async ({
     .from("policies")
     .upsert(
       {
+        policy_id: policyId,
         enterprise_id: enterpriseId,
-        policy_identifier: policyIdentifier,
         policy_display_name: policyDisplayName,
-        policy_data: data as Json,
+        policy_details: data as Json,
         updated_at: new Date().toISOString(),
       },
-      { onConflict: "enterprise_id,policy_identifier" }
+      { onConflict: "policy_id" }
     )
     .select(
       `
-    policy_identifier
+    policy_id
     `
     )
     .single();
@@ -126,5 +127,39 @@ export const createOrUpdatePolicy = async ({
   }
 
   revalidatePath(`/${enterpriseId}/policies`);
-  return policy.policy_identifier;
+  return policy.policy_id;
+};
+
+/**
+ * ポリシーを取得
+ * @param enterpriseId
+ * @returns
+ * DBからポリシーを取得
+ */
+export const getPolicies = async ({
+  enterpriseId,
+}: {
+  enterpriseId: string;
+}) => {
+  const supabase = await createClient();
+  const { data: policies } = await supabase
+    .from("policies")
+    .select(
+      `
+      policyId:policy_id,
+      policyDisplayName:policy_display_name,
+      createdAt:created_at,
+      updatedAt:updated_at,
+      isDefault:is_default,
+      version:policy_details->>version
+      `
+    )
+    .eq("enterprise_id", enterpriseId)
+    .order("updated_at", { ascending: true });
+
+  if (!policies) {
+    throw new Error("Failed to fetch policies from database");
+  }
+  // 取得したデータをフロントが期待するPolicy型に変換
+  return policies;
 };

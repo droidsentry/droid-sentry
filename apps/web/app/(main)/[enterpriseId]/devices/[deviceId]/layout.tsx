@@ -10,18 +10,18 @@ export default async function Layout({
   children: React.ReactNode;
   params: Promise<RouteParams>;
 }) {
-  const { enterpriseId, deviceIdentifier } = await params;
+  const { enterpriseId, deviceId } = await params;
   return (
     <div className="flex flex-col h-full ">
       <div className="flex">
         <DeviceDetailInfoTopBar
           enterpriseId={enterpriseId}
-          deviceIdentifier={deviceIdentifier}
+          deviceId={deviceId}
           className="hidden lg:block"
         />
         <MableDeviceDetailInfoTopBar
           enterpriseId={enterpriseId}
-          deviceIdentifier={deviceIdentifier}
+          deviceId={deviceId}
           className="lg:hidden"
         />
       </div>
