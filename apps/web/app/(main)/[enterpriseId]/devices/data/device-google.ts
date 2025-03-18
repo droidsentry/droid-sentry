@@ -4,7 +4,7 @@ import { createAndroidManagementClient } from "@/lib/emm/client";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
-// import { listPolicyDetails } from "../../../projects/data/policy";
+// import { listPpolicyDetails.} from "../../../projects/data/policy";
 import {
   AndroidManagementDevice,
   ListDevicesResponse,

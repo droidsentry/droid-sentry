@@ -16,7 +16,6 @@ export const checkDefaultPolicy = async (
     .match({
       enterprise_id: enterpriseId,
       policy_id: policyId,
-      is_default: true,
     })
     .single();
   if (error) {

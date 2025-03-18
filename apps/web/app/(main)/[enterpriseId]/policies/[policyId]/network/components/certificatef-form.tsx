@@ -20,7 +20,7 @@ export default function CertificateForm() {
       <h2 className="text-lg font-bold">証明書設定</h2>
       <FormField
         control={form.control}
-        name="policyData.screenCaptureDisabled"
+        name="policyDetails.screenCaptureDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2 h-fit">
             <div className="space-y-1 leading-none">

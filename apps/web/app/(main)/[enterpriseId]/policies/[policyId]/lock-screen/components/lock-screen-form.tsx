@@ -46,7 +46,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
         <h2 className="text-base">画面ロック設定</h2>
         <FormField
           control={form.control}
-          name="policyData.passwordPolicies.0.passwordQuality"
+          name="policyDetails.passwordPolicies.0.passwordQuality"
           render={({ field }) => (
             <FormItem className="flex flex-col rounded-md border p-4 gap-2">
               <FormLabel>パスワード要件</FormLabel>
@@ -112,7 +112,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
         />
         <FormField
           control={form.control}
-          name="policyData.deviceConnectivityManagement.usbDataAccess"
+          name="policyDetails.deviceConnectivityManagement.usbDataAccess"
           render={({ field }) => (
             <FormItem className="flex flex-col rounded-md border p-4 gap-2">
               <FormLabel>パスワードの再設定要求</FormLabel>
@@ -160,7 +160,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
         />
         <FormField
           control={form.control}
-          name="policyData.screenCaptureDisabled"
+          name="policyDetails.screenCaptureDisabled"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
               <div className="space-y-1 leading-none w-full">
@@ -184,7 +184,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
         />
         <FormField
           control={form.control}
-          name="policyData.screenCaptureDisabled"
+          name="policyDetails.screenCaptureDisabled"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
               <div className="space-y-1 leading-none w-full">
@@ -212,7 +212,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
           <div className="space-y-2 border rounded-lg p-4">
             <FormField
               control={form.control}
-              name="policyData.screenCaptureDisabled"
+              name="policyDetails.screenCaptureDisabled"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between gap-2">
                   <div className="space-y-1 leading-none w-full">
@@ -236,7 +236,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
             />
             <FormField
               control={form.control}
-              name="policyData.screenCaptureDisabled"
+              name="policyDetails.screenCaptureDisabled"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between gap-2">
                   <div className="space-y-1 leading-none w-full">
@@ -260,7 +260,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
             />
             <FormField
               control={form.control}
-              name="policyData.screenCaptureDisabled"
+              name="policyDetails.screenCaptureDisabled"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between gap-2">
                   <div className="space-y-1 leading-none w-full">
@@ -286,7 +286,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
           <div className="space-y-2 border rounded-lg p-4">
             <FormField
               control={form.control}
-              name="policyData.screenCaptureDisabled"
+              name="policyDetails.screenCaptureDisabled"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between gap-2">
                   <div className="space-y-1 leading-none w-full">
@@ -310,7 +310,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
             />
             <FormField
               control={form.control}
-              name="policyData.screenCaptureDisabled"
+              name="policyDetails.screenCaptureDisabled"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between gap-2">
                   <div className="space-y-1 leading-none w-full">
@@ -332,7 +332,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
             />
             <FormField
               control={form.control}
-              name="policyData.screenCaptureDisabled"
+              name="policyDetails.screenCaptureDisabled"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between gap-2">
                   <div className="space-y-1 leading-none w-full">
@@ -362,7 +362,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
           <div className="space-y-2 border rounded-lg p-4">
             <FormField
               control={form.control}
-              name="policyData.screenCaptureDisabled"
+              name="policyDetails.screenCaptureDisabled"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between gap-2">
                   <div className="space-y-1 leading-none w-full">
@@ -384,7 +384,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
             />
             <FormField
               control={form.control}
-              name="policyData.screenCaptureDisabled"
+              name="policyDetails.screenCaptureDisabled"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between gap-2">
                   <div className="space-y-1 leading-none w-full">
@@ -416,7 +416,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
         </p>
         <FormField
           control={form.control}
-          name="policyData.deviceConnectivityManagement.usbDataAccess"
+          name="policyDetails.deviceConnectivityManagement.usbDataAccess"
           render={({ field }) => (
             <FormItem className="flex flex-col rounded-md border p-4 gap-2">
               <FormLabel>画面ロックメッセージ設定</FormLabel>
@@ -432,7 +432,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
         <div className="space-y-2 border rounded-lg p-4">
           <FormField
             control={form.control}
-            name="policyData.screenCaptureDisabled"
+            name="policyDetails.screenCaptureDisabled"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between">
                 <div className="space-y-1 leading-none">
@@ -455,7 +455,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
           />
           <FormField
             control={form.control}
-            name="policyData.screenCaptureDisabled"
+            name="policyDetails.screenCaptureDisabled"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
                 <div className="space-y-1 leading-none">
@@ -474,7 +474,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
           />
           <FormField
             control={form.control}
-            name="policyData.screenCaptureDisabled"
+            name="policyDetails.screenCaptureDisabled"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
                 <div className="space-y-1 leading-none">
@@ -493,7 +493,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
           />
           <FormField
             control={form.control}
-            name="policyData.screenCaptureDisabled"
+            name="policyDetails.screenCaptureDisabled"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
                 <div className="space-y-1 leading-none">
@@ -512,7 +512,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
           />
           <FormField
             control={form.control}
-            name="policyData.screenCaptureDisabled"
+            name="policyDetails.screenCaptureDisabled"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
                 <div className="space-y-1 leading-none">
@@ -531,7 +531,7 @@ export default function LockScreenForm({ policyId }: { policyId: string }) {
           />
           <FormField
             control={form.control}
-            name="policyData.screenCaptureDisabled"
+            name="policyDetails.screenCaptureDisabled"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
                 <div className="space-y-1 leading-none">

@@ -743,7 +743,7 @@ function SwitchCell({
 }) {
   const form = useFormContext<FormPolicy>();
   const networkConfigPath =
-    "policyData.openNetworkConfiguration.NetworkConfigurations";
+    "policyDetails.openNetworkConfiguration.NetworkConfigurations";
   const currentActiveNetworkConfigurations =
     form.watch(networkConfigPath) ?? [];
   const currentActiveGuids = currentActiveNetworkConfigurations?.map(

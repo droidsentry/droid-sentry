@@ -25,7 +25,12 @@ export const getPolicyData = async (enterpriseId: string, policyId: string) => {
   if (!data) {
     throw new Error("ポリシーが見つかりません");
   }
-  const response = formPolicySchema.parse(data);
+  // const response = formPolicySchema.parse(data);
+  const parsed = formPolicySchema.safeParse(data);
+  if (!parsed.success) {
+    console.error("response.error", parsed.error);
+    throw new Error("ポリシー情報の取得に失敗しました");
+  }
 
-  return response;
+  return parsed.data;
 };

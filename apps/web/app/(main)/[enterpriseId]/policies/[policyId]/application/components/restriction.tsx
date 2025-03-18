@@ -75,7 +75,8 @@ export default function AppRestriction({
   );
 
   useEffect(() => {
-    const policyApplications = form.getValues("policyData.applications") ?? [];
+    const policyApplications =
+      form.getValues("policyDetails.applications") ?? [];
     const restrictedApps = createRestrictedAppPackages(policyApplications);
     const restrictedConfigs = createRestrictedAppConfigs(policyApplications);
     // 初期状態の場合：フォームの値をUIに反映
@@ -94,7 +95,7 @@ export default function AppRestriction({
       JSON.stringify(restrictedConfigs) !==
       JSON.stringify(appRestrictionConfigs);
     if (hasUiChanges) {
-      form.setValue("policyData.applications", appRestrictionConfigs, {
+      form.setValue("policyDetails.applications", appRestrictionConfigs, {
         shouldDirty: true, // フォームの値が変更されたかどうかを判断するためのフラグ
       });
     }

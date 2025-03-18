@@ -14,7 +14,7 @@ import { formPolicySchema } from "@/lib/schemas/policy";
 import { defaultPolicyRequestBody } from "@/data/default-policy-request-body";
 
 export const defaultGeneralConfig: FormPolicy = {
-  policyData: defaultPolicyRequestBody,
+  policyDetails: defaultPolicyRequestBody,
   policyDisplayName: "", // ポリシー名
 };
 

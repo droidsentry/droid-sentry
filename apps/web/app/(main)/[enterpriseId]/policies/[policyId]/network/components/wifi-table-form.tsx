@@ -40,7 +40,7 @@ export default function WifiTableForm({ policyId }: { policyId: string }) {
       <h2 className="text-lg font-bold">Wi-Fi設定</h2>
       <FormField
         control={form.control}
-        name="policyData.deviceConnectivityManagement.usbDataAccess"
+        name="policyDetails.deviceConnectivityManagement.usbDataAccess"
         render={({ field }) => (
           <FormItem className="flex flex-col rounded-md border p-4 gap-2">
             <FormLabel>Wi-Fi設定</FormLabel>

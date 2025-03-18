@@ -27,12 +27,12 @@ import { cn } from "@/lib/utils";
 
 export default function DeviceGeneralDisplaySettingsForm() {
   const form = useFormContext<FormPolicy>();
-  const stayOnPluggedModes = form.getValues("policyData.stayOnPluggedModes");
+  const stayOnPluggedModes = form.getValues("policyDetails.stayOnPluggedModes");
   const isStayOnPluggedModes =
     !stayOnPluggedModes ||
     stayOnPluggedModes.includes("BATTERY_PLUGGED_MODE_UNSPECIFIED");
   const screenTimeoutMode = form.getValues(
-    "policyData.displaySettings.screenTimeoutSettings.screenTimeoutMode"
+    "policyDetails.displaySettings.screenTimeoutSettings.screenTimeoutMode"
   );
   const isScreenTimeoutMode =
     !screenTimeoutMode ||
@@ -44,7 +44,7 @@ export default function DeviceGeneralDisplaySettingsForm() {
       <h2 className="text-lg font-bold">画面自動消灯の設定</h2>
       <FormField
         control={form.control}
-        name="policyData.stayOnPluggedModes"
+        name="policyDetails.stayOnPluggedModes"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none">
@@ -62,7 +62,7 @@ export default function DeviceGeneralDisplaySettingsForm() {
                 onCheckedChange={(checked) => {
                   if (checked) {
                     field.onChange(["AC", "USB", "WIRELESS"]);
-                    form.setValue("policyData.maximumTimeToLock", null);
+                    form.setValue("policyDetails.maximumTimeToLock", null);
                   } else {
                     field.onChange(["BATTERY_PLUGGED_MODE_UNSPECIFIED"]);
                   }
@@ -75,7 +75,7 @@ export default function DeviceGeneralDisplaySettingsForm() {
       />
       <FormField
         control={form.control}
-        name="policyData.maximumTimeToLock"
+        name="policyDetails.maximumTimeToLock"
         render={({ field }) => (
           <FormItem
             className={cn(
@@ -117,7 +117,7 @@ export default function DeviceGeneralDisplaySettingsForm() {
                       1000
                     ).toString();
                     form.clearErrors(
-                      "policyData.displaySettings.screenTimeoutSettings.screenTimeout"
+                      "policyDetails.displaySettings.screenTimeoutSettings.screenTimeout"
                     );
                     field.onChange(milliseconds);
                   }
@@ -131,7 +131,7 @@ export default function DeviceGeneralDisplaySettingsForm() {
       <div className="flex flex-col rounded-lg border p-4 gap-4">
         <FormField
           control={form.control}
-          name="policyData.displaySettings.screenTimeoutSettings.screenTimeoutMode"
+          name="policyDetails.displaySettings.screenTimeoutSettings.screenTimeoutMode"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>画面消灯の時間設定</FormLabel>
@@ -141,12 +141,12 @@ export default function DeviceGeneralDisplaySettingsForm() {
                 onValueChange={(value) => {
                   if (!isScreenTimeoutMode) {
                     form.setValue(
-                      "policyData.displaySettings.screenTimeoutSettings.screenTimeout",
+                      "policyDetails.displaySettings.screenTimeoutSettings.screenTimeout",
                       null
                     );
 
                     form.clearErrors(
-                      "policyData.displaySettings.screenTimeoutSettings.screenTimeout"
+                      "policyDetails.displaySettings.screenTimeoutSettings.screenTimeout"
                     );
                   }
                   field.onChange(value);
@@ -183,7 +183,7 @@ export default function DeviceGeneralDisplaySettingsForm() {
         />
         <FormField
           control={form.control}
-          name="policyData.displaySettings.screenTimeoutSettings.screenTimeout"
+          name="policyDetails.displaySettings.screenTimeoutSettings.screenTimeout"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between">
               <div className="space-y-1 leading-none w-full">
@@ -211,7 +211,7 @@ export default function DeviceGeneralDisplaySettingsForm() {
                     if (minutes === "") {
                       field.onChange(`0s`);
                     } else {
-                      form.clearErrors("policyData.maximumTimeToLock");
+                      form.clearErrors("policyDetails.maximumTimeToLock");
                       const seconds = Math.floor(parseInt(minutes) * 60);
                       field.onChange(`${seconds}s`);
                     }

@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
 import { v7 as uuidv7 } from "uuid";
+import { checkDefaultPolicy } from "./delete-policy";
 
 /**
  * ポリシー名が重複しているかどうかを確認
@@ -77,24 +78,32 @@ export const createOrUpdatePolicy = async ({
     console.error(result.error);
     throw new Error("フォームデータの検証に失敗しました");
   }
-
   // サービス上限を確認する
   if (policyId === "new") {
     await checkServiceLimit(enterpriseId, "max_policies_per_user");
   }
 
-  const { policyDisplayName, policyData } = result.data;
+  const { policyDisplayName, policyDetails } = result.data;
   // ポリシーを作成
   const androidmanagement = await createAndroidManagementClient();
+  const requestBody: AndroidManagementPolicy = policyDetails;
+  const enterpriseName = `enterprises/${enterpriseId}`;
+  let name = `${enterpriseName}/policies/${policyId}`;
+  // 新規ポリシーの場合はポリシーIDを生成
   if (policyId === "new") {
     policyId = uuidv7();
+    name = `${enterpriseName}/policies/${policyId}`;
+  } else {
+    // デフォルトポリシーの場合はポリシーIDを"default"に変更
+    const idDefaultPolicy = await checkDefaultPolicy(enterpriseId, policyId);
+    if (idDefaultPolicy) {
+      name = `${enterpriseName}/policies/default`;
+    }
   }
-  const requestBody: AndroidManagementPolicy = policyData;
 
-  const enterpriseName = `enterprises/${enterpriseId}`;
   const { data } = await androidmanagement.enterprises.policies
     .patch({
-      name: `${enterpriseName}/policies/${policyId}`,
+      name,
       requestBody: requestBody,
     })
     .catch((error) => {

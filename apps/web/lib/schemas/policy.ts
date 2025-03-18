@@ -277,7 +277,7 @@ export const openNetworkConfigurationSchema = z
 
 export const policySchema = z
   .object({
-    screenCaptureDisabled: z.boolean(),
+    screenCaptureDisabled: z.boolean().optional(),
     adjustVolumeDisabled: z.boolean().default(false).optional(),
     factoryResetDisabled: z.boolean().default(false).optional(),
     cameraDisabled: z.boolean().default(false).optional(),
@@ -331,7 +331,7 @@ export const policySchema = z
   }) satisfies z.ZodType<AndroidManagementPolicy>;
 
 export const formPolicySchema = z.object({
-  policyData: policySchema,
+  policyDetails: policySchema,
   policyDisplayName: z
     .string()
     .trim()
@@ -343,13 +343,13 @@ export const formPolicySchema = z.object({
  * 型チェック
  * タイポミスのみを検知する型チェック
  */
-type PolicyData = z.infer<typeof policySchema>;
+type policyDetails = z.infer<typeof policySchema>;
 // タイポミスのみを検知する型チェック
-type _CheckTypoKeys = keyof PolicyData extends keyof AndroidManagementPolicy //
+type _CheckTypoKeys = keyof policyDetails extends keyof AndroidManagementPolicy //
   ? true
   : {
       error: "スキーマに存在するキーがインターフェースに存在しません（タイポの可能性）";
-      keys: Exclude<keyof PolicyData, keyof AndroidManagementPolicy>;
+      keys: Exclude<keyof policyDetails, keyof AndroidManagementPolicy>;
     };
 // 対応する型がない場合はエラーを出力
 const _exactCheck: true = {} as _CheckTypoKeys;

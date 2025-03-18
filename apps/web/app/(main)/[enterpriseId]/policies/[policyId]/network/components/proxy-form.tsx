@@ -22,7 +22,7 @@ export default function ProxyForm() {
       <div className="flex flex-row items-center justify-between rounded-lg border p-4 gap-1 h-fit">
         <FormField
           control={form.control}
-          name="policyData.screenCaptureDisabled"
+          name="policyDetails.screenCaptureDisabled"
           render={({ field }) => (
             <FormItem className="">
               <div className="space-y-1 leading-none">
@@ -36,7 +36,7 @@ export default function ProxyForm() {
         />
         <FormField
           control={form.control}
-          name="policyData.screenCaptureDisabled"
+          name="policyDetails.screenCaptureDisabled"
           render={({ field }) => (
             <FormItem className="">
               <div className="space-y-1 leading-none">

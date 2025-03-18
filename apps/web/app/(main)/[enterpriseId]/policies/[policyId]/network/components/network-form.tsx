@@ -39,7 +39,7 @@ export default function NetworkForm({ policyId }: { policyId: string }) {
       <CardContent className="space-y-1">
         <FormField
           control={form.control}
-          name="policyData.mobileNetworksConfigDisabled"
+          name="policyDetails.mobileNetworksConfigDisabled"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2 h-fit">
               <div className="space-y-1 leading-none">
@@ -64,7 +64,7 @@ export default function NetworkForm({ policyId }: { policyId: string }) {
         />
         <FormField
           control={form.control}
-          name="policyData.dataRoamingDisabled"
+          name="policyDetails.dataRoamingDisabled"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2 h-fit">
               <div className="space-y-1 leading-none">
@@ -89,7 +89,7 @@ export default function NetworkForm({ policyId }: { policyId: string }) {
         />
         <FormField
           control={form.control}
-          name="policyData.networkResetDisabled"
+          name="policyDetails.networkResetDisabled"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2 h-fit">
               <div className="space-y-1 leading-none">
@@ -112,7 +112,7 @@ export default function NetworkForm({ policyId }: { policyId: string }) {
         />
         {/* <FormField
           control={form.control}
-          name="policyData.deviceConnectivityManagement.usbDataAccess"
+          name="policyDetails.deviceConnectivityManagement.usbDataAccess"
           render={({ field }) => (
             <FormItem className="flex flex-col rounded-md border p-4 gap-2">
               <FormLabel>テザリング設定</FormLabel>

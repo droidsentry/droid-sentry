@@ -30,7 +30,7 @@ export default function DeviceGeneralSystemUpdateForm() {
       <h2 className="text-lg font-bold">OSアップデート</h2>
       <FormField
         control={form.control}
-        name="policyData.deviceConnectivityManagement.usbDataAccess"
+        name="policyDetails.deviceConnectivityManagement.usbDataAccess"
         render={({ field }) => (
           <FormItem className="flex flex-col rounded-md border p-4 gap-2">
             <FormLabel>OSアップデートの設定</FormLabel>
@@ -75,7 +75,7 @@ export default function DeviceGeneralSystemUpdateForm() {
       />
       <FormField
         control={form.control}
-        name="policyData.screenCaptureDisabled"
+        name="policyDetails.screenCaptureDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-col items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none w-full">
@@ -112,7 +112,7 @@ export default function DeviceGeneralSystemUpdateForm() {
       />
       <FormField
         control={form.control}
-        name="policyData.screenCaptureDisabled"
+        name="policyDetails.screenCaptureDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-col items-center justify-between rounded-lg border p-4 gap-2">
             <div className="flex flex-row items-center justify-between w-full">

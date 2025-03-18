@@ -27,7 +27,7 @@ export default function GooglePlayForm() {
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 px-2">
       <FormField
         control={form.control}
-        name="policyData.playStoreMode"
+        name="policyDetails.playStoreMode"
         render={({ field }) => (
           <FormItem className="flex flex-col rounded-md border p-4">
             <FormLabel>Play ストア モード</FormLabel>
@@ -62,7 +62,7 @@ export default function GooglePlayForm() {
       />
       <FormField
         control={form.control}
-        name="policyData.playStoreMode"
+        name="policyDetails.playStoreMode"
         render={({ field }) => (
           <FormItem className="flex flex-col rounded-md border p-4">
             <FormLabel>アプリ更新設定</FormLabel>
@@ -94,7 +94,7 @@ export default function GooglePlayForm() {
       />
       <FormField
         control={form.control}
-        name="policyData.playStoreMode"
+        name="policyDetails.playStoreMode"
         render={({ field }) => (
           <FormItem className="flex flex-col rounded-md border p-4">
             <FormLabel>提供元不明アプリ</FormLabel>
@@ -125,7 +125,7 @@ export default function GooglePlayForm() {
       />
       <FormField
         control={form.control}
-        name="policyData.playStoreMode"
+        name="policyDetails.playStoreMode"
         render={({ field }) => (
           <FormItem className="flex flex-col rounded-md border p-4">
             <FormLabel>Playプロテクトの設定</FormLabel>
@@ -155,7 +155,7 @@ export default function GooglePlayForm() {
       />
       <FormField
         control={form.control}
-        name="policyData.playStoreMode"
+        name="policyDetails.playStoreMode"
         render={({ field }) => (
           <FormItem className="flex flex-col rounded-md border p-4">
             <FormLabel>アプリのパーミッション設定</FormLabel>

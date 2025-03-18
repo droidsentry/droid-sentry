@@ -47,7 +47,7 @@ export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
     <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
       <FormField
         control={form.control}
-        name="policyData.screenCaptureDisabled"
+        name="policyDetails.screenCaptureDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none">
@@ -70,7 +70,7 @@ export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
       />
       <FormField
         control={form.control}
-        name="policyData.bluetoothConfigDisabled"
+        name="policyDetails.bluetoothConfigDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none">
@@ -91,7 +91,7 @@ export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
       />
       <FormField
         control={form.control}
-        name="policyData.adjustVolumeDisabled"
+        name="policyDetails.adjustVolumeDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none">
@@ -112,7 +112,7 @@ export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
       />
       <FormField
         control={form.control}
-        name="policyData.smsDisabled"
+        name="policyDetails.smsDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none">
@@ -134,7 +134,7 @@ export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
 
       <FormField
         control={form.control}
-        name="policyData.mountPhysicalMediaDisabled"
+        name="policyDetails.mountPhysicalMediaDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none">
@@ -157,7 +157,7 @@ export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
       />
       <FormField
         control={form.control}
-        name="policyData.cellBroadcastsConfigDisabled"
+        name="policyDetails.cellBroadcastsConfigDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none">
@@ -180,7 +180,7 @@ export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
       />
       <FormField
         control={form.control}
-        name="policyData.outgoingBeamDisabled"
+        name="policyDetails.outgoingBeamDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none">
@@ -201,7 +201,7 @@ export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
       />
       <FormField
         control={form.control}
-        name="policyData.factoryResetDisabled"
+        name="policyDetails.factoryResetDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none">
@@ -222,7 +222,7 @@ export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
       />
       <FormField
         control={form.control}
-        name="policyData.modifyAccountsDisabled"
+        name="policyDetails.modifyAccountsDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none">
@@ -245,7 +245,7 @@ export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
       />
       <FormField
         control={form.control}
-        name="policyData.outgoingCallsDisabled"
+        name="policyDetails.outgoingCallsDisabled"
         render={({ field }) => (
           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
             <div className="space-y-1 leading-none">
@@ -264,7 +264,7 @@ export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
       />
       <FormField
         control={form.control}
-        name="policyData.deviceConnectivityManagement.usbDataAccess"
+        name="policyDetails.deviceConnectivityManagement.usbDataAccess"
         render={({ field }) => (
           <FormItem className="flex flex-col rounded-md border p-4 gap-2">
             <FormLabel>USB接続設定</FormLabel>
@@ -309,7 +309,7 @@ export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
       />
       <FormField
         control={form.control}
-        name="policyData.cameraAccess"
+        name="policyDetails.cameraAccess"
         render={({ field }) => (
           <FormItem className="flex flex-col rounded-md border p-4 gap-2">
             <FormLabel>カメラ設定</FormLabel>
@@ -356,7 +356,7 @@ export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
         <h2 className="text-lg font-bold">ユーザー設定</h2>
         <FormField
           control={form.control}
-          name="policyData.addUserDisabled"
+          name="policyDetails.addUserDisabled"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
               <div className="space-y-1 leading-none">
@@ -380,7 +380,7 @@ export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
         />
         <FormField
           control={form.control}
-          name="policyData.removeUserDisabled"
+          name="policyDetails.removeUserDisabled"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
               <div className="space-y-1 leading-none">
@@ -408,7 +408,7 @@ export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
         <h2 className="text-lg font-bold">位置情報共有を無効化</h2>
         <FormField
           control={form.control}
-          name="policyData.shareLocationDisabled"
+          name="policyDetails.shareLocationDisabled"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 gap-2">
               <div className="space-y-1 leading-none">
@@ -431,7 +431,7 @@ export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
         />
         <FormField
           control={form.control}
-          name="policyData.locationMode"
+          name="policyDetails.locationMode"
           render={({ field }) => (
             <FormItem className="flex flex-col rounded-md border p-4 gap-2">
               <FormLabel>位置情報の検出設定</FormLabel>
