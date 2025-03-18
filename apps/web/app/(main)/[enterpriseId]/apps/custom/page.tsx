@@ -1,7 +1,7 @@
 import { Loader2Icon } from "lucide-react";
 
 import { Suspense } from "react";
-import CustomAppsContent from "./components/custom-apps-content";
+import CustomAppsContent from "./custom-apps-content";
 
 export default async function Page() {
   return (

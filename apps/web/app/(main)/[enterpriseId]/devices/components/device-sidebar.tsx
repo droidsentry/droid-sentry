@@ -8,7 +8,6 @@ import {
   SearchIcon,
 } from "lucide-react";
 
-import { RouteParams } from "@/app/types/enterprise";
 import {
   Sidebar,
   SidebarContent,
@@ -25,7 +24,7 @@ import {
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export function DeviceSidebar({
   className,

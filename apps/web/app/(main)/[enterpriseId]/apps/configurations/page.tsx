@@ -3,8 +3,8 @@ import { Loader2Icon } from "lucide-react";
 import { Suspense } from "react";
 import AppConfigurationsIframe from "./components/app-configurations-iframe";
 import AppConfigurationsContent from "./components/app-configurations-content";
-import { RouteParams } from "@/app/types/enterprise";
-import { getApps } from "../actions/fetch-enterprise-apps";
+import { RouteParams } from "@/lib/types/enterprise";
+import { getApps } from "../../../../../lib/actions/emm/app";
 
 export default async function Page({
   params,

@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { toast } from "sonner";
 
-import { AppType } from "@/app/types/apps";
-import { useWebToken } from "../../data/use-web-token";
+import { AppType } from "@/lib/types/apps";
+import { useIframeWebToken } from "../../lib/use-iframe-web-token";
 import { initializePlayIframe } from "../../lib/initialize-iframe";
 
 export default function WebAppIframe({
@@ -23,7 +23,11 @@ export default function WebAppIframe({
   const isInitializedRef = useRef(false); // 初期化フラグ
   const [currentUrl, setCurrentUrl] = useState<string>();
   const tokenType = "WEB_APPS";
-  const { token, error } = useWebToken(enterpriseId, tokenType, currentUrl);
+  const { token, error } = useIframeWebToken(
+    enterpriseId,
+    tokenType,
+    currentUrl
+  );
   const pathname = usePathname();
 
   const initialize = useCallback(

@@ -6,8 +6,8 @@ import { Loader2Icon, Trash2Icon } from "lucide-react";
 import { useTransition } from "react";
 import { toast } from "sonner";
 import { deleteSelectedDevices } from "../actions/delete-selected-devices";
-import { DeviceTableType } from "@/app/types/device";
-import { RouteParams } from "@/app/types/enterprise";
+import { DeviceTableType } from "@/lib/types/device";
+import { RouteParams } from "@/lib/types/enterprise";
 import { useParams } from "next/navigation";
 import TitleTooltip from "@/components/title-tooltip";
 import {
@@ -35,19 +35,15 @@ export default function DeleteSelectedDevicesButton<TData>({
   const enterpriseId = params.enterpriseId;
   const [isPending, startTransition] = useTransition();
   const handleDeleteApps = async () => {
-    const deviceIdentifiers = table
+    const devices = table
       .getSelectedRowModel()
-      .rows.map((row) => {
-        const deviceData = row.original as DeviceTableType;
-        return deviceData.deviceIdentifier;
-      })
-      .filter((identifier): identifier is string => Boolean(identifier));
+      .rows.map((row) => row.original as DeviceTableType);
 
     startTransition(async () => {
       toast.info("デバイスを削除中...");
       await deleteSelectedDevices({
         enterpriseId,
-        deviceIdentifiers,
+        devices,
         wipeDataFlags: ["WIPE_DATA_FLAG_UNSPECIFIED"],
       })
         .then(async () => {

@@ -1,22 +1,22 @@
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
-import { BatchUsageLogEvents } from "../../../types/event";
-import { getDeviceDisplayName } from "@/app/data/device";
+import { getDeviceDisplayName } from "@/lib/emm/device";
 import {
   getEventTypeMessage,
   usageLogEventType,
-} from "./data/usage-log-evnet-type-code-ja";
+} from "./data/usage-log-event-type-code-ja";
+import { BatchUsageLogEvents } from "@/lib/types/pubsub";
 
 export const createUsageLogsDescription = async ({
   enterpriseId,
-  deviceIdentifier,
+  deviceId,
   usageLogDate,
 }: {
   enterpriseId: string;
-  deviceIdentifier: string;
+  deviceId: string;
   usageLogDate: BatchUsageLogEvents;
 }) => {
   const deviceDisplayName =
-    (await getDeviceDisplayName(enterpriseId, deviceIdentifier)) ?? "不明";
+    (await getDeviceDisplayName(enterpriseId, deviceId)) ?? "不明";
 
   const usageLogEvents = usageLogDate.usageLogEvents;
   if (!usageLogEvents) {
@@ -39,7 +39,7 @@ export const createUsageLogsDescription = async ({
         const lat = event.lostModeLocationEvent?.location?.latitude;
         const lng = event.lostModeLocationEvent?.location?.longitude;
         return `
-      デバイスID: ${deviceIdentifier}
+      デバイスID: ${deviceId}
       デバイス名: ${deviceDisplayName}
       取得日時: ${eventTime}
       紛失モード中のデバイスから位置情報を取得しました。
@@ -53,7 +53,7 @@ export const createUsageLogsDescription = async ({
       );
       if (eventTypeMessage) {
         return `
-      デバイスID: ${deviceIdentifier}
+      デバイスID: ${deviceId}
       デバイス名: ${deviceDisplayName}
       取得日時: ${eventTime}
       イベント: ${eventTypeMessage}

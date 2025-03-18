@@ -1,6 +1,6 @@
 "use client";
 
-import { Price } from "@/app/types/stripe";
+import { Price } from "@/lib/types/stripe";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { CheckIcon } from "lucide-react";
-import { redirectToOptionSubscriptionCheckout } from "../actions/stripe";
+import { redirectToOptionSubscriptionCheckout } from "../../actions";
 import { optionList } from "../data/option-list";
 import OptionSubscriptionButton from "./option-subscriptions-button";
 

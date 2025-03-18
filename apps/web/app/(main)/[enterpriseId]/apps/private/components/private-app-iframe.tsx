@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { toast } from "sonner";
 
-import { AppType } from "@/app/types/apps";
-import { useWebToken } from "../../data/use-web-token";
+import { AppType } from "@/lib/types/apps";
+import { useIframeWebToken } from "../../lib/use-iframe-web-token";
 import { initializePlayIframe } from "../../lib/initialize-iframe";
 
 export default function PrivateAppIframe({
@@ -24,7 +24,11 @@ export default function PrivateAppIframe({
   const [currentUrl, setCurrentUrl] = useState<string>();
   const tokenType = "PRIVATE_APPS";
   const pathname = usePathname();
-  const { token, error } = useWebToken(enterpriseId, tokenType, currentUrl);
+  const { token, error } = useIframeWebToken(
+    enterpriseId,
+    tokenType,
+    currentUrl
+  );
 
   const initialize = useCallback(
     (token: string) => {

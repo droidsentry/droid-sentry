@@ -1,6 +1,6 @@
-import { DeviceTableType } from "@/app/types/device";
-import { RouteParams } from "@/app/types/enterprise";
-import { PolicyList } from "@/app/types/policy";
+import { DeviceTableType } from "@/lib/types/device";
+import { RouteParams } from "@/lib/types/enterprise";
+import { PolicyList } from "@/lib/types/policy";
 import { Button } from "@/components/ui/button";
 import { Table } from "@tanstack/react-table";
 import { FilePenLine } from "lucide-react";
@@ -20,21 +20,21 @@ export default function ChangePolicyButton<TData>({
   isSelected,
 }: ChangePolicyButtonProps<TData>) {
   const [isOpen, setIsOpen] = useState(false);
-  const [deviceIdentifiers, setDeviceIdentifiers] = useState<string[]>([]);
+  const [deviceIds, setdeviceIds] = useState<string[]>([]);
   const [policyList, setPolicyList] = useState<PolicyList[]>([]);
   const params = useParams<RouteParams>();
   const enterpriseId = params.enterpriseId;
 
   const handleOpenChange = async () => {
     // デバイスの識別子のリストアップし、stateに格納
-    const deviceIdentifiers = table
+    const deviceIds = table
       .getSelectedRowModel()
       .rows.map((row) => {
         const deviceData = row.original as DeviceTableType;
-        return deviceData.deviceIdentifier;
+        return deviceData.deviceId;
       })
       .filter((identifier): identifier is string => Boolean(identifier));
-    setDeviceIdentifiers(deviceIdentifiers);
+    setdeviceIds(deviceIds);
     // ポリシーのリストを取得し、stateに格納し、drawerを開く
     await getPolicyList(enterpriseId).then((data) => {
       setPolicyList(data);
@@ -58,7 +58,7 @@ export default function ChangePolicyButton<TData>({
       <SelectPolicyDrawer
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        deviceIdentifiers={deviceIdentifiers}
+        deviceIds={deviceIds}
         policyList={policyList}
       />
     </>

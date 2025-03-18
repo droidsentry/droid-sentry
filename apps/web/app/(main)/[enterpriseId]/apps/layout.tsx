@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { AppsInfoSheetProvider } from "../providers/apps-info-sheet";
 
 import { AppsSidebar } from "./components/apps-sidebar";
-import MableTopBar from "../components/mable-top-bar";
+import MableTopBar from "../../../../lib/emm/components/mable-top-bar";
 
 export const metadata: Metadata = {
   title: "Create Next App",

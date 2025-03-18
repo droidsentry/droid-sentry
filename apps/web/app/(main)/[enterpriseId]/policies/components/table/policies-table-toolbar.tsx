@@ -7,13 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
+import { PolicyTableType } from "@/lib/types/policy";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { TableViewOptions } from "../../../devices/components/table/table-view-options";
 import SyncPoliciesButton from "../sync-policies-button";
 import CreateNewPolicyLinkButton from "./create-new-policy-link-button";
 import DeleteSelectedPoliciesButton from "./delete-selected-policies-button";
-import { PolicyTableType } from "@/app/types/policy";
-import DateTableColumnAllResizer from "../../../devices/components/table/data-table-column-all-resizer";
-import { DataTableViewOptions } from "../../../devices/components/table/data-table-view-options";
 
 interface PoliciesTableToolbarProps<TData extends PolicyTableType> {
   table: Table<TData>;
@@ -63,8 +62,7 @@ export function PoliciesTableToolbar<TData extends PolicyTableType>({
       <DeleteSelectedPoliciesButton table={table} />
 
       <SyncPoliciesButton enterpriseId={enterpriseId} />
-      <DateTableColumnAllResizer table={table} />
-      <DataTableViewOptions table={table} />
+      <TableViewOptions table={table} />
     </div>
   );
 }

@@ -5,9 +5,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { toast } from "sonner";
-import { useWebToken } from "../../data/use-web-token";
+import { useIframeWebToken } from "../../lib/use-iframe-web-token";
 import { initializePlayIframe } from "../../lib/initialize-iframe";
-import { AppType } from "@/app/types/apps";
+import { AppType } from "@/lib/types/apps";
 // import { useGapiIframes } from "../../../providers/gapi-iframes";
 
 /**
@@ -29,7 +29,11 @@ export default function PublicAppsIframe({
   const isInitializedRef = useRef(false); // 初期化フラグ
   const [currentUrl, setCurrentUrl] = useState<string>();
   const tokenType = "PLAY_SEARCH";
-  const { token, error } = useWebToken(enterpriseId, tokenType, currentUrl);
+  const { token, error } = useIframeWebToken(
+    enterpriseId,
+    tokenType,
+    currentUrl
+  );
   const pathname = usePathname();
 
   const initialize = useCallback(

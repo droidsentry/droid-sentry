@@ -1,9 +1,9 @@
 "use client";
 
-import { getSignUpUrl } from "@/actions/emm/enterprise";
-import { createProject } from "@/actions/emm/project";
-import { projectSchema } from "@/app/schemas/project";
-import { Project } from "@/app/types/project";
+import { getSignUpUrl } from "@/lib/actions/emm/enterprise";
+import { createProject } from "@/lib/actions/emm/project";
+import { projectSchema } from "@/lib/schemas/project";
+import { Project } from "@/lib/types/project";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";

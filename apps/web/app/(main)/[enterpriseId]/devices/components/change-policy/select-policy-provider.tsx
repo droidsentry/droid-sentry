@@ -1,7 +1,7 @@
 "use client";
 
-import { RouteParams } from "@/app/types/enterprise";
-import { PolicyList } from "@/app/types/policy";
+import { RouteParams } from "@/lib/types/enterprise";
+import { PolicyList } from "@/lib/types/policy";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "next/navigation";
@@ -41,13 +41,12 @@ type FormSchemaType = z.infer<typeof FormSchema>;
 
 // const PolicyListSchema = z.object({
 //   policyId: z.string(),
-//   policyIdentifier: z.string(),
+//   policyId: z.string(),
 //   policyDisplayName: z.string(),
 // });
 const PolicyListSchema = z.object({
   policy: z.object({
     policyId: z.string(),
-    policyIdentifier: z.string(),
     policyDisplayName: z.string(),
   }),
 });
@@ -63,12 +62,12 @@ const Context = createContext<ContextType>({} as ContextType);
 
 export function SelectPolicyProvider({
   children,
-  deviceIdentifiers,
+  deviceIds,
   policyList,
   setIsOpen,
 }: {
   children: ReactNode;
-  deviceIdentifiers: string[];
+  deviceIds: string[];
   policyList: PolicyList[];
   setIsOpen: (isOpen: boolean) => void;
 }) {
@@ -97,11 +96,7 @@ export function SelectPolicyProvider({
     //   </pre>
     // );
     startTransition(async () => {
-      await changePolicyDevices(
-        enterpriseId,
-        deviceIdentifiers,
-        data.policy.policyIdentifier
-      )
+      await changePolicyDevices(enterpriseId, deviceIds, data.policy.policyId)
         .then(() => {
           toast.success("ポリシーを変更しました。");
           setIsOpen(false);

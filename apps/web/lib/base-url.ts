@@ -25,6 +25,7 @@ export const getBaseURL = (parentUrl?: string) => {
     : isPreview
       ? vercelBranchUrl
       : vercelUrl;
+
   // console.log("url", url);
 
   return url
@@ -45,13 +46,13 @@ export const getPubsubEndpointBaseUrl = () => {
   const projectProductionUrl =
     process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL;
   const vercelBranchUrl = process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL;
-  const devUrl = process.env.GCP_PUBSUB_DEV_PUSH_ENDPOINT;
+  const ngrokDevUrl = process.env.NGROK_DEV_URL;
 
   const url = isProd
     ? projectProductionUrl
     : isPreview
       ? vercelBranchUrl
-      : devUrl;
+      : ngrokDevUrl;
 
   return url
     ? `https://${url}`

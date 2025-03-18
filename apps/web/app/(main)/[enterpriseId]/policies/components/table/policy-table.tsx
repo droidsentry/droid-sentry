@@ -19,7 +19,7 @@ import { TablePagination } from "../../../apps/components/table/table-pagination
 import { useResizeColumn } from "../../../providers/policies-table";
 import { usePoliciesTable } from "../policies-table-provider";
 import { PoliciesTableToolbar } from "./policies-table-toolbar";
-import { PolicyTableType } from "@/app/types/policy";
+import { PolicyTableType } from "@/lib/types/policy";
 
 interface DataTableProps<TData extends PolicyTableType, TValue> {
   columns: ColumnDef<TData, TValue>[];

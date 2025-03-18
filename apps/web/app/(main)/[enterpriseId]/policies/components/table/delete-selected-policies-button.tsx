@@ -7,7 +7,7 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 import { deleteSelectedPolicies } from "../../actions/delete-policy";
 import { usePoliciesTable } from "../policies-table-provider";
-import { PolicyTableType } from "@/app/types/policy";
+import { PolicyTableType } from "@/lib/types/policy";
 
 interface DeleteSelectedPoliciesButtonProps<TData extends PolicyTableType> {
   table: Table<TData>;
@@ -20,20 +20,18 @@ export default function DeleteSelectedPoliciesButton<
   const { enterpriseId } = usePoliciesTable();
 
   const handleDeletePolicies = async () => {
-    const deletePolicyIdentifierList = table
-      .getSelectedRowModel()
-      .rows.map((row) => {
-        const policyIdentifier = row.original.policyIdentifier;
+    const deletePolicyIdList = table.getSelectedRowModel().rows.map((row) => {
+      const { policyId, isDefault } = row.original;
 
-        if (policyIdentifier === "default") {
-          alert(
-            "デフォルトポリシーは削除できません。デフォルトポリシー以外を削除します。"
-          );
-        }
-        return row.original.policyIdentifier;
-      });
+      if (isDefault) {
+        toast.error(
+          "デフォルトポリシーは削除できません。デフォルトポリシー以外を削除します。"
+        );
+      }
+      return policyId;
+    });
     startTransition(async () => {
-      await deleteSelectedPolicies(enterpriseId, deletePolicyIdentifierList)
+      await deleteSelectedPolicies(enterpriseId, deletePolicyIdList)
         .then(() => {
           toast.success("ポリシーを削除しました。");
         })

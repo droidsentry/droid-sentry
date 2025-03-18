@@ -1,11 +1,10 @@
 import { type EmailOtpType } from "@supabase/supabase-js";
 import { type NextRequest } from "next/server";
 
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { createTrialSubscription } from "./lib/create-trial-subscription";
-import { checkAndUpdateUserLimit } from "../lib/user-management";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { checkAndUpdateUserLimit } from "../../../../lib/auth/user-management";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -43,15 +42,6 @@ export async function GET(request: NextRequest) {
       },
     });
 
-    // ユーザーがサブスクリプションを作成しているかどうかを確認
-    // const hasSubscriptionId = user?.user_metadata?.stripe_customer_id;
-    // if (!hasSubscriptionId) {
-    //   await createTrialSubscription(userId).then(() => {
-    //     return redirect(next);
-    //   });
-    // } else {
-    //   return redirect(next);
-    // }
     return redirect(next);
   }
   redirect("/error");

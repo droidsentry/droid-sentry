@@ -1,19 +1,17 @@
-import { getDeviceDisplayName } from "@/app/data/device";
-import { AndroidManagementDevice } from "@/app/types/device";
+import { getDeviceDisplayName } from "@/lib/emm/device";
+import { AndroidManagementDevice } from "@/lib/types/device";
 
 export const createStatusReportDescription = async ({
   enterpriseId,
-  deviceIdentifier,
+  deviceId,
   deviceData,
 }: {
   enterpriseId: string;
-  deviceIdentifier: string;
+  deviceId: string;
   deviceData: AndroidManagementDevice;
 }) => {
-  const deviceId = deviceIdentifier;
   const deviceDisplayName =
-    (await getDeviceDisplayName(enterpriseId, deviceIdentifier)) ??
-    "端末名未設定";
+    (await getDeviceDisplayName(enterpriseId, deviceId)) ?? "端末名未設定";
   const deviceModel = deviceData.hardwareInfo?.model;
   const appliedState = deviceData.appliedState;
   const policyCompliance = deviceData.policyCompliant ? "◯" : "×";

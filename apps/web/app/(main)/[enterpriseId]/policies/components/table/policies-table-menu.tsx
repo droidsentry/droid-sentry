@@ -36,7 +36,7 @@ import { deletePolicy } from "../../actions/delete-policy";
 import { toast } from "sonner";
 import { usePoliciesTable } from "../policies-table-provider";
 import { revalidatePath } from "next/cache";
-import { PolicyTableType } from "@/app/types/policy";
+import { PolicyTableType } from "@/lib/types/policy";
 
 interface DataTableMenuProps {
   row: Row<PolicyTableType>;
@@ -54,12 +54,12 @@ export default function PoliciesTableMenu({ row }: DataTableMenuProps) {
     console.log(parent);
   };
   const handleDelete = async () => {
-    const policyIdentifier = row.original.policyIdentifier;
-    if (policyIdentifier === "default") {
+    const { policyId, isDefault } = row.original;
+    if (isDefault) {
       toast.error("デフォルトポリシーは削除できません。");
       return;
     }
-    await deletePolicy(enterpriseId, policyIdentifier)
+    await deletePolicy(enterpriseId, policyId)
       .then(async () => {
         toast.success("ポリシーを削除しました。");
         revalidatePath(`/${enterpriseId}/policies`);
@@ -69,8 +69,8 @@ export default function PoliciesTableMenu({ row }: DataTableMenuProps) {
       });
   };
   const handleEditPolicy = async () => {
-    const policyIdentifier = row.original.policyIdentifier;
-    router.push(`/${enterpriseId}/policies/${policyIdentifier}/device-general`);
+    const policyId = row.original.policyId;
+    router.push(`/${enterpriseId}/policies/${policyId}/device-general`);
   };
 
   return (

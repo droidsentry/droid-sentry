@@ -2,10 +2,10 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { AppsTableType } from "@/app/types/apps";
+import { AppsTableType } from "@/lib/types/apps";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { DataTableColumnSortHeader } from "../../../../projects/components/table/data-table-column-sort-header";
+import { DataTableColumnSortHeader } from "../../../../components/table/column-sort-header";
 import AppsTableMenu from "./apps-table-menu";
 
 type AppsColumnDef = ColumnDef<AppsTableType>;

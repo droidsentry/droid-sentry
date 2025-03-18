@@ -20,7 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table-resizing";
 
-import { DensityFeature } from "@/app/(main)/projects/types/density";
+// import { DensityFeature } from "@/app/(main)/projects/types/density";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { AppsTableToolbar } from "./apps-table-toolbar";
@@ -52,7 +52,7 @@ export default function AppsTable<TData, TValue>({
     onSortingChange: setSorting, // ソート状態が変更されたときの処理
     getSortedRowModel: getSortedRowModel(), // ソートされた行モデルを取得
     getFilteredRowModel: getFilteredRowModel(), // フィルタリングされた行モデルを取得
-    _features: [DensityFeature], // 行の密度を管理する機能を追加
+    // _features: [DensityFeature], // 行の密度を管理する機能を追加
     state: {
       sorting, // ソート状態
     },

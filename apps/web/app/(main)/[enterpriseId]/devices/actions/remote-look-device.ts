@@ -1,22 +1,25 @@
 "use server";
 
+import { DeviceTableType } from "@/lib/types/device";
 import { createAndroidManagementClient } from "@/lib/emm/client";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
 
 const remoteLook = async ({
-  deviceIdentifier,
+  device,
   enterpriseId,
 }: {
-  deviceIdentifier: string;
+  device: DeviceTableType;
   enterpriseId: string;
 }) => {
+  const { deviceId } = device;
   const supabase = await createClient();
   const androidmanagement = await createAndroidManagementClient();
-  const name = `enterprises/${enterpriseId}/devices/${deviceIdentifier}`;
+  const name = `enterprises/${enterpriseId}/devices/${deviceId}`;
+  const type = "LOCK";
   const requestBody = {
-    type: "LOCK",
+    type,
   };
   const { data } = await androidmanagement.enterprises.devices
     .issueCommand({
@@ -27,41 +30,46 @@ const remoteLook = async ({
       console.error(error);
       throw new Error("Failed to fetch device from Google EMM");
     });
+
   const operationName = data.name?.split("/operations/")[1] ?? null;
-  const recordDevice = await supabase
+  const { data: operationData, error: operationError } = await supabase
+    .from("device_operations")
+    .insert({
+      enterprise_id: enterpriseId,
+      device_id: deviceId,
+      operation_type: type,
+      operation_name: operationName,
+      operation_request_data: requestBody,
+      operation_response_data: data as Json,
+    })
+    .select("operation_id")
+    .single();
+  if (operationError) {
+    throw new Error("Failed to record operation");
+  }
+  const operationId = operationData.operation_id;
+
+  await supabase
     .from("devices")
     .update({
-      operation_data: data as Json,
+      last_operation_id: operationId,
       updated_at: new Date().toISOString(),
     })
-    .match({
-      enterprise_Id: enterpriseId,
-      device_identifier: deviceIdentifier,
-    });
-  const recordOperation = await supabase.from("operations").insert({
-    device_identifier: deviceIdentifier,
-    enterprise_id: enterpriseId,
-    operation_name: operationName,
-    operation_request_data: requestBody,
-    operation_response_data: data as Json,
-  });
-  Promise.all([recordDevice, recordOperation]).catch((error) => {
-    console.error("Error record operation", error.message);
-    throw new Error(error.message);
-  });
+    .eq("enterprise_id", enterpriseId)
+    .eq("device_id", deviceId);
 };
 
 /**
  * デバイスのロック
- * @param deviceIdentifier
+ * @param devices
  * @param enterpriseId
  * @returns
  */
 export const remoteLookDevices = async ({
-  deviceIdentifiers,
+  devices,
   enterpriseId,
 }: {
-  deviceIdentifiers: string[];
+  devices: DeviceTableType[];
   enterpriseId: string;
 }) => {
   const supabase = await createClient();
@@ -71,8 +79,8 @@ export const remoteLookDevices = async ({
   }
   // Promise.all()を使用して、すべての非同期処理の完了を待機
   await Promise.all(
-    deviceIdentifiers.map(async (deviceIdentifier) => {
-      await remoteLook({ deviceIdentifier, enterpriseId }).catch((error) => {
+    devices.map(async (device) => {
+      await remoteLook({ device, enterpriseId }).catch((error) => {
         console.error("Error remote look device", error.message);
         throw new Error(error.message);
       });

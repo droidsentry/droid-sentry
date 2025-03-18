@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Table } from "@tanstack/react-table";
 import { Loader2Icon, Trash2Icon } from "lucide-react";
 
-import { AppsTableType } from "@/app/types/apps";
+import { AppsTableType } from "@/lib/types/apps";
 import { useParams } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
-import { deleteSelectedApps } from "../../../actions/delete-app";
+import { deleteApps } from "@/lib/actions/emm/app";
 
 interface DeleteSelectedAppsButtonProps<TData> {
   table: Table<TData>;
@@ -28,7 +28,7 @@ export default function DeleteSelectedAppsButton<TData>({
     });
     toast.info("アプリを削除中...");
     startTransition(async () => {
-      await deleteSelectedApps(enterpriseId, deleteAppIdList)
+      await deleteApps(enterpriseId, deleteAppIdList)
         .then(async () => {
           toast.success("選択したアプリ情報を削除しました。");
           table.resetRowSelection();

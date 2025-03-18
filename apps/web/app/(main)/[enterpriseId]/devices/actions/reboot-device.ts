@@ -1,22 +1,25 @@
 "use server";
 
+import { DeviceTableType } from "@/lib/types/device";
 import { createAndroidManagementClient } from "@/lib/emm/client";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
 
 const reboot = async ({
-  deviceIdentifier,
+  device,
   enterpriseId,
 }: {
-  deviceIdentifier: string;
+  device: DeviceTableType;
   enterpriseId: string;
 }) => {
+  const { deviceId } = device;
   const supabase = await createClient();
   const androidmanagement = await createAndroidManagementClient();
-  const name = `enterprises/${enterpriseId}/devices/${deviceIdentifier}`;
+  const name = `enterprises/${enterpriseId}/devices/${deviceId}`;
+  const type = "REBOOT";
   const requestBody = {
-    type: "REBOOT",
+    type,
   };
   const { data } = await androidmanagement.enterprises.devices
     .issueCommand({
@@ -28,40 +31,44 @@ const reboot = async ({
       throw new Error("Failed to fetch device from Google EMM");
     });
   const operationName = data.name?.split("/operations/")[1] ?? null;
-  const recordDevice = await supabase
+  const { data: operationData, error } = await supabase
+    .from("device_operations")
+    .insert({
+      enterprise_id: enterpriseId,
+      device_id: deviceId,
+      operation_type: type,
+      operation_name: operationName,
+      operation_request_data: requestBody,
+      operation_response_data: data as Json,
+    })
+    .select("operation_id")
+    .single();
+  if (error) {
+    throw new Error("Failed to record operation");
+  }
+  await supabase
     .from("devices")
     .update({
-      operation_data: data as Json,
+      last_operation_id: operationData.operation_id,
       updated_at: new Date().toISOString(),
     })
     .match({
       enterprise_Id: enterpriseId,
-      device_identifier: deviceIdentifier,
+      device_id: deviceId,
     });
-  const recordOperation = await supabase.from("operations").insert({
-    device_identifier: deviceIdentifier,
-    enterprise_id: enterpriseId,
-    operation_name: operationName,
-    operation_request_data: requestBody,
-    operation_response_data: data as Json,
-  });
-  Promise.all([recordDevice, recordOperation]).catch((error) => {
-    console.error("Error record operation", error.message);
-    throw new Error(error.message);
-  });
 };
 
 /**
  * デバイスの再起動
- * @param deviceIdentifier
+ * @param devices
  * @param enterpriseId
  * @returns
  */
 export const rebootDevices = async ({
-  deviceIdentifiers,
+  devices,
   enterpriseId,
 }: {
-  deviceIdentifiers: string[];
+  devices: DeviceTableType[];
   enterpriseId: string;
 }) => {
   const supabase = await createClient();
@@ -70,8 +77,8 @@ export const rebootDevices = async ({
     throw new Error("User not found");
   }
   await Promise.all(
-    deviceIdentifiers.map(async (deviceIdentifier) => {
-      await reboot({ deviceIdentifier, enterpriseId }).catch((error) => {
+    devices.map(async (device) => {
+      await reboot({ device, enterpriseId }).catch((error) => {
         console.error("Error reboot device", error.message);
         throw new Error(error.message);
       });

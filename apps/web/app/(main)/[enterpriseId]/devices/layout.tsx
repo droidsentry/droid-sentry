@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import MableTopBar from "../components/mable-top-bar";
+import MableTopBar from "../../../../lib/emm/components/mable-top-bar";
 import { DeviceSidebar } from "./components/device-sidebar";
-import { RouteParams } from "@/app/types/enterprise";
+import { RouteParams } from "@/lib/types/enterprise";
 
 export const metadata: Metadata = {
   title: "Create Next App",

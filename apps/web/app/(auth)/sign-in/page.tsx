@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import DiscordSingButton from "../components/discord-sing-button";
-import { GitHubSignButton } from "../components/github-login-button";
-import GoogleSingButton from "../components/google-sing-in-button";
+import DiscordSignButton from "../components/discord-sign-button";
+import { GitHubSignButton } from "../components/github-sign-button";
+import GoogleSignButton from "../components/google-sign-in-button";
 import SingleWelcome from "../images/single-welcome.webp";
-import { SignInForm } from "./components/sign-in-form";
+
 import { checkTotalUserLimit } from "@/lib/service";
+import { SignInForm } from "./form";
 
 export default async function Page() {
   let signUpUrl = "/sign-up";
@@ -52,8 +53,8 @@ export default async function Page() {
       <div className="basis-1/3 lg:basis-2/6 flex justify-center items-center pl-4 pr-4 lg:pr-10 xl:pr-24 2xl:pr-40">
         <div className="flex flex-col gap-2 w-[300px] sm:w-[400px] md:w-[450px] lg:w-auto xl:w-full">
           <GitHubSignButton />
-          <GoogleSingButton />
-          <DiscordSingButton />
+          <GoogleSignButton />
+          <DiscordSignButton />
           <div className="w-full flex items-center gap-4 my-4">
             <div className="flex-grow border-t text-muted-foreground"></div>
             <span className="text-muted-foreground">or</span>

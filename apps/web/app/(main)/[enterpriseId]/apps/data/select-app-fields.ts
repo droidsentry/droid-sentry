@@ -1,13 +1,13 @@
 export const selectAppFields = `
   appId:app_id,
   packageName:package_name,
-  app_data->>title,
-  app_data->>iconUrl,
-  app_data->>updateTime,
-  app_data->>minAndroidSdkVersion,
-  app_data->>playStoreUrl,
+  app_details->>title,
+  app_details->>iconUrl,
+  app_details->>updateTime,
+  app_details->>minAndroidSdkVersion,
+  app_details->>playStoreUrl,
   appType:app_type,
-  app_data->>distributionChannel,
+  app_details->>distributionChannel,
   createdAt:created_at,
   updatedAt:updated_at
 `;

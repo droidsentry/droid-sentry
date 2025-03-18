@@ -1,4 +1,4 @@
-import { RouteParams } from "@/app/types/enterprise";
+import { RouteParams } from "@/lib/types/enterprise";
 import DevicesContent from "./components/devices-content";
 import { getDevicesData } from "./actions/device";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { resetPassword } from "@/actions/auth/supabase";
+import { resetPassword } from "@/lib/actions/auth/supabase";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,12 +20,13 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
-import DiscordSingButton from "../../components/discord-sing-button";
-import { GitHubSignButton } from "../../components/github-login-button";
-import GoogleSingButton from "../../components/google-sing-in-button";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import { passwordResetSchema } from "@/app/schemas/auth";
-import { PasswordReset, SignIn } from "@/app/types/auth";
+import { passwordResetSchema } from "@/lib/schemas/auth";
+import { PasswordReset, SignIn } from "@/lib/types/auth";
+import DiscordSignButton from "../../components/discord-sign-button";
+import GoogleSignButton from "../../components/google-sign-in-button";
+import { GitHubSignButton } from "../../components/github-sign-button";
 
 export default function PasswordResetForm() {
   const emailOrUsername = useFormContext<SignIn>().getValues("emailOrUsername");
@@ -99,9 +100,9 @@ export default function PasswordResetForm() {
           または、別の方法でサインインしてください。
         </CardDescription>
         <div className="flex flex-col gap-2 pb-4">
+          <DiscordSignButton className="w-full" />
+          <GoogleSignButton className="w-full" />
           <GitHubSignButton className="w-full" />
-          <GoogleSingButton className="w-full" />
-          <DiscordSingButton className="w-full" />
           <Button variant="outline" className="w-full">
             認証コードをメールに送信
           </Button>

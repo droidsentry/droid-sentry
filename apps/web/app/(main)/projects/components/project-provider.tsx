@@ -1,7 +1,7 @@
 "use client";
 
-import { getSignUpUrl } from "@/actions/emm/enterprise";
-import { ProjectWithEnterpriseRelation } from "@/app/types/project";
+import { getSignUpUrl } from "@/lib/actions/emm/enterprise";
+import { ProjectWithEnterpriseRelation } from "@/lib/types/project";
 import {
   ReactNode,
   createContext,
@@ -10,7 +10,7 @@ import {
   useState,
   useTransition,
 } from "react";
-import { deleteProject } from "../actions/projects";
+import { deleteProject } from "../actions";
 
 type ContextType = {
   projects: ProjectWithEnterpriseRelation[];

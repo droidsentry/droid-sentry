@@ -1,12 +1,12 @@
 import "server-only";
 
 import { createAndroidManagementClient } from "@/lib/emm/client";
-import { saveDeviceStatus } from "@/app/api/emm/pubsub/lib/data/save-device";
+import { saveDeviceStatus } from "@/app/api/emm/pubsub/lib/save-device";
 
 /**
  * デバイス情報を同期する
  * @param enterpriseId
- * @param deviceIdentifier
+ * @param deviceId
  * @returns
  * PubSubでのデータ取得とデバイス一覧で取得したデータを同期するため、
  * AdminClientを使用している。デバイス一覧で使用する場合は、必ず認証確認を実施したのち
@@ -14,10 +14,10 @@ import { saveDeviceStatus } from "@/app/api/emm/pubsub/lib/data/save-device";
  */
 export const syncDeviceInfo = async (
   enterpriseId: string,
-  deviceIdentifier: string
+  deviceId: string
 ) => {
   const androidmanagement = await createAndroidManagementClient();
-  const name = `enterprises/${enterpriseId}/devices/${deviceIdentifier}`;
+  const name = `enterprises/${enterpriseId}/devices/${deviceId}`;
   await androidmanagement.enterprises.devices
     .get({
       name,
@@ -25,7 +25,7 @@ export const syncDeviceInfo = async (
     .then(async (response) => {
       await saveDeviceStatus({
         enterpriseId,
-        deviceIdentifier,
+        deviceId,
         device: response.data,
       });
     })

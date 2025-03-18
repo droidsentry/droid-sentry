@@ -5,11 +5,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
 import { ArrowUpDown, PlusIcon } from "lucide-react";
-import { selectColumn } from "../../../../projects/components/table/select-column";
+import { selectColumn } from "../../../../components/table/select-column";
 
 import PoliciesTableMenu from "./policies-table-menu";
-import { DataTableColumnSortHeader } from "@/app/(main)/projects/components/table/data-table-column-sort-header";
-import { PolicyTableType } from "@/app/types/policy";
+import { DataTableColumnSortHeader } from "@/app/(main)/components/table/column-sort-header";
+import { PolicyTableType } from "@/lib/types/policy";
 
 export const policyColumns: ColumnDef<PolicyTableType>[] = [
   selectColumn<PolicyTableType>(),

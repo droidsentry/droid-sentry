@@ -2,6 +2,7 @@ import "server-only";
 
 import { createAndroidManagementClient } from "@/lib/emm/client";
 import { createClient } from "@/lib/supabase/server";
+import { DeviceTableType } from "@/lib/types/device";
 /**
  * デバイスを削除
  * Google EMM APIでデバイスを削除
@@ -9,16 +10,16 @@ import { createClient } from "@/lib/supabase/server";
  */
 export const deleteManagedDevice = async ({
   enterpriseId,
-  deviceIdentifier,
+  deviceId,
   wipeDataFlags,
   wipeReasonMessage,
 }: {
   enterpriseId: string;
-  deviceIdentifier: string;
+  deviceId: string;
   wipeDataFlags: string[];
   wipeReasonMessage?: string;
 }) => {
-  const name = `enterprises/${enterpriseId}/devices/${deviceIdentifier}`;
+  const name = `enterprises/${enterpriseId}/devices/${deviceId}`;
 
   const androidmanagement = await createAndroidManagementClient();
   await androidmanagement.enterprises.devices
@@ -39,24 +40,25 @@ export const deleteManagedDevice = async ({
  */
 export const deleteManagedDevices = async ({
   enterpriseId,
-  deviceIdentifiers,
+  devices,
   wipeDataFlags,
   wipeReasonMessage,
 }: {
   enterpriseId: string;
-  deviceIdentifiers: string[];
+  devices: DeviceTableType[];
   wipeDataFlags: string[];
   wipeReasonMessage?: string;
 }) => {
   const results = await Promise.all(
-    deviceIdentifiers.map(async (deviceIdentifier) => {
+    devices.map(async (device) => {
+      const { deviceId } = device;
       await deleteManagedDevice({
         enterpriseId,
-        deviceIdentifier,
+        deviceId,
         wipeDataFlags,
         wipeReasonMessage,
       });
-      return deviceIdentifier;
+      return deviceId;
     })
   );
   return results;
@@ -65,19 +67,16 @@ export const deleteManagedDevices = async ({
 /**
  * データベースのデバイスデータを削除
  */
-export const deleteSynceDevices = async ({
-  enterpriseId,
-  deviceIdentifiers,
-}: {
-  enterpriseId: string;
-  deviceIdentifiers: string[];
-}) => {
+export const deleteSyncDevices = async (
+  enterpriseId: string,
+  Ids: string[]
+) => {
   const supabase = await createClient();
   const { error, count } = await supabase
     .from("devices")
     .delete({ count: "exact" }) // 削除件数を取得
     .eq("enterprise_id", enterpriseId)
-    .in("device_identifier", deviceIdentifiers);
+    .in("id", Ids);
 
   if (error) {
     console.error("Error Delete DB device:", error.message);

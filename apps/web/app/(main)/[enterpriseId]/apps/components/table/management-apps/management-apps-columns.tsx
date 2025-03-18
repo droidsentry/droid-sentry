@@ -2,10 +2,10 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { DataTableColumnHeader } from "@/app/(main)/projects/components/table/data-table-column-header";
-import { DataTableColumnSortHeader } from "@/app/(main)/projects/components/table/data-table-column-sort-header";
-import { selectColumn } from "@/app/(main)/projects/components/table/select-column";
-import { AppsTableType } from "@/app/types/apps";
+import { DataTableColumnHeader } from "@/app/(main)/components/table/column-header";
+import { DataTableColumnSortHeader } from "@/app/(main)/components/table/column-sort-header";
+import { selectColumn } from "@/app/(main)/components/table/select-column";
+import { AppsTableType } from "@/lib/types/apps";
 import { Button } from "@/components/ui/button";
 import {
   formatToJapaneseDate,

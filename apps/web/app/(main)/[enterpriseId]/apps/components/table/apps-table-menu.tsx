@@ -28,13 +28,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState, useTransition } from "react";
 
-import { AppsTableType } from "@/app/types/apps";
+import { AppsTableType } from "@/lib/types/apps";
 import { cn } from "@/lib/utils";
 import { Row } from "@tanstack/react-table";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useAppsInfoSheet } from "../../../providers/apps-info-sheet";
-import { deleteApp } from "../../actions/delete-app";
+import { deleteApp } from "@/lib/actions/emm/app";
 
 interface DataTableMenuProps {
   row: Row<AppsTableType>;

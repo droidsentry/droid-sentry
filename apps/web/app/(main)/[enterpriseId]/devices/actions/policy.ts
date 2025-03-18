@@ -16,7 +16,7 @@ export const getPolicyList = async (enterpriseId: string) => {
     .select(
       `
       policyId:policy_id,
-      policyIdentifier:policy_identifier,
+      policyId:policy_id,
       policyDisplayName:policy_display_name
     `
     )
@@ -30,29 +30,29 @@ export const getPolicyList = async (enterpriseId: string) => {
 
 export const changePolicyDevices = async (
   enterpriseId: string,
-  deviceIdentifiers: string[],
-  policyIdentifier: string
+  deviceIds: string[],
+  policyId: string
 ) => {
   // ５秒待機
   // await new Promise((resolve) => setTimeout(resolve, 5000));
-  for (const deviceIdentifier of deviceIdentifiers) {
-    await updateDevicePolicy(enterpriseId, deviceIdentifier, policyIdentifier);
+  for (const deviceId of deviceIds) {
+    await updateDevicePolicy(enterpriseId, deviceId, policyId);
   }
   revalidatePath(`/${enterpriseId}/devices`);
 };
 
 async function updateDevicePolicy(
   enterpriseId: string,
-  deviceIdentifier: string,
-  policyIdentifier: string
+  deviceId: string,
+  policyId: string
 ) {
   const supabase = await createClient();
   const { data: user } = await supabase.auth.getUser();
   if (!user) {
     throw new Error("ユーザーが見つかりません");
   }
-  const name = `enterprises/${enterpriseId}/devices/${deviceIdentifier}`;
-  const policyName = `${policyIdentifier}`;
+  const name = `enterprises/${enterpriseId}/devices/${deviceId}`;
+  const policyName = `${policyId}`;
   const requestBody = {
     policyName,
   };
@@ -64,28 +64,29 @@ async function updateDevicePolicy(
       requestBody,
     })
     .then(async (res) => {
-      const { error: devicesError } = await supabase
+      const { data, error: devicesError } = await supabase
         .from("devices")
         .update({
-          requested_policy_identifier: policyIdentifier,
+          requested_policy_id: policyId,
           updated_at: new Date().toISOString(),
-          device_data: res.data as Json,
+          device_details: res.data as Json,
         })
         .match({
-          device_identifier: deviceIdentifier,
+          device_id: deviceId,
           enterprise_id: enterpriseId,
-        });
+        })
+        .select("id")
+        .single();
       if (devicesError) {
         console.error(devicesError);
         throw new Error("Failed to update device on Supabase");
       }
       const { error: devicesHistoriesError } = await supabase
-        .from("devices_histories")
+        .from("device_history")
         .insert({
-          enterprise_id: enterpriseId,
-          device_identifier: deviceIdentifier,
-          device_request_data: requestBody,
-          device_response_data: res.data as Json,
+          device_uuid: data.id,
+          request_details: requestBody,
+          response_details: res.data as Json,
         });
       if (devicesHistoriesError) {
         console.error(devicesHistoriesError);

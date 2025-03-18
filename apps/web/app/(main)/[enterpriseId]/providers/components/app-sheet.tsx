@@ -11,7 +11,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 
 import { usePathname, useRouter } from "next/navigation";
-import { SheetAppInfo } from "@/app/types/apps";
+import { SheetAppInfo } from "@/lib/types/apps";
 import Image from "next/image";
 import { ExternalLinkIcon, FileIcon } from "lucide-react";
 import Link from "next/link";
@@ -28,7 +28,7 @@ export default function AppSheet({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const appDetails = appInfo?.appData;
+  const appDetails = appInfo?.appDetails;
 
   const handleDownloadJson = () => {
     try {

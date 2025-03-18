@@ -27,7 +27,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { TablePagination } from "../../../apps/components/table/table-pagination";
-import { DataTableToolbar } from "./data-table-toolbar";
+import { TableToolbar } from "./table-toolbar";
 import FloatingToolbar from "./floating-toolbar";
 
 interface DataTableProps<TData, TValue> {
@@ -78,7 +78,7 @@ export default function DeviceTable<TData, TValue>({
 
   return (
     <div className="flex flex-col h-full w-full p-1">
-      <DataTableToolbar
+      <TableToolbar
         table={table}
         className="pb-2 pt-1"
         enterpriseId={enterpriseId}

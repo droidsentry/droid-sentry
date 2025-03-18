@@ -1,6 +1,6 @@
 "use client";
 
-import { Price, SubscriptionDevice } from "@/app/types/stripe";
+import { Price, SubscriptionDevice } from "@/lib/types/stripe";
 import {
   Card,
   CardContent,
@@ -21,9 +21,9 @@ import { CheckIcon } from "lucide-react";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { redirectToDeviceSubscriptionCheckout } from "../actions/stripe";
+import { redirectToDeviceSubscriptionCheckout } from "../../actions";
 import MainSubscriptionButton from "./main-subscriptions-button";
-import { SubscriptionDeviceSchema } from "@/app/schemas/stripe";
+import { SubscriptionDeviceSchema } from "@/lib/schemas/stripe";
 
 export default function MainSubscriptionsCard({
   url,

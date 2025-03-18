@@ -1,17 +1,12 @@
 "use client";
 
-import { signInSchema } from "@/app/schemas/auth";
+import { signInSchema } from "@/lib/schemas/auth";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
-import {
-  ZodTooBigIssue,
-  ZodTooSmallIssue,
-  ZodIssueOptionalMessage,
-  z,
-} from "zod";
+import { z } from "zod";
 
 export type SignIn = z.infer<typeof signInSchema>;
 

@@ -35,7 +35,7 @@ type ServiceLimitConfig = {
     errorMessage: string;
   };
   max_ssids_per_user: {
-    table: "wifi_network_configurations";
+    table: "wifi_configurations";
     errorCode: "E1005";
     errorMessage: string;
   };
@@ -69,7 +69,7 @@ export const SERVICE_LIMIT_CONFIG: ServiceLimitConfig = {
       "ポリシーの利用上限数に達しました。ベータ版では最大100つまで作成することができます。",
   },
   max_ssids_per_user: {
-    table: "wifi_network_configurations",
+    table: "wifi_configurations",
     errorCode: "E1005",
     errorMessage: "SSIDの上限数に達しました。",
   },

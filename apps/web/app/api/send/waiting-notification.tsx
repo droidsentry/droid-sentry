@@ -16,7 +16,7 @@ import {
 import { tailwindReactEmailConfig } from "./lib/tailwind-config";
 import { AppConfig } from "@/app.config";
 
-export type DroidSentryWaitingNotificationEmail = {
+export type WaitingNotificationEmail = {
   username: string;
   projectName: string;
   ip_address: string;
@@ -30,7 +30,7 @@ export const DroidSentryWaitingNotificationEmail = ({
   ip_address,
   createdAt,
   location,
-}: DroidSentryWaitingNotificationEmail) => {
+}: WaitingNotificationEmail) => {
   const previewText = `${projectName}に登録されている${username}さんのウェイティングリスト登録が完了しました。これは、ウェイティングリスト登録をお知らせする自動通知です。`;
   return (
     <Html>
@@ -88,6 +88,6 @@ DroidSentryWaitingNotificationEmail.PreviewProps = {
   ip_address: "??",
   createdAt: "??",
   location: "??",
-} as DroidSentryWaitingNotificationEmail;
+} as WaitingNotificationEmail;
 
 export default DroidSentryWaitingNotificationEmail;

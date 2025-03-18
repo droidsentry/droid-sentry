@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PolicySidebar } from "./components/policy-sidebar";
 import { PolicyFormProvider } from "../providers/policy-form";
-import MableTopBar from "../components/mable-top-bar";
+import MableTopBar from "../../../../lib/emm/components/mable-top-bar";
 
 export const metadata: Metadata = {
   title: "Create Next App",

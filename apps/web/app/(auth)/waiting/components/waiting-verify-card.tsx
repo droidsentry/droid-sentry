@@ -8,9 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Loader2, Mail, Send } from "lucide-react";
+import { Send } from "lucide-react";
 import Link from "next/link";
-import { useFormStatus } from "react-dom";
 
 export default function WaitingVerifyCard({
   setIsVerified,
@@ -47,7 +46,7 @@ export default function WaitingVerifyCard({
         </ul>
       </CardContent>
       <CardFooter className="flex flex-col space-y-4">
-        {isPending ? (
+        {/* {isPending ? (
           <Button className="w-full lg:w-2/3" disabled={isPending}>
             <Loader2 className="mr-4 size-4 animate-spin" />
             <span>送信中...</span>
@@ -57,7 +56,7 @@ export default function WaitingVerifyCard({
             <Mail className="mr-4 size-4" />
             <span>確認メールを再送信</span>
           </Button>
-        )}
+        )} */}
         <Button
           variant="outline"
           className="w-full lg:w-2/3"
