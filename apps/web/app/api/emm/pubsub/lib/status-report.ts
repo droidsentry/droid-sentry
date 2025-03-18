@@ -1,5 +1,5 @@
-import { getDeviceDisplayName } from "@/lib/device";
-import { AndroidManagementDevice } from "@/app/types/device";
+import { getDeviceDisplayName } from "@/lib/emm/device";
+import { AndroidManagementDevice } from "@/lib/types/device";
 
 export const createStatusReportDescription = async ({
   enterpriseId,

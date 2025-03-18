@@ -2,7 +2,7 @@
 
 import { LucideIcon } from "lucide-react";
 
-import { RouteParams } from "@/app/types/enterprise";
+import { RouteParams } from "@/lib/types/enterprise";
 import {
   Sidebar,
   SidebarContent,
@@ -36,12 +36,12 @@ import {
 function createPolicyListUrl(
   base: string,
   path: string,
-  policyIdentifier: string | null
+  policyId: string | null
 ) {
   // pathが空文字の場合は、baseをそのまま返す
   const url = !path ? base : `${base}/${path}`;
   // return url;
-  return policyIdentifier !== "new" ? `${url}?id=${policyIdentifier}` : url;
+  return policyId !== "new" ? `${url}?id=${policyId}` : url;
 }
 
 /**
@@ -92,12 +92,12 @@ function SidebarMenuItemLink({
  */
 export function PolicySidebar({ className }: { className?: string }) {
   const searchParams = useSearchParams();
-  const searchPolicyIdentifier = searchParams.get("id");
+  const searchpolicyId = searchParams.get("id");
   const param = useParams<RouteParams>();
-  const policyIdentifier = searchPolicyIdentifier ?? param.policyId ?? "new";
+  const policyId = searchpolicyId ?? param.policyId ?? "new";
   const enterpriseId = param.enterpriseId;
   const policyListPath = `/${enterpriseId}/policies`;
-  const policyBasePath = `/${enterpriseId}/policies/${policyIdentifier}`;
+  const policyBasePath = `/${enterpriseId}/policies/${policyId}`;
 
   return (
     <Sidebar className={cn("inset-x-14", className)}>
@@ -119,11 +119,11 @@ export function PolicySidebar({ className }: { className?: string }) {
                   href={createPolicyListUrl(
                     policyListPath, // ベースのURL
                     item.url, // パス
-                    policyIdentifier // 検索パラメーターのpolicyId
+                    policyId // 検索パラメーターのpolicyId
                   )}
                   icon={item.icon} // アイコン
                   title={item.title} // タイトル
-                  searchPolicyId={searchPolicyIdentifier}
+                  searchPolicyId={searchpolicyId}
                 />
               ))}
             </SidebarMenu>

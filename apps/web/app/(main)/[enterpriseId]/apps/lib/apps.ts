@@ -3,7 +3,7 @@ import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { selectAppFields } from "../data/select-app-fields";
-import { AppDetails } from "@/app/types/apps";
+import { AppDetails } from "@/lib/types/apps";
 
 // DBにアプリの情報を保存する
 export const saveApp = async ({

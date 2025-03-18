@@ -1,6 +1,6 @@
 "use client";
 
-import { SheetAppInfo } from "@/app/types/apps";
+import { SheetAppInfo } from "@/lib/types/apps";
 import { useSearchParams } from "next/navigation";
 import {
   ReactNode,
@@ -10,8 +10,9 @@ import {
   useState,
   useTransition,
 } from "react";
-import { getAppDatailInfo } from "../apps/actions/get-app";
+
 import AppSheet from "./components/app-sheet";
+import { getAppDetailInfo } from "@/lib/actions/emm/app";
 
 type ContextType = {
   isPending?: boolean;
@@ -32,7 +33,7 @@ export function AppsInfoSheetProvider({ children }: { children: ReactNode }) {
     const fetchData = async () => {
       if (!appId) return null;
       startTransition(async () => {
-        const appInfo = await getAppDatailInfo(appId);
+        const appInfo = await getAppDetailInfo(appId);
         //5秒待機
         // await new Promise((resolve) => setTimeout(resolve, 5000));
         setAppInfo(appInfo);

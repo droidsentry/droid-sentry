@@ -890,7 +890,7 @@ export type Database = {
         Insert: {
           created_at?: string
           email: string
-          status: string
+          status?: string
           updated_at?: string
           user_id?: string
           username: string

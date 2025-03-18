@@ -14,7 +14,7 @@ export const devicesTableColumnList: TableColumnDefinition[] = [
     size: 200,
   },
   {
-    accessorKey: "deviceIdentifier",
+    accessorKey: "deviceId",
     title: "デバイスID",
     minSize: 200,
     size: 200,

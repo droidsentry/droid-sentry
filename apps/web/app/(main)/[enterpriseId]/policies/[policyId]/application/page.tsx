@@ -1,4 +1,4 @@
-import { RouteParams } from "@/app/types/enterprise";
+import { RouteParams } from "@/lib/types/enterprise";
 import AppRestriction from "./components/restriction";
 import { AppRestrictionProvider } from "./components/restriction-provider";
 import { getPolicyApps } from "./get-policy-apps";

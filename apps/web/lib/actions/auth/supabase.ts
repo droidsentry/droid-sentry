@@ -14,14 +14,14 @@ import {
   passwordUpdateSchema,
   signInSchema,
   signUpSchema,
-} from "@/app/schemas/auth";
+} from "@/lib/schemas/auth";
 import {
   PasswordReset,
   PasswordResetVerify,
   PasswordUpdate,
   SignIn,
   SignUp,
-} from "@/app/types/auth";
+} from "@/lib/types/auth";
 import { getBaseURL } from "@/lib/base-url";
 import { checkTotalUserLimit } from "@/lib/service";
 import { redirect } from "next/navigation";

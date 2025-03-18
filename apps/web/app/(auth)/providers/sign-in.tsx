@@ -1,6 +1,6 @@
 "use client";
 
-import { signInSchema } from "@/app/schemas/auth";
+import { signInSchema } from "@/lib/schemas/auth";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";

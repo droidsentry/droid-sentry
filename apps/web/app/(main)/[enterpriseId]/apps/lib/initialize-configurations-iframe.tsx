@@ -1,8 +1,8 @@
-import { AppType } from "@/app/types/apps";
+import { AppType } from "@/lib/types/apps";
 import { toast } from "sonner";
 import AppSonner from "../components/table/app-sonner";
 import { CONFIGURATIONS_IFRAME_CONFIG } from "../data/app-iframe-config";
-import { getAndSaveAppDetailForGoogle } from "../actions/get-app";
+import { getAndSaveAppDetailFromGoogle } from "@/lib/actions/emm/app";
 
 type SelectEvent = {
   action: "selected";
@@ -82,7 +82,7 @@ export const initializeConfigurationsIframe = ({
     const handleProductSelect = async (event: SelectEvent) => {
       if (event.action === "selected") {
         try {
-          const data = await getAndSaveAppDetailForGoogle({
+          const data = await getAndSaveAppDetailFromGoogle({
             enterpriseId,
             packageName: event.packageName,
             appType,

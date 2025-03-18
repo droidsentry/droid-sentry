@@ -1,4 +1,4 @@
-import { RouteParams } from "@/app/types/enterprise";
+import { RouteParams } from "@/lib/types/enterprise";
 import { HardwareBatteryTemperatureChart } from "./components/charts/hardware-battery-temperature-chart";
 import { HardwareCpuUsagesChart } from "./components/charts/hardware-cpu-chart";
 import { HardwareCpuTemperatureChart } from "./components/charts/hardware-cpu-temperature-chart";
@@ -7,7 +7,7 @@ import { HardwareSkinTemperatureChart } from "./components/charts/hardware-skin-
 import { HardwareTemperaturesAverageChart } from "./components/charts/hardware-temperatures-average-chart";
 import DisplaysTable from "./components/displays-table";
 import HardwareInfoTable from "./components/hardware-info-table";
-import { getHardwareInfo } from "../actions/device";
+import { getHardwareInfo } from "../../../../../../lib/actions/emm/get-device-info";
 import { getHardwareStatus } from "./hardware-status";
 import { HardwareFanSpeedsChart } from "./components/charts/hardware-fan-speeds-chart";
 

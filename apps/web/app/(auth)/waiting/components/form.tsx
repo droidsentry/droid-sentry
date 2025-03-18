@@ -17,18 +17,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { awesomeDebounceWaitingUserSchema } from "@/lib/schemas/waiting";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { useForm } from "react-hook-form";
-import BusinessmanBowing from "../images/businessman_bowing.png";
-import { waitingSchema } from "@/app/schemas/auth";
-import { Waiting } from "@/app/types/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import BusinessmanBowing from "../images/businessman_bowing.png";
 import WaitingVerifyCard from "./waiting-verify-card";
-import { sendWaitingNotification } from "../actions";
+import { sendEmailToWaitingUser } from "../actions";
+import { WaitingUser } from "@/lib/types/waiting";
 
 export default function WaitingForm({
   username,
@@ -42,16 +42,16 @@ export default function WaitingForm({
 
   const form = useForm({
     mode: "onChange",
-    resolver: zodResolver(waitingSchema),
+    resolver: zodResolver(awesomeDebounceWaitingUserSchema),
     defaultValues: {
       username: username || process.env.NEXT_PUBLIC_DEV_USERNAME || "",
       email: email || process.env.NEXT_PUBLIC_DEV_EMAIL || "",
     },
   });
 
-  const handleWaiting = async (data: Waiting) => {
+  const handleWaiting = async (data: WaitingUser) => {
     startTransition(async () => {
-      await sendWaitingNotification(data)
+      await sendEmailToWaitingUser(data)
         .then(() => {
           let message = "登録が完了しました。";
           if (!isVerified) {

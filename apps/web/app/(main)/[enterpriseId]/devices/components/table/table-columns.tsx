@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
 import { devicesTableColumnList } from "../../data/columnList";
 
-import { DeviceTableType } from "@/app/types/device";
+import { DeviceTableType } from "@/lib/types/device";
 import { DataTableColumnHeader } from "../../../../components/table/column-header";
 import { generateSortFilterColumnsHeader } from "../../../../components/table/generate-sort-filter-columns-header";
 import { selectColumn } from "../../../../components/table/select-column";

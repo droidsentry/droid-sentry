@@ -12,7 +12,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { useFormContext } from "react-hook-form";
 
-import { FormPolicy } from "@/app/types/policy";
+import { FormPolicy } from "@/lib/types/policy";
 import { Loader2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import {

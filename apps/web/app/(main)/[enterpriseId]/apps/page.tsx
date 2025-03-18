@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import ManagementAppsContent from "./components/management-apps-content";
-import { getApps } from "./actions/get-app";
-import { RouteParams } from "@/app/types/enterprise";
+import { getApps } from "../../../../lib/actions/emm/app";
+import { RouteParams } from "@/lib/types/enterprise";
 
 export default async function Page({
   params,

@@ -3,19 +3,19 @@ import { sendDiscordWebhookMessage } from "@/lib/webhook/discord";
 import { Json } from "@/types/database";
 import { NextResponse } from "next/server";
 
-import {
-  BatchUsageLogEvents,
-  NotificationType,
-  PubSubMessage,
-} from "../../../types/pubsub";
 import { createCommandDescription } from "./lib/command";
 import { dispatchDeviceEvent } from "./lib/device-event";
 import { createStatusReportDescription } from "./lib/status-report";
 import { createUsageLogsDescription } from "./lib/usage-logs";
 import { verifyPubSubToken } from "./lib/verify-token";
-import { AndroidManagementDevice, DeviceOperation } from "@/app/types/device";
+import { AndroidManagementDevice, DeviceOperation } from "@/lib/types/device";
 import { savePubSubLogs } from "./lib/save-pubsub-logs";
 import { sendWebhookMessage } from "./lib/send-webhoook";
+import {
+  BatchUsageLogEvents,
+  NotificationType,
+  PubSubMessage,
+} from "@/lib/types/pubsub";
 
 /**
  * Pub/Subのメッセージを受信する

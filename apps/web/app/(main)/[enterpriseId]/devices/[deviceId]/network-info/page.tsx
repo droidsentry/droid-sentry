@@ -1,4 +1,4 @@
-import { RouteParams } from "@/app/types/enterprise";
+import { RouteParams } from "@/lib/types/enterprise";
 import { DeviceNetworkTable } from "./device-network-table";
 
 export default async function Page({

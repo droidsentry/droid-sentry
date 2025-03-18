@@ -1,6 +1,6 @@
 "use client";
 
-import { createDeviceEnrollmentTokenWithQRCode } from "@/actions/emm/device";
+import { createDeviceEnrollmentTokenWithQRCode } from "@/lib/actions/emm/device";
 import { Button } from "@/components/ui/button";
 import { Loader2Icon, QrCodeIcon } from "lucide-react";
 import {

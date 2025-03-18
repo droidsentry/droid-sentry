@@ -1,7 +1,7 @@
 "use server";
 
-import { projectSchema } from "@/app/schemas/project";
-import { Project } from "@/app/types/project";
+import { projectSchema } from "@/lib/schemas/project";
+import { Project } from "@/lib/types/project";
 import { createClient } from "@/lib/supabase/server";
 import { checkProjectLimit } from "./service";
 

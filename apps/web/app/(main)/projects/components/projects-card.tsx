@@ -23,7 +23,7 @@ import { SiAndroid } from "@icons-pack/react-simple-icons";
 import ProjectDeleteButton from "./project-delete-button";
 import { useProject } from "./project-provider";
 import { useRouter } from "next/navigation";
-import { checkProjectLimit } from "@/actions/emm/service";
+import { checkProjectLimit } from "@/lib/actions/emm/service";
 import { toast } from "sonner";
 import { useTransition } from "react";
 

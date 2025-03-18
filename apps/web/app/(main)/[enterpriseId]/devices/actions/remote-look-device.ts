@@ -1,6 +1,6 @@
 "use server";
 
-import { DeviceTableType } from "@/app/types/device";
+import { DeviceTableType } from "@/lib/types/device";
 import { createAndroidManagementClient } from "@/lib/emm/client";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
@@ -35,7 +35,8 @@ const remoteLook = async ({
   const { data: operationData, error: operationError } = await supabase
     .from("device_operations")
     .insert({
-      device_uuid: deviceId,
+      enterprise_id: enterpriseId,
+      device_id: deviceId,
       operation_type: type,
       operation_name: operationName,
       operation_request_data: requestBody,

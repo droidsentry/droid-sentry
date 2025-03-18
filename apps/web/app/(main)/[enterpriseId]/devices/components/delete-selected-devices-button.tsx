@@ -6,8 +6,8 @@ import { Loader2Icon, Trash2Icon } from "lucide-react";
 import { useTransition } from "react";
 import { toast } from "sonner";
 import { deleteSelectedDevices } from "../actions/delete-selected-devices";
-import { DeviceTableType } from "@/app/types/device";
-import { RouteParams } from "@/app/types/enterprise";
+import { DeviceTableType } from "@/lib/types/device";
+import { RouteParams } from "@/lib/types/enterprise";
 import { useParams } from "next/navigation";
 import TitleTooltip from "@/components/title-tooltip";
 import {

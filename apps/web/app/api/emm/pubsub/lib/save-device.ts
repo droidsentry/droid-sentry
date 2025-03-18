@@ -1,6 +1,6 @@
 import "server-only";
 
-import { AndroidManagementDevice } from "@/app/types/device";
+import { AndroidManagementDevice } from "@/lib/types/device";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { Json } from "@/types/database";

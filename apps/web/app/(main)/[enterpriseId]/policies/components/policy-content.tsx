@@ -6,7 +6,7 @@ import useSWR from "swr";
 import { PoliciesTableProvider } from "./policies-table-provider";
 import { policyColumns } from "./table/policies-table-columns";
 import PoliciesTable from "./table/policy-table";
-import { PolicyTableType } from "@/app/types/policy";
+import { PolicyTableType } from "@/lib/types/policy";
 import { getPolicies } from "../actions/policy";
 
 export default function PoliciesContent({

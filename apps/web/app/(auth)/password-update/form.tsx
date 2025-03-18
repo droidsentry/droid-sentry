@@ -1,20 +1,20 @@
 "use client";
 
-import { updatePassword } from "@/actions/auth/supabase";
+import { updatePassword } from "@/lib/actions/auth/supabase";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { passwordUpdateSchema } from "@/app/schemas/auth";
-import { PasswordUpdate } from "@/app/types/auth";
+import { passwordUpdateSchema } from "@/lib/schemas/auth";
+import { PasswordUpdate } from "@/lib/types/auth";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
-import PasswordForm from "../../components/password-form";
+import PasswordForm from "../components/password-form";
 
 export default function PasswordUpdateForm() {
   const formEmailOrUsername = useFormContext();

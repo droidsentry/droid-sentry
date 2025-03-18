@@ -1,4 +1,4 @@
-import { PolicyApp } from "@/app/types/policy";
+import { PolicyApp } from "@/lib/types/policy";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import AppLibraryMenu from "./library-menu";
 import AppLibraryTitle from "./library-title";

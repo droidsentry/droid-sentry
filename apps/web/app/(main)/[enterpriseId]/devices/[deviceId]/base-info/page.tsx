@@ -1,5 +1,5 @@
-import { RouteParams } from "@/app/types/enterprise";
-import { getHardwareInfo } from "../actions/device";
+import { RouteParams } from "@/lib/types/enterprise";
+import { getHardwareInfo } from "../../../../../../lib/actions/emm/get-device-info";
 import { DeviceBaseInfoTable } from "./device-base-info-table";
 
 export default async function Page({

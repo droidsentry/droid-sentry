@@ -4,7 +4,7 @@ import {
   ChartType,
   HardwareStatusSourceType,
   HardwareStatusType,
-} from "@/app/types/device";
+} from "@/lib/types/device";
 import { Button } from "@/components/ui/button";
 import {
   Card,

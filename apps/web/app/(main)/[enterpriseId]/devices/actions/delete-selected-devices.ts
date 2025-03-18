@@ -1,6 +1,6 @@
 "use server";
 
-import { DeviceTableType } from "@/app/types/device";
+import { DeviceTableType } from "@/lib/types/device";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { deleteManagedDevices, deleteSyncDevices } from "../lib/delete-device";

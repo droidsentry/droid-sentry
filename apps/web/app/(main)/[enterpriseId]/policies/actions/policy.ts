@@ -1,8 +1,8 @@
 "use server";
 
 import { createAndroidManagementClient } from "@/lib/emm/client";
-import { formPolicySchema } from "@/app/schemas/policy";
-import { AndroidManagementPolicy, FormPolicy } from "@/app/types/policy";
+import { formPolicySchema } from "@/lib/schemas/policy";
+import { AndroidManagementPolicy, FormPolicy } from "@/lib/types/policy";
 import { checkServiceLimit } from "@/lib/service";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";

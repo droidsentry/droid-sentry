@@ -1,6 +1,6 @@
 "use client";
 
-import { PolicyTableType } from "@/app/types/policy";
+import { PolicyTableType } from "@/lib/types/policy";
 import { Table } from "@tanstack/react-table";
 import { ReactNode, createContext, useCallback, useContext } from "react";
 

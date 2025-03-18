@@ -13,7 +13,7 @@ import {
 import { toast } from "sonner";
 import { rebootDevices } from "../../../actions/reboot-device";
 import { Table } from "@tanstack/react-table";
-import { DeviceTableType } from "@/app/types/device";
+import { DeviceTableType } from "@/lib/types/device";
 
 interface RebootAlertDialogProps<TData> {
   isRebootDialogOpen: boolean;

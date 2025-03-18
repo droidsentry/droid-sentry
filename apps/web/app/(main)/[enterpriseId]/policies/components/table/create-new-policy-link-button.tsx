@@ -1,6 +1,6 @@
 "use client";
 
-import { FormPolicy } from "@/app/types/policy";
+import { FormPolicy } from "@/lib/types/policy";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";

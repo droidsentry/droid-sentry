@@ -1,8 +1,8 @@
 "use server";
 
 import { createAndroidManagementClient } from "@/lib/emm/client";
-import { DeviceResetPasswordSchema } from "@/app/schemas/devices";
-import { DeviceResetPassword, DeviceTableType } from "@/app/types/device";
+import { DeviceResetPasswordSchema } from "@/lib/schemas/devices";
+import { DeviceResetPassword, DeviceTableType } from "@/lib/types/device";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
@@ -39,7 +39,8 @@ const resetPassword = async ({
   const { data: operationData, error } = await supabase
     .from("device_operations")
     .insert({
-      device_uuid: deviceId,
+      enterprise_id: enterpriseId,
+      device_id: deviceId,
       operation_type: type,
       operation_name: operationName,
       operation_request_data: requestBody,
@@ -64,7 +65,7 @@ const resetPassword = async ({
 
 /**
  * デバイスのパスワードリセット
- * @param deviceIdentifier
+ * @param deviceId
  * @param enterpriseId
  * @returns
  */

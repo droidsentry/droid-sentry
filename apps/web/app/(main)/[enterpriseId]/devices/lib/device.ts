@@ -6,7 +6,7 @@ import { saveDeviceStatus } from "@/app/api/emm/pubsub/lib/save-device";
 /**
  * デバイス情報を同期する
  * @param enterpriseId
- * @param deviceIdentifier
+ * @param deviceId
  * @returns
  * PubSubでのデータ取得とデバイス一覧で取得したデータを同期するため、
  * AdminClientを使用している。デバイス一覧で使用する場合は、必ず認証確認を実施したのち

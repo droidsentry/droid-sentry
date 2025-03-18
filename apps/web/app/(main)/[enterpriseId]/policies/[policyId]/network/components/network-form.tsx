@@ -10,7 +10,7 @@ import {
 
 import { useFormContext } from "react-hook-form";
 
-import { FormPolicy } from "@/app/types/policy";
+import { FormPolicy } from "@/lib/types/policy";
 // import { usePolicy } from "../../../data/use-policy";
 import { Switch } from "@/components/ui/switch";
 import { Loader2 } from "lucide-react";

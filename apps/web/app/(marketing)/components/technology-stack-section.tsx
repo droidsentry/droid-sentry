@@ -1,4 +1,4 @@
-import { MarketingPage } from "@/app/types/locale";
+import { MarketingPage } from "@/lib/types/locale";
 import Image from "next/image";
 import { Fragment } from "react";
 import nextjsLogo from "../images/brands/nextjs-logotype-light-background.svg";

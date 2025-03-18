@@ -1,6 +1,6 @@
 "use client";
 
-import { FormPolicy } from "@/app/types/policy";
+import { FormPolicy } from "@/lib/types/policy";
 import { Button } from "@/components/ui/button";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import { Loader2 } from "lucide-react";
@@ -74,11 +74,11 @@ export default function SaveAsPolicyButton({
         policyId: "new", // 新規ポリシーとして保存
         formData: newFormData,
       })
-        .then((savedPolicyIdentifier) => {
+        .then((savedpolicyId) => {
           toast.success("ポリシーを別名で保存しました。");
           setIsSavingAs(true);
           router.push(
-            `/${enterpriseId}/policies/${savedPolicyIdentifier}/${currentBase}`
+            `/${enterpriseId}/policies/${savedpolicyId}/${currentBase}`
           );
         })
         .catch((error) => {

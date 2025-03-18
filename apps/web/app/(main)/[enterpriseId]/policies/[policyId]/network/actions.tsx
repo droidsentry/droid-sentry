@@ -4,19 +4,19 @@ import { createClient } from "@/lib/supabase/server";
 import {} from "./components/wifi-ssid-table";
 import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
-import { NetworkConfiguration } from "@/app/types/policy-network";
-import { NetworkConfigurationSchema } from "@/app/schemas/policy-network";
+import { NetworkConfiguration } from "@/lib/types/policy-network";
+import { NetworkConfigurationSchema } from "@/lib/schemas/policy-network";
 import { checkServiceLimit } from "@/lib/service";
 
 /**
  * ネットワーク設定を作成または更新する
  * @param enterpriseId 企業ID
- * @param policyIdentifier ポリシーID
+ * @param policyId ポリシーID
  * @param networkConfiguration ネットワーク設定
  */
 export const createOrUpdateNetworkConfigurations = async (
   enterpriseId: string,
-  policyIdentifier: string,
+  policyId: string,
   networkConfiguration: NetworkConfiguration
 ) => {
   const supabase = await createClient();
@@ -53,7 +53,7 @@ export const createOrUpdateNetworkConfigurations = async (
     throw new Error("ネットワーク設定の作成に失敗しました");
   }
 
-  revalidatePath(`/${enterpriseId}/policies/${policyIdentifier}/network`);
+  revalidatePath(`/${enterpriseId}/policies/${policyId}/network`);
   return;
 };
 
@@ -87,7 +87,7 @@ export const getNetworkConfigurations = async (enterpriseId: string) => {
 
 export const deleteNetworkConfiguration = async (
   enterpriseId: string,
-  policyIdentifier: string,
+  policyId: string,
   GUID: string
 ) => {
   const supabase = await createClient();
@@ -106,13 +106,13 @@ export const deleteNetworkConfiguration = async (
     console.error(error);
     throw new Error("ネットワーク設定の削除に失敗しました");
   }
-  revalidatePath(`/${enterpriseId}/policies/${policyIdentifier}/network`);
+  revalidatePath(`/${enterpriseId}/policies/${policyId}/network`);
   return;
 };
 
 export const deleteNetworkConfigurations = async (
   enterpriseId: string,
-  policyIdentifier: string,
+  policyId: string,
   GUIDs: string[]
 ) => {
   const supabase = await createClient();
@@ -131,6 +131,6 @@ export const deleteNetworkConfigurations = async (
     console.error(error);
     throw new Error("ネットワーク設定の削除に失敗しました");
   }
-  revalidatePath(`/${enterpriseId}/policies/${policyIdentifier}/network`);
+  revalidatePath(`/${enterpriseId}/policies/${policyId}/network`);
   return;
 };

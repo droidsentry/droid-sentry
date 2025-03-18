@@ -1,6 +1,6 @@
 "use client";
 
-import { ApplicationInfoType, ApplicationReportType } from "@/app/types/device";
+import { ApplicationInfoType, ApplicationReportType } from "@/lib/types/device";
 import {
   Card,
   CardContent,
@@ -24,10 +24,10 @@ export function DeviceApplicationInfoTable({
 }: {
   deviceApplicationSource: ApplicationInfoType;
 }) {
-  // const key = `/api/devices/${enterpriseId}/${deviceIdentifier}`;
+  // const key = `/api/devices/${enterpriseId}/${deviceId}`;
   // const { data, error, isLoading, isValidating } =
   //   useSWRImmutable<HardwareInfoSourceType>(key, () => {
-  //     return getHardwareInfo({ enterpriseId, deviceIdentifier });
+  //     return getHardwareInfo({ enterpriseId, deviceId });
   //   });
   // if (error) return <div>エラーが発生しました</div>;
   // if (isLoading || isValidating) return <LoadingWithinPageSkeleton />;

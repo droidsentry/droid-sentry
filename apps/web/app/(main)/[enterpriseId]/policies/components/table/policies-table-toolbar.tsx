@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-import { PolicyTableType } from "@/app/types/policy";
+import { PolicyTableType } from "@/lib/types/policy";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { TableViewOptions } from "../../../devices/components/table/table-view-options";
 import SyncPoliciesButton from "../sync-policies-button";

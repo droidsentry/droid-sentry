@@ -11,7 +11,7 @@ import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 import {
   HardwareStatusSourceType,
   HardwareStatusType,
-} from "@/app/types/device";
+} from "@/lib/types/device";
 import {
   Card,
   CardContent,

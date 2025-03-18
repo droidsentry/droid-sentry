@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { toast } from "sonner";
 
-import { AppType } from "@/app/types/apps";
+import { AppType } from "@/lib/types/apps";
 import { useIframeWebToken } from "../../lib/use-iframe-web-token";
 import { initializePlayIframe } from "../../lib/initialize-iframe";
 

@@ -1,5 +1,5 @@
-import { RouteParams } from "@/app/types/enterprise";
-import { getDevicePolicyInfo } from "../actions/device";
+import { RouteParams } from "@/lib/types/enterprise";
+import { getDevicePolicyInfo } from "../../../../../../lib/actions/emm/get-device-info";
 import { DevicePolicyInfoTable } from "./device-policy-info-table";
 
 export default async function Page({

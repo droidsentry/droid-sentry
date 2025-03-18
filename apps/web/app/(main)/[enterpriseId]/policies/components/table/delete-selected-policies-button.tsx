@@ -7,7 +7,7 @@ import { useTransition } from "react";
 import { toast } from "sonner";
 import { deleteSelectedPolicies } from "../../actions/delete-policy";
 import { usePoliciesTable } from "../policies-table-provider";
-import { PolicyTableType } from "@/app/types/policy";
+import { PolicyTableType } from "@/lib/types/policy";
 
 interface DeleteSelectedPoliciesButtonProps<TData extends PolicyTableType> {
   table: Table<TData>;

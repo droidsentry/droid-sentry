@@ -14,8 +14,8 @@ import { useState } from "react";
 import { Table } from "@tanstack/react-table";
 import { useParams } from "next/navigation";
 
-import { DeviceTableType } from "@/app/types/device";
-import { RouteParams } from "@/app/types/enterprise";
+import { DeviceTableType } from "@/lib/types/device";
+import { RouteParams } from "@/lib/types/enterprise";
 import ResetAlertDialog from "../dialog/device-reset-alert-dialog";
 import PasswordResetAlertDialog from "./menu/password-reset-alert-dialog";
 import RebootAlertDialog from "./menu/reboot-alert-dialog";

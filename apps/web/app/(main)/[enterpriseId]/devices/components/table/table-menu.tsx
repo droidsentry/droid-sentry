@@ -21,12 +21,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 
-import { DeviceTableType } from "@/app/types/device";
+import { DeviceTableType } from "@/lib/types/device";
 import { Row } from "@tanstack/react-table";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-import { RouteParams } from "@/app/types/enterprise";
+import { RouteParams } from "@/lib/types/enterprise";
 import { syncDeviceInfoFromDB } from "../../actions/device";
 import DevicePasswordResetAlertDialog from "./menu/password-reset-alert-dialog";
 import DeviceRebootAlertDialog from "./menu/reboot-alert-dialog";
@@ -120,7 +120,7 @@ export default function DeviceTableMenu({ device }: TableMenuProps) {
             <span>端末再起動</span>
           </DropdownMenuItem>
           {/* <DropdownMenuItem
-            onClick={() => handleDeviceAction(row.original.deviceIdentifier)}
+            onClick={() => handleDeviceAction(row.original.deviceId)}
           >
             <CaptionsOff className="mr-4 size-4" />
             <span>アプリデータ削除</span>

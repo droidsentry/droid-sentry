@@ -1,4 +1,4 @@
-import { signWithGithub } from "@/actions/auth/supabase";
+import { signWithGithub } from "@/lib/actions/auth/supabase";
 import { cn } from "@/lib/utils";
 import { SiGithub } from "@icons-pack/react-simple-icons";
 import SubmitButton from "./submit-button";

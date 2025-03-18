@@ -1,6 +1,6 @@
 "use client";
 
-import { signUpNewUser } from "@/actions/auth/supabase";
+import { signUpNewUser } from "@/lib/actions/auth/supabase";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,14 +23,14 @@ import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import PasswordForm from "../components/password-form";
 
-import { extendedSignUpSchema } from "@/app/schemas/auth";
-import { SignUp } from "@/app/types/auth";
+import { extendedSignUpSchema } from "@/lib/schemas/auth";
+import { SignUp } from "@/lib/types/auth";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import DiscordSingButton from "../components/discord-sing-button";
-import { GitHubSignButton } from "../components/github-login-button";
-import GoogleSingButton from "../components/google-sing-in-button";
+import DiscordSignButton from "../components/discord-sign-button";
+import { GitHubSignButton } from "../components/github-sign-button";
+import GoogleSignButton from "../components/google-sign-in-button";
 
 export default function SignUpForm() {
   const t = useTranslations("auth.errors");
@@ -143,8 +143,8 @@ export default function SignUpForm() {
         </CardDescription>
         <div className="flex flex-col gap-2 pb-4">
           <GitHubSignButton className="w-full" />
-          <GoogleSingButton className="w-full" />
-          <DiscordSingButton className="w-full" />
+          <GoogleSignButton className="w-full" />
+          <DiscordSignButton className="w-full" />
         </div>
       </CardContent>
     </Card>

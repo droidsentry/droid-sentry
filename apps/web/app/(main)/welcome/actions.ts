@@ -1,8 +1,8 @@
 "use server";
 
 import { createTrialSubscription } from "@/app/(main)/welcome/lib/create-trial-subscription";
-import { OnboardingUserSchema } from "@/app/schemas/project";
-import { OnboardingUser } from "@/app/types/project";
+import { OnboardingUserSchema } from "@/lib/schemas/project";
+import { OnboardingUser } from "@/lib/types/project";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 

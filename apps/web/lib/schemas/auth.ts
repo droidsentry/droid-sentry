@@ -1,7 +1,7 @@
 import { isStrongPassword } from "validator";
 import { z } from "zod";
 import { emailSchema } from "./devices";
-import { isUserNameUnique } from "@/actions/auth/user";
+import { isUserNameUnique } from "@/lib/actions/auth/user";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 
 const passwordSchema = z
@@ -62,15 +62,4 @@ export const signUpSchema = z.object({
 // 短期間にリクエストが連続して送信されないようにする
 export const extendedSignUpSchema = signUpSchema.extend({
   username: awesomeDebounceUsernameSchnema,
-});
-
-export const waitingSchema = z.object({
-  email: emailSchema,
-  username: z
-    .string()
-    .min(1, "ユーザー名を入力してください")
-    .regex(
-      /^[a-zA-Z0-9_-]+$/,
-      "ユーザー名には英数字、アンダースコア(_)、ハイフン(-)のみ使用できます"
-    ),
 });

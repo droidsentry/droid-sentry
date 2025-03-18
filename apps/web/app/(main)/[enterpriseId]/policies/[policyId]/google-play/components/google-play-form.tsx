@@ -18,7 +18,7 @@ import {
 
 import { useFormContext } from "react-hook-form";
 
-import { FormPolicy } from "@/app/types/policy";
+import { FormPolicy } from "@/lib/types/policy";
 
 export default function GooglePlayForm() {
   const form = useFormContext<FormPolicy>();

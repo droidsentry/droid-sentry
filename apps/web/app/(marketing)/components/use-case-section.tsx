@@ -1,4 +1,4 @@
-import { MarketingPage } from "@/app/types/locale";
+import { MarketingPage } from "@/lib/types/locale";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";

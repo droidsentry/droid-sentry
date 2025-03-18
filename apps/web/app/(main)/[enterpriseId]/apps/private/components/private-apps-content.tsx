@@ -1,11 +1,11 @@
 "use client";
 
-import { AppsTableType, AppType } from "@/app/types/apps";
+import { AppsTableType, AppType } from "@/lib/types/apps";
 import { Loader2Icon } from "lucide-react";
 import useSWR from "swr";
 import { appsColumns } from "../../components/table/apps-columns";
 import AppsTable from "../../components/table/apps-table";
-import { getApps } from "../../actions/get-app";
+import { getApps } from "../../../../../../lib/actions/emm/app";
 
 export default function PrivateAppsContent({
   data,

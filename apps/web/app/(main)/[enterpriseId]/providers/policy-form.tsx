@@ -4,13 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { RouteParams } from "@/app/types/enterprise";
-import { FormPolicy } from "@/app/types/policy";
+import { RouteParams } from "@/lib/types/enterprise";
+import { FormPolicy } from "@/lib/types/policy";
 import { Form } from "@/components/ui/form";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 import { getPolicyData } from "../policies/actions/get-policy";
-import { formPolicySchema } from "@/app/schemas/policy";
+import { formPolicySchema } from "@/lib/schemas/policy";
 import { defaultPolicyRequestBody } from "@/data/default-policy-request-body";
 
 export const defaultGeneralConfig: FormPolicy = {

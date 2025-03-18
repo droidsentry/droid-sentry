@@ -1,6 +1,6 @@
 "use client";
 
-import { resendSignUpOPT } from "@/actions/auth/supabase";
+import { resendSignUpOPT } from "@/lib/actions/auth/supabase";
 import { Button } from "@/components/ui/button";
 import {
   Card,

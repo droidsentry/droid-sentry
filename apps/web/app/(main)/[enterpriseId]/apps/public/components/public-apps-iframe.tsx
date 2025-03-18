@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { toast } from "sonner";
 import { useIframeWebToken } from "../../lib/use-iframe-web-token";
 import { initializePlayIframe } from "../../lib/initialize-iframe";
-import { AppType } from "@/app/types/apps";
+import { AppType } from "@/lib/types/apps";
 // import { useGapiIframes } from "../../../providers/gapi-iframes";
 
 /**

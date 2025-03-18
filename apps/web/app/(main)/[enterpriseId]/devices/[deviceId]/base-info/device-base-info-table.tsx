@@ -3,7 +3,7 @@
 import {
   AndroidManagementDevice,
   HardwareInfoSourceType,
-} from "@/app/types/device";
+} from "@/lib/types/device";
 import CopyButton from "@/components/copy-button";
 import InfoTooltip from "@/components/info-tooltip";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,8 +20,8 @@ import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
 import { deviceManagementMode, deviceOwnership } from "@/data/emm/device";
 import useSWR from "swr";
 import { deviceStates } from "../../data/data";
-import { getHardwareInfo } from "../actions/device";
-import LoadingWithinPageSkeleton from "@/app/(main)/[enterpriseId]/components/loading-within-page-sleleton";
+import { getHardwareInfo } from "../../../../../../lib/actions/emm/get-device-info";
+import LoadingWithinPageSkeleton from "@/lib/emm/components/loading-within-page-sleleton";
 
 type FormattedValue = {
   value: React.ReactNode;

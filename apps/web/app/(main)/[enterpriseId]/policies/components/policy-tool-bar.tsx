@@ -1,6 +1,6 @@
 "use client";
 
-import { FormPolicy } from "@/app/types/policy";
+import { FormPolicy } from "@/lib/types/policy";
 import { Button } from "@/components/ui/button";
 import {
   FormControl,
@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Loader2, PlusIcon } from "lucide-react";
 
-import { RouteParams } from "@/app/types/enterprise";
+import { RouteParams } from "@/lib/types/enterprise";
 import {
   useParams,
   usePathname,
@@ -25,7 +25,7 @@ import { createOrUpdatePolicy, isPolicyNameUnique } from "../actions/policy";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import CreateNewPolicyLinkButton from "./table/create-new-policy-link-button";
 import SaveAsPolicyButton from "./policy-save-as-button";
-import { formPolicySchema } from "@/app/schemas/policy";
+import { formPolicySchema } from "@/lib/schemas/policy";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function PolicyToolBar() {

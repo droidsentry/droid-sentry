@@ -1,4 +1,4 @@
-import { AppsTableType } from "@/app/types/apps";
+import { AppsTableType } from "@/lib/types/apps";
 import { Button } from "@/components/ui/button";
 import { ExternalLinkIcon } from "lucide-react";
 import Image from "next/image";

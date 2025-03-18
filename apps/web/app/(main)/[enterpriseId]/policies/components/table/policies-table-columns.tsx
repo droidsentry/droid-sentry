@@ -9,7 +9,7 @@ import { selectColumn } from "../../../../components/table/select-column";
 
 import PoliciesTableMenu from "./policies-table-menu";
 import { DataTableColumnSortHeader } from "@/app/(main)/components/table/column-sort-header";
-import { PolicyTableType } from "@/app/types/policy";
+import { PolicyTableType } from "@/lib/types/policy";
 
 export const policyColumns: ColumnDef<PolicyTableType>[] = [
   selectColumn<PolicyTableType>(),

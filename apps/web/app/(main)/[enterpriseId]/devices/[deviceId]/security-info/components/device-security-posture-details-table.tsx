@@ -1,6 +1,6 @@
 "use client";
 
-import { HardwareInfoSourceType } from "@/app/types/device";
+import { HardwareInfoSourceType } from "@/lib/types/device";
 import {
   Card,
   CardContent,
@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import LoadingWithinPageSkeleton from "@/app/(main)/[enterpriseId]/components/loading-within-page-sleleton";
+import LoadingWithinPageSkeleton from "@/lib/emm/components/loading-within-page-sleleton";
 import InfoTooltip from "@/components/info-tooltip";
 import {
   Table,
@@ -22,7 +22,7 @@ import {
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
 import { securityRisk } from "@/data/emm/device";
 import useSWRImmutable from "swr/immutable";
-import { getHardwareInfo } from "../../actions/device";
+import { getHardwareInfo } from "../../../../../../../lib/actions/emm/get-device-info";
 
 export default function DeviceSecurityPostureDetailsTable({
   enterpriseId,

@@ -13,7 +13,7 @@ import {
 import { toast } from "sonner";
 import { remoteLookDevices } from "../../../actions/remote-look-device";
 import { Table } from "@tanstack/react-table";
-import { DeviceTableType } from "@/app/types/device";
+import { DeviceTableType } from "@/lib/types/device";
 
 interface RemoteLookAlertDialogProps<TData> {
   isRemoteLookDialogOpen: boolean;

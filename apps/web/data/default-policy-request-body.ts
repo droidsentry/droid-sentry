@@ -1,4 +1,4 @@
-import { Policy } from "@/app/types/policy";
+import { Policy } from "@/lib/types/policy";
 
 /**
  * ポリシーのデフォルトリクエストボディ

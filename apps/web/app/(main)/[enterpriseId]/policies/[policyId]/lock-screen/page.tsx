@@ -1,4 +1,4 @@
-import { RouteParams } from "@/app/types/enterprise";
+import { RouteParams } from "@/lib/types/enterprise";
 import LockScreenForm from "./components/lock-screen-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -7,11 +7,11 @@ export default async function Page({
 }: {
   params: Promise<RouteParams>;
 }) {
-  const policyIdentifier = (await params).policyIdentifier;
+  const policyId = (await params).policyId;
 
   return (
     <ScrollArea className="h-full w-full p-2">
-      <LockScreenForm policyIdentifier={policyIdentifier} />
+      <LockScreenForm policyId={policyId} />
     </ScrollArea>
   );
 }

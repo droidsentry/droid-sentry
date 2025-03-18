@@ -1,8 +1,8 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { createAndroidManagementClient } from "../../../../../lib/emm/client";
-import { IframeType } from "@/app/types/apps";
+import { createAndroidManagementClient } from "../../emm/client";
+import { IframeType } from "@/lib/types/apps";
 import { getBaseURL } from "@/lib/base-url";
 
 /**

@@ -3,9 +3,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { createAndroidManagementClient } from "../../lib/emm/client";
-import { encryptEMMProject } from "../../lib/emm/project";
+
 import { getBaseURL } from "@/lib/base-url";
+import { createAndroidManagementClient } from "@/lib/emm/client";
+import { encryptEMMProject } from "@/lib/emm/project";
 
 /**
  *　サインアップURLを取得する

@@ -1,8 +1,8 @@
 "use client";
 
-import { resetPasswordVerify } from "@/actions/auth/supabase";
-import { passwordResetVerifySchema } from "@/app/schemas/auth";
-import { PasswordResetVerify, SignIn } from "@/app/types/auth";
+import { resetPasswordVerify } from "@/lib/actions/auth/supabase";
+import { passwordResetVerifySchema } from "@/lib/schemas/auth";
+import { PasswordResetVerify, SignIn } from "@/lib/types/auth";
 
 import { Button } from "@/components/ui/button";
 import {

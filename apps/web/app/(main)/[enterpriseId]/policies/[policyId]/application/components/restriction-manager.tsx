@@ -1,4 +1,4 @@
-import { PolicyApp } from "@/app/types/policy";
+import { PolicyApp } from "@/lib/types/policy";
 import AppRestrictionToolBar from "./app-restriction-tool-bar";
 import AppRestrictionZone from "./app-restriction-zone";
 import Droppable from "./droppable";

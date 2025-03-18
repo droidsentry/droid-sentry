@@ -1,8 +1,8 @@
 "use server";
 
 import { createAndroidManagementClient } from "@/lib/emm/client";
-import { DeviceLostModeSchema } from "@/app/schemas/devices";
-import { DeviceLostMode, DeviceTableType } from "@/app/types/device";
+import { DeviceLostModeSchema } from "@/lib/schemas/devices";
+import { DeviceLostMode, DeviceTableType } from "@/lib/types/device";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";

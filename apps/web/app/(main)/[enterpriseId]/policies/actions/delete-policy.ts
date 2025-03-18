@@ -133,7 +133,6 @@ async function updateDevicePolicyToDefault({
         .match({
           enterprise_id: enterpriseId,
           id,
-          device_id: deviceId,
         });
       if (devicesError) {
         console.error(devicesError);
@@ -171,7 +170,7 @@ async function deletePolicyFromGoogleAndDB(
   const name = `enterprises/${enterpriseId}/policies/${policyId}`;
   // Googleでポリシーを削除
   const androidManagementClient = await createAndroidManagementClient();
-  const res = await androidManagementClient.enterprises.policies
+  await androidManagementClient.enterprises.policies
     .delete({
       name,
     })

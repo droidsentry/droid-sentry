@@ -2,7 +2,7 @@ import "server-only";
 
 import { createAndroidManagementClient } from "@/lib/emm/client";
 import { createClient } from "@/lib/supabase/server";
-import { DeviceTableType } from "@/app/types/device";
+import { DeviceTableType } from "@/lib/types/device";
 /**
  * デバイスを削除
  * Google EMM APIでデバイスを削除

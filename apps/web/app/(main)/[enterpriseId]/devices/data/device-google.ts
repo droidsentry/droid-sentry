@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 import {
   AndroidManagementDevice,
   ListDevicesResponse,
-} from "@/app/types/device";
+} from "@/lib/types/device";
 import { prepareDeviceData } from "@/app/api/emm/pubsub/lib/save-device";
 
 type ResolvedDeviceData = {

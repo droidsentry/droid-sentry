@@ -1,6 +1,6 @@
 "use server";
 
-import { AndroidManagementDevice } from "@/app/types/device";
+import { AndroidManagementDevice } from "@/lib/types/device";
 import { createClient } from "@/lib/supabase/server";
 
 export const getHardwareInfo = async ({

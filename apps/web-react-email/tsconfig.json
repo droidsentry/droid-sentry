@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/(main)/[enterpriseId]/devices/[deviceIdentifier]/old1/[category]-old/q"
+    "app/(main)/[enterpriseId]/devices/[deviceId]/old1/[category]-old/q"
   ],
   "exclude": ["node_modules"]
 }

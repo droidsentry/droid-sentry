@@ -1,4 +1,4 @@
-import { PolicyApp } from "@/app/types/policy";
+import { PolicyApp } from "@/lib/types/policy";
 import { Badge } from "@/components/ui/badge";
 import { useAppRestriction } from "./restriction-provider";
 

@@ -16,7 +16,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { resetDevices } from "../../actions/reset-devices";
 import { Table } from "@tanstack/react-table";
-import { DeviceTableType } from "@/app/types/device";
+import { DeviceTableType } from "@/lib/types/device";
 
 interface ResetAlertDialogProps<TData> {
   isResetDialogOpen: boolean;

@@ -1,6 +1,6 @@
 "use client";
 
-import { HardwareInfoSourceType } from "@/app/types/device";
+import { HardwareInfoSourceType } from "@/lib/types/device";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -11,11 +11,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import LoadingWithinPageSkeleton from "@/app/(main)/[enterpriseId]/components/loading-within-page-sleleton";
+import LoadingWithinPageSkeleton from "@/lib/emm/components/loading-within-page-sleleton";
 import InfoTooltip from "@/components/info-tooltip";
 import { devicePosture, encryptionStatus } from "@/data/emm/device";
 import useSWRImmutable from "swr/immutable";
-import { getHardwareInfo } from "../../actions/device";
+import { getHardwareInfo } from "../../../../../../../lib/actions/emm/get-device-info";
 
 export function DeviceSecurityTable({
   enterpriseId,

@@ -1,4 +1,4 @@
-import { PolicyApp } from "@/app/types/policy";
+import { PolicyApp } from "@/lib/types/policy";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";

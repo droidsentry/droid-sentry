@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import WaitingForm from "./components/waiting-form";
+import WaitingForm from "./components/form";
 
 export default async function Page() {
   const supabase = await createClient();

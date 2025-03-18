@@ -1,6 +1,6 @@
 "use client";
 
-import { DeviceTableType } from "@/app/types/device";
+import { DeviceTableType } from "@/lib/types/device";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect } from "react";
 import { toast } from "sonner";

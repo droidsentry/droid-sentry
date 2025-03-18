@@ -1,5 +1,5 @@
-import { DeviceOperation } from "@/app/types/device";
-import { getDeviceDisplayName } from "@/lib/device";
+import { DeviceOperation } from "@/lib/types/device";
+import { getDeviceDisplayName } from "@/lib/emm/device";
 
 /**
  * 'COMMAND'を受信した場合のメッセージを作成する

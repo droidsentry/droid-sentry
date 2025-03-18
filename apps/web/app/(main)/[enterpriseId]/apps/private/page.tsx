@@ -2,8 +2,8 @@ import { Loader2Icon } from "lucide-react";
 import { Suspense } from "react";
 import PrivateAppIframe from "./components/private-app-iframe";
 import PrivateAppsContent from "./components/private-apps-content";
-import { RouteParams } from "@/app/types/enterprise";
-import { getApps } from "../actions/get-app";
+import { RouteParams } from "@/lib/types/enterprise";
+import { getApps } from "../../../../../lib/actions/emm/app";
 
 export default async function Page({
   params,

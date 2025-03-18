@@ -1,6 +1,6 @@
 import "server-only";
 
-import { AndroidManagementPolicy } from "@/app/types/policy";
+import { AndroidManagementPolicy } from "@/lib/types/policy";
 import { defaultPolicyRequestBody } from "@/data/default-policy-request-body";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";

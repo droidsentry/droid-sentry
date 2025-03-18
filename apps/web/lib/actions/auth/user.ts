@@ -1,6 +1,6 @@
 "use server";
 
-import { createAdminClient } from "../../lib/supabase/admin";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export const isUserNameUnique = async (userName: string) => {
   const supabaseAdmin = createAdminClient();

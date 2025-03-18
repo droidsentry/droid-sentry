@@ -1,7 +1,7 @@
 "use client";
 
-import { extendedOnboardingUserSchema } from "@/app/schemas/project";
-import { OnboardingUser } from "@/app/types/project";
+import { extendedOnboardingUserSchema } from "@/lib/schemas/project";
+import { OnboardingUser } from "@/lib/types/project";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";

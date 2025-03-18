@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import { stopLostModeSelectedDevice } from "../../../actions/lost-mode-devices";
-import { DeviceTableType } from "@/app/types/device";
+import { DeviceTableType } from "@/lib/types/device";
 
 export default function StopLostModeAlertDialog({
   isStopLostModeDialogOpen,

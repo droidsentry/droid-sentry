@@ -1,9 +1,9 @@
 "use client";
 
-import { AppsTableType } from "@/app/types/apps";
+import { AppsTableType } from "@/lib/types/apps";
 import { Loader2Icon } from "lucide-react";
 import useSWR from "swr";
-import { getApps } from "../actions/get-app";
+import { getApps } from "../../../../../lib/actions/emm/app";
 import { ManagementAppsColumns } from "./table/management-apps/management-apps-columns";
 import ManagementAppsTable from "./table/management-apps/management-apps-table";
 

@@ -11,7 +11,7 @@ import {
 
 import { useFormContext } from "react-hook-form";
 
-import { FormPolicy } from "@/app/types/policy";
+import { FormPolicy } from "@/lib/types/policy";
 import { Input } from "@/components/ui/input";
 import {
   Select,

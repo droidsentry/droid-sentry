@@ -10,7 +10,7 @@ import {
 
 import { useFormContext } from "react-hook-form";
 
-import { FormPolicy } from "@/app/types/policy";
+import { FormPolicy } from "@/lib/types/policy";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 export default function VpnForm() {

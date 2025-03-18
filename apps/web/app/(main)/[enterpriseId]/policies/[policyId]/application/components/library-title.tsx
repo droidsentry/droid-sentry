@@ -1,5 +1,5 @@
-// import { Apps } from "@/app/types/policy";
-import { PolicyApp } from "@/app/types/policy";
+// import { Apps } from "@/lib/types/policy";
+import { PolicyApp } from "@/lib/types/policy";
 import { CardTitle } from "@/components/ui/card";
 
 import Image from "next/image";

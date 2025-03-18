@@ -3,7 +3,7 @@
 import {
   AndroidManagementDevice,
   DevicePolicyInfoType,
-} from "@/app/types/device";
+} from "@/lib/types/device";
 import CopyButton from "@/components/copy-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {

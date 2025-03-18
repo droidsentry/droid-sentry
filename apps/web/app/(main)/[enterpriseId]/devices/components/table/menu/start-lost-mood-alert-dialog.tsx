@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import { startLostModeSelectedDevice } from "../../../actions/lost-mode-devices";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DeviceLostModeSchema } from "@/app/schemas/devices";
+import { DeviceLostModeSchema } from "@/lib/schemas/devices";
 import {
   Form,
   FormControl,
@@ -26,7 +26,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
-import { DeviceLostMode, DeviceTableType } from "@/app/types/device";
+import { DeviceLostMode, DeviceTableType } from "@/lib/types/device";
 
 export default function StartLostModeAlertDialog({
   isStartLostModeDialogOpen,

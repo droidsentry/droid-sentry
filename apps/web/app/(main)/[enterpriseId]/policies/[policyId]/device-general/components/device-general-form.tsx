@@ -12,7 +12,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { useFormContext } from "react-hook-form";
 
-import { FormPolicy } from "@/app/types/policy";
+import { FormPolicy } from "@/lib/types/policy";
 import { Loader2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -27,15 +27,11 @@ import { cn } from "@/lib/utils";
 import DeviceGeneralDisplaySettingsForm from "./device-general-display-settings-form";
 import DeviceGeneralSystemUpdateForm from "./device-general-system-update-form";
 
-export default function DeviceGeneralForm({
-  policyIdentifier,
-}: {
-  policyIdentifier: string;
-}) {
+export default function DeviceGeneralForm({ policyId }: { policyId: string }) {
   const form = useFormContext<FormPolicy>();
 
   const isLoading =
-    policyIdentifier !== "new" && // 新規作成時はローディングチェックをスキップ
+    policyId !== "new" && // 新規作成時はローディングチェックをスキップ
     !form.formState.isDirty && // フォームが一度も編集されていない
     !form.getValues("policyDisplayName");
 

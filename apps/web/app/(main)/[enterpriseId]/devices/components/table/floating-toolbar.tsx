@@ -7,7 +7,7 @@ import DeleteSelectedDevicesButton from "../delete-selected-devices-button";
 import CloseFloatingToolbarButton from "./close-floating-toolber-button";
 import { Separator } from "@/components/ui/separator";
 import AssortCommandsMenuButton from "./assort-commands-menu-button";
-import { DeviceTableType } from "@/app/types/device";
+import { DeviceTableType } from "@/lib/types/device";
 
 interface FloatingToolbarProps<TData> {
   className?: string;

@@ -1,7 +1,7 @@
 import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
-import { ProjectWithEnterpriseRelation } from "../../../types/project";
+import { ProjectWithEnterpriseRelation } from "@/lib/types/project";
 
 /**
  * プロジェクト一覧を取得

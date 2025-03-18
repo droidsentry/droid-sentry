@@ -1,11 +1,11 @@
 import "server-only";
 
-import { AndroidManagementDevice, DeviceOperation } from "@/app/types/device";
+import { AndroidManagementDevice, DeviceOperation } from "@/lib/types/device";
 import { Json } from "@/types/database";
 import { saveDeviceCommand } from "./save-command";
 import { saveDeviceStatus } from "./save-device";
 
-import { BatchUsageLogEvents, NotificationType } from "@/app/types/pubsub";
+import { BatchUsageLogEvents, NotificationType } from "@/lib/types/pubsub";
 import { saveUsageLogs } from "./save-usage-logs";
 import { saveDeviceInfoSubscriptions } from "./save-device-info-subscriptions";
 import { syncDeviceInfo } from "@/app/(main)/[enterpriseId]/devices/lib/device";

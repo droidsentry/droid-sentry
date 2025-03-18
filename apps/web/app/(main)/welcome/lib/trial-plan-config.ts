@@ -1,4 +1,4 @@
-import { SubscriptionPlan } from "@/app/types/stripe";
+import { SubscriptionPlan } from "@/lib/types/stripe";
 
 export const trialPlanConfig: SubscriptionPlan = {
   name: "free",

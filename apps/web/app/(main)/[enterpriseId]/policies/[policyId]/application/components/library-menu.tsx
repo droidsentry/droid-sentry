@@ -1,4 +1,4 @@
-import { PolicyApp } from "@/app/types/policy";
+import { PolicyApp } from "@/lib/types/policy";
 import {
   AlertDialog,
   AlertDialogAction,

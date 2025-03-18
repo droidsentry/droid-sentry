@@ -1,4 +1,4 @@
-import { PolicyList } from "@/app/types/policy";
+import { PolicyList } from "@/lib/types/policy";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -19,12 +19,12 @@ import SubmitFormBotton from "./submit-form-botton";
 export default function SelectPolicyDrawer({
   isOpen,
   setIsOpen,
-  deviceIdentifiers,
+  deviceIds,
   policyList,
 }: {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  deviceIdentifiers: string[];
+  deviceIds: string[];
   policyList: PolicyList[];
 }) {
   return (
@@ -32,7 +32,7 @@ export default function SelectPolicyDrawer({
       <DrawerContent className="">
         <div className="mx-auto w-full max-w-sm border rounded-lg">
           <SelectPolicyProvider
-            deviceIdentifiers={deviceIdentifiers}
+            deviceIds={deviceIds}
             policyList={policyList}
             setIsOpen={setIsOpen}
           >

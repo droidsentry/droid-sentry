@@ -2,7 +2,7 @@ import "server-only";
 
 import { Json } from "@/types/database";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { PubSubMessage } from "@/app/types/pubsub";
+import { PubSubMessage } from "@/lib/types/pubsub";
 
 export const savePubSubLogs = async ({
   body,

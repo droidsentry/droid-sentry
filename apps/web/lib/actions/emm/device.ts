@@ -1,8 +1,8 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { createAndroidManagementClient } from "../../lib/emm/client";
 import { checkServiceLimit } from "@/lib/service";
+import { createAndroidManagementClient } from "@/lib/emm/client";
 
 /**
  * エンロールメントトークンを作成

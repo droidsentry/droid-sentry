@@ -1,10 +1,10 @@
 import { formatToJapaneseDateTime } from "@/lib/date-fns/get-date";
-import { BatchUsageLogEvents } from "../../../../types/pubsub";
-import { getDeviceDisplayName } from "@/lib/device";
+import { getDeviceDisplayName } from "@/lib/emm/device";
 import {
   getEventTypeMessage,
   usageLogEventType,
-} from "./data/usage-log-evnet-type-code-ja";
+} from "./data/usage-log-event-type-code-ja";
+import { BatchUsageLogEvents } from "@/lib/types/pubsub";
 
 export const createUsageLogsDescription = async ({
   enterpriseId,

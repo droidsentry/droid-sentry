@@ -1,9 +1,10 @@
 import { androidmanagement_v1 } from "googleapis";
 import { z } from "zod";
 import { formPolicySchema, policySchema } from "../schemas/policy";
-import { getPolicyApps } from "../(main)/[enterpriseId]/policies/[policyId]/application/get-policy-apps";
-import { getPolicyList } from "../(main)/[enterpriseId]/devices/actions/policy";
-import { getPolicies } from "../(main)/[enterpriseId]/policies/actions/policy";
+
+import { getPolicyApps } from "@/app/(main)/[enterpriseId]/policies/[policyId]/application/get-policy-apps";
+import { getPolicyList } from "@/app/(main)/[enterpriseId]/devices/actions/policy";
+import { getPolicies } from "@/app/(main)/[enterpriseId]/policies/actions/policy";
 
 export type AndroidManagementPolicy = androidmanagement_v1.Schema$Policy;
 export type ApplicationPolicy = androidmanagement_v1.Schema$ApplicationPolicy;

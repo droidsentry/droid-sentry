@@ -1,4 +1,4 @@
-import { RouteParams } from "@/app/types/enterprise";
+import { RouteParams } from "@/lib/types/enterprise";
 import NetworkForm from "./components/network-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { WifiSsidTable } from "./components/wifi-ssid-table";

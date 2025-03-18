@@ -2,17 +2,16 @@
 import { androidmanagement_v1 } from "googleapis";
 import { z } from "zod";
 import {
-  getDeviceApplicationInfo,
-  getDevicePolicyInfo,
-  getHardwareInfo,
-} from "../(main)/[enterpriseId]/devices/[deviceId]/actions/device";
-import { getPolicyDisplayName } from "../(main)/[enterpriseId]/devices/[deviceId]/actions/policy";
-import { getHardwareStatus } from "../(main)/[enterpriseId]/devices/[deviceId]/hardware-info/hardware-status";
-import {
   DeviceLostModeSchema,
   DeviceResetPasswordSchema,
 } from "../schemas/devices";
-import { getDevicesData } from "../(main)/[enterpriseId]/devices/actions/device";
+import {
+  getHardwareInfo,
+  getDevicePolicyInfo,
+  getDeviceApplicationInfo,
+} from "@/lib/actions/emm/get-device-info";
+import { getHardwareStatus } from "@/app/(main)/[enterpriseId]/devices/[deviceId]/hardware-info/hardware-status";
+import { getDevicesData } from "@/app/(main)/[enterpriseId]/devices/actions/device";
 
 export type AndroidManagementDevice = androidmanagement_v1.Schema$Device;
 export type ListDevicesResponse =
@@ -35,10 +34,6 @@ export type ApplicationInfoType = Awaited<
 >;
 export type ApplicationReportType =
   androidmanagement_v1.Schema$ApplicationReport;
-
-export type PolicyDisplayNameType = Awaited<
-  ReturnType<typeof getPolicyDisplayName>
->;
 
 export type HardwareStatusType = androidmanagement_v1.Schema$HardwareStatus;
 export type HardwareStatusSourceType = Awaited<

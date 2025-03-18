@@ -1,6 +1,6 @@
 import "server-only";
 
-import { BatchUsageLogEvents } from "@/app/types/pubsub";
+import { BatchUsageLogEvents } from "@/lib/types/pubsub";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { Json } from "@/types/database";
 

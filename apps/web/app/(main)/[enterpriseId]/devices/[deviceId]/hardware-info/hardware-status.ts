@@ -1,6 +1,6 @@
 import "server-only";
 
-import { HardwareStatusType } from "@/app/types/device";
+import { HardwareStatusType } from "@/lib/types/device";
 import { createClient } from "@/lib/supabase/server";
 /**
  * ハードウェアステータスを取得

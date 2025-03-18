@@ -1,4 +1,4 @@
-import { RouteParams } from "@/app/types/enterprise";
+import { RouteParams } from "@/lib/types/enterprise";
 import DeviceDetailInfoTopBar from "./components/device-detail-info-top-bar";
 import MableDeviceDetailInfoTopBar from "./components/mable-device-detail-info-top-bar";
 import { ScrollArea } from "@/components/ui/scroll-area";

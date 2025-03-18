@@ -30,13 +30,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useFormContext } from "react-hook-form";
-import { FormPolicy } from "@/app/types/policy";
+import { FormPolicy } from "@/lib/types/policy";
 
-export default function WifiTableForm({
-  policyIdentifier,
-}: {
-  policyIdentifier: string;
-}) {
+export default function WifiTableForm({ policyId }: { policyId: string }) {
   const form = useFormContext<FormPolicy>();
 
   return (

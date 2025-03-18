@@ -2,20 +2,16 @@ import { NextResponse } from "next/server";
 import DroidSentryWaitingNotificationEmail from "./waiting-notification";
 import { Resend } from "resend";
 import { AppConfig } from "@/app.config";
+import { sendEmailToWaitingUserSchema } from "@/lib/schemas/waiting";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const {
-      username,
-      projectName = AppConfig.title,
-      ip_address,
-      createdAt,
-      location,
-      email,
-    } = body;
+    const parsedBody = sendEmailToWaitingUserSchema.parse(body);
+    const { username, email, ip_address, createdAt, location } = parsedBody;
+    const projectName = AppConfig.title;
 
     // 必須パラメータのバリデーション
     if (!username || !email) {
@@ -39,9 +35,9 @@ export async function POST(request: Request) {
       react: DroidSentryWaitingNotificationEmail({
         username,
         projectName,
-        ip_address: ip_address || "不明",
-        createdAt: createdAt || new Date().toLocaleString("ja-JP"),
-        location: location || "不明",
+        ip_address,
+        createdAt,
+        location,
       }),
     });
 

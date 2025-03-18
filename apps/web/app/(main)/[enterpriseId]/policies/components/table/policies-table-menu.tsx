@@ -36,7 +36,7 @@ import { deletePolicy } from "../../actions/delete-policy";
 import { toast } from "sonner";
 import { usePoliciesTable } from "../policies-table-provider";
 import { revalidatePath } from "next/cache";
-import { PolicyTableType } from "@/app/types/policy";
+import { PolicyTableType } from "@/lib/types/policy";
 
 interface DataTableMenuProps {
   row: Row<PolicyTableType>;

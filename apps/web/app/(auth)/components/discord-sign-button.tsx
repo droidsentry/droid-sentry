@@ -1,11 +1,11 @@
 "use client";
 
-import { signWithDiscord } from "@/actions/auth/supabase";
+import { signWithDiscord } from "@/lib/actions/auth/supabase";
 import { cn } from "@/lib/utils";
 import { SiDiscord } from "@icons-pack/react-simple-icons";
 import SubmitButton from "./submit-button";
 
-export default function DiscordSingButton({
+export default function DiscordSignButton({
   className,
 }: {
   className?: string;

@@ -3,7 +3,7 @@ import NavigationBar from "../components/navigation-bar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { cookies } from "next/headers";
 import { GapiIframesProvider } from "./providers/gapi-iframes";
-import { RouteParams } from "../../types/enterprise";
+import { RouteParams } from "@/lib/types/enterprise";
 
 export const metadata: Metadata = {
   title: "Create Next App",

@@ -11,7 +11,7 @@ import {
 
 import { useFormContext } from "react-hook-form";
 
-import { FormPolicy } from "@/app/types/policy";
+import { FormPolicy } from "@/lib/types/policy";
 // import { usePolicy } from "../../../data/use-policy";
 import { Input } from "@/components/ui/input";
 import {
@@ -25,15 +25,11 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 
-export default function LockScreenForm({
-  policyIdentifier,
-}: {
-  policyIdentifier: string;
-}) {
+export default function LockScreenForm({ policyId }: { policyId: string }) {
   const form = useFormContext<FormPolicy>();
 
   const isLoading =
-    policyIdentifier !== "new" && // 新規作成時はローディングチェックをスキップ
+    policyId !== "new" && // 新規作成時はローディングチェックをスキップ
     !form.formState.isDirty && // フォームが一度も編集されていない
     !form.getValues("policyDisplayName");
 

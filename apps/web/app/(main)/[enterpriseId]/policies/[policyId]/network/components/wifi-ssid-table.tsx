@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 import * as React from "react";
 
-import { FormPolicy } from "@/app/types/policy";
+import { FormPolicy } from "@/lib/types/policy";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -81,13 +81,13 @@ import {
 } from "@/components/ui/table";
 import { Control, useForm, useFormContext } from "react-hook-form";
 
-import LoadingWithinPageSkeleton from "@/app/(main)/[enterpriseId]/components/loading-within-page-sleleton";
-import { NetworkConfigurationSchema } from "@/app/schemas/policy-network";
-import { RouteParams } from "@/app/types/enterprise";
+import LoadingWithinPageSkeleton from "@/lib/emm/components/loading-within-page-sleleton";
+import { NetworkConfigurationSchema } from "@/lib/schemas/policy-network";
+import { RouteParams } from "@/lib/types/enterprise";
 import {
   NetworkConfiguration,
   NetworkConfigurations,
-} from "@/app/types/policy-network";
+} from "@/lib/types/policy-network";
 import { InfoPopover } from "@/components/info-popover";
 import {
   Select,

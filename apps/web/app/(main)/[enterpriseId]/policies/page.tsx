@@ -1,4 +1,4 @@
-import { RouteParams } from "@/app/types/enterprise";
+import { RouteParams } from "@/lib/types/enterprise";
 import PoliciesContent from "./components/policy-content";
 import { getPolicies } from "./actions/policy";
 

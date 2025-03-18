@@ -1,6 +1,6 @@
 import "server-only";
 
-import { DeviceOperation } from "@/app/types/device";
+import { DeviceOperation } from "@/lib/types/device";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { Json } from "@/types/database";
 

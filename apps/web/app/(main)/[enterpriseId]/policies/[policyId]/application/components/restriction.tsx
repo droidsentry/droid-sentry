@@ -1,6 +1,6 @@
 "use client";
 
-import { ApplicationPolicy, FormPolicy, PolicyApp } from "@/app/types/policy";
+import { ApplicationPolicy, FormPolicy, PolicyApp } from "@/lib/types/policy";
 import {
   DndContext,
   DragEndEvent,

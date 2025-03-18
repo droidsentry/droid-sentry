@@ -1,4 +1,4 @@
-import { DisplaysType, HardwareInfoSourceType } from "@/app/types/device";
+import { DisplaysType, HardwareInfoSourceType } from "@/lib/types/device";
 import {
   Card,
   CardContent,
