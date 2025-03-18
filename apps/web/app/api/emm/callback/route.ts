@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
           enterprise_details: enterpriseData as Json,
           updated_at: new Date().toISOString(),
           // 既存のエンタープライズがある場合は owner_id を変更しない
-          ...(existingEnterprise ? {} : { owner_id: user.id }),
+          ...(existingEnterprise ? {} : { subscription_owner_id: user.id }),
         },
         {
           onConflict: "enterprise_id",

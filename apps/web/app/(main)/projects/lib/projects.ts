@@ -9,7 +9,7 @@ import { ProjectWithEnterpriseRelation } from "@/lib/types/project";
  *
  * project_membersテーブルを直接参照して
  * RLSポリシーにより：
- * プロジェクトオーナー（owner_id = auth.uid()）
+ * プロジェクトオーナー（subscription_owner_id = auth.uid()）
  * または、プロジェクトメンバー（is_project_user(id)がtrueを返す）
  * のプロジェクトのみが取得されますが、project_membersテーブルを
  * 直接参照して明示的にプロジェクト一覧を取得します。

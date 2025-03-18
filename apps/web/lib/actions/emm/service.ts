@@ -21,11 +21,14 @@ export const checkProjectLimit = async () => {
   const { count: currentCount, error: currentCountError } = await supabase
     .from("projects")
     .select("*", { count: "exact", head: true })
-    .eq("owner_id", user.id);
+    .eq("subscription_owner_id", user.id);
 
   if (currentCountError) {
     console.error(currentCountError);
-    throw new Error(`現在の利用状況の取得に失敗しました`);
+    // throw new Error(`現在の利用状況の取得に失敗しました`);
+    throw new Error(
+      `現在の利用状況の取得に失敗しました: ${currentCountError.message}`
+    );
   }
 
   // サービス上限を取得して確認する
