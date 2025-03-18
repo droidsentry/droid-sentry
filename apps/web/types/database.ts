@@ -993,6 +993,28 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_accessible_enterprises: {
+        Args: Record<PropertyKey, never>
+        Returns: string[]
+      }
+      has_device_access: {
+        Args: {
+          device_uuid_param: string
+        }
+        Returns: boolean
+      }
+      has_enterprise_access: {
+        Args: {
+          enterprise_id_param: string
+        }
+        Returns: boolean
+      }
+      has_policy_access: {
+        Args: {
+          policy_id_param: string
+        }
+        Returns: boolean
+      }
       insert_or_upsert_devices_data: {
         Args: {
           devices: Json[]
