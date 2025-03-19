@@ -58,7 +58,7 @@ const savePolicyToDB = async (
     const { data, error } = await supabase
       .from("policies")
       .update({
-        policy_data: response as Json,
+        policy_details: response as Json,
         updated_at: new Date().toISOString(),
       })
       .eq("policy_id", policyId)

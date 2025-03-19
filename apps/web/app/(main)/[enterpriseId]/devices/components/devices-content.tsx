@@ -12,9 +12,11 @@ import { deviceColumns } from "./table/table-columns";
 export default function DevicesContent({
   data,
   enterpriseId,
+  isMaxDevicesKittingPerUser,
 }: {
   data: DeviceTableType[];
   enterpriseId: string;
+  isMaxDevicesKittingPerUser: boolean;
 }) {
   const key = "/api/devices";
   const {
@@ -93,6 +95,7 @@ export default function DevicesContent({
       columns={deviceColumns}
       data={devices}
       enterpriseId={enterpriseId}
+      isMaxDevicesKittingPerUser={isMaxDevicesKittingPerUser}
     />
   );
 }

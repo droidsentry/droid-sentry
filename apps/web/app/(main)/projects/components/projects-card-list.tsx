@@ -23,33 +23,27 @@ import { SiAndroid } from "@icons-pack/react-simple-icons";
 import ProjectDeleteButton from "./project-delete-button";
 import { useProject } from "./project-provider";
 import { useRouter } from "next/navigation";
-import { checkProjectLimit } from "@/lib/actions/emm/service";
 import { toast } from "sonner";
 import { useTransition } from "react";
 
-interface ProjectCardProps {
+export default function ProjectsCardList({
+  className,
+  isProjectLimit,
+}: {
   className?: string;
-}
-
-export default function ProjectsCard({ className }: ProjectCardProps) {
+  isProjectLimit: boolean;
+}) {
   const router = useRouter();
   const [isCreateProjectPending, startCreateProjectTransition] =
     useTransition();
-  const { projects, handleGetSignUpUrl, isPending, pendingProjectId } =
-    useProject();
+  const { projects, isPending, pendingProjectId } = useProject();
 
   const handleCreateProject = async () => {
     startCreateProjectTransition(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 5000));
-      await checkProjectLimit()
-        .then((res) => {
-          router.push("/projects/new");
-        })
-        .catch((error) => {
-          toast.error(error.message);
-        });
+      router.push("/projects/new");
     });
   };
+  console.log("isProjectLimit", isProjectLimit);
 
   return (
     <div
@@ -62,7 +56,7 @@ export default function ProjectsCard({ className }: ProjectCardProps) {
         const enterpriseId = project.enterprise_id;
         return (
           <div className="group/card" key={project.project_id}>
-            <Card className=" relative h-60 duration-300 dark:bg-zinc-900 dark:border-zinc-700 transition ease-in-out group-hover/card:bg-accent">
+            <Card className="relative h-60 duration-300 dark:bg-zinc-900 dark:border-zinc-700 transition ease-in-out group-hover/card:bg-accent">
               <CardHeader className="pr-16">
                 <CardTitle className="text-lg overflow-hidden text-ellipsis whitespace-nowrap">
                   プロジェクト : {project.project_name}
@@ -92,19 +86,15 @@ export default function ProjectsCard({ className }: ProjectCardProps) {
                 </div>
               )}
               {!enterpriseId && (
-                <button
-                  onClick={() =>
-                    handleGetSignUpUrl(project.project_id, project.project_name)
-                  }
+                <Link
+                  href={`/projects/sign-up?name=${project.project_name}&Id=${project.project_id}`}
                   className="group/button absolute inset-0 z-20 w-full h-full transition-colors duration-300"
                 >
-                  <span className="sr-only">
-                    サインアップURLを発行し、リダイレクトする
-                  </span>
-                </button>
+                  <span className="sr-only">サインアップページに遷移する</span>
+                </Link>
               )}
               {isPending && pendingProjectId === project.project_id && (
-                <div className="absolute inset-0 z-20 flex items-center justify-center">
+                <div className="absolute inset-0 z-40 flex items-center justify-center bg-muted/50">
                   <Loader2 className="animate-spin text-muted-foreground size-12" />
                 </div>
               )}
@@ -112,27 +102,32 @@ export default function ProjectsCard({ className }: ProjectCardProps) {
           </div>
         );
       })}
-      <Card
-        className={cn(
-          "flex h-60 items-center justify-center  relative",
-          !isCreateProjectPending &&
-            "hover:bg-accent hover:border-accent-foreground duration-300"
-        )}
-      >
-        <button onClick={handleCreateProject} disabled={isCreateProjectPending}>
-          <span className="absolute inset-0" />
-          <span className="sr-only">プロジェクト画面に遷移する</span>
-
-          {!isCreateProjectPending && (
-            <Plus className="text-muted-foreground size-10 " />
+      {isProjectLimit && (
+        <Card
+          className={cn(
+            "flex h-60 items-center justify-center  relative",
+            !isCreateProjectPending &&
+              "hover:bg-accent hover:border-accent-foreground duration-300"
           )}
-        </button>
-        {isCreateProjectPending && (
-          <div className="absolute inset-0 z-20 flex items-center justify-center">
-            <Loader2 className="animate-spin text-muted-foreground size-12" />
-          </div>
-        )}
-      </Card>
+        >
+          <button
+            onClick={handleCreateProject}
+            disabled={isCreateProjectPending}
+          >
+            <span className="absolute inset-0" />
+            <span className="sr-only">プロジェクト画面に遷移する</span>
+
+            {!isCreateProjectPending && (
+              <Plus className="text-muted-foreground size-10 " />
+            )}
+          </button>
+          {isCreateProjectPending && (
+            <div className="absolute inset-0 z-20 flex items-center justify-center">
+              <Loader2 className="animate-spin text-muted-foreground size-12" />
+            </div>
+          )}
+        </Card>
+      )}
     </div>
   );
 }

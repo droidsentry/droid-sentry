@@ -109,6 +109,7 @@ import {
   deleteNetworkConfigurations,
   getNetworkConfigurations,
 } from "../actions";
+import { SERVICE_LIMIT_CONFIG } from "@/lib/data/service";
 
 export const wifiSsidColumns: ColumnDef<NetworkConfiguration>[] = [
   {
@@ -328,12 +329,14 @@ const WifiSsidFormDialog = ({
   setOpen,
   mode = "create",
   setDropdownOpen,
+  isMaxSsidsPerUser,
 }: {
   networkConfiguration?: NetworkConfiguration;
   open: boolean;
   setOpen: (open: boolean) => void;
   mode?: "create" | "edit";
   setDropdownOpen?: (open: boolean) => void;
+  isMaxSsidsPerUser?: boolean;
 }) => {
   const [isPending, startTransition] = React.useTransition();
   // 編集モードの場合は既存の設定を初期値として使用し、作成モードの場合はデフォルト値を使用
@@ -367,6 +370,9 @@ const WifiSsidFormDialog = ({
   const { enterpriseId, policyId } = useParams<RouteParams>();
 
   const handleCreateOrUpdateNetwork = (data: NetworkConfiguration) => {
+    if (isMaxSsidsPerUser) {
+      const config = SERVICE_LIMIT_CONFIG["max_ssids_per_user"];
+    }
     const newNetworkConfig: NetworkConfiguration = {
       GUID: data.GUID || uuidv7(),
       Name: data.Name || data.WiFi.SSID,
@@ -674,8 +680,10 @@ const WifiSsidFormDialog = ({
 // 追加ボタンコンポーネント
 function CreateWifiSsidButton({
   table,
+  isMaxSsidsPerUser,
 }: {
   table: ReactTable<NetworkConfiguration>;
+  isMaxSsidsPerUser: boolean;
 }) {
   const [open, setOpen] = React.useState(false);
   // const maxSsids = table.getFilteredRowModel().rows.length
@@ -687,7 +695,12 @@ function CreateWifiSsidButton({
           追加
         </Button>
       </DialogTrigger>
-      <WifiSsidFormDialog open={open} setOpen={setOpen} mode="create" />
+      <WifiSsidFormDialog
+        open={open}
+        setOpen={setOpen}
+        mode="create"
+        isMaxSsidsPerUser={isMaxSsidsPerUser}
+      />
     </Dialog>
   );
 }
@@ -780,10 +793,12 @@ export function WifiSsidTable({
   enterpriseId,
   policyId,
   networkConfigurations,
+  isMaxSsidsPerUser,
 }: {
   enterpriseId: string;
   policyId: string;
   networkConfigurations: NetworkConfigurations;
+  isMaxSsidsPerUser: boolean;
 }) {
   const key = `/api/devices/${enterpriseId}/wifi-ssid`;
   const { data, error, isLoading, isValidating } =
@@ -923,7 +938,10 @@ export function WifiSsidTable({
             enterpriseId={enterpriseId}
             policyId={policyId}
           />
-          <CreateWifiSsidButton table={table} />
+          <CreateWifiSsidButton
+            table={table}
+            isMaxSsidsPerUser={isMaxSsidsPerUser}
+          />
         </div>
         <div className="rounded-md border">
           <Table>

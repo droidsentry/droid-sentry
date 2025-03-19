@@ -9,7 +9,7 @@ import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
 import { v7 as uuidv7 } from "uuid";
 import { checkDefaultPolicy } from "@/lib/emm/policy";
-
+import { SERVICE_LIMIT_CONFIG } from "@/lib/data/service";
 /**
  * ポリシー名が重複しているかどうかを確認
  * @param enterpriseId
@@ -80,7 +80,16 @@ export const createOrUpdatePolicy = async ({
   }
   // サービス上限を確認する
   if (policyId === "new") {
-    await checkServiceLimit(enterpriseId, "max_policies_per_user");
+    // サービス上限を確認する
+    const limitKey = "max_policies_per_user";
+    const isMaxPoliciesPerUser = await checkServiceLimit(
+      enterpriseId,
+      limitKey
+    );
+    if (!isMaxPoliciesPerUser) {
+      const config = SERVICE_LIMIT_CONFIG[limitKey];
+      throw new Error(config.errorMessage);
+    }
   }
 
   const { policyDisplayName, policyDetails } = result.data;

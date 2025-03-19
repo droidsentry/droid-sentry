@@ -18,12 +18,14 @@ interface TableToolbarProps<TData> {
   table: Table<TData>;
   className?: string;
   enterpriseId: string;
+  isMaxDevicesKittingPerUser: boolean;
 }
 
 export function TableToolbar<TData>({
   table,
   className,
   enterpriseId,
+  isMaxDevicesKittingPerUser,
 }: TableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
   const isSelected = table.getFilteredSelectedRowModel().rows.length > 0;
@@ -72,7 +74,9 @@ export function TableToolbar<TData>({
             </Button>
           )}
         </div>
-        <CreateQrButton />
+        <CreateQrButton
+          isMaxDevicesKittingPerUser={isMaxDevicesKittingPerUser}
+        />
         <SyncDevicesButton enterpriseId={enterpriseId} />
         {/* <DataTableViewOptions table={table} /> */}
       </div>

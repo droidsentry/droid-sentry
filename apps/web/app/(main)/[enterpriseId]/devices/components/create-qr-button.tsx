@@ -15,14 +15,24 @@ import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
+import { SERVICE_LIMIT_CONFIG } from "@/lib/data/service";
 
-export default function CreateQrButton() {
+export default function CreateQrButton({
+  isMaxDevicesKittingPerUser,
+}: {
+  isMaxDevicesKittingPerUser: boolean;
+}) {
   const [qrCode, setQrCode] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const params = useParams();
   const enterpriseId = params.enterpriseId as string;
 
   const onClick = async () => {
+    if (!isMaxDevicesKittingPerUser) {
+      const config = SERVICE_LIMIT_CONFIG["max_devices_kitting_per_user"];
+      toast.error(config.errorMessage);
+      return;
+    }
     setQrCode(null);
     await createDeviceEnrollmentTokenWithQRCode(enterpriseId)
       .then((qrData) => {

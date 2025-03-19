@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { checkServiceLimit } from "@/lib/service";
 import { createAndroidManagementClient } from "@/lib/emm/client";
+import { SERVICE_LIMIT_CONFIG } from "@/lib/data/service";
 
 /**
  * エンロールメントトークンを作成
@@ -24,7 +25,15 @@ export const createDeviceEnrollmentTokenWithQRCode = async (
   }
 
   // サービス上限を確認する
-  await checkServiceLimit(enterpriseId, "max_devices_kitting_per_user");
+  const limitKey = "max_devices_kitting_per_user";
+  const isMaxDevicesKittingPerUser = await checkServiceLimit(
+    enterpriseId,
+    limitKey
+  );
+  if (!isMaxDevicesKittingPerUser) {
+    const config = SERVICE_LIMIT_CONFIG[limitKey];
+    throw new Error(config.errorMessage);
+  }
 
   const androidmanagement = await createAndroidManagementClient();
   const { data } = await androidmanagement.enterprises.enrollmentTokens

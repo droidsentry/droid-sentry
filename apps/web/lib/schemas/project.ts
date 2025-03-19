@@ -17,11 +17,6 @@ export const projectSchema = z.object({
     .trim()
     .min(1, { message: "組織名を入力してください" })
     .max(100, { message: "組織名は100文字以内で入力してください" }),
-
-  // 不要であるため、削除
-  agreeToTerms: z.boolean().refine((val) => val === true, {
-    message: "利用規約に同意してください",
-  }),
 });
 
 export const OnboardingUserSchema = z.object({

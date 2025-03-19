@@ -15,7 +15,7 @@ import { deleteProject } from "../actions";
 type ContextType = {
   projects: ProjectWithEnterpriseRelation[];
   handleProjectDelete: (projectId: string) => void;
-  handleGetSignUpUrl: (projectId: string, projectName: string) => void;
+  // handleGetSignUpUrl: (projectId: string, projectName: string) => void;
   isPending: boolean;
   pendingProjectId: string | null;
 };
@@ -24,45 +24,32 @@ const Context = createContext<ContextType>({} as ContextType);
 
 export function ProjectProvider({
   children,
-  projectsData,
+  projectsSource,
 }: {
   children: ReactNode;
-  projectsData: ProjectWithEnterpriseRelation[];
+  projectsSource: ProjectWithEnterpriseRelation[];
 }) {
   const [projects, setProjects] =
-    useState<ProjectWithEnterpriseRelation[]>(projectsData);
-  const [currentUrl, setCurrentUrl] = useState<string>("");
+    useState<ProjectWithEnterpriseRelation[]>(projectsSource);
 
   const [isPending, startTransition] = useTransition();
   const [pendingProjectId, setPendingProjectId] = useState<string | null>(null);
-
-  const handleGetSignUpUrl = (projectId: string, projectName: string) => {
-    setPendingProjectId(projectId);
-    startTransition(async () => {
-      await getSignUpUrl({ projectId, currentUrl, projectName });
-      setPendingProjectId(null);
-    });
-  };
-
   const handleProjectDelete = async (projectId: string) => {
     setPendingProjectId(projectId);
     startTransition(async () => {
+      // await new Promise((resolve) => setTimeout(resolve, 100000));
       await deleteProject(projectId);
       setProjects((prev) => prev.filter((p) => p.project_id !== projectId));
       setPendingProjectId(null);
     });
   };
-  useEffect(() => {
-    const currentUrl = window.location.origin;
-    setCurrentUrl(currentUrl);
-  }, [setCurrentUrl]);
 
   return (
     <Context.Provider
       value={{
         projects,
         handleProjectDelete,
-        handleGetSignUpUrl,
+        // handleGetSignUpUrl,
         isPending,
         pendingProjectId,
       }}

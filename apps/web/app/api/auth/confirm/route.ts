@@ -4,7 +4,6 @@ import { type NextRequest } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { checkAndUpdateUserLimit } from "../../../../lib/auth/user-management";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -31,7 +30,6 @@ export async function GET(request: NextRequest) {
     if (!userId) {
       throw new Error("ユーザーIDが取得できません");
     }
-    await checkAndUpdateUserLimit(user);
 
     const supabaseAdmin = createAdminClient();
     await supabaseAdmin.auth.admin.updateUserById(userId, {
@@ -44,5 +42,5 @@ export async function GET(request: NextRequest) {
 
     return redirect(next);
   }
-  redirect("/error");
+  redirect("/auth/error");
 }

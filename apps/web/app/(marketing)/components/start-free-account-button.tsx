@@ -11,14 +11,7 @@ export default async function StartFreeAccountButton({
 }) {
   const t = await getTranslations("marketing");
 
-  let signUpUrl = "/sign-up";
-  await checkTotalUserLimit().catch((error) => {
-    const errorCode = error.message;
-    if (errorCode === "E1001") {
-      signUpUrl = "/waiting";
-      return;
-    }
-  });
+  const isTotalUserLimit = await checkTotalUserLimit();
 
   return (
     <Button
@@ -28,7 +21,7 @@ export default async function StartFreeAccountButton({
       )}
       asChild
     >
-      <Link href={signUpUrl}>
+      <Link href={isTotalUserLimit ? "/sign-up" : "/waiting"}>
         <span className="text-base ">{t("startFreeAccount")}</span>
       </Link>
     </Button>

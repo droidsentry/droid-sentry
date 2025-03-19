@@ -34,12 +34,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   enterpriseId: string;
+  isMaxDevicesKittingPerUser: boolean;
 }
 
 export default function DeviceTable<TData, TValue>({
   columns,
   data,
   enterpriseId,
+  isMaxDevicesKittingPerUser,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]); // ソート状態を管理
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]); // カラムフィルタリングの状態を管理
@@ -82,6 +84,7 @@ export default function DeviceTable<TData, TValue>({
         table={table}
         className="pb-2 pt-1"
         enterpriseId={enterpriseId}
+        isMaxDevicesKittingPerUser={isMaxDevicesKittingPerUser}
       />
       <Table
         style={{ width: table.getCenterTotalSize() }}

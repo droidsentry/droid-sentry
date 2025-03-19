@@ -34,7 +34,10 @@ export const signUpNewUser = async (formData: SignUp) => {
     throw new Error("フォームデータの検証に失敗しました");
   }
 
-  await checkTotalUserLimit();
+  const isTotalUserLimit = await checkTotalUserLimit();
+  if (!isTotalUserLimit) {
+    redirect("/waiting");
+  }
 
   const { username, email, password } = formData;
   // フォームデータの検証に成功した場合, Supabase にユーザー登録を行う

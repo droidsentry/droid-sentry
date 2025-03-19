@@ -8,18 +8,10 @@ import SingleWelcome from "../images/single-welcome.webp";
 
 import { checkTotalUserLimit } from "@/lib/service";
 import { SignInForm } from "./form";
+import { toast } from "sonner";
 
 export default async function Page() {
-  let signUpUrl = "/sign-up";
-
-  await checkTotalUserLimit().catch((error) => {
-    const errorCode = error.message;
-
-    if (errorCode === "E1001") {
-      signUpUrl = "/waiting";
-      return;
-    }
-  });
+  const isTotalUserLimit = await checkTotalUserLimit();
 
   return (
     <div className="flex flex-col-reverse lg:flex-row mt-20 sm:mt-10 pb-5 sm:pb-20 md:pb-52 lg:pb-60 xl:pb-10 2XL:pb-0 gap-20 md:gap-10 xl:gap-0">
@@ -69,7 +61,7 @@ export default async function Page() {
               </div>
               <Button variant="link" className="relative" asChild>
                 <Link
-                  href={signUpUrl}
+                  href={isTotalUserLimit ? "/waiting" : "/sign-up"}
                   className="text-xs font-bold absolute top-0 right-0"
                 >
                   アカウントを新規作成する

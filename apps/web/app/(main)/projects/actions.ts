@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
 
 export const deleteProject = async (projectId: string) => {
   const supabase = await createClient();
@@ -19,4 +20,5 @@ export const deleteProject = async (projectId: string) => {
     console.error("Error deleting project:", error);
     throw new Error("Error deleting project");
   }
+  revalidatePath("/projects");
 };

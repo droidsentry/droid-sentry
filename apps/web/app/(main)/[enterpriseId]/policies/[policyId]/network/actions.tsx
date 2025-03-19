@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { NetworkConfiguration } from "@/lib/types/policy-network";
 import { NetworkConfigurationSchema } from "@/lib/schemas/policy-network";
 import { checkServiceLimit } from "@/lib/service";
+import { SERVICE_LIMIT_CONFIG } from "@/lib/data/service";
 
 /**
  * ネットワーク設定を作成または更新する
@@ -33,7 +34,12 @@ export const createOrUpdateNetworkConfigurations = async (
   }
 
   // サービス上限を確認する
-  await checkServiceLimit(enterpriseId, "max_ssids_per_user");
+  const limitKey = "max_ssids_per_user";
+  const isMaxSsidsPerUser = await checkServiceLimit(enterpriseId, limitKey);
+  if (!isMaxSsidsPerUser) {
+    const config = SERVICE_LIMIT_CONFIG[limitKey];
+    throw new Error(config.errorMessage);
+  }
 
   const { error } = await supabase
     .from("wifi_configurations")

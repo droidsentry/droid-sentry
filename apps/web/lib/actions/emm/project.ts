@@ -3,7 +3,7 @@
 import { projectSchema } from "@/lib/schemas/project";
 import { Project } from "@/lib/types/project";
 import { createClient } from "@/lib/supabase/server";
-import { checkProjectLimit } from "./service";
+import { checkProjectLimit } from "@/lib/service";
 
 /**
  * プロジェクトの作成
@@ -26,8 +26,10 @@ export const createProject = async (data: Project) => {
   if (!user) {
     throw new Error("ユーザー情報が取得できませんでした");
   }
-
-  await checkProjectLimit();
+  const isProjectLimit = await checkProjectLimit();
+  if (!isProjectLimit) {
+    throw new Error("プロジェクト作成数の上限に達しました");
+  }
 
   const { data: project, error: projectError } = await supabase
     .from("projects")

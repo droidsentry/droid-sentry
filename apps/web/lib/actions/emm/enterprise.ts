@@ -57,7 +57,6 @@ export const getSignUpUrl = async ({
     projectId,
     projectName,
   }); // セキュリティのため暗号化
-  // console.log("暗号化:", encryptedUrl);
 
   cookieStore.set("emm_signup_object", encryptedUrl, {
     httpOnly: true,
@@ -66,7 +65,7 @@ export const getSignUpUrl = async ({
     maxAge: 3600, // 1時間で有効期限切れ
     path: "/",
   });
-  // const encryptedData = cookieStore.get("emm_signup_object");
-  // console.log("encryptedData", encryptedData);
-  redirect(data.url);
+  console.log("data.url", data.url);
+  // redirect(data.url);
+  return data.url;
 };

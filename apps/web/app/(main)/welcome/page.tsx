@@ -4,14 +4,6 @@ import { checkTotalUserLimit } from "@/lib/service";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
-  await checkTotalUserLimit().catch((error) => {
-    const errorCode = error.message;
-    if (errorCode === "E1001") {
-      console.log(errorCode);
-      redirect("/waiting");
-    }
-  });
-
   const supabase = await createClient();
   const {
     data: { user },
@@ -23,6 +15,10 @@ export default async function Page() {
   }
   if (!user) {
     throw new Error("ユーザー情報が取得できませんでした。");
+  }
+  const isTotalUserLimit = await checkTotalUserLimit();
+  if (!isTotalUserLimit) {
+    redirect("/waiting");
   }
   const userMetadata = user.user_metadata;
   const username =
