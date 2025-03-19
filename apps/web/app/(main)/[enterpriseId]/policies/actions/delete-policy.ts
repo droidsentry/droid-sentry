@@ -1,28 +1,10 @@
 "use server";
 
 import { createAndroidManagementClient } from "@/lib/emm/client";
+import { checkDefaultPolicy } from "@/lib/emm/policy";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
-
-export const checkDefaultPolicy = async (
-  enterpriseId: string,
-  policyId: string
-) => {
-  const supabase = await createClient();
-  const { data: policy, error } = await supabase
-    .from("policies")
-    .select("isDefault:is_default")
-    .match({
-      enterprise_id: enterpriseId,
-      policy_id: policyId,
-    })
-    .single();
-  if (error) {
-    throw new Error("Failed to check default policy");
-  }
-  return policy.isDefault;
-};
 
 /**
  * ポリシーを削除

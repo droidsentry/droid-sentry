@@ -10,6 +10,7 @@ import {
   ListDevicesResponse,
 } from "@/lib/types/device";
 import { prepareDeviceData } from "@/app/api/emm/pubsub/lib/save-device";
+import { getDefaultPolicyId } from "@/lib/emm/policy";
 
 type ResolvedDeviceData = {
   enterprise_id: string;
@@ -31,25 +32,47 @@ const saveDevices = async (
 ) => {
   const supabase = await createClient();
 
+  // デフォルトポリシーIDをループ前に一度だけ取得
+  let defaultPolicyId: string | null = null;
+  // デフォルトのポリシーIDをデバイスが必要とする場合のみ取得
+  const needsDefaultPolicy = devices.some(
+    (device) =>
+      device.appliedPolicyName?.includes(
+        `enterprises/${enterpriseId}/policies/default`
+      ) ||
+      device.policyName?.includes(
+        `enterprises/${enterpriseId}/policies/default`
+      )
+  );
+  if (needsDefaultPolicy) {
+    defaultPolicyId = await getDefaultPolicyId(enterpriseId);
+  }
+
   // デバイスリストを作成
   const devicesList = devices
     .map((device) => {
       const policyName = device.policyName;
       const deviceName = device.name;
-      if (!deviceName || !policyName) return;
+      if (!deviceName) return;
       const appliedPolicyName = device.appliedPolicyName;
-      const policyId = appliedPolicyName?.includes(
+      let policyId = appliedPolicyName?.includes(
         `enterprises/${enterpriseId}/policies/`
       )
         ? appliedPolicyName.split(`enterprises/${enterpriseId}/policies/`)[1] ||
           null
         : null;
 
-      const requestedPolicyId = policyName?.includes(
+      let requestedPolicyId = policyName?.includes(
         `enterprises/${enterpriseId}/policies/`
       )
         ? policyName.split(`enterprises/${enterpriseId}/policies/`)[1] || null
         : null;
+
+      if (policyId === "default" || requestedPolicyId === "default") {
+        if (policyId === "default") policyId = defaultPolicyId;
+        if (requestedPolicyId === "default")
+          requestedPolicyId = defaultPolicyId;
+      }
 
       const deviceId = deviceName.includes(
         `enterprises/${enterpriseId}/devices/`
@@ -67,21 +90,15 @@ const saveDevices = async (
     })
     .filter((device) => device !== undefined);
 
-  // upsertする共通データを作成
-  const createBaseDeviceData = (device: ResolvedDeviceData) => ({
-    device_id: device.device_id,
-    enterprise_id: device.enterprise_id,
-    updated_at: device.updated_at,
-  });
-
   // devicesテーブルに記録するデータ
   const upsertDevices = devicesList.map((device) => {
-    const baseData = createBaseDeviceData(device);
     return {
-      ...baseData,
+      enterprise_id: device.enterprise_id,
+      device_id: device.device_id,
       policy_id: device.policy_id,
       requested_policy_id: device.requested_policy_id,
       device_details: device.device_details as Json,
+      updated_at: device.updated_at,
     };
   });
   // device_hardware_statusテーブルに記録するデータ
@@ -93,15 +110,15 @@ const saveDevices = async (
             if (!hardwareStatus.createTime) return;
             return {
               device_id: device.device_id,
-              matrics_at: hardwareStatus.createTime,
-              matrics: hardwareStatus as Json,
+              measured_at: hardwareStatus.createTime,
+              metrics: hardwareStatus as Json,
             };
           })
           .filter((hardwareStatus) => hardwareStatus !== undefined) ?? []
       );
     })
     .flat();
-
+  // memory_eventsテーブルに記録するデータ
   const upsertMemoryEvents = devicesList
     .map((device) => {
       return (
@@ -110,7 +127,7 @@ const saveDevices = async (
             if (!memoryEvent.createTime || !memoryEvent.eventType) return;
             return {
               device_id: device.device_id,
-              matrics_at: memoryEvent.createTime,
+              measured_at: memoryEvent.createTime,
               event_type: memoryEvent.eventType,
               byte_count: memoryEvent.byteCount ?? null,
             };
@@ -119,7 +136,7 @@ const saveDevices = async (
       );
     })
     .flat();
-  // デバイスの電源管理データの作成
+  // power_management_eventsテーブルに記録するデータ
   const powerEventList = devicesList
     .map((device) => {
       return (
@@ -128,7 +145,7 @@ const saveDevices = async (
             if (!powerEvent.createTime || !powerEvent.eventType) return;
             return {
               device_id: device.device_id,
-              matrics_at: powerEvent.createTime,
+              measured_at: powerEvent.createTime,
               event_type: powerEvent.eventType,
               battery_level: powerEvent.batteryLevel ?? null,
             };
@@ -140,13 +157,14 @@ const saveDevices = async (
 
   // アプリケーションデータの作成
   const upsertApplicationReports = devicesList.map((device) => ({
-    ...createBaseDeviceData(device),
+    device_id: device.device_id,
     report_data: (device.device_details.applicationReports as Json) ?? [],
+    updated_at: device.updated_at,
   }));
   // device_historiesテーブルに記録するデータ
   const upsertDeviceHistoryData = devicesList.map((device) => ({
     device_id: device.device_id,
-    device_response_data: (device.device_details as Json) ?? [],
+    response_details: (device.device_details as Json) ?? [],
   }));
 
   const { error } = await supabase.rpc("insert_or_upsert_devices_data", {

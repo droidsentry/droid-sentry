@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/database";
 import { revalidatePath } from "next/cache";
 import { v7 as uuidv7 } from "uuid";
-import { checkDefaultPolicy } from "./delete-policy";
+import { checkDefaultPolicy } from "@/lib/emm/policy";
 
 /**
  * ポリシー名が重複しているかどうかを確認

@@ -4,6 +4,7 @@ import { AndroidManagementDevice } from "@/lib/types/device";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { Json } from "@/types/database";
+import { getDefaultPolicyId } from "@/lib/emm/policy";
 
 /**
  * デバイスデータから不要なイベントデータを除外
@@ -32,7 +33,7 @@ export const saveDeviceStatus = async ({
 }) => {
   const supabase = createAdminClient();
   const appliedPolicyName = device.appliedPolicyName;
-  const policyId = appliedPolicyName?.includes(
+  let policyId = appliedPolicyName?.includes(
     `enterprises/${enterpriseId}/policies/`
   )
     ? appliedPolicyName.split(`enterprises/${enterpriseId}/policies/`)[1] ||
@@ -40,11 +41,17 @@ export const saveDeviceStatus = async ({
     : null;
 
   const policyName = device.policyName;
-  const requestedPolicyId = policyName?.includes(
+  let requestedPolicyId = policyName?.includes(
     `enterprises/${enterpriseId}/policies/`
   )
     ? policyName.split(`enterprises/${enterpriseId}/policies/`)[1] || null
     : null;
+  // デフォルトポリシーの場合は、policyName、appliedPolicyNameからテーブルのPKが取得できないため、デフォルトポリシーのIDを取得する
+  if (policyId === "default" || requestedPolicyId === "default") {
+    const defaultPolicyId = await getDefaultPolicyId(enterpriseId);
+    if (policyId === "default") policyId = defaultPolicyId;
+    if (requestedPolicyId === "default") requestedPolicyId = defaultPolicyId;
+  }
 
   try {
     // devicesテーブルに記録するデータ
@@ -63,8 +70,8 @@ export const saveDeviceStatus = async ({
           if (!hardwareStatus.createTime) return;
           return {
             device_id: deviceId,
-            matrics_at: hardwareStatus.createTime,
-            matrics: hardwareStatus as Json,
+            measured_at: hardwareStatus.createTime,
+            metrics: hardwareStatus as Json,
           };
         })
         .filter((hardwareStatus) => hardwareStatus !== undefined) ?? [];
@@ -76,7 +83,7 @@ export const saveDeviceStatus = async ({
           if (!memoryEvent.createTime || !memoryEvent.eventType) return;
           return {
             device_id: deviceId,
-            matrics_at: memoryEvent.createTime,
+            measured_at: memoryEvent.createTime,
             event_type: memoryEvent.eventType,
             byte_count: memoryEvent.byteCount ?? null,
           };
@@ -90,7 +97,7 @@ export const saveDeviceStatus = async ({
           if (!powerEvent.createTime || !powerEvent.eventType) return;
           return {
             device_id: deviceId,
-            matrics_at: powerEvent.createTime,
+            measured_at: powerEvent.createTime,
             event_type: powerEvent.eventType,
             battery_level: powerEvent.batteryLevel ?? null,
           };
@@ -106,7 +113,7 @@ export const saveDeviceStatus = async ({
     // device_historiesテーブルに記録するデータ
     const deviceHistoryData = {
       device_id: deviceId,
-      device_response_data: device as Json,
+      response_details: device as Json,
     };
 
     // トランザクション処理の実行

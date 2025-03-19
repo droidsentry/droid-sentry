@@ -4,6 +4,7 @@ import { getProjects } from "./lib/projects";
 
 export default async function Page() {
   const projectsData = await getProjects();
+
   return (
     <div>
       <ProjectProvider projectsData={projectsData}>
