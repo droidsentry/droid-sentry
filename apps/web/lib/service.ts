@@ -172,7 +172,6 @@ export const checkProjectLimit = async () => {
   // サービス上限を取得して確認する
   const limitKey = "max_projects_per_user";
   const limit = await getServiceLimit(limitKey);
-  const config = SERVICE_LIMIT_CONFIG[limitKey];
 
   if (currentCount && currentCount >= limit) {
     return false;
