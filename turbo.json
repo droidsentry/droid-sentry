@@ -15,7 +15,8 @@
         "STRIPE_*",
         "GOOGLE_*",
         "RESEND_*",
-        "VERCEL*"
+        "VERCEL_*",
+        "SENTRY_*"
       ]
     },
     "lint": {

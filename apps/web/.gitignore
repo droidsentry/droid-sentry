@@ -60,3 +60,6 @@ my-emm-next-dev-c0aa8f8ab195.json
 
 # backup
 *backup.sql
+
+# Sentry Config File
+.env.sentry-build-plugin

@@ -12,6 +12,7 @@ const publicRoutes = [
   "/api/auth/callback",
   "/api/auth/confirm",
   "/api/auth/route",
+  "/sentry-example-page",
   "/waiting",
 ];
 
