@@ -21,7 +21,7 @@ export default async function Header({ className }: { className?: string }) {
         <div className="flex items-center flex-1 justify-start">
           <HeaderLogoButton />
           <div className="hidden lg:flex flex-1 ml-5 items-center">
-            <Button variant="ghost" className="p-5" asChild>
+            {/* <Button variant="ghost" className="p-5" asChild>
               <Link href="/" replace>
                 <span className="text-lg">{t("flowOfUse")}</span>
               </Link>
@@ -35,7 +35,7 @@ export default async function Header({ className }: { className?: string }) {
               <Link href="/" replace>
                 <span className="text-lg">{t("blog")}</span>
               </Link>
-            </Button>
+            </Button> */}
           </div>
         </div>
         <div className="lg:flex items-center gap-4 hidden">

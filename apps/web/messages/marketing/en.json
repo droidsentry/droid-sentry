@@ -19,9 +19,9 @@
       "legal": "Display based on the Specified Commercial Transactions Law",
       "resources": "Resources",
       "blog": "Blog",
-      "support": "Contact and help",
-      "supportEmail": "Support email",
-      "helpCenter": "Help center and frequently asked questions"
+      "support": "Contact and frequently asked questions",
+      "supportForm": "Contact form",
+      "faq": "Frequently asked questions"
     },
     "startFreeAccount": "Start a free account",
     "toggleTheme": "Toggle theme",

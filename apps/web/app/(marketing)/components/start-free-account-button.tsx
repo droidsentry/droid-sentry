@@ -22,7 +22,7 @@ export default async function StartFreeAccountButton({
       asChild
     >
       <Link href={isTotalUserLimit ? "/sign-up" : "/waiting"}>
-        <span className="text-base ">{t("startFreeAccount")}</span>
+        <span className="text-base font-semibold">{t("startFreeAccount")}</span>
       </Link>
     </Button>
   );

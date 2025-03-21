@@ -25,7 +25,7 @@ export default async function MobileHeaderMenu() {
       <DrawerContent className="h-[85dvh] p-2">
         <DrawerTitle className="sr-only">{t("drawerTitle")}</DrawerTitle>
         <div className="flex flex-col gap-2 mt-2">
-          <Button variant="ghost" className="w-full justify-start" asChild>
+          {/* <Button variant="ghost" className="w-full justify-start" asChild>
             <Link href="/" replace>
               <span className="text-lg">{t("flowOfUse")}</span>
             </Link>
@@ -42,7 +42,7 @@ export default async function MobileHeaderMenu() {
               <span className="text-lg">{t("blog")}</span>
             </Link>
           </Button>
-          <Separator />
+          <Separator /> */}
 
           <StartFreeAccountButton className="w-full ml-0" />
           <SingInButton className="w-full ml-0" />

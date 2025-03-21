@@ -19,9 +19,9 @@
       "legal": "特定商取引法に基づく表示",
       "resources": "リソース",
       "blog": "ブログ",
-      "support": "お問い合わせとヘルプ",
-      "supportEmail": "サポートメール",
-      "helpCenter": "ヘルプセンターとよくある質問"
+      "support": "お問い合わせとよくある質問",
+      "supportForm": "お問い合わせフォーム",
+      "faq": "よくある質問"
     },
     "startFreeAccount": "無料アカウントで始める",
     "toggleTheme": "テーマを切り替える",

@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
+import { ExternalLink } from "lucide-react";
 
 export default async function Footer() {
   const t = await getTranslations("marketing.footer");
@@ -14,10 +15,11 @@ export default async function Footer() {
         <HeaderLogoButton className="h-12" />
         <div
           className={cn(
-            "grid grid-cols-1 sm:grid-cols-2 gap-4 lg:flex sm:justify-between mt-[60px]"
+            // "grid grid-cols-1 sm:grid-cols-2 gap-4 lg:flex sm:justify-between mt-[60px]"
+            "grid grid-cols-1 sm:grid-cols-2 gap-4 sm:justify-center mt-[60px]"
           )}
         >
-          <div>
+          {/* <div>
             <div className="mb-3 lg:mb-4 font-bold text-xl">
               <p className="ml-4">{t("products")}</p>
             </div>
@@ -26,7 +28,7 @@ export default async function Footer() {
                 {t("plan")}
               </Button>
             </div>
-          </div>
+          </div> */}
           <div>
             <div className="mb-3 lg:mb-4 font-bold text-xl">
               <p className="ml-4">{t("companyInfo")}</p>
@@ -43,7 +45,7 @@ export default async function Footer() {
               </Button>
             </div>
           </div>
-          <div>
+          {/* <div>
             <div className="mb-3 lg:mb-4 font-bold text-xl">
               <p className="ml-4">{t("resources")}</p>
             </div>
@@ -52,17 +54,20 @@ export default async function Footer() {
                 {t("blog")}
               </Button>
             </div>
-          </div>
+          </div> */}
           <div>
             <div className="mb-3 lg:mb-4 font-bold text-xl">
               <p className="ml-4">{t("support")}</p>
             </div>
             <div className="flex flex-col mb-4 lg:mb-0 text-sm">
-              <Button variant="ghost" className="w-fit">
-                {t("supportEmail")}
+              <Button variant="ghost" className="w-fit" asChild>
+                <Link href="https://tally.so/r/w5MWxM" target="_blank">
+                  {t("supportForm")}
+                  <ExternalLink className="ml-1" />
+                </Link>
               </Button>
               <Button variant="ghost" className="w-fit">
-                {t("helpCenter")}
+                {t("faq")}
               </Button>
             </div>
           </div>

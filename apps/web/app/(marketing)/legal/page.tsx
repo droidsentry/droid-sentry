@@ -1,4 +1,5 @@
 import { AppConfig } from "@/app.config";
+import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 
 export default function Page() {
@@ -53,12 +54,14 @@ export default function Page() {
             <th>対応機種</th>
             <td>
               Google モバイル
-              サービス（GMS）のライセンス登録されたAndroid7以上のデバイス、かつ、Googleにより
+              サービス（GMS）のライセンス登録されたAndroid7以上のデバイス、かつ、
               <Link
                 href="https://androidenterprisepartners.withgoogle.com/devices"
-                className="text-primary"
+                className="text-primary inline-flex items-center"
+                target="_blank"
               >
-                推奨されているデバイス
+                Googleにより推奨されているデバイス
+                <ExternalLink className="ml-3 inline-block flex-shrink-0 size-4" />
               </Link>
             </td>
           </tr>
